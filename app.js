@@ -1,8 +1,13 @@
 const typhoonApiForm = document.querySelector("#typhoonApiForm");
 const typhoonApiStatus = document.querySelector("#typhoonApiStatus");
 const stormCards = document.querySelector("#stormCards");
-const trackVisual = document.querySelector("#trackVisual");
 const trackTableBody = document.querySelector("#trackTableBody");
+const mapUpdated = document.querySelector("#mapUpdated");
+const refreshMap = document.querySelector("#refreshMap");
+
+let typhoonMap;
+let typhoonLayer;
+let autoRefreshId;
 
 const sampleTyphoonData = {
   ok: true,
@@ -51,42 +56,93 @@ function collectStormPoints(storm) {
   return points.concat(storm?.forecasts || []);
 }
 
-function renderTrackVisual(points) {
+function initMap() {
+  if (!window.L || typhoonMap) return;
+
+  typhoonMap = L.map("liveMap", {
+    zoomControl: true,
+    scrollWheelZoom: false,
+    worldCopyJump: true
+  }).setView([29, 128], 4);
+
+  L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+    maxZoom: 9,
+    attribution: "&copy; OpenStreetMap contributors"
+  }).addTo(typhoonMap);
+
+  typhoonLayer = L.layerGroup().addTo(typhoonMap);
+}
+
+function popupHtml(point) {
+  return `<div class="typhoon-popup"><strong>${point.ft === 0 ? "분석 위치" : `예측 +${point.forecastHour || "-"}h`}</strong><br>${formatUtcTime(point.forecastTimeUtc)} UTC<br>${point.location || "위치 정보 없음"}<br>중심기압 ${formatValue(point.pressureHpa, " hPa")} · 최대풍속 ${formatValue(point.maxWindMs, " m/s")}</div>`;
+}
+
+function renderMap(points) {
+  initMap();
+  if (!typhoonMap || !typhoonLayer) return;
+
+  typhoonLayer.clearLayers();
   const validPoints = points.filter((point) => Number.isFinite(point.lat) && Number.isFinite(point.lon));
+
   if (!validPoints.length) {
-    trackVisual.innerHTML = "<p>시각화할 좌표가 없습니다.</p>";
+    typhoonMap.setView([29, 128], 4);
     return;
   }
 
-  const minLat = Math.min(...validPoints.map((point) => point.lat));
-  const maxLat = Math.max(...validPoints.map((point) => point.lat));
-  const minLon = Math.min(...validPoints.map((point) => point.lon));
-  const maxLon = Math.max(...validPoints.map((point) => point.lon));
-  const pad = 8;
-  const toX = (lon) => (maxLon === minLon ? 50 : pad + ((lon - minLon) / (maxLon - minLon)) * (100 - pad * 2));
-  const toY = (lat) => (maxLat === minLat ? 50 : 100 - pad - ((lat - minLat) / (maxLat - minLat)) * (100 - pad * 2));
-  const path = validPoints.map((point) => `${toX(point.lon)},${toY(point.lat)}`).join(" ");
-  const circles = validPoints
-    .map((point, index) => {
-      const label = point.ft === 0 ? "분석" : `+${point.forecastHour || ""}h`;
-      return `<g><circle cx="${toX(point.lon)}" cy="${toY(point.lat)}" r="${index === 0 ? 4.4 : 3.3}"/><text x="${toX(point.lon) + 2}" y="${toY(point.lat) - 3}">${label}</text></g>`;
-    })
-    .join("");
+  const latLngs = validPoints.map((point) => [point.lat, point.lon]);
+  L.polyline(latLngs, { color: "#e4763b", weight: 4, opacity: 0.9, dashArray: "10 8" }).addTo(typhoonLayer);
 
-  trackVisual.innerHTML = `<svg viewBox="0 0 100 100" role="img" aria-label="태풍 분석 및 예측 경로"><defs><linearGradient id="trackGradient" x1="0" x2="1"><stop offset="0%" stop-color="#0d5c75"/><stop offset="100%" stop-color="#e4763b"/></linearGradient></defs><rect x="0" y="0" width="100" height="100" rx="5"/><polyline points="${path}"/>${circles}</svg>`;
+  validPoints.forEach((point, index) => {
+    const isAnalysis = point.ft === 0 || index === 0;
+    const marker = L.circleMarker([point.lat, point.lon], {
+      radius: isAnalysis ? 9 : 6,
+      color: isAnalysis ? "#e64b35" : "#0d5c75",
+      weight: 3,
+      fillColor: isAnalysis ? "#e4763b" : "#ffffff",
+      fillOpacity: isAnalysis ? 0.95 : 0.85,
+      className: isAnalysis ? "analysis-marker" : ""
+    }).bindPopup(popupHtml(point));
+    marker.addTo(typhoonLayer);
+
+    if (point.radius15Km) {
+      L.circle([point.lat, point.lon], {
+        radius: point.radius15Km * 1000,
+        color: isAnalysis ? "#e4763b" : "#0d5c75",
+        weight: 1.5,
+        opacity: 0.45,
+        fillColor: isAnalysis ? "#e4763b" : "#0d5c75",
+        fillOpacity: 0.08
+      }).addTo(typhoonLayer);
+    }
+
+    if (point.probabilityRadiusKm) {
+      L.circle([point.lat, point.lon], {
+        radius: point.probabilityRadiusKm * 1000,
+        color: "#6b7c93",
+        weight: 1,
+        opacity: 0.35,
+        dashArray: "6 6",
+        fillOpacity: 0
+      }).addTo(typhoonLayer);
+    }
+  });
+
+  typhoonMap.fitBounds(L.latLngBounds(latLngs).pad(0.45), { maxZoom: 5 });
 }
 
 function renderTyphoonData(data, isFallback = false) {
   const storm = data.storms?.[0];
   const points = collectStormPoints(storm);
   const latest = storm?.latestAnalysis || {};
+  const nowText = new Date().toLocaleString("ko-KR", { hour12: false });
 
   typhoonApiStatus.textContent = `${isFallback ? "API 연결 전 예시 자료를 표시 중입니다." : "기상청 API 자료를 불러왔습니다."} 자료 수: ${data.count || points.length}건`;
+  if (mapUpdated) mapUpdated.textContent = `마지막 갱신: ${nowText}${isFallback ? " · 예시" : ""}`;
 
   if (!storm) {
     stormCards.innerHTML = "";
     trackTableBody.innerHTML = '<tr><td colspan="6">표시할 태풍 자료가 없습니다.</td></tr>';
-    renderTrackVisual([]);
+    renderMap([]);
     return;
   }
 
@@ -100,28 +156,33 @@ function renderTyphoonData(data, isFallback = false) {
     .map((point) => `<tr><td>${point.ft === 0 ? "분석" : `예측 +${point.forecastHour || "-"}h`}</td><td>${formatUtcTime(point.forecastTimeUtc)}</td><td>${point.location || `${formatValue(point.lat)} / ${formatValue(point.lon)}`}</td><td>${formatValue(point.pressureHpa, " hPa")}</td><td>${formatValue(point.maxWindMs, " m/s")}</td><td>15m/s ${formatValue(point.radius15Km, " km")} · 확률 ${formatValue(point.probabilityRadiusKm, " km")}</td></tr>`)
     .join("");
 
-  renderTrackVisual(points);
+  renderMap(points);
 }
 
-async function loadTyphoonData(event) {
+async function loadTyphoonData(event, options = {}) {
   event?.preventDefault();
   const tm = document.querySelector("#typhoonTm")?.value.trim();
   const mode = document.querySelector("#typhoonMode")?.value || "1";
-  typhoonApiStatus.textContent = "기상청 API 자료를 불러오는 중입니다.";
+  typhoonApiStatus.textContent = options.silent ? "자동 갱신 중입니다." : "기상청 API 자료를 불러오는 중입니다.";
 
   try {
     const query = new URLSearchParams();
     if (tm) query.set("tm", tm);
     query.set("mode", mode);
-    const response = await fetch(`/api/typhoon?${query.toString()}`);
+    const response = await fetch(`/api/typhoon?${query.toString()}`, { cache: "no-store" });
     const data = await response.json();
     if (!response.ok || !data.ok) throw new Error(data.message || "API 호출에 실패했습니다.");
     renderTyphoonData(data);
   } catch (error) {
     renderTyphoonData(sampleTyphoonData, true);
-    typhoonApiStatus.textContent = `${error.message} 현재는 예시 자료로 화면 구성을 보여줍니다.`;
+    typhoonApiStatus.textContent = `${error.message} 현재는 예시 자료로 지도 구성을 보여줍니다.`;
   }
 }
 
+initMap();
 typhoonApiForm.addEventListener("submit", loadTyphoonData);
+refreshMap?.addEventListener("click", () => loadTyphoonData());
 renderTyphoonData(sampleTyphoonData, true);
+
+autoRefreshId = window.setInterval(() => loadTyphoonData(null, { silent: true }), 10 * 60 * 1000);
+window.addEventListener("beforeunload", () => window.clearInterval(autoRefreshId));
