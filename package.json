@@ -5,7 +5,7 @@
   "type": "module",
   "description": "Korean typhoon route guide with KMA API Hub and Cloudflare Pages deployment.",
   "scripts": {
-    "check": "node --check app.js && node --check functions/api/typhoon.js && node --check functions/api/typhoon-list.js && node --check functions/api/typhoon-detail.js && node --check functions/api/korea-typhoons.js",
+    "check": "node --check app.js && node --check functions/_middleware.js && node --check functions/api/typhoon.js && node --check functions/api/typhoon-list.js && node --check functions/api/typhoon-detail.js && node --check functions/api/korea-typhoons.js",
     "build": "node -e \"console.log('Static site: no build step required')\"",
     "start": "npx wrangler pages dev .",
     "serve": "npx wrangler pages dev ."
