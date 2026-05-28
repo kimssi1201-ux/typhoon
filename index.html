@@ -3,16 +3,18 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="description" content="기상청 API Hub 태풍정보+예측 자료를 기반으로 태풍 경로, 중심기압, 최대풍속, 대비 행동요령을 확인하는 웹사이트입니다." />
+    <meta name="description" content="기상청 API Hub 태풍정보+예측 자료를 지도에서 실시간으로 확인하는 웹사이트입니다." />
     <meta name="theme-color" content="#0b5d76" />
-    <title>태풍정보 + 예측 조회 | Typhoon Route Korea</title>
+    <title>실시간 태풍 지도 | Typhoon Route Korea</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
     <header class="site-header">
       <a class="brand" href="#top"><span>T</span> Typhoon Route Korea</a>
       <nav aria-label="주요 메뉴">
-        <a href="#live">실시간 조회</a>
+        <a href="#map">실시간 지도</a>
+        <a href="#live">API 조회</a>
         <a href="#guide">해석법</a>
         <a href="#safety">행동요령</a>
         <a href="privacy.html">개인정보</a>
@@ -20,56 +22,50 @@
     </header>
 
     <main id="top">
-      <section class="hero">
-        <div class="hero-map" aria-hidden="true">
-          <div class="grid-lines"></div>
-          <div class="storm-core"></div>
-          <div class="route route-a"></div>
-          <div class="route route-b"></div>
-          <span class="pin korea">KOR</span>
-          <span class="pin pacific">NW Pacific</span>
-        </div>
-        <div class="hero-copy">
-          <p class="eyebrow">KMA API Hub 기반</p>
-          <h1>태풍정보와 예측 경로를 시점 기준으로 확인하세요</h1>
-          <p>기상청 API Hub의 태풍정보+예측 자료를 Cloudflare Function으로 받아와 중심기압, 최대풍속, 강풍반경, 예측 경로를 보기 쉽게 정리합니다.</p>
+      <section class="map-hero" id="map">
+        <div id="liveMap" class="live-map" aria-label="실시간 태풍 경로 지도"></div>
+        <div class="map-card">
+          <p class="eyebrow">KMA API Hub Live Map</p>
+          <h1>태풍 경로를 지도에서 실시간으로 확인하세요</h1>
+          <p>기상청 API Hub의 태풍정보+예측 좌표를 지도 위에 직접 표시합니다. 분석 위치, 예측 경로, 강풍반경을 함께 볼 수 있고 10분마다 자동 갱신됩니다.</p>
+          <div class="map-meta">
+            <span id="mapUpdated">마지막 갱신: 대기 중</span>
+            <span>지도: OpenStreetMap</span>
+          </div>
           <div class="hero-actions">
-            <a class="button primary" href="#live">API 조회하기</a>
-            <a class="button secondary" href="https://www.weather.go.kr/w/typhoon/ko/weather/typhoon_02.jsp" target="_blank" rel="noopener">기상청 원문</a>
+            <a class="button primary" href="#live">시점 조회</a>
+            <button class="button secondary" id="refreshMap" type="button">지금 새로고침</button>
           </div>
         </div>
       </section>
 
-      <section class="notice"><strong>안내:</strong> 이 사이트는 공식 예보를 대체하지 않습니다. 대피, 운항, 시설 통제 판단은 기상청과 지자체 최신 발표를 우선하세요.</section>
+      <section class="notice"><strong>안내:</strong> 이 화면은 기상청 API 자료를 보기 쉽게 재구성한 정보 화면입니다. 대피, 운항, 시설 통제 판단은 기상청과 지자체 최신 발표를 우선하세요.</section>
 
       <section class="live-api" id="live" aria-labelledby="live-title">
         <div class="section-head">
           <p class="eyebrow">1.3 태풍정보 + 예측</p>
           <h2 id="live-title">기준시각으로 태풍 분석·예측 조회</h2>
-          <p>예시 기준시각은 `201108070100`입니다. Cloudflare 환경변수 `KMA_AUTH_KEY`가 설정되면 실제 기상청 API 자료가 표시됩니다.</p>
+          <p>기준시각을 비워두면 최신 조회를 시도합니다. Cloudflare 환경변수 `KMA_AUTH_KEY`가 설정되면 실제 기상청 API 자료가 표시됩니다.</p>
         </div>
         <form id="typhoonApiForm" class="api-form">
-          <label>기준시각 <input id="typhoonTm" type="text" maxlength="12" inputmode="numeric" value="201108070100" placeholder="YYYYMMDDHHMM" /></label>
+          <label>기준시각 <input id="typhoonTm" type="text" maxlength="12" inputmode="numeric" placeholder="비워두면 최신, 예: 201108070100" /></label>
           <label>모드 <select id="typhoonMode"><option value="1">분석 + 예측</option><option value="0">분석 중심</option></select></label>
           <button class="button primary" type="submit">조회</button>
         </form>
         <div class="api-status" id="typhoonApiStatus" aria-live="polite">API 연결 전 예시 자료를 표시합니다.</div>
         <div class="storm-cards" id="stormCards"></div>
-        <div class="track-panel">
-          <div class="track-visual" id="trackVisual" aria-label="태풍 경로 간단 시각화"></div>
-          <div class="track-table-wrap">
-            <table class="track-table">
-              <thead><tr><th>구분</th><th>예측시각 UTC</th><th>위치</th><th>중심기압</th><th>최대풍속</th><th>반경</th></tr></thead>
-              <tbody id="trackTableBody"><tr><td colspan="6">조회 결과가 여기에 표시됩니다.</td></tr></tbody>
-            </table>
-          </div>
+        <div class="track-table-wrap">
+          <table class="track-table">
+            <thead><tr><th>구분</th><th>예측시각 UTC</th><th>위치</th><th>중심기압</th><th>최대풍속</th><th>반경</th></tr></thead>
+            <tbody id="trackTableBody"><tr><td colspan="6">조회 결과가 여기에 표시됩니다.</td></tr></tbody>
+          </table>
         </div>
       </section>
 
       <section class="content-grid" id="guide">
-        <article><h2>예상 진로</h2><p>중심선은 가능성이 높은 이동 방향입니다. 중심선 밖이어도 강풍반경 안이면 피해가 날 수 있습니다.</p></article>
-        <article><h2>70% 확률반경</h2><p>태풍 중심이 들어갈 가능성이 높은 범위입니다. 시간이 멀수록 반경이 커지고 불확실성도 커집니다.</p></article>
-        <article><h2>강풍·폭풍반경</h2><p>강풍반경은 15m/s 이상, 폭풍반경은 25m/s 이상 바람이 예상되는 범위입니다.</p></article>
+        <article><h2>분석 위치</h2><p>현재 태풍 중심 위치입니다. 지도에서는 굵은 마커로 표시됩니다.</p></article>
+        <article><h2>예측 경로</h2><p>앞으로 이동할 가능성이 높은 지점을 선으로 연결합니다. 예보가 갱신되면 경로가 바뀔 수 있습니다.</p></article>
+        <article><h2>강풍반경</h2><p>지도에 표시되는 원은 15m/s 이상 바람이 예상되는 대략적인 반경입니다. 실제 위험 판단은 특보와 함께 봐야 합니다.</p></article>
       </section>
 
       <section class="safety" id="safety">
@@ -87,6 +83,7 @@
       <p>© 2026 Typhoon Route Korea</p>
       <div><a href="about.html">소개</a><a href="privacy.html">개인정보처리방침</a><a href="contact.html">문의</a></div>
     </footer>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script src="app.js"></script>
   </body>
 </html>
