@@ -29,12 +29,7 @@ function parseKmaTyphoon(rawText) {
     .map((line) => {
       const tokens = line.trim().split(/\s+/);
       const base = tokens.slice(0, 18);
-      const locationText = tokens
-        .slice(18)
-        .join(" ")
-        .replace(/\s+[A-Z-]+,-?\d+,?\s*$/i, "")
-        .trim();
-
+      const locationText = tokens.slice(18).join(" ").replace(/\s+[A-Z-]+,-?\d+,?\s*$/i, "").trim();
       return {
         ft: numberValue(base[0]),
         year: numberValue(base[1]),
@@ -59,20 +54,10 @@ function parseKmaTyphoon(rawText) {
   const groups = new Map();
   rows.forEach((row) => {
     const key = `${row.year}-${String(row.typhoonNo).padStart(2, "0")}`;
-    const storm = groups.get(key) || {
-      id: key,
-      year: row.year,
-      typhoonNo: row.typhoonNo,
-      latestAnalysis: null,
-      forecasts: [],
-      points: []
-    };
-
+    const storm = groups.get(key) || { id: key, year: row.year, typhoonNo: row.typhoonNo, latestAnalysis: null, forecasts: [], points: [] };
     storm.points.push(row);
     if (row.ft === 0) {
-      if (!storm.latestAnalysis || row.sequence >= storm.latestAnalysis.sequence) {
-        storm.latestAnalysis = row;
-      }
+      if (!storm.latestAnalysis || row.sequence >= storm.latestAnalysis.sequence) storm.latestAnalysis = row;
     } else {
       storm.forecasts.push(row);
     }
@@ -93,21 +78,14 @@ function parseKmaTyphoon(rawText) {
 export async function onRequestGet(context) {
   const { request, env } = context;
   const apiKey = env.KMA_AUTH_KEY;
-
   if (!apiKey) {
-    return Response.json(
-      {
-        ok: false,
-        message: "KMA_AUTH_KEY 환경변수가 설정되지 않았습니다.",
-        setup: "Cloudflare Pages 프로젝트의 Settings > Environment variables에 KMA_AUTH_KEY를 추가하세요."
-      },
-      { status: 500 }
-    );
+    return Response.json({ ok: false, message: "KMA_AUTH_KEY 환경변수가 설정되지 않았습니다.", setup: "Cloudflare Pages 프로젝트의 Settings > Environment variables에 KMA_AUTH_KEY를 추가하세요." }, { status: 500 });
   }
 
   const requestUrl = new URL(request.url);
   const tm = requestUrl.searchParams.get("tm") || "";
   const mode = requestUrl.searchParams.get("mode") || "1";
+  const typ = numberValue(requestUrl.searchParams.get("typ") || requestUrl.searchParams.get("TYP"));
 
   const kmaUrl = new URL(KMA_ENDPOINT);
   if (tm) kmaUrl.searchParams.set("tm", tm);
@@ -116,27 +94,14 @@ export async function onRequestGet(context) {
   kmaUrl.searchParams.set("help", "0");
   kmaUrl.searchParams.set("authKey", apiKey);
 
-  const response = await fetch(kmaUrl.toString(), {
-    headers: { "User-Agent": "TyphoonRouteKorea/1.0" }
-  });
-
+  const response = await fetch(kmaUrl.toString(), { headers: { "User-Agent": "TyphoonRouteKorea/1.0" } });
   const rawText = decodeKmaText(await response.arrayBuffer());
-
   if (!response.ok) {
-    return Response.json(
-      { ok: false, status: response.status, message: "기상청 API 호출에 실패했습니다.", body: rawText.slice(0, 500) },
-      { status: response.status }
-    );
+    return Response.json({ ok: false, status: response.status, message: "기상청 API 호출에 실패했습니다.", body: rawText.slice(0, 500) }, { status: response.status });
   }
 
   const parsed = parseKmaTyphoon(rawText);
-
-  return Response.json({
-    ok: true,
-    source: "KMA API Hub typhoon information + forecast",
-    requested: { tm: tm || null, mode },
-    count: parsed.rows.length,
-    storms: parsed.storms,
-    rows: parsed.rows
-  });
+  const storms = typ ? parsed.storms.filter((storm) => storm.typhoonNo === typ) : parsed.storms;
+  const rows = typ ? parsed.rows.filter((row) => row.typhoonNo === typ) : parsed.rows;
+  return Response.json({ ok: true, source: "KMA API Hub typhoon information + forecast", requested: { tm: tm || null, mode, typ: typ || null }, count: rows.length, storms, rows });
 }
