@@ -1,7 +1,7 @@
 const KMA_KOREA_ENDPOINT = "https://apihub.kma.go.kr/api/typ02/openApi/SfcYearlyInfoService/getTyphoonList";
 
 function textOf(block, tag) {
-  const match = block.match(new RegExp(`<${tag}>([\\s\\S]*?)<\\/${tag}>`, "i"));
+  const match = block.match(new RegExp(`<${tag}>([\s\S]*?)<\/${tag}>`, "i"));
   return match ? match[1].trim() : null;
 }
 
