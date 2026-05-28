@@ -3,9 +3,9 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="description" content="기상청 API Hub 태풍정보+예측 자료를 지도에서 실시간으로 확인하는 웹사이트입니다." />
+    <meta name="description" content="기상청 API Hub 태풍정보+예측 자료를 한글 지도와 표, 카드, 행동요령으로 확인하는 태풍 경로 정보 사이트입니다." />
     <meta name="theme-color" content="#0b5d76" />
-    <title>실시간 태풍 지도 | Typhoon Route Korea</title>
+    <title>실시간 태풍 경로 지도 | Typhoon Route Korea</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <link rel="stylesheet" href="styles.css" />
   </head>
@@ -13,47 +13,67 @@
     <header class="site-header">
       <a class="brand" href="#top"><span>T</span> Typhoon Route Korea</a>
       <nav aria-label="주요 메뉴">
-        <a href="#map">실시간 지도</a>
+        <a href="#map">한글 지도</a>
         <a href="#live">API 조회</a>
+        <a href="#timeline">예측표</a>
         <a href="#guide">해석법</a>
         <a href="#safety">행동요령</a>
-        <a href="privacy.html">개인정보</a>
+        <a href="#faq">FAQ</a>
       </nav>
     </header>
 
     <main id="top">
-      <section class="map-hero" id="map">
-        <div id="liveMap" class="live-map" aria-label="실시간 태풍 경로 지도"></div>
-        <div class="map-card">
-          <p class="eyebrow">KMA API Hub Live Map</p>
-          <h1>태풍 경로를 지도에서 실시간으로 확인하세요</h1>
-          <p>기상청 API Hub의 태풍정보+예측 좌표를 지도 위에 직접 표시합니다. 분석 위치, 예측 경로, 강풍반경을 함께 볼 수 있고 10분마다 자동 갱신됩니다.</p>
+      <section class="map-dashboard" id="map">
+        <div class="map-shell">
+          <div id="liveMap" class="live-map" aria-label="한글 지명 레이어가 포함된 실시간 태풍 경로 지도"></div>
+          <div class="map-legend" aria-label="지도 범례">
+            <span><i class="dot current"></i>분석 위치</span>
+            <span><i class="dot forecast"></i>예측 위치</span>
+            <span><i class="line"></i>예측 경로</span>
+            <span><i class="circle"></i>강풍반경</span>
+          </div>
+        </div>
+        <aside class="live-panel" aria-label="태풍 실시간 요약">
+          <p class="eyebrow">KMA API Hub Live</p>
+          <h1>태풍 경로를 한글 지도에서 확인하세요</h1>
+          <p class="panel-copy">지도 위에 기상청 API 좌표를 직접 표시합니다. 분석 위치, 예측 경로, 강풍반경, 주요 한글 지명을 함께 볼 수 있습니다.</p>
           <div class="map-meta">
             <span id="mapUpdated">마지막 갱신: 대기 중</span>
-            <span>지도: OpenStreetMap</span>
+            <span>자동 갱신: 10분</span>
+            <span>지도: OpenStreetMap + 한글 지명 레이어</span>
           </div>
           <div class="hero-actions">
             <a class="button primary" href="#live">시점 조회</a>
             <button class="button secondary" id="refreshMap" type="button">지금 새로고침</button>
           </div>
-        </div>
+          <div class="summary-box" id="stormSummary">태풍 자료를 불러오면 요약이 표시됩니다.</div>
+        </aside>
       </section>
 
-      <section class="notice"><strong>안내:</strong> 이 화면은 기상청 API 자료를 보기 쉽게 재구성한 정보 화면입니다. 대피, 운항, 시설 통제 판단은 기상청과 지자체 최신 발표를 우선하세요.</section>
+      <section class="notice"><strong>중요 안내:</strong> 이 사이트는 공식 예보를 보기 쉽게 재구성한 정보 화면입니다. 실제 대피, 운항, 등하교, 시설 통제 판단은 기상청과 지자체의 최신 특보와 재난문자를 우선하세요.</section>
 
       <section class="live-api" id="live" aria-labelledby="live-title">
         <div class="section-head">
           <p class="eyebrow">1.3 태풍정보 + 예측</p>
           <h2 id="live-title">기준시각으로 태풍 분석·예측 조회</h2>
-          <p>기준시각을 비워두면 최신 조회를 시도합니다. Cloudflare 환경변수 `KMA_AUTH_KEY`가 설정되면 실제 기상청 API 자료가 표시됩니다.</p>
+          <p>기준시각을 입력하면 해당 시점의 태풍 분석값과 예측값을 지도, 카드, 표로 함께 확인합니다. 비워두면 최신 조회를 시도합니다.</p>
         </div>
         <form id="typhoonApiForm" class="api-form">
           <label>기준시각 <input id="typhoonTm" type="text" maxlength="12" inputmode="numeric" placeholder="비워두면 최신, 예: 201108070100" /></label>
-          <label>모드 <select id="typhoonMode"><option value="1">분석 + 예측</option><option value="0">분석 중심</option></select></label>
-          <button class="button primary" type="submit">조회</button>
+          <label>조회 모드 <select id="typhoonMode"><option value="1">분석 + 예측</option><option value="0">분석 중심</option></select></label>
+          <button class="button primary" type="submit">기상청 API 조회</button>
         </form>
         <div class="api-status" id="typhoonApiStatus" aria-live="polite">API 연결 전 예시 자료를 표시합니다.</div>
         <div class="storm-cards" id="stormCards"></div>
+      </section>
+
+      <section class="timeline-section" id="timeline">
+        <div class="section-head compact">
+          <p class="eyebrow">Forecast Timeline</p>
+          <h2>예측 시점별 변화</h2>
+          <p>시간이 지날수록 위치, 중심기압, 최대풍속, 반경이 어떻게 변하는지 확인하세요.</p>
+        </div>
+        <div class="timeline-list" id="timelineList"></div>
         <div class="track-table-wrap">
           <table class="track-table">
             <thead><tr><th>구분</th><th>예측시각 UTC</th><th>위치</th><th>중심기압</th><th>최대풍속</th><th>반경</th></tr></thead>
@@ -62,20 +82,52 @@
         </div>
       </section>
 
+      <section class="source-grid" aria-label="공식 자료 바로가기">
+        <article><span>공식 경로</span><h3>기상청 태풍정보</h3><p>국내 영향 판단의 최우선 자료입니다.</p><a href="https://www.weather.go.kr/w/typhoon/ko/weather/typhoon_02.jsp" target="_blank" rel="noopener">기상청 열기</a></article>
+        <article><span>재난 행동</span><h3>국민재난안전포털</h3><p>대피, 침수, 강풍 행동요령을 확인합니다.</p><a href="https://www.safekorea.go.kr/safekorea-kor/main/main.do" target="_blank" rel="noopener">안전포털 열기</a></article>
+        <article><span>보조 참고</span><h3>JMA 열대저기압</h3><p>북서태평양 태풍 흐름을 함께 참고합니다.</p><a href="https://www.data.jma.go.jp/multi/cyclone/?lang=en" target="_blank" rel="noopener">JMA 열기</a></article>
+      </section>
+
       <section class="content-grid" id="guide">
-        <article><h2>분석 위치</h2><p>현재 태풍 중심 위치입니다. 지도에서는 굵은 마커로 표시됩니다.</p></article>
-        <article><h2>예측 경로</h2><p>앞으로 이동할 가능성이 높은 지점을 선으로 연결합니다. 예보가 갱신되면 경로가 바뀔 수 있습니다.</p></article>
-        <article><h2>강풍반경</h2><p>지도에 표시되는 원은 15m/s 이상 바람이 예상되는 대략적인 반경입니다. 실제 위험 판단은 특보와 함께 봐야 합니다.</p></article>
+        <article><h2>분석 위치</h2><p>현재 태풍 중심 위치입니다. 지도에서는 붉은 마커로 표시됩니다. 주변 반경 원은 강풍 영향 가능 범위를 이해하는 데 도움을 줍니다.</p></article>
+        <article><h2>예측 경로</h2><p>미래 예측 지점을 연결한 선입니다. 선이 우리 지역을 비껴가도 강풍반경이나 호우특보 안에 들면 대비가 필요합니다.</p></article>
+        <article><h2>중심기압</h2><p>중심기압이 낮을수록 강한 태풍일 가능성이 큽니다. 다만 피해는 이동속도, 반경, 지형, 강수량과 함께 판단해야 합니다.</p></article>
+        <article><h2>최대풍속</h2><p>초속 15m 이상이면 강풍반경, 25m 이상이면 폭풍반경 판단에 연결됩니다. 간판, 창문, 시설물 피해와 직접 관련됩니다.</p></article>
+        <article><h2>70% 확률반경</h2><p>태풍 중심이 들어갈 가능성이 높은 범위입니다. 시간이 멀수록 커지고, 예보가 바뀔 가능성도 함께 커집니다.</p></article>
+        <article><h2>오른쪽 위험반원</h2><p>북반구 태풍은 진행 방향 오른쪽에서 바람과 비가 더 강해지는 경우가 많습니다. 경로의 오른쪽 지역은 더 신중히 봐야 합니다.</p></article>
       </section>
 
       <section class="safety" id="safety">
-        <p class="eyebrow">Safety Guide</p>
-        <h2>태풍 시 행동요령</h2>
+        <p class="eyebrow">Preparedness</p>
+        <h2>태풍 단계별 행동요령</h2>
         <div class="action-grid">
-          <article><h3>집 안</h3><p>창문 주변을 피하고, 손전등과 보조배터리를 준비합니다. 베란다 물건은 실내로 옮깁니다.</p></article>
-          <article><h3>외부</h3><p>간판, 가로수, 공사장 주변을 피하고 해안가와 하천변에는 접근하지 않습니다.</p></article>
-          <article><h3>차량</h3><p>지하차도, 하천변 도로, 침수 구간을 피하고 물이 찬 도로는 진입하지 않습니다.</p></article>
+          <article><span>태풍 접근 전</span><h3>집 주변 정리</h3><p>창문과 방충망을 고정하고, 베란다 화분·건조대·자전거·간판 주변 물건을 실내로 옮깁니다.</p></article>
+          <article><span>특보 발표 후</span><h3>외출 최소화</h3><p>하천변, 해안가, 방파제, 공사장, 지하차도, 저지대 접근을 피하고 재난문자를 계속 확인합니다.</p></article>
+          <article><span>강풍·호우 중</span><h3>실내 대피</h3><p>창문 근처를 피하고 정전 대비 손전등을 사용합니다. 침수 위험이 있으면 지하공간에 머물지 않습니다.</p></article>
+          <article><span>차량 운행</span><h3>침수 도로 금지</h3><p>물이 찬 도로와 지하차도는 진입하지 않습니다. 강풍 시 교량과 해안도로 운행을 줄입니다.</p></article>
+          <article><span>해안 지역</span><h3>월파 주의</h3><p>만조, 폭풍해일, 높은 파도가 겹치면 해안 산책로와 방파제 접근을 중단합니다.</p></article>
+          <article><span>태풍 통과 후</span><h3>2차 피해 확인</h3><p>끊어진 전선, 무너진 담장, 침수된 전기시설을 만지지 말고 지자체 안내를 확인합니다.</p></article>
         </div>
+      </section>
+
+      <section class="readiness">
+        <div class="section-head compact"><p class="eyebrow">Checklist</p><h2>가정 준비 체크리스트</h2></div>
+        <ul class="check-list">
+          <li>창문, 베란다 문, 방충망 흔들림 확인</li>
+          <li>배수구와 빗물받이 낙엽·쓰레기 제거</li>
+          <li>휴대폰, 보조배터리, 손전등 충전</li>
+          <li>생수, 상비약, 간편식, 물티슈 준비</li>
+          <li>지하주차장 차량은 안전한 곳으로 이동</li>
+          <li>가족 연락망과 대피 장소 공유</li>
+        </ul>
+      </section>
+
+      <section class="faq" id="faq">
+        <div class="section-head compact"><p class="eyebrow">FAQ</p><h2>자주 묻는 질문</h2></div>
+        <details open><summary>이 지도는 공식 예보인가요?</summary><p>공식 예보 원문은 기상청입니다. 이 사이트는 API 자료를 시각화해 이해를 돕는 보조 화면입니다.</p></details>
+        <details><summary>한글 지명은 어떻게 표시되나요?</summary><p>기본 지도 위에 한국, 일본, 중국, 대만 등 태풍 확인에 자주 필요한 주요 지명을 한국어 레이어로 추가했습니다.</p></details>
+        <details><summary>실시간 갱신 간격은 얼마인가요?</summary><p>화면은 10분마다 자동으로 API를 다시 조회합니다. 기상청 원자료 발표 주기는 태풍 상황과 발표 시각에 따라 달라질 수 있습니다.</p></details>
+        <details><summary>API 키가 공개되나요?</summary><p>아니요. Cloudflare Pages Function이 서버 측에서 `KMA_AUTH_KEY`를 읽고, 브라우저에는 가공된 JSON만 전달합니다.</p></details>
       </section>
     </main>
 
