@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://YOUR_DOMAIN_HERE/</loc><lastmod>2026-05-28</lastmod><priority>1.0</priority></url>
-  <url><loc>https://YOUR_DOMAIN_HERE/about.html</loc><lastmod>2026-05-28</lastmod><priority>0.7</priority></url>
-  <url><loc>https://YOUR_DOMAIN_HERE/privacy.html</loc><lastmod>2026-05-28</lastmod><priority>0.7</priority></url>
-  <url><loc>https://YOUR_DOMAIN_HERE/contact.html</loc><lastmod>2026-05-28</lastmod><priority>0.6</priority></url>
+  <url><loc>https://typhoon-path-site.pages.dev/</loc><lastmod>2026-05-29</lastmod><priority>1.0</priority></url>
+  <url><loc>https://typhoon-path-site.pages.dev/about.html</loc><lastmod>2026-05-29</lastmod><priority>0.7</priority></url>
+  <url><loc>https://typhoon-path-site.pages.dev/privacy.html</loc><lastmod>2026-05-29</lastmod><priority>0.8</priority></url>
+  <url><loc>https://typhoon-path-site.pages.dev/contact.html</loc><lastmod>2026-05-29</lastmod><priority>0.6</priority></url>
+  <url><loc>https://typhoon-path-site.pages.dev/data-sources.html</loc><lastmod>2026-05-29</lastmod><priority>0.8</priority></url>
+  <url><loc>https://typhoon-path-site.pages.dev/typhoon-guide.html</loc><lastmod>2026-05-29</lastmod><priority>0.8</priority></url>
+  <url><loc>https://typhoon-path-site.pages.dev/readiness-guide.html</loc><lastmod>2026-05-29</lastmod><priority>0.8</priority></url>
 </urlset>
