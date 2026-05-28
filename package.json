@@ -1,0 +1,16 @@
+{
+  "name": "typhoon-path-site",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Korean typhoon route guide with KMA API Hub and Cloudflare Pages deployment.",
+  "scripts": {
+    "check": "node --check app.js && node --check functions/api/typhoon.js",
+    "build": "node -e \"console.log('Static site: no build step required')\"",
+    "start": "npx wrangler pages dev .",
+    "serve": "npx wrangler pages dev ."
+  },
+  "devDependencies": {
+    "wrangler": "latest"
+  }
+}
