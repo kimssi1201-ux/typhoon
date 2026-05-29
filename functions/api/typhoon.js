@@ -75,17 +75,66 @@ function parseKmaTyphoon(rawText) {
   return { rows, storms };
 }
 
+function sampleTyphoonData() {
+  const latestAnalysis = {
+    ft: 0,
+    year: 2011,
+    typhoonNo: 9,
+    sequence: 8,
+    forecastHour: null,
+    analysisTimeUtc: "201107300000",
+    forecastTimeUtc: "201107300000",
+    lat: 15.7,
+    lon: 133.4,
+    direction: "NE",
+    speedKmh: 21,
+    pressureHpa: 980,
+    maxWindMs: 31,
+    radius15Km: 300,
+    radius25Km: 50,
+    probabilityRadiusKm: null,
+    location: "필리핀 마닐라 동쪽 약 1340 km 부근 해상"
+  };
+  const forecasts = [
+    { ...latestAnalysis, ft: 1, forecastHour: 24, forecastTimeUtc: "201107310000", lat: 17.9, lon: 133.1, direction: "N", speedKmh: 11, pressureHpa: 970, maxWindMs: 36, radius15Km: 350, probabilityRadiusKm: 150, location: "필리핀 마닐라 동북동쪽 약 1350 km 부근 해상" },
+    { ...latestAnalysis, ft: 1, forecastHour: 48, forecastTimeUtc: "201108010000", lat: 20.0, lon: 133.5, direction: "NNE", speedKmh: 10, pressureHpa: 960, maxWindMs: 40, radius15Km: 400, probabilityRadiusKm: 250, location: "일본 오키나와 남동쪽 약 910 km 부근 해상" },
+    { ...latestAnalysis, ft: 1, forecastHour: 72, forecastTimeUtc: "201108020000", lat: 22.0, lon: 133.1, direction: "NNW", speedKmh: 10, pressureHpa: 950, maxWindMs: 43, radius15Km: 450, probabilityRadiusKm: 400, location: "일본 오키나와 남동쪽 약 720 km 부근 해상" }
+  ];
+  const storm = {
+    id: "2011-09",
+    year: 2011,
+    typhoonNo: 9,
+    sequence: 8,
+    latestAnalysis,
+    forecasts,
+    points: [latestAnalysis, ...forecasts]
+  };
+  return { rows: storm.points, storms: [storm] };
+}
+
 export async function onRequestGet(context) {
   const { request, env } = context;
   const apiKey = env.KMA_AUTH_KEY;
-  if (!apiKey) {
-    return Response.json({ ok: false, message: "KMA_AUTH_KEY 환경변수가 설정되지 않았습니다.", setup: "Cloudflare Pages 프로젝트의 Settings > Environment variables에 KMA_AUTH_KEY를 추가하세요." }, { status: 500 });
-  }
-
   const requestUrl = new URL(request.url);
   const tm = requestUrl.searchParams.get("tm") || "";
   const mode = requestUrl.searchParams.get("mode") || "1";
   const typ = numberValue(requestUrl.searchParams.get("typ") || requestUrl.searchParams.get("TYP"));
+
+  if (!apiKey) {
+    const parsed = sampleTyphoonData();
+    const storms = typ ? parsed.storms.filter((storm) => storm.typhoonNo === typ) : parsed.storms;
+    const rows = typ ? parsed.rows.filter((row) => row.typhoonNo === typ) : parsed.rows;
+    return Response.json({
+      ok: true,
+      fallback: true,
+      message: "KMA_AUTH_KEY가 없어 예시 자료로 조회했습니다.",
+      source: "Sample typhoon information + forecast",
+      requested: { tm: tm || null, mode, typ: typ || null },
+      count: rows.length,
+      storms,
+      rows
+    });
+  }
 
   const kmaUrl = new URL(KMA_ENDPOINT);
   if (tm) kmaUrl.searchParams.set("tm", tm);
