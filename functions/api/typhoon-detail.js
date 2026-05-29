@@ -68,14 +68,50 @@ function parseRows(rawText) {
   return { rows, storms: storm ? [storm] : [] };
 }
 
+function sampleDetail(year, typ, seq) {
+  const latestAnalysis = {
+    ft: 0,
+    year: Number(year),
+    typhoonNo: Number(typ),
+    sequence: Number(seq),
+    forecastHour: null,
+    analysisTimeUtc: "201107300000",
+    forecastTimeUtc: "201107300000",
+    lat: 15.7,
+    lon: 133.4,
+    direction: "NE",
+    speedKmh: 21,
+    pressureHpa: 980,
+    maxWindMs: 31,
+    radius15Km: 300,
+    radius25Km: 50,
+    probabilityRadiusKm: null,
+    location: "필리핀 마닐라 동쪽 약 1340 km 부근 해상"
+  };
+  const forecasts = [
+    { ...latestAnalysis, ft: 1, forecastHour: 24, forecastTimeUtc: "201107310000", lat: 17.9, lon: 133.1, direction: "N", speedKmh: 11, pressureHpa: 970, maxWindMs: 36, radius15Km: 350, probabilityRadiusKm: 150, location: "필리핀 마닐라 동북동쪽 약 1350 km 부근 해상" },
+    { ...latestAnalysis, ft: 1, forecastHour: 48, forecastTimeUtc: "201108010000", lat: 20.0, lon: 133.5, direction: "NNE", speedKmh: 10, pressureHpa: 960, maxWindMs: 40, radius15Km: 400, probabilityRadiusKm: 250, location: "일본 오키나와 남동쪽 약 910 km 부근 해상" },
+    { ...latestAnalysis, ft: 1, forecastHour: 72, forecastTimeUtc: "201108020000", lat: 22.0, lon: 133.1, direction: "NNW", speedKmh: 10, pressureHpa: 950, maxWindMs: 43, radius15Km: 450, probabilityRadiusKm: 400, location: "일본 오키나와 남동쪽 약 720 km 부근 해상" }
+  ];
+  const rows = [latestAnalysis, ...forecasts];
+  return {
+    rows,
+    storms: [{
+      id: `${year}-${String(typ).padStart(2, "0")}-${seq}`,
+      year: Number(year),
+      typhoonNo: Number(typ),
+      sequence: Number(seq),
+      latestAnalysis,
+      forecasts,
+      points: rows
+    }]
+  };
+}
+
 export async function onRequestGet(context) {
   const { request, env } = context;
-  const apiKey = env.KMA_AUTH_KEY;
-  if (!apiKey) {
-    return Response.json({ ok: false, message: "KMA_AUTH_KEY 환경변수가 설정되지 않았습니다." }, { status: 500 });
-  }
-
   const requestUrl = new URL(request.url);
+  const apiKey = env.KMA_AUTH_KEY;
   const year = requestUrl.searchParams.get("YY") || requestUrl.searchParams.get("year");
   const typ = requestUrl.searchParams.get("typ") || requestUrl.searchParams.get("TYP");
   const seq = requestUrl.searchParams.get("seq") || requestUrl.searchParams.get("SEQ");
@@ -83,6 +119,20 @@ export async function onRequestGet(context) {
 
   if (!year || !typ || !seq) {
     return Response.json({ ok: false, message: "YY, typ, seq 값이 필요합니다." }, { status: 400 });
+  }
+
+  if (!apiKey) {
+    const parsed = sampleDetail(year, typ, seq);
+    return Response.json({
+      ok: true,
+      fallback: true,
+      message: "KMA_AUTH_KEY가 없어 예시 자료로 조회했습니다.",
+      source: "Sample typhoon detail + forecast",
+      requested: { year: Number(year), typ: Number(typ), seq: Number(seq), mode },
+      count: parsed.rows.length,
+      storms: parsed.storms,
+      rows: parsed.rows
+    });
   }
 
   const kmaUrl = new URL(KMA_DETAIL_ENDPOINT);
