@@ -1,7 +1,7 @@
 const KMA_KOREA_ENDPOINT = "https://apihub.kma.go.kr/api/typ02/openApi/SfcYearlyInfoService/getTyphoonList";
 
 function textOf(block, tag) {
-  const match = block.match(new RegExp(`<${tag}>([\s\S]*?)<\/${tag}>`, "i"));
+  const match = block.match(new RegExp(`<${tag}>([\\s\\S]*?)<\\/${tag}>`, "i"));
   return match ? match[1].trim() : null;
 }
 
@@ -45,17 +45,52 @@ function parseKoreaTyphoons(xml, year) {
   });
 }
 
+function sampleKoreaTyphoons(year) {
+  const samples = {
+    2016: [
+      { sequence: 16, nameKo: "말라카스", nameEn: "MALAKAS", startDate: "2016-09-13", endDate: "2016-09-20", minPressureHpa: 935, maxWindMs: 49, effect: 2 },
+      { sequence: 18, nameKo: "차바", nameEn: "CHABA", startDate: "2016-09-28", endDate: "2016-10-06", minPressureHpa: 930, maxWindMs: 50, effect: 1 }
+    ],
+    2012: [
+      { sequence: 7, nameKo: "카눈", nameEn: "KHANUN", startDate: "2012-07-16", endDate: "2012-07-19", minPressureHpa: 985, maxWindMs: 27, effect: 1 },
+      { sequence: 14, nameKo: "덴빈", nameEn: "TEMBIN", startDate: "2012-08-19", endDate: "2012-08-30", minPressureHpa: 950, maxWindMs: 43, effect: 1 },
+      { sequence: 15, nameKo: "볼라벤", nameEn: "BOLAVEN", startDate: "2012-08-20", endDate: "2012-08-28", minPressureHpa: 910, maxWindMs: 53, effect: 2 },
+      { sequence: 16, nameKo: "산바", nameEn: "SANBA", startDate: "2012-09-11", endDate: "2012-09-18", minPressureHpa: 900, maxWindMs: 56, effect: 1 }
+    ]
+  };
+  const selected = samples[Number(year)] || samples[2016];
+  return selected.map((item) => ({
+    id: `${year}-${String(item.sequence).padStart(2, "0")}`,
+    year: Number(year),
+    ...item,
+    effectLabel: effectLabel(item.effect),
+    affectedKorea: item.effect !== 4
+  }));
+}
+
 export async function onRequestGet(context) {
   const { request, env } = context;
   const apiKey = env.KMA_AUTH_KEY;
-  if (!apiKey) {
-    return Response.json({ ok: false, message: "KMA_AUTH_KEY 환경변수가 설정되지 않았습니다." }, { status: 500 });
-  }
-
   const requestUrl = new URL(request.url);
   const year = requestUrl.searchParams.get("year") || requestUrl.searchParams.get("YY") || String(new Date().getUTCFullYear());
   const pageNo = requestUrl.searchParams.get("pageNo") || "1";
   const numOfRows = requestUrl.searchParams.get("numOfRows") || "100";
+
+  if (!apiKey) {
+    const typhoons = sampleKoreaTyphoons(year);
+    const affected = typhoons.filter((item) => item.affectedKorea);
+    return Response.json({
+      ok: true,
+      fallback: true,
+      message: "KMA_AUTH_KEY가 없어 예시 자료로 조회했습니다.",
+      source: "Sample domestic impact typhoon data",
+      year: Number(year),
+      count: typhoons.length,
+      affectedCount: affected.length,
+      typhoons,
+      affected
+    });
+  }
 
   const kmaUrl = new URL(KMA_KOREA_ENDPOINT);
   kmaUrl.searchParams.set("pageNo", pageNo);
