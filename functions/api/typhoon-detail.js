@@ -22,6 +22,13 @@ function numberValue(value) {
   return Number.isFinite(parsed) ? parsed : null;
 }
 
+function padTyphoonNo(value) {
+  const cleaned = cleanValue(value);
+  if (cleaned === null) return null;
+  const parsed = Number(cleaned);
+  return Number.isFinite(parsed) ? String(parsed).padStart(2, "0") : cleaned;
+}
+
 function parseRows(rawText) {
   const rows = rawText
     .split(/\r?\n/)
@@ -137,7 +144,7 @@ export async function onRequestGet(context) {
 
   const kmaUrl = new URL(KMA_DETAIL_ENDPOINT);
   kmaUrl.searchParams.set("YY", year);
-  kmaUrl.searchParams.set("typ", typ);
+  kmaUrl.searchParams.set("typ", padTyphoonNo(typ));
   kmaUrl.searchParams.set("seq", seq);
   kmaUrl.searchParams.set("mode", mode);
   kmaUrl.searchParams.set("disp", "0");
