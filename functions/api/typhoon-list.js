@@ -60,23 +60,48 @@ function parseTyphoonList(rawText) {
     });
 }
 
+function sampleTyphoonList(year) {
+  const samples = {
+    2012: [
+      { sequence: 7, status: "종료", effect: 1, startTimeUtc: "201207160600", endTimeUtc: "201207190300", nameKo: "카눈", nameEn: "KHANUN", description: "제7호 태풍 카눈은 한반도에 상륙한 태풍입니다." },
+      { sequence: 14, status: "종료", effect: 1, startTimeUtc: "201208190000", endTimeUtc: "201208301500", nameKo: "덴빈", nameEn: "TEMBIN", description: "제14호 태풍 덴빈은 한반도에 영향을 준 태풍입니다." },
+      { sequence: 15, status: "종료", effect: 2, startTimeUtc: "201208200600", endTimeUtc: "201208282100", nameKo: "볼라벤", nameEn: "BOLAVEN", description: "제15호 태풍 볼라벤은 강한 바람으로 큰 영향을 준 태풍입니다." },
+      { sequence: 16, status: "종료", effect: 1, startTimeUtc: "201209110000", endTimeUtc: "201209180000", nameKo: "산바", nameEn: "SANBA", description: "제16호 태풍 산바는 한반도에 상륙한 태풍입니다." }
+    ],
+    2016: [
+      { sequence: 16, status: "종료", effect: 2, startTimeUtc: "201609130000", endTimeUtc: "201609200000", nameKo: "말라카스", nameEn: "MALAKAS", description: "제16호 태풍 말라카스는 국내에 직접 영향을 준 태풍입니다." },
+      { sequence: 18, status: "종료", effect: 1, startTimeUtc: "201609280000", endTimeUtc: "201610060000", nameKo: "차바", nameEn: "CHABA", description: "제18호 태풍 차바는 국내에 상륙한 태풍입니다." }
+    ]
+  };
+  const selected = samples[Number(year)] || samples[2012];
+  return selected.map((item) => ({
+    id: `${year}-${String(item.sequence).padStart(2, "0")}`,
+    year: Number(year),
+    now: 2,
+    ...item,
+    effectLabel: effectLabel(item.effect)
+  }));
+}
+
 export async function onRequestGet(context) {
   const { request, env } = context;
   const apiKey = env.KMA_AUTH_KEY;
-
-  if (!apiKey) {
-    return Response.json(
-      {
-        ok: false,
-        message: "KMA_AUTH_KEY 환경변수가 설정되지 않았습니다.",
-        setup: "Cloudflare Pages 프로젝트의 Settings > Environment variables에 KMA_AUTH_KEY를 추가하세요."
-      },
-      { status: 500 }
-    );
-  }
-
   const requestUrl = new URL(request.url);
   const year = requestUrl.searchParams.get("YY") || requestUrl.searchParams.get("year") || String(new Date().getUTCFullYear());
+
+  if (!apiKey) {
+    const typhoons = sampleTyphoonList(year);
+    return Response.json({
+      ok: true,
+      fallback: true,
+      message: "KMA_AUTH_KEY가 없어 예시 자료로 조회했습니다.",
+      source: "Sample yearly typhoon list",
+      year: Number(year),
+      count: typhoons.length,
+      typhoons
+    });
+  }
+
   const kmaUrl = new URL(KMA_LIST_ENDPOINT);
   kmaUrl.searchParams.set("YY", year);
   kmaUrl.searchParams.set("disp", "0");
