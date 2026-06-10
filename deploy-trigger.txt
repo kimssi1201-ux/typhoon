@@ -1,0 +1,2 @@
+Redeploy requested: 2026-06-11 08:48 KST
+Reason: apply Cloudflare Pages environment variables for KMA_AUTH_KEY.
