@@ -1,5 +1,5 @@
-const ADSENSE_META = '<meta name="google-adsense-account" content="ca-pub-6066428844912614">';
-const ADSENSE_SNIPPET = '<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6066428844912614" crossorigin="anonymous"></script>';
+const ADSENSE_META = '<meta name="google-adsense-account" content="ca-pub-8468106244002167">';
+const ADSENSE_SNIPPET = '<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8468106244002167" crossorigin="anonymous"></script>';
 
 export async function onRequest(context) {
   const response = await context.next();
