@@ -18,6 +18,60 @@
   };
 
   let globalLayer = null;
+  let leafletLoadPromise = null;
+
+  const loadLeaflet = () => {
+    if (window.L) return Promise.resolve();
+    if (leafletLoadPromise) return leafletLoadPromise;
+    if (!document.querySelector('link[href*="leaflet.css"]')) {
+      const link = document.createElement("link");
+      link.rel = "stylesheet";
+      link.href = "https://unpkg.com/leaflet@1.9.4/dist/leaflet.css";
+      document.head.appendChild(link);
+    }
+    leafletLoadPromise = new Promise((resolve, reject) => {
+      const appendScript = () => {
+        const script = document.createElement("script");
+        script.src = `https://unpkg.com/leaflet@1.9.4/dist/leaflet.js?retry=${Date.now()}`;
+        script.onload = () => window.L ? resolve() : reject(new Error("지도 스크립트 초기화에 실패했습니다."));
+        script.onerror = () => reject(new Error("지도 스크립트를 불러오지 못했습니다."));
+        document.head.appendChild(script);
+      };
+      const existing = document.querySelector('script[src*="leaflet.js"]');
+      if (existing) {
+        existing.addEventListener("load", () => window.L ? resolve() : appendScript(), { once: true });
+        existing.addEventListener("error", appendScript, { once: true });
+        setTimeout(() => window.L ? resolve() : appendScript(), 1200);
+        return;
+      }
+      appendScript();
+    });
+    return leafletLoadPromise;
+  };
+
+  const ensureLeafletMap = async () => {
+    await loadLeaflet();
+    if (!window.L) return null;
+    if (window.__liveTyphoonMap) return window.__liveTyphoonMap;
+    const container = $("#liveMap");
+    if (!container) return null;
+    if (container._leaflet_id) {
+      container._leaflet_id = null;
+      container.innerHTML = "";
+    }
+    const map = window.L.map("liveMap", {
+      zoomControl: true,
+      scrollWheelZoom: false,
+      worldCopyJump: true
+    }).setView([18, 132], 3);
+    window.L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+      maxZoom: 9,
+      attribution: "&copy; OpenStreetMap contributors"
+    }).addTo(map);
+    window.__liveTyphoonMap = map;
+    window.__typhoonLayer = window.L.layerGroup().addTo(map);
+    return map;
+  };
 
   const setButtonState = (mode) => {
     const globalButton = $("#globalTrackMap");
@@ -75,8 +129,8 @@
       `출처: ${escapeHtml(event.source || "GDACS")}${report}</div>`;
   };
 
-  const renderMap = (events, activeCount) => {
-    const map = window.__liveTyphoonMap;
+  const renderMap = async (events, activeCount) => {
+    const map = await ensureLeafletMap();
     if (!map || !window.L) return;
     if (window.__typhoonLayer) window.__typhoonLayer.clearLayers();
     if (!globalLayer) globalLayer = window.L.layerGroup().addTo(map);
@@ -167,7 +221,7 @@
       if (!response.ok || !data.ok) throw new Error(data.message || "전세계 열대저기압 자료 조회에 실패했습니다.");
       const displayEvents = data.active?.length ? data.active : (data.recent || []).slice(0, 8);
       const checkedAt = nowText();
-      renderMap(displayEvents, data.activeCount || 0);
+      await renderMap(displayEvents, data.activeCount || 0);
       renderPanels(data, displayEvents, checkedAt);
     } catch (error) {
       if (status) status.textContent = `${error.message} 잠시 후 다시 확인하세요.`;

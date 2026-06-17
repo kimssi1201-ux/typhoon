@@ -23,6 +23,8 @@ const MAP_CAPTURE = `<script id="leaflet-map-capture">
     };
   };
   install();
+  setTimeout(install, 0);
+  window.addEventListener("load", install, { once: true });
 })();
 </script>`;
 const GLOBAL_TRACKER = '<script id="global-cyclone-tracker-loader" src="/global-cyclone-tracker.js" defer></script>';
