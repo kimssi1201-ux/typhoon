@@ -84,7 +84,7 @@ window.addEventListener("beforeunload",()=>window.clearInterval(autoRefreshId));
   const panelIds = new Set(panels.map((panel) => panel.id));
   if (!tabs.length || !panels.length) return;
 
-  const activate = (target, { updateUrl = true, focus = false } = {}) => {
+  const activate = (target, { updateUrl = true, focus = false, scroll = false } = {}) => {
     if (!panelIds.has(target)) return;
     tabs.forEach((tab) => {
       const active = tab.dataset.tabTarget === target;
@@ -95,6 +95,7 @@ window.addEventListener("beforeunload",()=>window.clearInterval(autoRefreshId));
     panels.forEach((panel) => { panel.hidden = panel.id !== target; });
     if (updateUrl && window.location.hash !== `#${target}`) window.history.pushState({}, "", `#${target}`);
     if (focus) document.getElementById(`tab-${target}`)?.focus();
+    if (scroll) document.querySelector(".workspace")?.scrollIntoView({ behavior: "smooth", block: "start" });
   };
 
   const activateFromHash = () => {
@@ -107,18 +108,18 @@ window.addEventListener("beforeunload",()=>window.clearInterval(autoRefreshId));
   };
 
   tabs.forEach((tab, index) => {
-    tab.addEventListener("click", () => activate(tab.dataset.tabTarget));
+    tab.addEventListener("click", () => activate(tab.dataset.tabTarget, { scroll: true }));
     tab.addEventListener("keydown", (event) => {
       if (!["ArrowRight", "ArrowLeft", "Home", "End"].includes(event.key)) return;
       event.preventDefault();
       const nextIndex = event.key === "Home" ? 0 : event.key === "End" ? tabs.length - 1 : (index + (event.key === "ArrowRight" ? 1 : -1) + tabs.length) % tabs.length;
-      activate(tabs[nextIndex].dataset.tabTarget, { focus: true });
+      activate(tabs[nextIndex].dataset.tabTarget, { focus: true, scroll: true });
     });
   });
   document.querySelectorAll('a[href^="#"]').forEach((link) => {
     const target = link.getAttribute("href").slice(1);
     if (!panelIds.has(target)) return;
-    link.addEventListener("click", (event) => { event.preventDefault(); activate(target); });
+    link.addEventListener("click", (event) => { event.preventDefault(); activate(target, { scroll: true }); });
   });
   window.addEventListener("hashchange", activateFromHash);
   activateFromHash();
