@@ -9,7 +9,7 @@
     <link rel="canonical" href="https://mustview.co.kr/" />
     <title>실시간 태풍 경로 지도 | 태풍 경로 안내</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-    <link rel="stylesheet" href="styles.css?v=20260718-map-first" />
+    <link rel="stylesheet" href="styles.css?v=20260718-zoom-layout" />
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8468106244002167" crossorigin="anonymous"></script>
   </head>
   <body>
@@ -46,6 +46,16 @@
         <div class="map-layout">
           <div class="map-shell">
             <div id="liveMap" class="live-map" aria-label="한글 지명 레이어가 포함된 실시간 태풍 경로 지도"></div>
+            <div class="map-tools" aria-label="지도 보기 선택">
+              <div class="map-tools-title">
+                <strong>실시간 태풍 지도</strong>
+                <span>전세계·한국 주변 경로</span>
+              </div>
+              <div class="hero-actions">
+                <button class="button primary" id="globalTrackMap" type="button">전세계 태풍 추적</button>
+                <button class="button secondary" id="refreshMap" type="button">한국 주변 추적</button>
+              </div>
+            </div>
             <div class="map-legend" aria-label="지도 범례">
               <span><i class="dot current"></i>분석 위치</span>
               <span><i class="dot forecast"></i>예측 위치</span>
@@ -64,11 +74,7 @@
               <span>지도: OpenStreetMap 기반 한글 보조 지명</span>
               <span>확인: 공식 발표와 재난문자 우선</span>
             </div>
-            <div class="hero-actions">
-              <button class="button primary" id="globalTrackMap" type="button">전세계 태풍 추적</button>
-              <button class="button secondary" id="refreshMap" type="button">한국 주변 추적</button>
-              <a class="button ghost" href="#korea">국내영향 조회</a>
-            </div>
+            <a class="button ghost panel-link" href="#korea">국내영향 태풍 조회</a>
             <div class="summary-box" id="stormSummary">태풍 자료를 불러오면 요약이 표시됩니다.</div>
           </aside>
         </div>
