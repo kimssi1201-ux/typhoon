@@ -668,7 +668,8 @@ label {
 
 .typhoon-list-card:hover,
 .typhoon-list-card.active,
-.korea-card:hover {
+.korea-card:hover,
+.korea-card.active {
   border-color: var(--blue);
   box-shadow: 0 10px 24px rgba(31, 111, 178, 0.15);
   transform: translateY(-1px);
