@@ -210,6 +210,7 @@
   async function loadGlobalCyclones(manual = false) {
     window.__trackingMode = "global";
     setButtonState("global");
+    window.setTyphoonPlayback?.([]);
     const status = $("#typhoonApiStatus");
     if (status) status.textContent = manual ? "전세계 열대저기압을 확인하는 중입니다." : "전세계 열대저기압 자료를 자동 확인하는 중입니다.";
     try {

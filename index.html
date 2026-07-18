@@ -9,7 +9,7 @@
     <link rel="canonical" href="https://mustview.co.kr/" />
     <title>실시간 태풍 경로 지도 | 태풍 경로 안내</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-    <link rel="stylesheet" href="styles.css?v=20260718-satellite" />
+    <link rel="stylesheet" href="styles.css?v=20260718-playback" />
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8468106244002167" crossorigin="anonymous"></script>
   </head>
   <body>
@@ -47,6 +47,12 @@
                 <button class="button primary" id="globalTrackMap" type="button">전세계 태풍 추적</button>
                 <button class="button secondary" id="refreshMap" type="button">한국 주변 추적</button>
               </div>
+            </div>
+            <div class="map-playback" id="mapPlayback" hidden aria-label="예측 경로 재생">
+              <button class="playback-toggle" id="playbackToggle" type="button" disabled>재생</button>
+              <label for="forecastSlider">예측 시점 <strong id="forecastStepLabel">전체 경로</strong></label>
+              <input id="forecastSlider" type="range" min="0" max="0" value="0" step="1" disabled />
+              <div class="forecast-ticks" id="forecastTicks" aria-hidden="true"></div>
             </div>
             <div class="map-legend" aria-label="지도 범례">
               <span><i class="dot current"></i>분석 위치</span>
@@ -188,7 +194,7 @@
     </footer>
 
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    <script src="app.js?v=20260718-satellite"></script>
+    <script src="app.js?v=20260718-playback"></script>
     <script>
       (() => {
         const replacements = [
