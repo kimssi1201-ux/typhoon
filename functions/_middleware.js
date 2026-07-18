@@ -55,12 +55,12 @@ export async function onRequest(context) {
   }
   if (!html.includes('name="google-adsense-account"')) html = insertBefore(html, "</head>", `  ${ADSENSE_META}`);
   if (!html.includes("pagead2.googlesyndication.com/pagead/js/adsbygoogle.js")) html = insertBefore(html, "</head>", `  ${ADSENSE_SNIPPET}`);
-  if (!html.includes('id="leaflet-map-capture"')) {
+  if (html.includes('id="liveMap"') && !html.includes('id="leaflet-map-capture"')) {
     html = /<script src="app\.js(?:\?[^"]*)?"><\/script>/.test(html)
       ? html.replace(/<script src="app\.js(?:\?[^"]*)?"><\/script>/, `${MAP_CAPTURE}\n    $&`)
       : insertBefore(html, "</body>", `  ${MAP_CAPTURE}`);
   }
-  if (!html.includes('id="global-cyclone-tracker-loader"')) html = insertBefore(html, "</body>", `  ${GLOBAL_TRACKER}`);
+  if (html.includes('id="liveMap"') && !html.includes('id="global-cyclone-tracker-loader"')) html = insertBefore(html, "</body>", `  ${GLOBAL_TRACKER}`);
 
   const headers = new Headers(response.headers);
   headers.delete("content-length");

@@ -3,27 +3,37 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="description" content="Typhoon Route Korea의 기상청 자료, 지도, 외부 자료 출처와 이용 안내입니다.">
+  <meta name="description" content="태풍 경로 안내 사이트의 자료 출처, 갱신 주기, 데이터 해석과 저작권 원칙을 안내합니다.">
   <link rel="canonical" href="https://mustview.co.kr/data-sources">
-  <link rel="stylesheet" href="styles.css">
-  <title>자료 출처와 이용 안내 | Typhoon Route Korea</title>
+  <link rel="stylesheet" href="styles.css?v=20260718-guides1">
+  <title>자료 출처와 업데이트 주기 | 태풍 경로 안내</title>
 </head>
 <body>
-  <header class="site-header"><a class="brand" href="index.html"><span>T</span> Typhoon Route Korea</a><nav aria-label="주요 메뉴"><a href="index.html#map">지도</a><a href="typhoon-guide.html">해석법</a><a href="readiness-guide.html">대비요령</a><a href="privacy.html">개인정보</a></nav></header>
+  <header class="site-header"><div class="header-inner"><a class="brand" href="index.html"><span>T</span><strong>태풍 경로 안내</strong></a><nav aria-label="주요 메뉴"><a href="index.html#map">현재 태풍</a><a href="index.html#weather">현재 날씨</a><a href="typhoon-guide.html">태풍 해설</a><a href="readiness-guide.html">행동요령</a></nav></div></header>
   <main class="page"><article>
-    <h1>자료 출처와 이용 안내</h1>
-    <p>Typhoon Route Korea는 태풍 정보를 사용자가 이해하기 쉬운 형태로 재구성하는 보조 정보 사이트입니다. 화면에 표시되는 경로, 표, 국내 영향 분류는 공식 발표 자료를 기반으로 가공되며, 원자료의 갱신 시각과 통신 상태에 따라 표시 결과가 달라질 수 있습니다.</p>
-    <h2>주요 출처</h2>
-    <ul><li>기상청 공개 태풍 자료: 태풍목록, 우리나라 영향 태풍, 태풍정보와 예측 자료</li><li>기상청 태풍정보: 공식 태풍 통보문과 경로 확인</li><li>OpenStreetMap: 지도 배경 타일</li><li>국민재난안전포털: 재난 행동요령 참고</li><li>일본 기상청 JMA: 북서태평양 열대저기압 보조 참고</li></ul>
-    <h2>자료 해석 시 주의사항</h2>
-    <p>태풍 예측은 시간이 지날수록 바뀔 수 있습니다. 예상 경로 중심선은 태풍 중심이 이동할 가능성이 높은 선일 뿐이며, 강풍과 폭우는 중심선 밖에서도 발생할 수 있습니다. 특히 강풍반경, 폭풍반경, 확률반경, 호우 특보, 풍랑 특보를 함께 확인해야 실제 위험을 판단할 수 있습니다.</p>
-    <h2>실시간성 안내</h2>
-    <p>사이트는 최신 발표 자료를 표시하도록 설계되어 있지만, 통신 장애, 원자료 갱신 지연, 브라우저 캐시 상태에 따라 표시가 늦어질 수 있습니다. 중요한 의사결정에는 반드시 기상청 공식 화면과 지자체 공지를 함께 확인하세요.</p>
+    <p class="eyebrow">자료 투명성 안내</p>
+    <h1>자료 출처와 업데이트 주기</h1>
+    <p>이 사이트는 여러 기관의 공개 자료를 한글 지도와 설명으로 정리하는 보조 정보 서비스입니다. 화면의 태풍 위치와 날씨 수치는 원자료가 발표·갱신된 시점과 통신 상태에 따라 달라질 수 있으므로, 카드의 확인 시각과 공식 출처를 함께 확인하세요.</p>
+
+    <h2>자료별 출처와 갱신 방식</h2>
+    <table class="guide-table"><thead><tr><th>화면 기능</th><th>자료 출처</th><th>확인 주기와 주의점</th></tr></thead><tbody><tr><td>전세계 현재 태풍</td><td><a href="https://www.gdacs.org/" target="_blank" rel="noopener">GDACS</a> 전세계 열대저기압 자료</td><td>약 5분마다 다시 확인합니다. 기관 발표 시각에 따라 새 위치가 늦게 반영될 수 있습니다.</td></tr><tr><td>기상청 태풍정보</td><td><a href="https://apihub.kma.go.kr/" target="_blank" rel="noopener">기상청 API Hub</a></td><td>기상청 인증키가 설정된 경우 최신 발표를 요청합니다. 발표 자료가 없으면 임의의 위치를 표시하지 않습니다.</td></tr><tr><td>지역별 현재 날씨</td><td><a href="https://open-meteo.com/en/docs" target="_blank" rel="noopener">Open-Meteo</a> 현재 조건 자료</td><td>약 10분마다 확인합니다. 최신 기상 모델 조건이며 기상특보를 대신하지 않습니다.</td></tr><tr><td>지도 배경</td><td><a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a> 및 위성 지도 제공자</td><td>위치 파악을 위한 배경입니다. 위성 영상 자체를 태풍 관측 자료로 해석하지 않습니다.</td></tr></tbody></table>
+
+    <h2>태풍 자료를 해석할 때</h2>
+    <p>예상 경로 중심선은 태풍 중심이 이동할 가능성이 높은 선이지 피해 범위의 경계가 아닙니다. 강풍반경, 폭풍반경, 70% 확률반경, 강우와 풍랑 특보를 함께 봐야 합니다. 중심기압이 낮거나 최대풍속이 높아지는 추세는 위험 신호가 될 수 있지만, 실제 피해는 태풍의 크기, 이동속도, 지형, 해안과의 거리, 비구름 분포에 따라 달라집니다.</p>
+
+    <h2>현재 자료가 없을 때</h2>
+    <p>현재 기관에서 활성 태풍을 반환하지 않으면 지도와 목록을 비워 둡니다. 과거 태풍이나 임의의 예시 경로를 현재 위치처럼 표시하지 않습니다. 화면이 오래된 것처럼 보이면 새로고침하고, 중요한 판단은 <a href="https://www.weather.go.kr/w/typhoon.do" target="_blank" rel="noopener">기상청 날씨누리 태풍정보</a>와 재난문자를 우선 확인하세요.</p>
+
+    <h2>공식 확인 링크</h2>
+    <ul class="source-list"><li><a href="https://www.weather.go.kr/w/typhoon/ko/weather/typhoon_02.jsp" target="_blank" rel="noopener">기상청 태풍 상세정보</a></li><li><a href="https://www.weather.go.kr/w/hazard/typhoon/basic/info3.do" target="_blank" rel="noopener">기상청 태풍의 분류</a></li><li><a href="https://www.weather.go.kr/w/hazard/safety-guide/typhoon.do" target="_blank" rel="noopener">기상청 태풍 국민행동요령</a></li><li><a href="https://www.safekorea.go.kr/" target="_blank" rel="noopener">국민안전24</a></li><li><a href="https://www.gdacs.org/" target="_blank" rel="noopener">GDACS</a></li></ul>
+
     <h2>저작권과 표시 원칙</h2>
-    <p>타 기상 서비스의 화면을 복제하지 않고, 자체 화면과 자체 설명문으로 구성합니다. 외부 자료는 출처를 밝히고 링크로 연결하며, 필요한 범위에서만 정보 확인용으로 사용합니다.</p>
+    <p>다른 기상 서비스의 화면을 복제하지 않고 자체 UI와 자체 설명문으로 구성합니다. 외부 자료는 출처와 링크를 표시하며, 제공기관의 이용 조건을 따릅니다. 영상은 원본을 내려받아 재게시하지 않고 공식 YouTube 임베드로 연결합니다.</p>
+
     <h2>면책</h2>
-    <p>본 사이트의 정보는 재난 대응을 돕기 위한 참고 자료입니다. 대피, 운항, 등하교, 시설 통제, 행사 취소 같은 결정은 공식 기관의 최신 발표와 현장 안전 책임자의 판단을 따라야 합니다.</p>
+    <p>이 사이트는 재난 대응을 돕는 참고 서비스이며 기상청, 행정안전부, 지자체의 공식 누리집이 아닙니다. 대피, 선박 운항, 등하교, 시설 통제, 행사 취소 결정은 공식 기관과 현장 안전 책임자의 최신 판단을 따르세요.</p>
+    <p class="source-note"><strong>문서 업데이트:</strong> 2026년 7월 18일. API 제공 방식과 공식 서비스 화면은 변경될 수 있습니다.</p>
   </article></main>
-  <footer><p>© 2026 Typhoon Route Korea</p><div><a href="about.html">소개</a><a href="privacy.html">개인정보처리방침</a><a href="contact.html">문의</a></div></footer>
+  <footer class="site-footer"><div class="related-links"><a href="index.html#map">현재 태풍</a><a href="index.html#weather">현재 날씨</a><a href="typhoon-guide.html">태풍 해설</a><a href="readiness-guide.html">태풍 행동요령</a><a href="about.html">소개</a><a href="privacy.html">개인정보처리방침</a><a href="contact.html">문의</a></div><p class="copyright">© 2026 Typhoon Route Korea. All rights reserved.</p></footer>
 </body>
 </html>
