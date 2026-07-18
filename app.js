@@ -63,11 +63,40 @@ async function loadKoreaTyphoons(event){event?.preventDefault();const year=korea
 function renderTyphoonData(data,isFallback=false){const storm=data.storms?.[0];const points=collectStormPoints(storm);const latest=storm?.latestAnalysis||{};const nowText=new Date().toLocaleString("ko-KR",{hour12:false});typhoonApiStatus.textContent=`${isFallback?"API 연결 전 예시 자료를 표시 중입니다.":"기상청 API 자료를 불러왔습니다."} 자료 수: ${data.count||points.length}건`;if(mapUpdated)mapUpdated.textContent=`마지막 갱신: ${nowText}${isFallback?" · 예시":""}`;if(!storm){stormCards.innerHTML="";trackTableBody.innerHTML='<tr><td colspan="6">표시할 태풍 자료가 없습니다.</td></tr>';timelineList.innerHTML="";stormSummary.textContent="표시할 태풍 자료가 없습니다.";setPlaybackPoints([]);return;}const selectedText=selectedTyphoon?`${selectedTyphoon.nameKo}(${selectedTyphoon.nameEn}) · `:"";stormSummary.textContent=`${selectedText}${storm.year}년 ${storm.typhoonNo}호${storm.sequence?` ${storm.sequence}번 발표`:""} 기준, ${latest.location||"위치 정보 없음"}, 중심기압 ${formatValue(latest.pressureHpa," hPa")}, 최대풍속 ${formatValue(latest.maxWindMs," m/s")}, 이동 ${formatValue(latest.direction)} ${formatValue(latest.speedKmh," km/h")}입니다.`;stormCards.innerHTML=`<article><span>태풍번호</span><strong>${storm.year}-${String(storm.typhoonNo).padStart(2,"0")}</strong><p>${storm.sequence?`${storm.sequence}번 발표`:selectedTyphoon?`${selectedTyphoon.nameKo} / ${selectedTyphoon.nameEn}`:latest.location||"위치 정보 없음"}</p></article><article><span>중심기압</span><strong>${formatValue(latest.pressureHpa," hPa")}</strong><p>낮을수록 강한 태풍입니다.</p></article><article><span>최대풍속</span><strong>${formatValue(latest.maxWindMs," m/s")}</strong><p>강풍 피해 판단 핵심 지표입니다.</p></article><article><span>이동</span><strong>${formatValue(latest.direction)} · ${formatValue(latest.speedKmh," km/h")}</strong><p>방향과 속도 변화를 확인하세요.</p></article>`;timelineList.innerHTML=points.map(p=>`<div class="timeline-item"><strong>${p.ft===0?"현재 분석":`+${p.forecastHour||"-"}시간`}</strong><span>${formatUtcTime(p.forecastTimeUtc)} UTC</span><span>${formatValue(p.pressureHpa," hPa")} · ${formatValue(p.maxWindMs," m/s")}</span></div>`).join("");trackTableBody.innerHTML=points.map(p=>`<tr><td>${p.ft===0?"분석":`예측 +${p.forecastHour||"-"}h`}</td><td>${formatUtcTime(p.forecastTimeUtc)}</td><td>${p.location||`${formatValue(p.lat)} / ${formatValue(p.lon)}`}</td><td>${formatValue(p.pressureHpa," hPa")}</td><td>${formatValue(p.maxWindMs," m/s")}</td><td>강풍 ${formatValue(p.radius15Km," km")} · 확률 ${formatValue(p.probabilityRadiusKm," km")}</td></tr>`).join("");setPlaybackPoints(points);}
 async function loadTyphoonData(event,options={}){event?.preventDefault();const tm=document.querySelector("#typhoonTm")?.value.trim()||"";const seq=typhoonSeq?.value.trim();typhoonApiStatus.textContent=options.silent?"자동 갱신 중입니다.":"기상청 API 자료를 불러오는 중입니다.";try{const query=new URLSearchParams();query.set("mode","1");let endpoint="/api/typhoon";if(selectedTyphoon&&seq){endpoint="/api/typhoon-detail";query.set("YY",selectedTyphoon.year);query.set("typ",selectedTyphoon.sequence);query.set("seq",seq);}else{if(tm)query.set("tm",tm);if(selectedTyphoon)query.set("typ",selectedTyphoon.sequence);}const res=await fetch(`${endpoint}?${query.toString()}`,{cache:"no-store",headers:{Accept:"application/json"}});const data=await readJsonResponse(res);if(!res.ok||!data.ok)throw new Error(data.message||"API 호출에 실패했습니다.");renderTyphoonData(data);}catch(error){renderTyphoonData(sampleTyphoonData,true);typhoonApiStatus.textContent=`${error.message} 현재는 예시 자료로 지도 구성을 보여줍니다.`;}}
 
+const originalRenderTyphoonData = renderTyphoonData;
+renderTyphoonData = (data, isFallback = false) => {
+  originalRenderTyphoonData(data, isFallback);
+  if (data?.storms?.[0]) return;
+  if (typhoonApiStatus) typhoonApiStatus.textContent = isFallback
+    ? "예시 화면을 표시하고 있습니다."
+    : "현재 발표된 태풍 자료가 없습니다.";
+  if (stormSummary) stormSummary.textContent = isFallback
+    ? "실제 자료를 조회하면 최신 발표 위치와 예측경로가 표시됩니다."
+    : "태풍목록에서 태풍을 선택하고 발표번호를 입력하세요.";
+};
+
+const originalLoadTyphoonData = loadTyphoonData;
+loadTyphoonData = (event, options = {}) => {
+  const sequence = typhoonSeq?.value.trim();
+  const isManualDetail = event?.currentTarget === typhoonApiForm;
+  if (!options.allowCurrent && (!selectedTyphoon || !sequence)) {
+    if (typhoonApiStatus) typhoonApiStatus.textContent = !selectedTyphoon
+      ? "먼저 태풍목록에서 태풍을 선택하세요."
+      : "발표번호를 입력하세요.";
+    if (stormSummary) stormSummary.textContent = !selectedTyphoon
+      ? "태풍목록에서 태풍을 선택하면 상세예측을 조회할 수 있습니다."
+      : "선택한 태풍의 발표번호를 입력하면 분석 위치와 예측경로를 표시합니다.";
+    if (isManualDetail && !selectedTyphoon) document.querySelector('[data-tab-target="list"]')?.click();
+    return Promise.resolve();
+  }
+  return originalLoadTyphoonData(event, options);
+};
+
 initMap();
 typhoonListForm.addEventListener("submit",loadTyphoonList);
 typhoonSelect.addEventListener("change",()=>selectTyphoon(typhoonSelect.value));
 typhoonApiForm.addEventListener("submit",loadTyphoonData);
-refreshMap?.addEventListener("click",()=>loadTyphoonData());
+refreshMap?.addEventListener("click",()=>loadTyphoonData(null,{allowCurrent:true}));
 mapStyleToggle?.addEventListener("click",()=>setMapStyle(mapStyle==="satellite"?"street":"satellite"));
 playbackToggle?.addEventListener("click",togglePlayback);
 forecastSlider?.addEventListener("input",()=>{stopPlayback();playbackIndex=Number(forecastSlider.value);renderPlaybackFrame();});
@@ -76,7 +105,7 @@ koreaOnlyAffected?.addEventListener("change",()=>loadKoreaTyphoons());
 renderTyphoonList(sampleList,true);
 renderKoreaTyphoons({year:2016,typhoons:sampleKoreaTyphoons,affected:sampleKoreaTyphoons},true);
 renderTyphoonData(sampleTyphoonData,true);
-autoRefreshId=window.setInterval(()=>loadTyphoonData(null,{silent:true}),10*60*1000);
+autoRefreshId=window.setInterval(()=>loadTyphoonData(null,{silent:true,allowCurrent:true}),10*60*1000);
 window.addEventListener("beforeunload",()=>window.clearInterval(autoRefreshId));
 (() => {
   const tabs = [...document.querySelectorAll("[data-tab-target]")];
