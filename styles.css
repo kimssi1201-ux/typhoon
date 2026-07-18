@@ -610,6 +610,10 @@ main {
   grid-template-columns: repeat(3, minmax(150px, 1fr)) auto;
 }
 
+.detail-form {
+  grid-template-columns: minmax(180px, 260px) auto;
+}
+
 label {
   display: grid;
   gap: 7px;

@@ -9,7 +9,7 @@
     <link rel="canonical" href="https://mustview.co.kr/" />
     <title>실시간 태풍 경로 지도 | 태풍 경로 안내</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-    <link rel="stylesheet" href="styles.css?v=20260718-kma-ui" />
+    <link rel="stylesheet" href="styles.css?v=20260718-core-ui" />
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8468106244002167" crossorigin="anonymous"></script>
   </head>
   <body>
@@ -36,28 +36,10 @@
           <a href="#korea">국내영향</a>
           <a href="#list">태풍목록</a>
           <a href="#live">상세예측</a>
-          <a href="#timeline">예측표</a>
           <a href="#safety">행동요령</a>
         </nav>
       </div>
     </header>
-
-    <div class="weather-tool-strip" aria-label="빠른 조회 도구">
-      <div class="weather-search" role="search">
-        <label for="siteSearch">태풍명 또는 연도 검색</label>
-        <input id="siteSearch" type="search" placeholder="예: 차바, 2016, 2012" />
-      </div>
-      <div class="quick-links" aria-label="빠른 이동">
-        <a href="#map">지도</a>
-        <a href="#korea">우리나라 영향</a>
-        <a href="#live">발표번호 조회</a>
-      </div>
-      <div class="setting-chips" aria-label="화면 설정 요약">
-        <span>첫 화면: 지도</span>
-        <span>풍속: m/s</span>
-        <span>갱신: 자동</span>
-      </div>
-    </div>
 
     <main id="main">
       <section class="map-dashboard" id="map" aria-labelledby="map-title">
@@ -67,12 +49,6 @@
             <p class="eyebrow">실시간 태풍 추적</p>
             <h1 id="map-title">한글 지도에서 태풍 경로를 확인하세요</h1>
             <p>전세계 열대저기압과 한국 주변 태풍 예측을 한 화면에서 전환해 볼 수 있습니다.</p>
-          </div>
-          <div class="service-tabs" aria-label="태풍정보 보기 방식">
-            <a class="active" href="#map">태풍정보</a>
-            <a href="#live">통보문</a>
-            <a href="#stormCards">그래프</a>
-            <a href="#timeline">표</a>
           </div>
         </div>
 
@@ -105,13 +81,6 @@
             <div class="summary-box" id="stormSummary">태풍 자료를 불러오면 요약이 표시됩니다.</div>
           </aside>
         </div>
-      </section>
-
-      <section class="quick-status" aria-label="주요 기능 요약">
-        <a href="#map"><span>01</span><strong>지도 추적</strong><small>전세계와 한국 주변 경로 확인</small></a>
-        <a href="#korea"><span>02</span><strong>국내 영향</strong><small>연도별 우리나라 영향 태풍 조회</small></a>
-        <a href="#list"><span>03</span><strong>태풍목록</strong><small>번호, 이름, 기간, 영향 분류 확인</small></a>
-        <a href="#safety"><span>04</span><strong>행동요령</strong><small>강풍·침수·정전 대비 확인</small></a>
       </section>
 
       <section class="notice"><strong>중요 안내:</strong> 이 사이트는 공개 기상 자료를 보기 쉽게 재구성한 정보 화면입니다. 실제 대피, 운항, 등하교, 시설 통제 판단은 기상청과 지자체의 최신 특보와 재난문자를 우선하세요.</section>
@@ -150,13 +119,12 @@
       <section class="public-section live-api" id="live" aria-labelledby="live-title">
         <div class="section-head">
           <p class="eyebrow">태풍정보와 예측</p>
-          <h2 id="live-title">발표번호 기준 상세예측 조회</h2>
-          <p>태풍과 발표번호를 기준으로 분석 위치와 예측 경로를 지도, 카드, 표로 확인합니다.</p>
+          <h2 id="live-title">선택한 태풍의 상세예측 조회</h2>
+          <p>태풍목록에서 태풍을 선택한 뒤 발표번호를 입력하면 분석 위치와 예측 경로를 확인합니다.</p>
         </div>
-        <form id="typhoonApiForm" class="section-tools api-form detail-form">
-          <label>기준시각 <input id="typhoonTm" type="text" maxlength="12" inputmode="numeric" placeholder="선택 태풍 기준 자동 입력" /></label>
+        <form id="typhoonApiForm" class="section-tools detail-form">
+          <input id="typhoonTm" type="hidden" />
           <label>발표번호 <input id="typhoonSeq" type="number" min="1" placeholder="예: 8" /></label>
-          <label>조회 모드 <select id="typhoonMode"><option value="1">분석 + 예측</option><option value="0">분석 중심</option></select></label>
           <button class="button primary" type="submit">상세 예측 조회</button>
         </form>
         <div class="api-status" id="typhoonApiStatus" aria-live="polite">자료를 불러오기 전 예시 화면을 표시합니다.</div>
@@ -171,12 +139,6 @@
         </div>
         <div class="timeline-list" id="timelineList"></div>
         <div class="track-table-wrap"><table class="track-table"><thead><tr><th>구분</th><th>예측시각 UTC</th><th>위치</th><th>중심기압</th><th>최대풍속</th><th>반경</th></tr></thead><tbody id="trackTableBody"><tr><td colspan="6">조회 결과가 여기에 표시됩니다.</td></tr></tbody></table></div>
-      </section>
-
-      <section class="source-grid" aria-label="공식 자료 바로가기">
-        <article><span>공식 경로</span><h3>기상청 태풍정보</h3><p>국내 영향 판단의 최우선 자료입니다.</p><a href="https://www.weather.go.kr/w/typhoon/ko/weather/typhoon_02.jsp" target="_blank" rel="noopener">기상청 열기</a></article>
-        <article><span>재난 행동</span><h3>국민재난안전포털</h3><p>대피, 침수, 강풍 행동요령을 확인합니다.</p><a href="https://www.safekorea.go.kr/safekorea-kor/main/main.do" target="_blank" rel="noopener">안전포털 열기</a></article>
-        <article><span>보조 참고</span><h3>JMA 열대저기압</h3><p>북서태평양 태풍 흐름을 함께 참고합니다.</p><a href="https://www.data.jma.go.jp/multi/cyclone/?lang=en" target="_blank" rel="noopener">JMA 열기</a></article>
       </section>
 
       <section class="content-grid" id="guide" aria-label="태풍 정보 해석 안내">
@@ -236,7 +198,7 @@
     </footer>
 
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    <script src="app.js?v=20260718-ui-search"></script>
+    <script src="app.js?v=20260718-core-ui"></script>
     <script>
       (() => {
         const replacements = [
