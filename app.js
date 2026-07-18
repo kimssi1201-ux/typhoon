@@ -23,8 +23,15 @@ const playbackToggle = document.querySelector("#playbackToggle");
 const forecastSlider = document.querySelector("#forecastSlider");
 const forecastStepLabel = document.querySelector("#forecastStepLabel");
 const forecastTicks = document.querySelector("#forecastTicks");
+const currentTyphoonRefresh = document.querySelector("#currentTyphoonRefresh");
+const weatherForm = document.querySelector("#weatherForm");
+const weatherLocation = document.querySelector("#weatherLocation");
+const weatherStatus = document.querySelector("#weatherStatus");
+const weatherTemperature = document.querySelector("#weatherTemperature");
+const weatherDescription = document.querySelector("#weatherDescription");
+const weatherMetrics = document.querySelector("#weatherMetrics");
 
-let typhoonMap, typhoonLayer, labelLayer, autoRefreshId;
+let typhoonMap, typhoonLayer, labelLayer, weatherRefreshId;
 let typhoonList = [];
 let selectedTyphoon = null;
 let playbackPoints = [];
@@ -62,6 +69,56 @@ function renderKoreaTyphoons(data,fallback=false){if(!koreaTyphoonGrid)return;co
 async function loadKoreaTyphoons(event){event?.preventDefault();const year=koreaYear?.value||new Date().getFullYear();koreaTyphoonStatus.textContent="우리나라 영향 태풍 자료를 불러오는 중입니다.";try{const res=await fetch(`/api/korea-typhoons?year=${encodeURIComponent(year)}&numOfRows=100`,{cache:"no-store",headers:{Accept:"application/json"}});const data=await readJsonResponse(res);if(!res.ok||!data.ok)throw new Error(data.message||"국내 영향 태풍 API 호출 실패");renderKoreaTyphoons(data);}catch(error){renderKoreaTyphoons({year:2016,typhoons:sampleKoreaTyphoons,affected:sampleKoreaTyphoons},true);koreaTyphoonStatus.textContent=`${error.message} 현재는 예시 자료를 표시합니다.`;}}
 function renderTyphoonData(data,isFallback=false){const storm=data.storms?.[0];const points=collectStormPoints(storm);const latest=storm?.latestAnalysis||{};const nowText=new Date().toLocaleString("ko-KR",{hour12:false});typhoonApiStatus.textContent=`${isFallback?"API 연결 전 예시 자료를 표시 중입니다.":"기상청 API 자료를 불러왔습니다."} 자료 수: ${data.count||points.length}건`;if(mapUpdated)mapUpdated.textContent=`마지막 갱신: ${nowText}${isFallback?" · 예시":""}`;if(!storm){stormCards.innerHTML="";trackTableBody.innerHTML='<tr><td colspan="6">표시할 태풍 자료가 없습니다.</td></tr>';timelineList.innerHTML="";stormSummary.textContent="표시할 태풍 자료가 없습니다.";setPlaybackPoints([]);return;}const selectedText=selectedTyphoon?`${selectedTyphoon.nameKo}(${selectedTyphoon.nameEn}) · `:"";stormSummary.textContent=`${selectedText}${storm.year}년 ${storm.typhoonNo}호${storm.sequence?` ${storm.sequence}번 발표`:""} 기준, ${latest.location||"위치 정보 없음"}, 중심기압 ${formatValue(latest.pressureHpa," hPa")}, 최대풍속 ${formatValue(latest.maxWindMs," m/s")}, 이동 ${formatValue(latest.direction)} ${formatValue(latest.speedKmh," km/h")}입니다.`;stormCards.innerHTML=`<article><span>태풍번호</span><strong>${storm.year}-${String(storm.typhoonNo).padStart(2,"0")}</strong><p>${storm.sequence?`${storm.sequence}번 발표`:selectedTyphoon?`${selectedTyphoon.nameKo} / ${selectedTyphoon.nameEn}`:latest.location||"위치 정보 없음"}</p></article><article><span>중심기압</span><strong>${formatValue(latest.pressureHpa," hPa")}</strong><p>낮을수록 강한 태풍입니다.</p></article><article><span>최대풍속</span><strong>${formatValue(latest.maxWindMs," m/s")}</strong><p>강풍 피해 판단 핵심 지표입니다.</p></article><article><span>이동</span><strong>${formatValue(latest.direction)} · ${formatValue(latest.speedKmh," km/h")}</strong><p>방향과 속도 변화를 확인하세요.</p></article>`;timelineList.innerHTML=points.map(p=>`<div class="timeline-item"><strong>${p.ft===0?"현재 분석":`+${p.forecastHour||"-"}시간`}</strong><span>${formatUtcTime(p.forecastTimeUtc)} UTC</span><span>${formatValue(p.pressureHpa," hPa")} · ${formatValue(p.maxWindMs," m/s")}</span></div>`).join("");trackTableBody.innerHTML=points.map(p=>`<tr><td>${p.ft===0?"분석":`예측 +${p.forecastHour||"-"}h`}</td><td>${formatUtcTime(p.forecastTimeUtc)}</td><td>${p.location||`${formatValue(p.lat)} / ${formatValue(p.lon)}`}</td><td>${formatValue(p.pressureHpa," hPa")}</td><td>${formatValue(p.maxWindMs," m/s")}</td><td>강풍 ${formatValue(p.radius15Km," km")} · 확률 ${formatValue(p.probabilityRadiusKm," km")}</td></tr>`).join("");setPlaybackPoints(points);}
 async function loadTyphoonData(event,options={}){event?.preventDefault();const tm=document.querySelector("#typhoonTm")?.value.trim()||"";const seq=typhoonSeq?.value.trim();typhoonApiStatus.textContent=options.silent?"자동 갱신 중입니다.":"기상청 API 자료를 불러오는 중입니다.";try{const query=new URLSearchParams();query.set("mode","1");let endpoint="/api/typhoon";if(selectedTyphoon&&seq){endpoint="/api/typhoon-detail";query.set("YY",selectedTyphoon.year);query.set("typ",selectedTyphoon.sequence);query.set("seq",seq);}else{if(tm)query.set("tm",tm);if(selectedTyphoon)query.set("typ",selectedTyphoon.sequence);}const res=await fetch(`${endpoint}?${query.toString()}`,{cache:"no-store",headers:{Accept:"application/json"}});const data=await readJsonResponse(res);if(!res.ok||!data.ok)throw new Error(data.message||"API 호출에 실패했습니다.");renderTyphoonData(data);}catch(error){renderTyphoonData(sampleTyphoonData,true);typhoonApiStatus.textContent=`${error.message} 현재는 예시 자료로 지도 구성을 보여줍니다.`;}}
+
+const weatherDescriptions = {
+  0: "맑음", 1: "대체로 맑음", 2: "부분적으로 흐림", 3: "흐림",
+  45: "안개", 48: "짙은 안개", 51: "이슬비", 53: "이슬비", 55: "강한 이슬비",
+  56: "어는 이슬비", 57: "강한 어는 이슬비", 61: "약한 비", 63: "비", 65: "강한 비",
+  66: "어는 비", 67: "강한 어는 비", 71: "약한 눈", 73: "눈", 75: "강한 눈",
+  77: "눈 알갱이", 80: "약한 소나기", 81: "소나기", 82: "강한 소나기",
+  85: "약한 눈보라", 86: "강한 눈보라", 95: "뇌우", 96: "우박을 동반한 뇌우", 99: "강한 우박 뇌우"
+};
+const windDirections = ["북풍", "북북동풍", "북동풍", "동북동풍", "동풍", "동남동풍", "남동풍", "남남동풍", "남풍", "남남서풍", "남서풍", "서남서풍", "서풍", "서북서풍", "북서풍", "북북서풍"];
+const weatherNumber = (value, digits = 0) => Number.isFinite(Number(value)) ? Number(value).toFixed(digits) : "-";
+const weatherWindDirection = (value) => Number.isFinite(Number(value)) ? windDirections[Math.round(Number(value) / 22.5) % 16] : "-";
+
+function renderCurrentWeather(data) {
+  const current = data?.current || {};
+  const units = data?.units || {};
+  const city = data?.city?.name || weatherLocation?.value || "선택 지역";
+  const description = weatherDescriptions[current.weather_code] || "현재 상태 확인 중";
+  const updatedAt = current.time ? current.time.replace("T", " ").slice(0, 16) : "-";
+  if (weatherTemperature) weatherTemperature.textContent = `${weatherNumber(current.temperature_2m, 1)} ${units.temperature_2m || "°C"}`;
+  if (weatherDescription) weatherDescription.textContent = `${city} · ${description}`;
+  if (weatherStatus) weatherStatus.textContent = `${city} 현재 날씨를 확인했습니다. 자료 시각: ${updatedAt}`;
+  if (weatherMetrics) weatherMetrics.innerHTML = [
+    ["체감온도", `${weatherNumber(current.apparent_temperature, 1)} ${units.apparent_temperature || "°C"}`],
+    ["습도", `${weatherNumber(current.relative_humidity_2m)} ${units.relative_humidity_2m || "%"}`],
+    ["강수량", `${weatherNumber(current.precipitation, 1)} ${units.precipitation || "mm"}`],
+    ["바람", `${weatherNumber(current.wind_speed_10m, 1)} ${units.wind_speed_10m || "m/s"}`],
+    ["바람 방향", weatherWindDirection(current.wind_direction_10m)],
+    ["기압", `${weatherNumber(current.pressure_msl)} ${units.pressure_msl || "hPa"}`],
+    ["구름량", `${weatherNumber(current.cloud_cover)} ${units.cloud_cover || "%"}`],
+    ["돌풍", `${weatherNumber(current.wind_gusts_10m, 1)} ${units.wind_gusts_10m || "m/s"}`]
+  ].map(([label, value]) => `<article><span>${label}</span><strong>${value}</strong></article>`).join("");
+}
+
+async function loadCurrentWeather(event) {
+  event?.preventDefault();
+  const city = weatherLocation?.value || "서울";
+  if (weatherStatus) weatherStatus.textContent = `${city} 현재 날씨를 불러오는 중입니다.`;
+  try {
+    const response = await fetch(`/api/current-weather?city=${encodeURIComponent(city)}&t=${Date.now()}`, { cache: "no-store", headers: { Accept: "application/json" } });
+    const data = await readJsonResponse(response);
+    if (!response.ok || !data.ok) throw new Error(data.message || "현재 날씨를 조회하지 못했습니다.");
+    renderCurrentWeather(data);
+  } catch (error) {
+    if (weatherStatus) weatherStatus.textContent = `${error.message} 잠시 후 다시 확인하세요.`;
+    if (weatherTemperature) weatherTemperature.textContent = "-";
+    if (weatherDescription) weatherDescription.textContent = "자료를 불러오지 못했습니다.";
+    if (weatherMetrics) weatherMetrics.innerHTML = "";
+  }
+}
 
 const originalRenderTyphoonData = renderTyphoonData;
 renderTyphoonData = (data, isFallback = false) => {
@@ -118,20 +175,20 @@ koreaTyphoonGrid?.addEventListener("click", (event) => {
 });
 
 initMap();
-typhoonListForm.addEventListener("submit",loadTyphoonList);
-typhoonSelect.addEventListener("change",()=>selectTyphoon(typhoonSelect.value));
-typhoonApiForm.addEventListener("submit",loadTyphoonData);
-refreshMap?.addEventListener("click",()=>loadTyphoonData(null,{allowCurrent:true}));
+typhoonListForm?.addEventListener("submit",loadTyphoonList);
+typhoonSelect?.addEventListener("change",()=>selectTyphoon(typhoonSelect.value));
+typhoonApiForm?.addEventListener("submit",loadTyphoonData);
+currentTyphoonRefresh?.addEventListener("click",()=>window.loadGlobalCyclones?.(true));
 mapStyleToggle?.addEventListener("click",()=>setMapStyle(mapStyle==="satellite"?"street":"satellite"));
 playbackToggle?.addEventListener("click",togglePlayback);
 forecastSlider?.addEventListener("input",()=>{stopPlayback();playbackIndex=Number(forecastSlider.value);renderPlaybackFrame();});
 koreaTyphoonForm?.addEventListener("submit",loadKoreaTyphoons);
 koreaOnlyAffected?.addEventListener("change",()=>loadKoreaTyphoons());
-renderTyphoonList(sampleList,true);
-renderKoreaTyphoons({year:2016,typhoons:sampleKoreaTyphoons,affected:sampleKoreaTyphoons},true);
-renderTyphoonData(sampleTyphoonData,true);
-autoRefreshId=window.setInterval(()=>loadTyphoonData(null,{silent:true,allowCurrent:true}),10*60*1000);
-window.addEventListener("beforeunload",()=>window.clearInterval(autoRefreshId));
+weatherForm?.addEventListener("submit",loadCurrentWeather);
+weatherLocation?.addEventListener("change",()=>loadCurrentWeather());
+loadCurrentWeather();
+weatherRefreshId=window.setInterval(()=>loadCurrentWeather(),10*60*1000);
+window.addEventListener("beforeunload",()=>window.clearInterval(weatherRefreshId));
 (() => {
   const tabs = [...document.querySelectorAll("[data-tab-target]")];
   const panels = [...document.querySelectorAll("[data-tab-panel]")];
@@ -159,7 +216,7 @@ window.addEventListener("beforeunload",()=>window.clearInterval(autoRefreshId));
   };
 
   const activateFromHash = () => {
-    let target = "korea";
+    let target = "live";
     try {
       const hashTarget = decodeURIComponent(window.location.hash.slice(1));
       if (panelIds.has(hashTarget)) target = hashTarget;

@@ -634,6 +634,104 @@ main {
   font-weight: 900;
 }
 
+.live-section-actions {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 12px;
+  align-items: center;
+}
+
+.live-section-actions .api-status {
+  margin-top: 0;
+}
+
+.detail-heading {
+  margin-top: 28px;
+}
+
+.weather-controls {
+  display: grid;
+  grid-template-columns: auto minmax(180px, 260px) auto;
+  gap: 12px;
+  align-items: end;
+  margin: 20px 0 14px;
+}
+
+.weather-controls label {
+  align-self: center;
+}
+
+.weather-controls select,
+.weather-controls .button {
+  margin: 0;
+}
+
+.weather-overview {
+  display: grid;
+  grid-template-columns: minmax(210px, 0.8fr) 1.8fr;
+  gap: 14px;
+  margin-top: 18px;
+}
+
+.weather-current,
+.weather-metrics article {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #f9fbfd;
+}
+
+.weather-current {
+  display: grid;
+  align-content: center;
+  min-height: 190px;
+  padding: 22px;
+}
+
+.weather-current span,
+.weather-metrics span {
+  color: var(--orange);
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.weather-current strong {
+  margin: 8px 0;
+  color: var(--navy);
+  font-size: 42px;
+  line-height: 1;
+}
+
+.weather-current p {
+  margin: 0;
+  color: var(--muted);
+  font-weight: 800;
+}
+
+.weather-metrics {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+}
+
+.weather-metrics article {
+  display: grid;
+  align-content: center;
+  min-height: 84px;
+  padding: 14px;
+}
+
+.weather-metrics strong {
+  margin-top: 5px;
+  color: var(--navy);
+  font-size: 17px;
+}
+
+.weather-source {
+  margin: 16px 0 0;
+  color: var(--muted);
+  font-size: 13px;
+}
+
 .quick-status {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -1163,6 +1261,14 @@ label {
   .action-grid {
     grid-template-columns: repeat(2, 1fr);
   }
+
+  .weather-overview {
+    grid-template-columns: 1fr;
+  }
+
+  .weather-metrics {
+    grid-template-columns: repeat(4, 1fr);
+  }
 }
 
 @media (max-width: 760px) {
@@ -1235,6 +1341,19 @@ label {
   .safety,
   .faq {
     padding: 20px;
+  }
+
+  .live-section-actions,
+  .weather-controls {
+    grid-template-columns: 1fr;
+  }
+
+  .weather-controls label {
+    align-self: auto;
+  }
+
+  .weather-metrics {
+    grid-template-columns: repeat(2, 1fr);
   }
 
   .section-tools,

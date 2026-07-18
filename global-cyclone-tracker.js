@@ -164,7 +164,6 @@
 
   const renderPanels = (data, displayEvents, checkedAt) => {
     const activeCount = data.activeCount || 0;
-    const recentCount = data.recentCount || 0;
     const cards = $("#stormCards");
     const status = $("#typhoonApiStatus");
     const summary = $("#stormSummary");
@@ -175,16 +174,16 @@
 
     if (status) status.textContent = activeCount > 0
       ? `전세계 활성 열대저기압 ${activeCount}개를 추적 중입니다.`
-      : `전세계 활성 열대저기압은 없습니다. 최근 종료된 열대저기압 ${recentCount}개를 참고 표시합니다.`;
+      : "현재 확인되는 활성 열대저기압이 없습니다.";
     if (summary) summary.textContent = activeCount > 0
       ? "전세계 활성 열대저기압을 지도에 표시합니다. 한국 주변 상세 예측은 한국 주변 추적을 사용하세요."
-      : "현재 활성 열대저기압이 없어 최근 30일 내 종료된 열대저기압을 참고용으로 표시합니다.";
+      : "현재 활성 열대저기압이 없어 지도와 목록을 비워 두었습니다. 새 자료가 확인되면 자동으로 표시합니다.";
     if (notice) notice.textContent = `전세계 추적 모드 · 5분 자동 갱신 · 마지막 확인: ${checkedAt}`;
     if (updated) updated.textContent = `전세계 확인: ${checkedAt} · 활성 ${activeCount}개`;
 
     if (cards) {
       cards.innerHTML = displayEvents.length ? displayEvents.slice(0, 8).map((event) =>
-        `<article><span>${event.isCurrent ? "활성" : "최근 종료"} · ${escapeHtml(event.alertLevel)}</span>` +
+        `<article><span>활성 · ${escapeHtml(event.alertLevel)}</span>` +
         `<strong>${escapeHtml(event.name)}</strong>` +
         `<p>${escapeHtml(event.country || "영향 지역 정보 없음")}</p>` +
         `<p>최대풍속 ${event.severityKmh ?? "-"} km/h · ${escapeHtml(event.source || "GDACS")}</p>` +
@@ -194,16 +193,16 @@
     if (timeline) {
       timeline.innerHTML = displayEvents.slice(0, 8).map((event) =>
         `<div class="timeline-item"><strong>${escapeHtml(event.name)}</strong>` +
-        `<span>${event.isCurrent ? "활성" : "최근 종료"} · ${escapeHtml(event.alertLevel)}</span>` +
+        `<span>활성 · ${escapeHtml(event.alertLevel)}</span>` +
         `<span>${fmtDate(event.modifiedAt || event.toDate)}</span></div>`
       ).join("");
     }
     if (table) {
       table.innerHTML = displayEvents.length ? displayEvents.slice(0, 12).map((event) =>
-        `<tr><td>${event.isCurrent ? "활성" : "최근 종료"}</td><td>${fmtDate(event.modifiedAt || event.toDate)}</td>` +
+        `<tr><td>활성</td><td>${fmtDate(event.modifiedAt || event.toDate)}</td>` +
         `<td>${escapeHtml(event.country || `${event.lat} / ${event.lon}`)}</td><td>${escapeHtml(event.source || "GDACS")}</td>` +
         `<td>${event.severityKmh ?? "-"} km/h</td><td>${escapeHtml(event.alertLevel)}</td></tr>`
-      ).join("") : '<tr><td colspan="6">전세계 활성 열대저기압이 없습니다.</td></tr>';
+      ).join("") : '<tr><td colspan="6">현재 확인되는 활성 열대저기압이 없습니다.</td></tr>';
     }
   };
 
@@ -220,7 +219,7 @@
       });
       const data = await response.json();
       if (!response.ok || !data.ok) throw new Error(data.message || "전세계 열대저기압 자료 조회에 실패했습니다.");
-      const displayEvents = data.active?.length ? data.active : (data.recent || []).slice(0, 8);
+      const displayEvents = data.active || [];
       const checkedAt = nowText();
       await renderMap(displayEvents, data.activeCount || 0);
       renderPanels(data, displayEvents, checkedAt);

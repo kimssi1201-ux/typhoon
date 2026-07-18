@@ -121,19 +121,15 @@ export async function onRequestGet(context) {
   const typ = numberValue(requestUrl.searchParams.get("typ") || requestUrl.searchParams.get("TYP"));
 
   if (!apiKey) {
-    const parsed = sampleTyphoonData();
-    const storms = typ ? parsed.storms.filter((storm) => storm.typhoonNo === typ) : parsed.storms;
-    const rows = typ ? parsed.rows.filter((row) => row.typhoonNo === typ) : parsed.rows;
     return Response.json({
-      ok: true,
-      fallback: true,
-      message: "KMA_AUTH_KEY가 없어 예시 자료로 조회했습니다.",
-      source: "Sample typhoon information + forecast",
+      ok: false,
+      configured: false,
+      message: "기상청 인증키가 설정되지 않았습니다.",
       requested: { tm: tm || null, mode, typ: typ || null },
-      count: rows.length,
-      storms,
-      rows
-    });
+      count: 0,
+      storms: [],
+      rows: []
+    }, { status: 503 });
   }
 
   const kmaUrl = new URL(KMA_ENDPOINT);
