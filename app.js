@@ -30,6 +30,10 @@ const weatherStatus = document.querySelector("#weatherStatus");
 const weatherTemperature = document.querySelector("#weatherTemperature");
 const weatherDescription = document.querySelector("#weatherDescription");
 const weatherMetrics = document.querySelector("#weatherMetrics");
+const categoryModal = document.querySelector("#categoryModal");
+const categoryOpen = document.querySelector("#categoryOpen");
+const categoryClose = document.querySelector("#categoryClose");
+const categoryLinks = document.querySelectorAll("#categoryModal a");
 
 let typhoonMap, typhoonLayer, labelLayer, weatherRefreshId;
 let typhoonList = [];
@@ -120,6 +124,21 @@ async function loadCurrentWeather(event) {
   }
 }
 
+function setCategoryModal(open) {
+  if (!categoryModal) return;
+  if (open) {
+    if (typeof categoryModal.showModal === "function") categoryModal.showModal();
+    else categoryModal.setAttribute("open", "");
+    categoryOpen?.setAttribute("aria-expanded", "true");
+    categoryClose?.focus();
+    return;
+  }
+  if (typeof categoryModal.close === "function") categoryModal.close();
+  else categoryModal.removeAttribute("open");
+  categoryOpen?.setAttribute("aria-expanded", "false");
+  categoryOpen?.focus();
+}
+
 const originalRenderTyphoonData = renderTyphoonData;
 renderTyphoonData = (data, isFallback = false) => {
   originalRenderTyphoonData(data, isFallback);
@@ -186,6 +205,17 @@ koreaTyphoonForm?.addEventListener("submit",loadKoreaTyphoons);
 koreaOnlyAffected?.addEventListener("change",()=>loadKoreaTyphoons());
 weatherForm?.addEventListener("submit",loadCurrentWeather);
 weatherLocation?.addEventListener("change",()=>loadCurrentWeather());
+categoryOpen?.addEventListener("click", () => setCategoryModal(true));
+categoryClose?.addEventListener("click", () => setCategoryModal(false));
+categoryLinks.forEach((link) => link.addEventListener("click", () => setCategoryModal(false)));
+categoryModal?.addEventListener("click", (event) => {
+  if (event.target === categoryModal) setCategoryModal(false);
+});
+categoryModal?.addEventListener("cancel", () => categoryOpen?.setAttribute("aria-expanded", "false"));
+categoryModal?.addEventListener("close", () => {
+  categoryOpen?.setAttribute("aria-expanded", "false");
+  categoryOpen?.focus();
+});
 loadCurrentWeather();
 weatherRefreshId=window.setInterval(()=>loadCurrentWeather(),10*60*1000);
 window.addEventListener("beforeunload",()=>window.clearInterval(weatherRefreshId));

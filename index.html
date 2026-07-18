@@ -9,7 +9,7 @@
     <link rel="canonical" href="https://mustview.co.kr/" />
     <title>현재 태풍과 날씨 | 태풍 경로 안내</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-    <link rel="stylesheet" href="styles.css?v=20260718-current-weather2" />
+    <link rel="stylesheet" href="styles.css?v=20260718-category-modal1" />
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8468106244002167" crossorigin="anonymous"></script>
   </head>
   <body>
@@ -21,15 +21,35 @@
           <span aria-hidden="true">T</span>
           <strong>태풍 경로 안내</strong>
         </a>
-        <nav aria-label="주요 메뉴">
+        <nav class="header-nav" aria-label="주요 메뉴">
           <a href="#map">현재 태풍</a>
           <a id="nav-weather" href="#weather" data-tab-target="weather">실시간 날씨</a>
-          <a href="typhoon-guide.html">태풍 해설</a>
-          <a id="nav-safety" href="#safety" data-tab-target="safety">행동요령</a>
-          <a id="nav-faq" href="#faq" data-tab-target="faq">FAQ</a>
+          <button class="menu-button" id="categoryOpen" type="button" aria-haspopup="dialog" aria-controls="categoryModal" aria-expanded="false" aria-label="카테고리 메뉴 열기" title="카테고리 메뉴 열기"><span aria-hidden="true">☰</span></button>
         </nav>
       </div>
     </header>
+
+    <dialog class="category-modal" id="categoryModal" aria-labelledby="categoryModalTitle">
+      <div class="category-modal-card">
+        <div class="category-modal-head">
+          <div>
+            <p class="eyebrow">사이트 메뉴</p>
+            <h2 id="categoryModalTitle">카테고리</h2>
+          </div>
+          <button class="modal-close" id="categoryClose" type="button" aria-label="카테고리 메뉴 닫기" title="닫기">×</button>
+        </div>
+        <nav class="category-list" aria-label="카테고리">
+          <a href="#map"><strong>현재 태풍</strong><span>활성 열대저기압 지도</span></a>
+          <a href="#weather" data-tab-target="weather"><strong>실시간 날씨</strong><span>주요 도시 현재 조건</span></a>
+          <a href="typhoon-guide.html"><strong>태풍 해설</strong><span>경로·기압·풍속 읽는 방법</span></a>
+          <a href="#safety" data-tab-target="safety"><strong>행동요령</strong><span>단계별·지역별 대비</span></a>
+          <a href="data-sources.html"><strong>자료 출처</strong><span>갱신 주기와 공식 링크</span></a>
+          <a href="#faq" data-tab-target="faq"><strong>FAQ</strong><span>현재 태풍·날씨 안내</span></a>
+          <a href="about.html"><strong>사이트 소개</strong><span>운영 목적과 원칙</span></a>
+          <a href="contact.html"><strong>문의</strong><span>오류·출처 수정 제안</span></a>
+        </nav>
+      </div>
+    </dialog>
 
     <main id="main">
       <section class="map-dashboard" id="map" aria-label="실시간 태풍 지도">

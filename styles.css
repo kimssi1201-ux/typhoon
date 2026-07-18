@@ -182,6 +182,114 @@ nav a.is-active {
   color: #fff;
 }
 
+.header-nav {
+  align-items: center;
+}
+
+.menu-button,
+.modal-close {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border: 1px solid #b7c7d4;
+  border-radius: 6px;
+  background: #fff;
+  color: var(--navy);
+  cursor: pointer;
+}
+
+.menu-button {
+  font-size: 22px;
+  line-height: 1;
+}
+
+.menu-button:hover,
+.modal-close:hover {
+  background: #eef5fb;
+}
+
+.category-modal {
+  width: min(560px, calc(100% - 24px));
+  max-height: min(720px, calc(100vh - 32px));
+  margin: auto;
+  padding: 0;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--ink);
+}
+
+.category-modal::backdrop {
+  background: rgba(9, 24, 39, 0.48);
+  backdrop-filter: blur(3px);
+}
+
+.category-modal-card {
+  padding: 22px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #fff;
+  box-shadow: 0 22px 60px rgba(21, 48, 76, 0.24);
+}
+
+.category-modal-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--line);
+}
+
+.category-modal-head h2 {
+  margin: 0;
+  color: var(--navy);
+  font-size: 28px;
+  line-height: 1.2;
+}
+
+.modal-close {
+  flex: 0 0 auto;
+  font-size: 25px;
+  line-height: 1;
+}
+
+.category-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.category-list a {
+  display: grid;
+  gap: 2px;
+  padding: 14px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: #f9fbfd;
+  color: var(--navy);
+  text-decoration: none;
+}
+
+.category-list a:hover,
+.category-list a:focus-visible {
+  border-color: var(--blue);
+  background: #eef5fb;
+}
+
+.category-list strong {
+  font-size: 16px;
+}
+
+.category-list span {
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 800;
+}
+
 .weather-tool-strip {
   display: grid;
   grid-template-columns: minmax(260px, 440px) auto auto;
@@ -1373,6 +1481,14 @@ label {
 
   nav {
     justify-content: flex-start;
+  }
+
+  .category-list {
+    grid-template-columns: 1fr;
+  }
+
+  .category-modal-card {
+    padding: 18px;
   }
 
   nav a {
