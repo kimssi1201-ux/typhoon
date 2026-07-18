@@ -406,6 +406,11 @@ main {
   box-shadow: 0 8px 18px rgba(0, 0, 0, 0.16);
 }
 
+.map-tools .map-style-toggle {
+  background: rgba(255, 255, 255, 0.94);
+  color: var(--navy);
+}
+
 .map-legend span {
   display: flex;
   align-items: center;

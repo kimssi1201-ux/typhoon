@@ -9,7 +9,7 @@
     <link rel="canonical" href="https://mustview.co.kr/" />
     <title>실시간 태풍 경로 지도 | 태풍 경로 안내</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-    <link rel="stylesheet" href="styles.css?v=20260718-no-hero" />
+    <link rel="stylesheet" href="styles.css?v=20260718-satellite" />
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8468106244002167" crossorigin="anonymous"></script>
   </head>
   <body>
@@ -39,10 +39,11 @@
             <div id="liveMap" class="live-map" aria-label="한글 지명 레이어가 포함된 실시간 태풍 경로 지도"></div>
             <div class="map-tools" aria-label="지도 보기 선택">
               <div class="map-tools-title">
-                <strong>실시간 태풍 지도</strong>
-                <span>전세계·한국 주변 경로</span>
+                <strong>태풍 위성영상 지도</strong>
+                <span>위성 배경·전세계·한국 주변 경로</span>
               </div>
               <div class="map-actions">
+                <button class="button map-style-toggle" id="mapStyleToggle" type="button">일반지도 보기</button>
                 <button class="button primary" id="globalTrackMap" type="button">전세계 태풍 추적</button>
                 <button class="button secondary" id="refreshMap" type="button">한국 주변 추적</button>
               </div>
@@ -62,7 +63,8 @@
             <p class="note">태풍 정보 종료 후에도 일정 시간 참고 화면이 표시될 수 있습니다.</p>
             <div class="map-meta">
               <span id="mapUpdated">마지막 갱신: 대기 중</span>
-              <span>지도: OpenStreetMap 기반 한글 보조 지명</span>
+              <span>지도: Esri 위성영상 + 한글 보조 지명</span>
+              <span>위성영상은 배경 참고용이며 실시간 관측 영상과 다를 수 있습니다.</span>
               <span>확인: 공식 발표와 재난문자 우선</span>
             </div>
             <a class="button ghost panel-link" href="#korea">국내영향 태풍 조회</a>
@@ -186,7 +188,7 @@
     </footer>
 
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    <script src="app.js?v=20260718-map-first"></script>
+    <script src="app.js?v=20260718-satellite"></script>
     <script>
       (() => {
         const replacements = [
