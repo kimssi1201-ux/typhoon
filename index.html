@@ -9,7 +9,7 @@
     <link rel="canonical" href="https://mustview.co.kr/" />
     <title>실시간 태풍 경로 지도 | 태풍 경로 안내</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-    <link rel="stylesheet" href="styles.css?v=20260718-tabs2" />
+    <link rel="stylesheet" href="styles.css?v=20260718-menu-single" />
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8468106244002167" crossorigin="anonymous"></script>
   </head>
   <body>
@@ -23,10 +23,13 @@
         </a>
         <nav aria-label="주요 메뉴">
           <a href="#map">현재 태풍</a>
-          <a href="#korea">국내영향</a>
-          <a href="#list">태풍목록</a>
-          <a href="#live">상세예측</a>
-          <a href="#safety">행동요령</a>
+          <a id="nav-korea" href="#korea" data-tab-target="korea">국내영향</a>
+          <a id="nav-list" href="#list" data-tab-target="list">태풍목록</a>
+          <a id="nav-live" href="#live" data-tab-target="live">상세예측</a>
+          <a id="nav-timeline" href="#timeline" data-tab-target="timeline">예측변화</a>
+          <a id="nav-guide" href="#guide" data-tab-target="guide">정보해석</a>
+          <a id="nav-safety" href="#safety" data-tab-target="safety">행동요령</a>
+          <a id="nav-faq" href="#faq" data-tab-target="faq">FAQ</a>
         </nav>
       </div>
     </header>
@@ -79,17 +82,7 @@
       <section class="notice"><strong>안내:</strong> 대피·통제 판단은 기상청 특보와 재난문자를 우선하세요.</section>
 
       <section class="workspace" aria-label="태풍 정보 메뉴">
-        <div class="workspace-tabs" role="tablist" aria-label="태풍 정보 메뉴">
-          <button class="workspace-tab is-active" id="tab-korea" type="button" role="tab" aria-selected="true" aria-controls="korea" data-tab-target="korea">국내영향</button>
-          <button class="workspace-tab" id="tab-list" type="button" role="tab" aria-selected="false" aria-controls="list" data-tab-target="list">태풍목록</button>
-          <button class="workspace-tab" id="tab-live" type="button" role="tab" aria-selected="false" aria-controls="live" data-tab-target="live">상세예측</button>
-          <button class="workspace-tab" id="tab-timeline" type="button" role="tab" aria-selected="false" aria-controls="timeline" data-tab-target="timeline">예측변화</button>
-          <button class="workspace-tab" id="tab-guide" type="button" role="tab" aria-selected="false" aria-controls="guide" data-tab-target="guide">정보해석</button>
-          <button class="workspace-tab" id="tab-safety" type="button" role="tab" aria-selected="false" aria-controls="safety" data-tab-target="safety">행동요령</button>
-          <button class="workspace-tab" id="tab-faq" type="button" role="tab" aria-selected="false" aria-controls="faq" data-tab-target="faq">자주 묻는 질문</button>
-        </div>
-
-        <section class="public-section korea-panel workspace-panel" id="korea" data-tab-panel role="tabpanel" aria-labelledby="tab-korea">
+        <section class="public-section korea-panel workspace-panel" id="korea" data-tab-panel role="tabpanel" aria-labelledby="nav-korea">
         <div class="section-head compact">
           <p class="eyebrow">국내 영향 태풍 조회</p>
           <h2 id="korea-title">우리나라에 영향을 준 태풍</h2>
@@ -105,7 +98,7 @@
         <div class="korea-typhoon-grid" id="koreaTyphoonGrid"></div>
         </section>
 
-        <section class="public-section list-panel workspace-panel" id="list" data-tab-panel role="tabpanel" aria-labelledby="tab-list" hidden>
+        <section class="public-section list-panel workspace-panel" id="list" data-tab-panel role="tabpanel" aria-labelledby="nav-list" hidden>
         <div class="section-head compact">
           <p class="eyebrow">태풍목록 조회</p>
           <h2 id="list-title">연도별 태풍목록에서 선택하기</h2>
@@ -120,7 +113,7 @@
         <div class="typhoon-list-grid" id="typhoonListGrid"></div>
         </section>
 
-        <section class="public-section live-api workspace-panel" id="live" data-tab-panel role="tabpanel" aria-labelledby="tab-live" hidden>
+        <section class="public-section live-api workspace-panel" id="live" data-tab-panel role="tabpanel" aria-labelledby="nav-live" hidden>
         <div class="section-head">
           <p class="eyebrow">태풍정보와 예측</p>
           <h2 id="live-title">선택한 태풍의 상세예측 조회</h2>
@@ -135,7 +128,7 @@
         <div class="storm-cards" id="stormCards"></div>
         </section>
 
-        <section class="public-section timeline-section workspace-panel" id="timeline" data-tab-panel role="tabpanel" aria-labelledby="tab-timeline" hidden>
+        <section class="public-section timeline-section workspace-panel" id="timeline" data-tab-panel role="tabpanel" aria-labelledby="nav-timeline" hidden>
         <div class="section-head compact">
           <p class="eyebrow">예측 흐름</p>
           <h2 id="timeline-title">예측 시점별 변화</h2>
@@ -145,7 +138,7 @@
         <div class="track-table-wrap"><table class="track-table"><thead><tr><th>구분</th><th>예측시각 UTC</th><th>위치</th><th>중심기압</th><th>최대풍속</th><th>반경</th></tr></thead><tbody id="trackTableBody"><tr><td colspan="6">조회 결과가 여기에 표시됩니다.</td></tr></tbody></table></div>
         </section>
 
-        <section class="content-grid workspace-panel" id="guide" data-tab-panel aria-label="태풍 정보 해석 안내" role="tabpanel" aria-labelledby="tab-guide" hidden>
+        <section class="content-grid workspace-panel" id="guide" data-tab-panel aria-label="태풍 정보 해석 안내" role="tabpanel" aria-labelledby="nav-guide" hidden>
         <article><h2>국내 영향 분류</h2><p>상륙·직접영향·간접영향으로 구분합니다.</p></article>
         <article><h2>태풍목록</h2><p>연도·번호·이름·영향 여부를 확인합니다.</p></article>
         <article><h2>발표번호</h2><p>발표 시점마다 예측 경로가 달라질 수 있습니다.</p></article>
@@ -154,7 +147,7 @@
         <article><h2>공식 판단</h2><p>공식 특보와 재난문자를 우선합니다.</p></article>
         </section>
 
-        <section class="safety workspace-panel" id="safety" data-tab-panel role="tabpanel" aria-labelledby="tab-safety" hidden>
+        <section class="safety workspace-panel" id="safety" data-tab-panel role="tabpanel" aria-labelledby="nav-safety" hidden>
         <p class="eyebrow">태풍 대비</p>
         <h2>태풍 단계별 행동요령</h2>
         <div class="action-grid">
@@ -167,7 +160,7 @@
         </div>
         </section>
 
-        <section class="faq workspace-panel" id="faq" data-tab-panel role="tabpanel" aria-labelledby="tab-faq" hidden>
+        <section class="faq workspace-panel" id="faq" data-tab-panel role="tabpanel" aria-labelledby="nav-faq" hidden>
         <div class="section-head compact"><p class="eyebrow">자주 묻는 질문</p><h2>태풍 경로 조회 안내</h2></div>
         <details open><summary>국내 영향 태풍은 무엇을 보여주나요?</summary><p>연도별 태풍 중 한반도 영향 분류, 최저 중심기압, 최대풍속, 발생 기간을 보여줍니다.</p></details>
         <details><summary>발표번호는 언제 쓰나요?</summary><p>특정 연도, 태풍번호, 발표번호의 분석과 예측을 확인할 때 씁니다.</p></details>
@@ -203,7 +196,7 @@
     </footer>
 
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    <script src="app.js?v=20260718-menu-scroll"></script>
+    <script src="app.js?v=20260718-menu-single"></script>
     <script>
       (() => {
         const replacements = [

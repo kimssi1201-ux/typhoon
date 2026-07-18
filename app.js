@@ -89,12 +89,18 @@ window.addEventListener("beforeunload",()=>window.clearInterval(autoRefreshId));
     tabs.forEach((tab) => {
       const active = tab.dataset.tabTarget === target;
       tab.classList.toggle("is-active", active);
-      tab.setAttribute("aria-selected", String(active));
-      tab.tabIndex = active ? 0 : -1;
+      if (tab.getAttribute("role") === "tab") {
+        tab.setAttribute("aria-selected", String(active));
+        tab.tabIndex = active ? 0 : -1;
+      } else if (active) {
+        tab.setAttribute("aria-current", "page");
+      } else {
+        tab.removeAttribute("aria-current");
+      }
     });
     panels.forEach((panel) => { panel.hidden = panel.id !== target; });
     if (updateUrl && window.location.hash !== `#${target}`) window.history.pushState({}, "", `#${target}`);
-    if (focus) document.getElementById(`tab-${target}`)?.focus();
+    if (focus) tabs.find((tab) => tab.dataset.tabTarget === target)?.focus();
     if (scroll) document.querySelector(".workspace")?.scrollIntoView({ behavior: "smooth", block: "start" });
   };
 
@@ -108,7 +114,10 @@ window.addEventListener("beforeunload",()=>window.clearInterval(autoRefreshId));
   };
 
   tabs.forEach((tab, index) => {
-    tab.addEventListener("click", () => activate(tab.dataset.tabTarget, { scroll: true }));
+    tab.addEventListener("click", (event) => {
+      event.preventDefault();
+      activate(tab.dataset.tabTarget, { scroll: true });
+    });
     tab.addEventListener("keydown", (event) => {
       if (!["ArrowRight", "ArrowLeft", "Home", "End"].includes(event.key)) return;
       event.preventDefault();
@@ -118,7 +127,7 @@ window.addEventListener("beforeunload",()=>window.clearInterval(autoRefreshId));
   });
   document.querySelectorAll('a[href^="#"]').forEach((link) => {
     const target = link.getAttribute("href").slice(1);
-    if (!panelIds.has(target)) return;
+    if (!panelIds.has(target) || link.dataset.tabTarget) return;
     link.addEventListener("click", (event) => { event.preventDefault(); activate(target, { scroll: true }); });
   });
   window.addEventListener("hashchange", activateFromHash);

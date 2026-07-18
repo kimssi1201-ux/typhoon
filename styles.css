@@ -177,6 +177,11 @@ nav a:hover {
   background: #eef5fb;
 }
 
+nav a.is-active {
+  background: var(--navy);
+  color: #fff;
+}
+
 .weather-tool-strip {
   display: grid;
   grid-template-columns: minmax(260px, 440px) auto auto;
@@ -675,41 +680,6 @@ main {
 .workspace {
   margin-top: 30px;
   scroll-margin-top: 76px;
-}
-
-.workspace-tabs {
-  display: flex;
-  gap: 4px;
-  overflow-x: auto;
-  padding: 5px;
-  border: 1px solid var(--line);
-  border-radius: 8px;
-  background: #fff;
-  box-shadow: 0 8px 20px rgba(21, 48, 76, 0.08);
-  scrollbar-width: thin;
-}
-
-.workspace-tab {
-  flex: 0 0 auto;
-  min-height: 42px;
-  padding: 0 15px;
-  border: 0;
-  border-radius: 6px;
-  background: transparent;
-  color: #456071;
-  font-weight: 900;
-  white-space: nowrap;
-  cursor: pointer;
-}
-
-.workspace-tab:hover {
-  background: #eef5fb;
-  color: var(--blue-dark);
-}
-
-.workspace-tab.is-active {
-  background: var(--navy);
-  color: #fff;
 }
 
 .workspace-panel {
