@@ -56,7 +56,7 @@ function togglePlayback(){if(!playbackPoints.length)return;if(playbackTimer){sto
 window.setTyphoonPlayback=setPlaybackPoints;
 async function readJsonResponse(res){const contentType=res.headers.get("content-type")||"";const text=await res.text();if(!contentType.includes("application/json")){const isHtml=/^\s*</.test(text);throw new Error(isHtml?"API 주소에서 JSON 대신 HTML 오류 페이지를 받았습니다. Cloudflare Pages Functions 배포와 환경변수 설정을 확인하세요.":"API 응답 형식이 JSON이 아닙니다.");}try{return JSON.parse(text);}catch{throw new Error("API 응답을 JSON으로 해석하지 못했습니다.");}}
 function renderTyphoonList(list,fallback=false){typhoonList=list;typhoonListStatus.textContent=`${fallback?"API 연결 전 예시 목록입니다.":"기상청 태풍목록을 불러왔습니다."} 총 ${list.length}개`;typhoonSelect.innerHTML='<option value="">태풍을 선택하세요</option>'+list.map(t=>`<option value="${t.id}">${t.year}년 ${t.sequence}호 ${t.nameKo} (${t.nameEn}) · ${t.effectLabel}</option>`).join("");typhoonListGrid.innerHTML=list.map(t=>`<button class="typhoon-list-card" type="button" data-id="${t.id}"><strong>${t.sequence}호 ${t.nameKo}</strong><span>${t.nameEn}</span><span>${t.effectLabel}</span><span>${t.status}</span><p>${formatUtcTime(t.startTimeUtc)} ~ ${formatUtcTime(t.endTimeUtc)}</p><p>${t.description||"설명 없음"}</p></button>`).join("");typhoonListGrid.querySelectorAll(".typhoon-list-card").forEach(btn=>btn.addEventListener("click",()=>selectTyphoon(btn.dataset.id)));}
-function selectTyphoon(id){selectedTyphoon=typhoonList.find(t=>t.id===id)||null;if(typhoonSelect)typhoonSelect.value=id;document.querySelectorAll(".typhoon-list-card").forEach(card=>card.classList.toggle("active",card.dataset.id===id));if(selectedTyphoon){const tmInput=document.querySelector("#typhoonTm");if(tmInput)tmInput.value=selectedTyphoon.endTimeUtc||selectedTyphoon.startTimeUtc||"";if(typhoonSeq&&!typhoonSeq.value)typhoonSeq.value="";stormSummary.textContent=`${selectedTyphoon.year}년 ${selectedTyphoon.sequence}호 ${selectedTyphoon.nameKo}(${selectedTyphoon.nameEn}) 선택됨 · 발표번호를 입력하면 상세 예측을 조회합니다.`;loadTyphoonData();}}
+function selectTyphoon(id){selectedTyphoon=typhoonList.find(t=>t.id===id)||null;if(typhoonSelect)typhoonSelect.value=id;document.querySelectorAll(".typhoon-list-card").forEach(card=>card.classList.toggle("active",card.dataset.id===id));if(selectedTyphoon){const tmInput=document.querySelector("#typhoonTm");if(tmInput)tmInput.value=selectedTyphoon.endTimeUtc||selectedTyphoon.startTimeUtc||"";if(typhoonSeq&&!typhoonSeq.value)typhoonSeq.value="";stormSummary.textContent=`${selectedTyphoon.year}년 ${selectedTyphoon.sequence}호 ${selectedTyphoon.nameKo}(${selectedTyphoon.nameEn}) 선택됨 · 최신 발표를 불러옵니다.`;loadTyphoonData();}}
 async function loadTyphoonList(event){event?.preventDefault();const year=typhoonYear?.value||new Date().getFullYear();typhoonListStatus.textContent="태풍목록을 불러오는 중입니다.";try{const res=await fetch(`/api/typhoon-list?YY=${encodeURIComponent(year)}`,{cache:"no-store",headers:{Accept:"application/json"}});const data=await readJsonResponse(res);if(!res.ok||!data.ok)throw new Error(data.message||"태풍목록 API 호출 실패");renderTyphoonList(data.typhoons);}catch(error){renderTyphoonList(sampleList,true);typhoonListStatus.textContent=`${error.message} 현재는 예시 목록을 표시합니다.`;}}
 function renderKoreaTyphoons(data,fallback=false){if(!koreaTyphoonGrid)return;const all=data.typhoons||[];const affected=data.affected||all.filter(t=>t.affectedKorea);const items=koreaOnlyAffected?.checked?affected:all;const year=data.year||koreaYear?.value||"-";koreaTyphoonStatus.textContent=`${fallback?"API 연결 전 예시 자료입니다.":"우리나라 영향 태풍 자료를 불러왔습니다."} 전체 ${all.length}개 · 표시 ${items.length}개`;impactSummary.textContent=`${year}년 국내 영향 태풍 ${affected.length}개 · 상륙, 직접영향, 간접영향 기준으로 분류했습니다.`;koreaTyphoonGrid.innerHTML=items.length?items.map(t=>`<button class="korea-card" type="button" data-seq="${t.sequence}"><span class="impact-badge impact-${t.effect||0}">${t.effectLabel||"영향 없음"}</span><strong>${t.sequence}호 ${t.nameKo||"이름 없음"}</strong><em>${t.nameEn||"-"}</em><p>${t.startDate||"-"} ~ ${t.endDate||"-"}</p><dl><div><dt>최저기압</dt><dd>${formatValue(t.minPressureHpa," hPa")}</dd></div><div><dt>최대풍속</dt><dd>${formatValue(t.maxWindMs," m/s")}</dd></div></dl></button>`).join(""):'<p class="empty-state">조건에 맞는 태풍이 없습니다. 전체 보기를 해제해 다른 태풍까지 확인하세요.</p>';koreaTyphoonGrid.querySelectorAll(".korea-card").forEach(card=>card.addEventListener("click",()=>{const item=all.find(t=>String(t.sequence)===card.dataset.seq);if(!item)return;selectedTyphoon={id:typhoonId(item),year:item.year||Number(year),sequence:item.sequence,nameKo:item.nameKo,nameEn:item.nameEn,effectLabel:item.effectLabel,startTimeUtc:"",endTimeUtc:""};typhoonYear.value=selectedTyphoon.year;typhoonSeq.value="";document.querySelector("#typhoonTm").value="";typhoonSelect.innerHTML=`<option value="${selectedTyphoon.id}" selected>${selectedTyphoon.year}년 ${selectedTyphoon.sequence}호 ${selectedTyphoon.nameKo} (${selectedTyphoon.nameEn}) · ${selectedTyphoon.effectLabel}</option>`;stormSummary.textContent=`${selectedTyphoon.year}년 ${selectedTyphoon.sequence}호 ${selectedTyphoon.nameKo}(${selectedTyphoon.nameEn}) · ${selectedTyphoon.effectLabel}. 발표번호를 입력하면 태풍정보+예측 API로 상세 경로를 조회합니다.`;location.hash="live";}));}
 async function loadKoreaTyphoons(event){event?.preventDefault();const year=koreaYear?.value||new Date().getFullYear();koreaTyphoonStatus.textContent="우리나라 영향 태풍 자료를 불러오는 중입니다.";try{const res=await fetch(`/api/korea-typhoons?year=${encodeURIComponent(year)}&numOfRows=100`,{cache:"no-store",headers:{Accept:"application/json"}});const data=await readJsonResponse(res);if(!res.ok||!data.ok)throw new Error(data.message||"국내 영향 태풍 API 호출 실패");renderKoreaTyphoons(data);}catch(error){renderKoreaTyphoons({year:2016,typhoons:sampleKoreaTyphoons,affected:sampleKoreaTyphoons},true);koreaTyphoonStatus.textContent=`${error.message} 현재는 예시 자료를 표시합니다.`;}}
@@ -72,25 +72,50 @@ renderTyphoonData = (data, isFallback = false) => {
     : "현재 발표된 태풍 자료가 없습니다.";
   if (stormSummary) stormSummary.textContent = isFallback
     ? "실제 자료를 조회하면 최신 발표 위치와 예측경로가 표시됩니다."
-    : "태풍목록에서 태풍을 선택하고 발표번호를 입력하세요.";
+    : "태풍목록에서 태풍을 선택하세요.";
 };
 
 const originalLoadTyphoonData = loadTyphoonData;
 loadTyphoonData = (event, options = {}) => {
-  const sequence = typhoonSeq?.value.trim();
   const isManualDetail = event?.currentTarget === typhoonApiForm;
-  if (!options.allowCurrent && (!selectedTyphoon || !sequence)) {
+  if (!options.allowCurrent && !selectedTyphoon) {
     if (typhoonApiStatus) typhoonApiStatus.textContent = !selectedTyphoon
       ? "먼저 태풍목록에서 태풍을 선택하세요."
-      : "발표번호를 입력하세요.";
+      : "태풍을 선택하세요.";
     if (stormSummary) stormSummary.textContent = !selectedTyphoon
       ? "태풍목록에서 태풍을 선택하면 상세예측을 조회할 수 있습니다."
-      : "선택한 태풍의 발표번호를 입력하면 분석 위치와 예측경로를 표시합니다.";
+      : "선택한 태풍의 최신 분석 위치와 예측경로를 표시합니다.";
     if (isManualDetail && !selectedTyphoon) document.querySelector('[data-tab-target="list"]')?.click();
     return Promise.resolve();
   }
   return originalLoadTyphoonData(event, options);
 };
+
+const originalSelectTyphoon = selectTyphoon;
+selectTyphoon = (id) => {
+  originalSelectTyphoon(id);
+  if (selectedTyphoon && stormSummary) stormSummary.textContent = `${selectedTyphoon.nameKo} 최신 발표를 불러오는 중입니다.`;
+};
+
+const originalRenderKoreaTyphoons = renderKoreaTyphoons;
+renderKoreaTyphoons = (data, fallback = false) => {
+  originalRenderKoreaTyphoons(data, fallback);
+  if (koreaTyphoonGrid) koreaTyphoonGrid.__typhoonItems = data?.typhoons || [];
+};
+
+const toKmaTime = (value) => {
+  const digits = String(value || "").replace(/\D/g, "").slice(0, 8);
+  return digits.length === 8 ? `${digits}0000` : "";
+};
+koreaTyphoonGrid?.addEventListener("click", (event) => {
+  const card = event.target.closest(".korea-card");
+  const item = card && koreaTyphoonGrid.__typhoonItems?.find((typhoon) => String(typhoon.sequence) === card.dataset.seq);
+  if (!item || !selectedTyphoon) return;
+  selectedTyphoon.startTimeUtc = toKmaTime(item.startDate);
+  selectedTyphoon.endTimeUtc = toKmaTime(item.endDate);
+  const tmInput = document.querySelector("#typhoonTm");
+  if (tmInput) tmInput.value = selectedTyphoon.endTimeUtc || selectedTyphoon.startTimeUtc || "";
+});
 
 initMap();
 typhoonListForm.addEventListener("submit",loadTyphoonList);
@@ -146,6 +171,10 @@ window.addEventListener("beforeunload",()=>window.clearInterval(autoRefreshId));
     tab.addEventListener("click", (event) => {
       event.preventDefault();
       activate(tab.dataset.tabTarget, { scroll: true });
+      if (tab.dataset.tabTarget === "live" && selectedTyphoon) {
+        if (stormSummary) stormSummary.textContent = `${selectedTyphoon.nameKo} 최신 발표를 불러오는 중입니다.`;
+        loadTyphoonData();
+      }
     });
     tab.addEventListener("keydown", (event) => {
       if (!["ArrowRight", "ArrowLeft", "Home", "End"].includes(event.key)) return;
@@ -159,6 +188,12 @@ window.addEventListener("beforeunload",()=>window.clearInterval(autoRefreshId));
     if (!panelIds.has(target) || link.dataset.tabTarget) return;
     link.addEventListener("click", (event) => { event.preventDefault(); activate(target, { scroll: true }); });
   });
-  window.addEventListener("hashchange", activateFromHash);
+  window.addEventListener("hashchange", () => {
+    activateFromHash();
+    if (window.location.hash === "#live" && selectedTyphoon) {
+      if (stormSummary) stormSummary.textContent = `${selectedTyphoon.nameKo} 최신 발표를 불러오는 중입니다.`;
+      loadTyphoonData();
+    }
+  });
   activateFromHash();
 })();

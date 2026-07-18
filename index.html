@@ -3,13 +3,13 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="description" content="실시간 태풍 경로, 전세계 열대저기압 추적, 우리나라 영향 태풍, 발표번호별 상세예측을 한글 지도와 표로 확인하는 태풍 정보 웹사이트입니다." />
+    <meta name="description" content="실시간 태풍 경로, 전세계 열대저기압 추적, 우리나라 영향 태풍, 태풍별 상세예측을 한글 지도와 표로 확인하는 태풍 정보 웹사이트입니다." />
     <meta name="theme-color" content="#17324d" />
     <meta name="google-adsense-account" content="ca-pub-8468106244002167" />
     <link rel="canonical" href="https://mustview.co.kr/" />
     <title>실시간 태풍 경로 지도 | 태풍 경로 안내</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-    <link rel="stylesheet" href="styles.css?v=20260718-menu-single" />
+    <link rel="stylesheet" href="styles.css?v=20260718-auto-latest2" />
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8468106244002167" crossorigin="anonymous"></script>
   </head>
   <body>
@@ -116,13 +116,13 @@
         <section class="public-section live-api workspace-panel" id="live" data-tab-panel role="tabpanel" aria-labelledby="nav-live" hidden>
         <div class="section-head">
           <p class="eyebrow">태풍정보와 예측</p>
-          <h2 id="live-title">선택한 태풍의 상세예측 조회</h2>
-          <p>발표번호별 분석 위치와 예측 경로를 확인합니다.</p>
+          <h2 id="live-title">태풍 상세예측 조회</h2>
+          <p>선택한 태풍의 최신 분석 위치와 예측 경로를 확인합니다.</p>
         </div>
         <form id="typhoonApiForm" class="section-tools detail-form">
           <input id="typhoonTm" type="hidden" />
-          <label>발표번호 <input id="typhoonSeq" type="number" min="1" placeholder="예: 8" /></label>
-          <button class="button primary" type="submit">상세 예측 조회</button>
+          <input id="typhoonSeq" type="hidden" value="" />
+          <button class="button primary" type="submit">최신 예측 다시 조회</button>
         </form>
         <div class="api-status" id="typhoonApiStatus" aria-live="polite">자료를 불러오기 전 예시 화면을 표시합니다.</div>
         <div class="storm-cards" id="stormCards"></div>
@@ -141,7 +141,7 @@
         <section class="content-grid workspace-panel" id="guide" data-tab-panel aria-label="태풍 정보 해석 안내" role="tabpanel" aria-labelledby="nav-guide" hidden>
         <article><h2>국내 영향 분류</h2><p>상륙·직접영향·간접영향으로 구분합니다.</p></article>
         <article><h2>태풍목록</h2><p>연도·번호·이름·영향 여부를 확인합니다.</p></article>
-        <article><h2>발표번호</h2><p>발표 시점마다 예측 경로가 달라질 수 있습니다.</p></article>
+        <article><h2>예측 시점</h2><p>선택한 태풍의 최신 발표 기준으로 표시합니다.</p></article>
         <article><h2>중심기압</h2><p>낮을수록 강한 태풍일 가능성이 큽니다.</p></article>
         <article><h2>최대풍속</h2><p>강풍반경과 폭풍반경 판단에 활용합니다.</p></article>
         <article><h2>공식 판단</h2><p>공식 특보와 재난문자를 우선합니다.</p></article>
@@ -163,9 +163,9 @@
         <section class="faq workspace-panel" id="faq" data-tab-panel role="tabpanel" aria-labelledby="nav-faq" hidden>
         <div class="section-head compact"><p class="eyebrow">자주 묻는 질문</p><h2>태풍 경로 조회 안내</h2></div>
         <details open><summary>국내 영향 태풍은 무엇을 보여주나요?</summary><p>연도별 태풍 중 한반도 영향 분류, 최저 중심기압, 최대풍속, 발생 기간을 보여줍니다.</p></details>
-        <details><summary>발표번호는 언제 쓰나요?</summary><p>특정 연도, 태풍번호, 발표번호의 분석과 예측을 확인할 때 씁니다.</p></details>
+        <details><summary>상세예측은 어떻게 조회하나요?</summary><p>태풍목록에서 태풍을 선택하면 최신 발표 기준의 분석 위치와 예측 경로를 자동으로 보여줍니다.</p></details>
         <details><summary>자료가 안 보일 때는 어떻게 하나요?</summary><p>잠시 후 새로고침하거나 다른 연도를 조회하세요. 공식 발표와 재난문자는 기상청과 지자체 안내를 우선 확인하세요.</p></details>
-        <details><summary>전세계 추적과 한국 주변 추적은 어떻게 다른가요?</summary><p>전세계 추적은 전세계 활성 열대저기압을 넓게 보여주고, 한국 주변 추적은 선택한 태풍의 발표번호별 상세 위치와 예측을 표시합니다.</p></details>
+        <details><summary>전세계 추적과 한국 주변 추적은 어떻게 다른가요?</summary><p>전세계 추적은 전세계 활성 열대저기압을 넓게 보여주고, 한국 주변 추적은 선택한 태풍의 최신 상세 위치와 예측을 표시합니다.</p></details>
         </section>
       </section>
     </main>
@@ -196,7 +196,7 @@
     </footer>
 
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    <script src="app.js?v=20260718-detail-guard"></script>
+    <script src="app.js?v=20260718-auto-latest2"></script>
     <script>
       (() => {
         const replacements = [

@@ -734,7 +734,7 @@ main {
 }
 
 .detail-form {
-  grid-template-columns: minmax(180px, 260px) auto;
+  grid-template-columns: minmax(180px, 260px);
 }
 
 label {
@@ -1147,6 +1147,10 @@ label {
   .section-tools,
   .api-form {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .detail-form {
+    grid-template-columns: minmax(180px, 260px);
   }
 
   .quick-status,
