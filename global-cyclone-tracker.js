@@ -83,7 +83,7 @@
   };
 
   const ensureButtons = () => {
-    const actions = $(".hero-actions");
+    const actions = $(".map-actions");
     const koreaButton = $("#refreshMap");
     if (!actions || !koreaButton) return;
     koreaButton.textContent = "한국 주변 추적";

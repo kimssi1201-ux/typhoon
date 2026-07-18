@@ -268,21 +268,6 @@ main {
   background: linear-gradient(180deg, #dfeff5 0, #eef6fa 100%);
 }
 
-.map-section-head {
-  display: block;
-  width: min(1280px, calc(100% - 32px));
-  margin: 0 auto;
-  padding: 10px 0 10px;
-}
-
-.breadcrumb {
-  grid-column: 1 / -1;
-  margin: 0;
-  color: #526b7f;
-  font-size: 13px;
-  font-weight: 800;
-}
-
 .eyebrow {
   margin: 0 0 7px;
   color: var(--orange);
@@ -292,7 +277,6 @@ main {
   text-transform: uppercase;
 }
 
-.map-section-head h1,
 .section-head h2,
 .safety h2,
 .faq h2 {
@@ -300,15 +284,6 @@ main {
   color: var(--navy);
   line-height: 1.2;
   letter-spacing: 0;
-}
-
-.map-section-head h1 {
-  font-size: clamp(28px, 3.6vw, 42px);
-}
-
-.map-section-head p:not(.breadcrumb):not(.eyebrow) {
-  margin: 8px 0 0;
-  color: #43596d;
 }
 
 .service-tabs {
@@ -396,7 +371,7 @@ main {
 }
 
 .map-tools-title,
-.map-tools .hero-actions {
+.map-tools .map-actions {
   pointer-events: auto;
 }
 
@@ -420,7 +395,7 @@ main {
   font-size: 12px;
 }
 
-.map-tools .hero-actions {
+.map-tools .map-actions {
   justify-content: flex-end;
   margin-top: 0;
 }
@@ -524,7 +499,7 @@ main {
   font-weight: 900;
 }
 
-.hero-actions {
+.map-actions {
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
@@ -1060,7 +1035,6 @@ label {
     justify-content: flex-start;
   }
 
-  .map-section-head,
   .map-layout {
     grid-template-columns: 1fr;
   }
@@ -1112,10 +1086,6 @@ label {
     grid-template-columns: 1fr;
   }
 
-  .map-section-head h1 {
-    font-size: 34px;
-  }
-
   .map-dashboard {
     padding-left: 0;
     padding-right: 0;
@@ -1133,7 +1103,7 @@ label {
     align-items: stretch;
   }
 
-  .map-tools .hero-actions {
+  .map-tools .map-actions {
     justify-content: flex-end;
   }
 
