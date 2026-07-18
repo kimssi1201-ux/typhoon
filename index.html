@@ -20,7 +20,6 @@
         <a class="brand" href="#main" aria-label="태풍 경로 안내 첫 화면으로 이동">
           <span aria-hidden="true">T</span>
           <strong>태풍 경로 안내</strong>
-          <small>실시간 태풍정보 서비스</small>
         </a>
         <nav aria-label="주요 메뉴">
           <a href="#map">현재 태풍</a>
@@ -40,7 +39,7 @@
             <div class="map-tools" aria-label="지도 보기 선택">
               <div class="map-tools-title">
                 <strong>태풍 위성영상 지도</strong>
-                <span>위성 배경·전세계·한국 주변 경로</span>
+                <span>전세계·한국 주변 경로</span>
               </div>
               <div class="map-actions">
                 <button class="button map-style-toggle" id="mapStyleToggle" type="button">일반지도 보기</button>
@@ -65,13 +64,11 @@
           <aside class="live-panel" aria-label="태풍 실시간 요약">
             <p class="eyebrow">태풍(열대저압부) 정보</p>
             <h2>현재 상황 요약</h2>
-            <p class="panel-copy">자료가 갱신되면 분석 위치, 예측 위치, 중심기압, 최대풍속, 강풍반경을 지도와 표에 표시합니다.</p>
-            <p class="note">태풍 정보 종료 후에도 일정 시간 참고 화면이 표시될 수 있습니다.</p>
+            <p class="panel-copy">중심기압·최대풍속·예측경로를 확인합니다.</p>
             <div class="map-meta">
               <span id="mapUpdated">마지막 갱신: 대기 중</span>
-              <span>지도: Esri 위성영상 + 한글 보조 지명</span>
-              <span>위성영상은 배경 참고용이며 실시간 관측 영상과 다를 수 있습니다.</span>
-              <span>확인: 공식 발표와 재난문자 우선</span>
+              <span>위성지도는 배경 참고용입니다.</span>
+              <span>공식 특보·재난문자 우선</span>
             </div>
             <a class="button ghost panel-link" href="#korea">국내영향 태풍 조회</a>
             <div class="summary-box" id="stormSummary">태풍 자료를 불러오면 요약이 표시됩니다.</div>
@@ -79,13 +76,13 @@
         </div>
       </section>
 
-      <section class="notice"><strong>중요 안내:</strong> 이 사이트는 공개 기상 자료를 보기 쉽게 재구성한 정보 화면입니다. 실제 대피, 운항, 등하교, 시설 통제 판단은 기상청과 지자체의 최신 특보와 재난문자를 우선하세요.</section>
+      <section class="notice"><strong>안내:</strong> 대피·통제 판단은 기상청 특보와 재난문자를 우선하세요.</section>
 
       <section class="public-section korea-panel" id="korea" aria-labelledby="korea-title">
         <div class="section-head compact">
           <p class="eyebrow">국내 영향 태풍 조회</p>
           <h2 id="korea-title">우리나라에 영향을 준 태풍</h2>
-          <p>연도를 입력하면 상륙, 직접영향, 간접영향으로 분류된 태풍을 확인할 수 있습니다. 예: 2016년에는 말라카스, 차바가 국내 영향 태풍으로 분류됩니다.</p>
+          <p>연도별로 우리나라에 영향을 준 태풍을 확인합니다.</p>
         </div>
         <form id="koreaTyphoonForm" class="section-tools korea-form">
           <label>조회 연도 <input id="koreaYear" type="number" min="1900" max="2100" value="2016" /></label>
@@ -101,7 +98,7 @@
         <div class="section-head compact">
           <p class="eyebrow">태풍목록 조회</p>
           <h2 id="list-title">연도별 태풍목록에서 선택하기</h2>
-          <p>연도를 입력하면 태풍 이름, 번호, 한반도 영향, 시작과 종료 시각을 불러옵니다. 목록에서 태풍을 선택하면 아래 상세예측 화면과 지도에 연결됩니다.</p>
+          <p>태풍을 선택하면 지도와 상세예측으로 연결됩니다.</p>
         </div>
         <form id="typhoonListForm" class="section-tools list-form">
           <label>연도 <input id="typhoonYear" type="number" min="1900" max="2100" value="2012" /></label>
@@ -116,7 +113,7 @@
         <div class="section-head">
           <p class="eyebrow">태풍정보와 예측</p>
           <h2 id="live-title">선택한 태풍의 상세예측 조회</h2>
-          <p>태풍목록에서 태풍을 선택한 뒤 발표번호를 입력하면 분석 위치와 예측 경로를 확인합니다.</p>
+          <p>발표번호별 분석 위치와 예측 경로를 확인합니다.</p>
         </div>
         <form id="typhoonApiForm" class="section-tools detail-form">
           <input id="typhoonTm" type="hidden" />
@@ -131,19 +128,19 @@
         <div class="section-head compact">
           <p class="eyebrow">예측 흐름</p>
           <h2>예측 시점별 변화</h2>
-          <p>시간이 지날수록 위치, 중심기압, 최대풍속, 반경이 어떻게 변하는지 확인하세요.</p>
+          <p>예측 시점별 위치와 강도 변화를 확인합니다.</p>
         </div>
         <div class="timeline-list" id="timelineList"></div>
         <div class="track-table-wrap"><table class="track-table"><thead><tr><th>구분</th><th>예측시각 UTC</th><th>위치</th><th>중심기압</th><th>최대풍속</th><th>반경</th></tr></thead><tbody id="trackTableBody"><tr><td colspan="6">조회 결과가 여기에 표시됩니다.</td></tr></tbody></table></div>
       </section>
 
       <section class="content-grid" id="guide" aria-label="태풍 정보 해석 안내">
-        <article><h2>국내 영향 분류</h2><p>상륙, 직접영향, 간접영향, 영향 없음으로 구분됩니다. 국내 영향만 보기 옵션은 상륙, 직접, 간접 영향 태풍을 보여줍니다.</p></article>
-        <article><h2>태풍목록</h2><p>연도별 태풍번호와 이름, 한반도 영향 여부, 시작과 종료 시각을 먼저 확인하면 과거 태풍 자료 탐색이 쉬워집니다.</p></article>
-        <article><h2>발표번호</h2><p>같은 태풍도 발표번호에 따라 분석 위치와 예측 경로가 달라집니다. 특정 발표 시점의 예보를 비교할 때 사용합니다.</p></article>
-        <article><h2>중심기압</h2><p>중심기압이 낮을수록 강한 태풍일 가능성이 큽니다. 피해는 이동속도, 반경, 지형과 함께 판단해야 합니다.</p></article>
-        <article><h2>최대풍속</h2><p>초속 15m 이상은 강풍반경, 25m 이상은 폭풍반경 판단에 연결됩니다.</p></article>
-        <article><h2>공식 판단</h2><p>사이트의 가공 정보보다 기상청 특보, 재난문자, 지자체 통제 안내가 우선입니다.</p></article>
+        <article><h2>국내 영향 분류</h2><p>상륙·직접영향·간접영향으로 구분합니다.</p></article>
+        <article><h2>태풍목록</h2><p>연도·번호·이름·영향 여부를 확인합니다.</p></article>
+        <article><h2>발표번호</h2><p>발표 시점마다 예측 경로가 달라질 수 있습니다.</p></article>
+        <article><h2>중심기압</h2><p>낮을수록 강한 태풍일 가능성이 큽니다.</p></article>
+        <article><h2>최대풍속</h2><p>강풍반경과 폭풍반경 판단에 활용합니다.</p></article>
+        <article><h2>공식 판단</h2><p>공식 특보와 재난문자를 우선합니다.</p></article>
       </section>
 
       <section class="safety" id="safety">
@@ -179,11 +176,11 @@
       <div class="footer-inner">
         <section>
           <h2>태풍 경로 안내</h2>
-          <p>지도, 표, 카드 형태로 태풍 경로와 영향 정보를 정리하는 독립 정보 서비스입니다.</p>
+          <p>태풍 경로와 영향 정보를 한눈에 확인합니다.</p>
         </section>
         <section>
           <h2>자료 출처</h2>
-          <p>기상청 공개자료, OpenStreetMap, GDACS 등 공개 자료를 참고합니다.</p>
+          <p>기상청 공개자료와 지도 서비스를 참고합니다.</p>
         </section>
         <section>
           <h2>안내</h2>
