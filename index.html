@@ -9,7 +9,7 @@
     <link rel="canonical" href="https://mustview.co.kr/" />
     <title>현재 태풍과 날씨 | 태풍 경로 안내</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-    <link rel="stylesheet" href="styles.css?v=20260718-category-modal1" />
+    <link rel="stylesheet" href="styles.css?v=20260718-related-info1" />
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8468106244002167" crossorigin="anonymous"></script>
   </head>
   <body>
@@ -44,6 +44,7 @@
           <a href="typhoon-guide.html"><strong>태풍 해설</strong><span>경로·기압·풍속 읽는 방법</span></a>
           <a href="#safety" data-tab-target="safety"><strong>행동요령</strong><span>단계별·지역별 대비</span></a>
           <a href="data-sources.html"><strong>자료 출처</strong><span>갱신 주기와 공식 링크</span></a>
+          <a href="#related-info"><strong>관련 정보</strong><span>공식 발표와 해석 기준</span></a>
           <a href="#faq" data-tab-target="faq"><strong>FAQ</strong><span>현재 태풍·날씨 안내</span></a>
           <a href="about.html"><strong>사이트 소개</strong><span>운영 목적과 원칙</span></a>
           <a href="contact.html"><strong>문의</strong><span>오류·출처 수정 제안</span></a>
@@ -97,6 +98,68 @@
       </section>
 
       <section class="notice"><strong>안내:</strong> 대피·통제 판단은 기상청 특보와 재난문자를 우선하세요.</section>
+
+      <section class="related-info" id="related-info" aria-labelledby="relatedInfoTitle">
+        <div class="section-head">
+          <p class="eyebrow">태풍 관련 정보</p>
+          <h2 id="relatedInfoTitle">공식 자료와 해석 기준을 한곳에서 확인하세요</h2>
+          <p>지도에서 위치를 확인한 다음 통보문, 특보, 행동요령을 함께 살펴보면 현재 상황을 더 정확하게 판단할 수 있습니다.</p>
+        </div>
+        <div class="related-info-grid">
+          <a class="info-card" href="https://www.weather.go.kr/w/hazard/typhoon/report.do" target="_blank" rel="noopener">
+            <span class="info-card-tag">공식 발표</span>
+            <strong>태풍 통보문</strong>
+            <p>현재 위치, 중심기압, 최대풍속, 이동 방향과 다음 발표 시각을 확인합니다.</p>
+            <em>기상청에서 확인하기</em>
+          </a>
+          <a class="info-card" href="https://www.weather.go.kr/w/typhoon/ko/weather/typhoon_02.jsp" target="_blank" rel="noopener">
+            <span class="info-card-tag">상세 지도</span>
+            <strong>태풍 상세정보</strong>
+            <p>70% 확률반경, 강풍반경, 폭풍반경, 예측경로를 지도 위에서 비교합니다.</p>
+            <em>상세 화면 열기</em>
+          </a>
+          <a class="info-card" href="https://www.weather.go.kr/w/warning/obs-warning.do" target="_blank" rel="noopener">
+            <span class="info-card-tag">위험 판단</span>
+            <strong>기상특보 확인</strong>
+            <p>강풍, 호우, 풍랑, 폭풍해일 등 지역별 발표 특보를 확인합니다.</p>
+            <em>현재 특보 보기</em>
+          </a>
+          <a class="info-card" href="https://www.weather.go.kr/w/hazard/safety-guide/typhoon.do" target="_blank" rel="noopener">
+            <span class="info-card-tag">안전 행동</span>
+            <strong>태풍 국민행동요령</strong>
+            <p>태풍 접근 전, 영향 중, 통과 후에 해야 할 행동을 단계별로 확인합니다.</p>
+            <em>행동요령 확인</em>
+          </a>
+          <a class="info-card" href="https://www.safekorea.go.kr/" target="_blank" rel="noopener">
+            <span class="info-card-tag">재난 안내</span>
+            <strong>국민안전24</strong>
+            <p>대피소, 재난문자, 지역별 재난안전 정보를 함께 확인할 수 있습니다.</p>
+            <em>안전 정보 열기</em>
+          </a>
+          <a class="info-card" href="https://www.gdacs.org/" target="_blank" rel="noopener">
+            <span class="info-card-tag">전세계 감시</span>
+            <strong>세계 재난 모니터</strong>
+            <p>국내 발표 범위를 넘어 전세계 열대저기압과 재난 상황을 비교합니다.</p>
+            <em>세계 현황 보기</em>
+          </a>
+        </div>
+        <div class="info-reading">
+          <div class="info-reading-intro">
+            <p class="eyebrow">읽는 방법</p>
+            <h3>태풍 수치를 볼 때 꼭 구분하세요</h3>
+            <p>확률반경은 예보 위치의 불확실성을 나타내는 영역이며, 그 안 전체가 위험하다는 뜻은 아닙니다. 실제 피해 가능성은 특보, 강풍반경, 폭풍반경, 지역 지형과 함께 판단해야 합니다.</p>
+            <a class="button ghost" href="typhoon-guide.html">태풍 수치 해설 자세히 보기</a>
+          </div>
+          <dl class="metric-guide">
+            <div><dt>중심기압</dt><dd>일반적으로 낮을수록 태풍의 세력이 강한 편이지만, 단일 수치만으로 피해 규모를 판단하지 않습니다.</dd></div>
+            <div><dt>최대풍속</dt><dd>태풍의 강도를 보여주는 핵심 지표입니다. 순간적으로 더 강한 돌풍이 나타날 수 있습니다.</dd></div>
+            <div><dt>강풍반경</dt><dd>강한 바람이 불 수 있는 범위를 나타냅니다. 넓을수록 영향 지역이 커질 수 있습니다.</dd></div>
+            <div><dt>폭풍반경</dt><dd>매우 강한 바람이 예상되는 범위입니다. 해안과 항만에서는 특히 주의해야 합니다.</dd></div>
+            <div><dt>이동속도</dt><dd>태풍이 이동하는 속도입니다. 느릴수록 한 지역에 비와 바람이 오래 이어질 수 있습니다.</dd></div>
+            <div><dt>70% 확률반경</dt><dd>예측 시점의 중심이 들어갈 가능성이 높은 범위입니다. 피해 범위와 같은 의미가 아닙니다.</dd></div>
+          </dl>
+        </div>
+      </section>
 
       <section class="workspace" aria-label="실시간 태풍과 날씨 정보">
         <section class="public-section live-api workspace-panel" id="live" data-tab-panel role="tabpanel" aria-label="현재 태풍 상세 정보">
@@ -199,7 +262,7 @@
     </footer>
 
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    <script src="app.js?v=20260718-category-modal1"></script>
+    <script src="app.js?v=20260718-related-info1"></script>
     <script>
       (() => {
         const replacements = [

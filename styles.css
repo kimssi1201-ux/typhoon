@@ -883,6 +883,118 @@ main {
   color: #57321f;
 }
 
+.related-info {
+  margin: 34px 0 20px;
+  padding: 26px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #fff;
+  box-shadow: 0 10px 26px rgba(21, 48, 76, 0.07);
+}
+
+.related-info .section-head {
+  margin-bottom: 20px;
+}
+
+.related-info-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.info-card {
+  display: grid;
+  align-content: start;
+  gap: 6px;
+  min-height: 188px;
+  padding: 17px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: #f9fbfd;
+  color: var(--navy);
+  text-decoration: none;
+}
+
+.info-card:hover,
+.info-card:focus-visible {
+  border-color: var(--blue);
+  background: #eef5fb;
+}
+
+.info-card-tag {
+  color: var(--orange);
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.info-card strong {
+  font-size: 18px;
+  line-height: 1.25;
+}
+
+.info-card p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.55;
+}
+
+.info-card em {
+  margin-top: auto;
+  color: var(--blue-dark);
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 900;
+}
+
+.info-reading {
+  display: grid;
+  grid-template-columns: minmax(240px, 0.85fr) minmax(0, 1.5fr);
+  gap: 22px;
+  margin-top: 24px;
+  padding-top: 24px;
+  border-top: 1px solid var(--line);
+}
+
+.info-reading-intro h3 {
+  margin: 0 0 10px;
+  color: var(--navy);
+  font-size: 22px;
+  line-height: 1.25;
+}
+
+.info-reading-intro p:not(.eyebrow) {
+  margin: 0 0 16px;
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.metric-guide {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  margin: 0;
+}
+
+.metric-guide div {
+  padding: 13px;
+  border-left: 3px solid #a9cbe3;
+  background: #f7fafc;
+}
+
+.metric-guide dt {
+  color: var(--navy);
+  font-size: 14px;
+  font-weight: 900;
+}
+
+.metric-guide dd {
+  margin: 4px 0 0;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.55;
+}
+
 .workspace {
   margin-top: 30px;
   scroll-margin-top: 76px;
@@ -1459,8 +1571,13 @@ label {
   .timeline-list,
   .source-grid,
   .content-grid,
-  .action-grid {
+  .action-grid,
+  .related-info-grid {
     grid-template-columns: repeat(2, 1fr);
+  }
+
+  .info-reading {
+    grid-template-columns: 1fr;
   }
 
   .weather-overview {
@@ -1587,8 +1704,14 @@ label {
   .source-grid,
   .content-grid,
   .action-grid,
+  .related-info-grid,
+  .metric-guide,
   .footer-inner {
     grid-template-columns: 1fr;
+  }
+
+  .related-info {
+    padding: 20px;
   }
 
   .button {
