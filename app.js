@@ -124,6 +124,46 @@ async function loadCurrentWeather(event) {
   }
 }
 
+function kmaCurrentQueryTime() {
+  const parts = new Intl.DateTimeFormat("en-CA", {
+    timeZone: "Asia/Seoul",
+    calendar: "gregory",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+    hourCycle: "h23"
+  }).formatToParts(new Date()).reduce((result, part) => {
+    if (part.type !== "literal") result[part.type] = part.value;
+    return result;
+  }, {});
+  const minute = String(Math.floor(Number(parts.minute || 0) / 10) * 10).padStart(2, "0");
+  return `${parts.year}${parts.month}${parts.day}${parts.hour}${minute}`;
+}
+
+async function loadKoreaTyphoonMap(event) {
+  event?.preventDefault();
+  window.__trackingMode = "korea";
+  const map = window.__liveTyphoonMap || typhoonMap;
+  map?.setView([35.7, 127.8], 5);
+  if (typhoonApiStatus) typhoonApiStatus.textContent = "한국 주변 기상청 태풍 자료를 확인하는 중입니다.";
+  try {
+    const query = new URLSearchParams({ tm: kmaCurrentQueryTime(), mode: "1" });
+    const response = await fetch(`/api/typhoon?${query.toString()}`, { cache: "no-store", headers: { Accept: "application/json" } });
+    const data = await readJsonResponse(response);
+    if (!response.ok || !data.ok) throw new Error(data.message || "한국 주변 태풍 자료 조회에 실패했습니다.");
+    selectedTyphoon = null;
+    renderTyphoonData(data);
+    if (!data.storms?.length) map?.setView([35.7, 127.8], 5);
+  } catch (error) {
+    renderTyphoonData({ ok: true, count: 0, storms: [] }, false);
+    if (typhoonApiStatus) typhoonApiStatus.textContent = `${error.message} 잠시 후 다시 확인하세요.`;
+    map?.setView([35.7, 127.8], 5);
+  }
+}
+window.loadKoreaTyphoonMap = loadKoreaTyphoonMap;
+
 function setCategoryModal(open) {
   if (!categoryModal) return;
   if (open) {
@@ -148,7 +188,7 @@ renderTyphoonData = (data, isFallback = false) => {
     : "현재 발표된 태풍 자료가 없습니다.";
   if (stormSummary) stormSummary.textContent = isFallback
     ? "실제 자료를 조회하면 최신 발표 위치와 예측경로가 표시됩니다."
-    : "태풍목록에서 태풍을 선택하세요.";
+    : "현재 기상청에서 발표한 태풍 자료가 없습니다.";
 };
 
 const originalLoadTyphoonData = loadTyphoonData;
@@ -205,6 +245,7 @@ koreaTyphoonForm?.addEventListener("submit",loadKoreaTyphoons);
 koreaOnlyAffected?.addEventListener("change",()=>loadKoreaTyphoons());
 weatherForm?.addEventListener("submit",loadCurrentWeather);
 weatherLocation?.addEventListener("change",()=>loadCurrentWeather());
+refreshMap?.addEventListener("click", loadKoreaTyphoonMap);
 categoryOpen?.addEventListener("click", () => setCategoryModal(true));
 categoryClose?.addEventListener("click", () => setCategoryModal(false));
 categoryLinks.forEach((link) => link.addEventListener("click", () => setCategoryModal(false)));
