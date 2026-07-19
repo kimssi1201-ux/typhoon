@@ -27,7 +27,7 @@ const MAP_CAPTURE = `<script id="leaflet-map-capture">
   window.addEventListener("load", install, { once: true });
 })();
 </script>`;
-const GLOBAL_TRACKER = '<script id="global-cyclone-tracker-loader" src="/global-cyclone-tracker.js?v=20260718-playback" defer></script>';
+const GLOBAL_TRACKER = '<script id="global-cyclone-tracker-loader" src="/global-cyclone-tracker.js?v=20260719-popup-info1" defer></script>';
 
 function canonicalTag(requestUrl) {
   const url = new URL(requestUrl);

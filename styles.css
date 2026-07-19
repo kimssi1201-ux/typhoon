@@ -1337,6 +1337,15 @@ label {
   color: var(--blue-dark);
 }
 
+.typhoon-popup p {
+  margin: 3px 0;
+}
+
+.typhoon-popup a {
+  color: var(--blue-dark);
+  font-weight: 900;
+}
+
 .analysis-marker {
   filter: drop-shadow(0 0 8px rgba(229, 111, 47, 0.7));
 }

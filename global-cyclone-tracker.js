@@ -121,12 +121,28 @@
   };
 
   const markerPopup = (event) => {
-    const report = event.reportUrl ? `<br><a href="${escapeHtml(event.reportUrl)}" target="_blank" rel="noopener">상세 보고서 열기</a>` : "";
-    return `<div class="typhoon-popup"><strong>${escapeHtml(event.name)}</strong><br>` +
-      `상태: ${event.isCurrent ? "활성" : "최근 종료"} · ${escapeHtml(event.alertLevel)}<br>` +
-      `최대풍속: ${event.severityKmh ?? "-"} km/h<br>` +
-      `지역: ${escapeHtml(event.country || "-")}<br>` +
-      `출처: ${escapeHtml(event.source || "GDACS")}${report}</div>`;
+    const reportUrl = event.reportUrl || event.detailsUrl;
+    const report = reportUrl ? `<a href="${escapeHtml(reportUrl)}" target="_blank" rel="noopener">상세 보고서 열기</a>` : "";
+    const coordinates = Number.isFinite(event.lat) && Number.isFinite(event.lon)
+      ? `${event.lat.toFixed(1)}°, ${event.lon.toFixed(1)}°`
+      : "-";
+    return `<div class="typhoon-popup"><strong>${escapeHtml(event.name)}</strong>` +
+      `<p>상태: ${event.isCurrent ? "활성" : "최근 종료"} · ${escapeHtml(event.alertLevel)}</p>` +
+      `<p>최대풍속: ${event.severityKmh ?? "-"} km/h${event.severityText ? ` (${escapeHtml(event.severityText)})` : ""}</p>` +
+      `<p>위치: ${coordinates}</p>` +
+      `<p>지역: ${escapeHtml(event.country || "영향 지역 정보 없음")}</p>` +
+      `<p>자료: ${escapeHtml(event.source || "GDACS")}</p>` +
+      (report ? `<p>${report}</p>` : "") +
+      `</div>`;
+  };
+
+  const revealEvent = (event, layer) => {
+    const summary = $("#stormSummary");
+    const notice = $("#globalCycloneNotice");
+    const wind = event.severityKmh ? `${event.severityKmh} km/h` : "풍속 자료 없음";
+    if (summary) summary.textContent = `${event.name} 선택됨 · ${event.isCurrent ? "현재 활성" : "최근 종료"} · 최대풍속 ${wind}. 지도 팝업에서 상세 정보를 확인하세요.`;
+    if (notice) notice.textContent = `${event.name} 선택 · ${nowText()} · 자료 출처: ${event.source || "GDACS"}`;
+    layer.openPopup();
   };
 
   const renderMap = async (events, activeCount) => {
@@ -142,21 +158,25 @@
     }
     valid.forEach((event) => {
       const color = event.isCurrent ? alertColor(event.alertLevel) : "#6b7c93";
-      window.L.circleMarker([event.lat, event.lon], {
+      const popup = markerPopup(event);
+      const popupOptions = { maxWidth: 300, autoPan: true };
+      const marker = window.L.circleMarker([event.lat, event.lon], {
         radius: event.isCurrent ? 10 : 7,
         color,
         weight: 3,
         fillColor: color,
         fillOpacity: event.isCurrent ? 0.9 : 0.45
-      }).bindPopup(markerPopup(event)).addTo(globalLayer);
-      window.L.circle([event.lat, event.lon], {
+      }).bindPopup(popup, popupOptions).addTo(globalLayer);
+      marker.on("click", () => revealEvent(event, marker));
+      const impactCircle = window.L.circle([event.lat, event.lon], {
         radius: Math.max(90000, Math.min(450000, (event.severityKmh || 80) * 2500)),
         color,
         weight: 1,
         opacity: event.isCurrent ? 0.35 : 0.18,
         fillColor: color,
         fillOpacity: event.isCurrent ? 0.08 : 0.035
-      }).addTo(globalLayer);
+      }).bindPopup(popup, popupOptions).addTo(globalLayer);
+      impactCircle.on("click", () => revealEvent(event, impactCircle));
     });
     const bounds = window.L.latLngBounds(valid.map((event) => [event.lat, event.lon]));
     map.fitBounds(bounds.pad(0.45), { maxZoom: activeCount > 0 ? 4 : 3 });
