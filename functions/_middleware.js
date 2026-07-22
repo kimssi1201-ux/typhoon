@@ -1,5 +1,5 @@
-const ADSENSE_META = '<meta name="google-adsense-account" content="ca-pub-8468106244002167">';
-const ADSENSE_SNIPPET = '<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8468106244002167" crossorigin="anonymous"></script>';
+const ADSENSE_META = '<meta name="google-adsense-account" content="ca-pub-5751319666030430">';
+const ADSENSE_SNIPPET = '<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5751319666030430" crossorigin="anonymous"></script>';
 const CANONICAL_ORIGIN = "https://mustview.co.kr";
 const MAP_CAPTURE = `<script id="leaflet-map-capture">
 (() => {
