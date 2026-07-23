@@ -168,15 +168,17 @@
         fillOpacity: event.isCurrent ? 0.9 : 0.45
       }).bindPopup(popup, popupOptions).addTo(globalLayer);
       marker.on("click", () => revealEvent(event, marker));
-      const impactCircle = window.L.circle([event.lat, event.lon], {
-        radius: Math.max(90000, Math.min(450000, (event.severityKmh || 80) * 2500)),
-        color,
-        weight: 1,
-        opacity: event.isCurrent ? 0.35 : 0.18,
-        fillColor: color,
-        fillOpacity: event.isCurrent ? 0.08 : 0.035
-      }).bindPopup(popup, popupOptions).addTo(globalLayer);
-      impactCircle.on("click", () => revealEvent(event, impactCircle));
+      if (window.__mapLayerVisibility?.wind !== false) {
+        const impactCircle = window.L.circle([event.lat, event.lon], {
+          radius: Math.max(90000, Math.min(450000, (event.severityKmh || 80) * 2500)),
+          color,
+          weight: 1,
+          opacity: event.isCurrent ? 0.35 : 0.18,
+          fillColor: color,
+          fillOpacity: event.isCurrent ? 0.08 : 0.035
+        }).bindPopup(popup, popupOptions).addTo(globalLayer);
+        impactCircle.on("click", () => revealEvent(event, impactCircle));
+      }
     });
     const bounds = window.L.latLngBounds(valid.map((event) => [event.lat, event.lon]));
     map.fitBounds(bounds.pad(0.45), { maxZoom: activeCount > 0 ? 4 : 3 });
@@ -241,6 +243,8 @@
       if (!response.ok || !data.ok) throw new Error(data.message || "전세계 열대저기압 자료 조회에 실패했습니다.");
       const displayEvents = data.active || [];
       const checkedAt = nowText();
+      window.__globalCycloneData = data;
+      window.dispatchEvent(new CustomEvent("global-cyclones-updated", { detail: data }));
       await renderMap(displayEvents, data.activeCount || 0);
       renderPanels(data, displayEvents, checkedAt);
     } catch (error) {
@@ -256,4 +260,8 @@
   setInterval(() => {
     if (window.__trackingMode === "global") loadGlobalCyclones(false);
   }, 5 * 60 * 1000);
+  window.addEventListener("map-layers-changed", () => {
+    const data = window.__globalCycloneData;
+    if (window.__trackingMode === "global" && data) renderMap(data.active || [], data.activeCount || 0);
+  });
 })();

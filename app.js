@@ -4,6 +4,7 @@ const stormCards = document.querySelector("#stormCards");
 const trackTableBody = document.querySelector("#trackTableBody");
 const mapUpdated = document.querySelector("#mapUpdated");
 const refreshMap = document.querySelector("#refreshMap");
+const regionMap = document.querySelector("#regionMap");
 const stormSummary = document.querySelector("#stormSummary");
 const timelineList = document.querySelector("#timelineList");
 const typhoonListForm = document.querySelector("#typhoonListForm");
@@ -35,7 +36,8 @@ const categoryOpen = document.querySelector("#categoryOpen");
 const categoryClose = document.querySelector("#categoryClose");
 const categoryLinks = document.querySelectorAll("#categoryModal a");
 
-let typhoonMap, typhoonLayer, labelLayer, weatherRefreshId;
+let typhoonMap, typhoonLayer, labelLayer, weatherRefreshId, kmaRefreshId;
+let weatherRequest = null;
 let typhoonList = [];
 let selectedTyphoon = null;
 let playbackPoints = [];
@@ -105,23 +107,42 @@ function renderCurrentWeather(data) {
     ["구름량", `${weatherNumber(current.cloud_cover)} ${units.cloud_cover || "%"}`],
     ["돌풍", `${weatherNumber(current.wind_gusts_10m, 1)} ${units.wind_gusts_10m || "m/s"}`]
   ].map(([label, value]) => `<article><span>${label}</span><strong>${value}</strong></article>`).join("");
+  window.__weatherSnapshot = data;
+  window.dispatchEvent(new CustomEvent("weather-updated", { detail: data }));
 }
 
 async function loadCurrentWeather(event) {
   event?.preventDefault();
   const city = weatherLocation?.value || "서울";
+  if (weatherRequest?.city === city) return weatherRequest.promise;
   if (weatherStatus) weatherStatus.textContent = `${city} 현재 날씨를 불러오는 중입니다.`;
-  try {
+  const promise = (async () => {
+    try {
     const response = await fetch(`/api/current-weather?city=${encodeURIComponent(city)}&t=${Date.now()}`, { cache: "no-store", headers: { Accept: "application/json" } });
     const data = await readJsonResponse(response);
     if (!response.ok || !data.ok) throw new Error(data.message || "현재 날씨를 조회하지 못했습니다.");
     renderCurrentWeather(data);
+    try { localStorage.setItem("mustview.weather.cache.v1", JSON.stringify({ savedAt: Date.now(), data })); } catch {}
   } catch (error) {
-    if (weatherStatus) weatherStatus.textContent = `${error.message} 잠시 후 다시 확인하세요.`;
-    if (weatherTemperature) weatherTemperature.textContent = "-";
-    if (weatherDescription) weatherDescription.textContent = "자료를 불러오지 못했습니다.";
-    if (weatherMetrics) weatherMetrics.innerHTML = "";
+    let cached = null;
+    try { cached = JSON.parse(localStorage.getItem("mustview.weather.cache.v1") || "null"); } catch {}
+    if (cached?.data?.ok) {
+      renderCurrentWeather(cached.data);
+      if (weatherStatus) weatherStatus.textContent = `${city} 최신 조회에 실패해 마지막 정상 자료를 표시합니다.`;
+    } else {
+      if (weatherStatus) weatherStatus.textContent = `${error.message} 잠시 후 다시 확인하세요.`;
+      if (weatherTemperature) weatherTemperature.textContent = "-";
+      if (weatherDescription) weatherDescription.textContent = "자료를 불러오지 못했습니다.";
+      if (weatherMetrics) weatherMetrics.innerHTML = "";
+      window.dispatchEvent(new CustomEvent("weather-error", { detail: { message: error.message } }));
+    }
+    }
+  })();
+  weatherRequest = { city, promise };
+  try { await promise; } finally {
+    if (weatherRequest?.promise === promise) weatherRequest = null;
   }
+  return promise;
 }
 
 function kmaCurrentQueryTime() {
@@ -155,9 +176,13 @@ async function loadKoreaTyphoonMap(event) {
     if (!response.ok || !data.ok) throw new Error(data.message || "한국 주변 태풍 자료 조회에 실패했습니다.");
     selectedTyphoon = null;
     renderTyphoonData(data);
+    window.__kmaTyphoonData = data;
+    window.dispatchEvent(new CustomEvent("kma-typhoons-updated", { detail: data }));
     if (!data.storms?.length) map?.setView([35.7, 127.8], 5);
   } catch (error) {
     renderTyphoonData({ ok: true, count: 0, storms: [] }, false);
+    window.__kmaTyphoonData = { ok: false, count: 0, storms: [], updatedAt: new Date().toISOString(), message: error.message };
+    window.dispatchEvent(new CustomEvent("kma-typhoons-updated", { detail: window.__kmaTyphoonData }));
     if (typhoonApiStatus) typhoonApiStatus.textContent = `${error.message} 잠시 후 다시 확인하세요.`;
     map?.setView([35.7, 127.8], 5);
   }
@@ -233,6 +258,47 @@ koreaTyphoonGrid?.addEventListener("click", (event) => {
   if (tmInput) tmInput.value = selectedTyphoon.endTimeUtc || selectedTyphoon.startTimeUtc || "";
 });
 
+const mapLayerVisibility = { forecast: true, probability: true, wind: true, storm: true };
+window.__mapLayerVisibility = mapLayerVisibility;
+window.setTyphoonMapView = (lat, lon, zoom = 7) => {
+  const map = window.__liveTyphoonMap || typhoonMap;
+  if (map && Number.isFinite(Number(lat)) && Number.isFinite(Number(lon))) map.setView([Number(lat), Number(lon)], zoom);
+};
+window.setMapLayerVisibility = (changes = {}) => {
+  Object.assign(mapLayerVisibility, changes);
+  if (playbackPoints.length) renderPlaybackFrame(false);
+  window.dispatchEvent(new CustomEvent("map-layers-changed", { detail: { ...mapLayerVisibility } }));
+};
+renderMap = function renderMapWithVisibility(points, visibleCount = points.length, fitBounds = true) {
+  initMap();
+  if (!typhoonMap || !typhoonLayer) return;
+  typhoonLayer.clearLayers();
+  const visiblePoints = points.slice(0, Math.max(0, visibleCount));
+  const valid = visiblePoints.filter((point) => Number.isFinite(point.lat) && Number.isFinite(point.lon));
+  if (!valid.length) {
+    if (fitBounds) typhoonMap.setView([35.7, 127.8], 5);
+    return;
+  }
+  const forecastPoints = mapLayerVisibility.forecast ? valid : valid.filter((point) => point.ft === 0);
+  const latLngs = forecastPoints.map((point) => [point.lat, point.lon]);
+  if (mapLayerVisibility.forecast && latLngs.length > 1) L.polyline(latLngs, { color: "#e4763b", weight: 4, opacity: 0.92, dashArray: "10 8" }).addTo(typhoonLayer);
+  forecastPoints.forEach((point, index) => {
+    const current = point.ft === 0 || index === 0;
+    L.circleMarker([point.lat, point.lon], {
+      radius: current ? 9 : 6,
+      color: current ? "#e64b35" : "#0d5c75",
+      weight: 3,
+      fillColor: current ? "#e4763b" : "#fff",
+      fillOpacity: 0.95,
+      className: current ? "analysis-marker" : ""
+    }).bindPopup(popupHtml(point)).addTo(typhoonLayer);
+    if (mapLayerVisibility.wind && point.radius15Km) L.circle([point.lat, point.lon], { radius: point.radius15Km * 1000, color: "#0d5c75", weight: 1.4, opacity: 0.45, fillColor: "#0d5c75", fillOpacity: 0.08 }).addTo(typhoonLayer);
+    if (mapLayerVisibility.storm && point.radius25Km) L.circle([point.lat, point.lon], { radius: point.radius25Km * 1000, color: "#d94832", weight: 1.4, opacity: 0.45, fillColor: "#d94832", fillOpacity: 0.06 }).addTo(typhoonLayer);
+    if (mapLayerVisibility.probability && point.probabilityRadiusKm) L.circle([point.lat, point.lon], { radius: point.probabilityRadiusKm * 1000, color: "#6b7c93", weight: 1, opacity: 0.38, dashArray: "6 6", fillOpacity: 0 }).addTo(typhoonLayer);
+  });
+  if (fitBounds && latLngs.length) typhoonMap.fitBounds(L.latLngBounds(latLngs).pad(0.38), { maxZoom: 5 });
+};
+
 initMap();
 typhoonListForm?.addEventListener("submit",loadTyphoonList);
 typhoonSelect?.addEventListener("change",()=>selectTyphoon(typhoonSelect.value));
@@ -246,6 +312,11 @@ koreaOnlyAffected?.addEventListener("change",()=>loadKoreaTyphoons());
 weatherForm?.addEventListener("submit",loadCurrentWeather);
 weatherLocation?.addEventListener("change",()=>loadCurrentWeather());
 refreshMap?.addEventListener("click", loadKoreaTyphoonMap);
+regionMap?.addEventListener("click", () => {
+  const region = window.MustViewDashboard?.state?.region;
+  window.__trackingMode = "region";
+  if (region) window.setTyphoonMapView?.(region.lat, region.lon, 7);
+});
 categoryOpen?.addEventListener("click", () => setCategoryModal(true));
 categoryClose?.addEventListener("click", () => setCategoryModal(false));
 categoryLinks.forEach((link) => link.addEventListener("click", () => setCategoryModal(false)));
@@ -258,8 +329,10 @@ categoryModal?.addEventListener("close", () => {
   categoryOpen?.focus();
 });
 loadCurrentWeather();
+loadKoreaTyphoonMap();
 weatherRefreshId=window.setInterval(()=>loadCurrentWeather(),10*60*1000);
-window.addEventListener("beforeunload",()=>window.clearInterval(weatherRefreshId));
+kmaRefreshId=window.setInterval(()=>loadKoreaTyphoonMap(),10*60*1000);
+window.addEventListener("beforeunload",()=>{window.clearInterval(weatherRefreshId);window.clearInterval(kmaRefreshId);});
 (() => {
   const tabs = [...document.querySelectorAll("[data-tab-target]")];
   const panels = [...document.querySelectorAll("[data-tab-panel]")];
