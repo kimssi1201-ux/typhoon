@@ -53,13 +53,7 @@
     </dialog>
 
     <main id="main">
-      <section class="region-dashboard" id="home" aria-labelledby="dashboardTitle">
-        <div class="section-head dashboard-heading">
-          <p class="eyebrow">내 지역 중심 태풍 대시보드</p>
-          <h1 id="dashboardTitle">내 지역에 태풍이 얼마나 가까이 왔는지 확인하세요</h1>
-          <p>지역을 저장하면 태풍 위치와 현재 날씨를 같은 기준으로 보여드립니다.</p>
-        </div>
-
+      <section class="region-dashboard" id="home" aria-labelledby="regionSummaryTitle">
         <div class="region-picker" aria-label="관심 지역 선택">
           <div class="region-picker-main">
             <label for="regionSearch">지역 검색
@@ -79,7 +73,7 @@
 
         <section class="region-summary-card" id="region-summary" aria-labelledby="regionSummaryTitle" aria-live="polite">
           <div class="region-summary-head">
-            <div><p class="eyebrow">선택 지역</p><h2 id="regionSummaryTitle"><span id="regionName">서울</span> 현재 상황</h2><p id="regionCoordinates" class="coordinate-text">37.5665, 126.9780</p></div>
+            <div><p class="eyebrow">선택 지역</p><h1 id="regionSummaryTitle"><span id="regionName">서울</span> 현재 상황</h1><p id="regionCoordinates" class="coordinate-text">37.5665, 126.9780</p></div>
             <button class="button ghost dashboard-retry" id="dashboardRetry" type="button">다시 확인</button>
             <div class="summary-updated"><span id="regionDataBasis">자료 기준 시각을 기다리는 중입니다.</span><strong id="regionLastUpdated">마지막 갱신 대기 중</strong></div>
           </div>

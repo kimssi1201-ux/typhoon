@@ -1794,24 +1794,6 @@ body {
   padding: 30px 0 8px;
 }
 
-.dashboard-heading {
-  margin-bottom: 18px;
-}
-
-.dashboard-heading h1 {
-  max-width: 720px;
-  margin: 0;
-  color: var(--navy);
-  font-size: 36px;
-  line-height: 1.2;
-}
-
-.dashboard-heading > p:last-child {
-  max-width: 720px;
-  margin: 10px 0 0;
-  color: var(--muted);
-}
-
 .region-picker,
 .region-summary-card,
 .region-weather-card,
@@ -1946,6 +1928,7 @@ body {
   gap: 16px;
 }
 
+.region-summary-head h1,
 .region-summary-head h2,
 .map-heading h2,
 .region-weather-card h2,
@@ -2400,7 +2383,6 @@ body {
   .brand { grid-template-columns: 36px auto; min-width: 0; column-gap: 8px; }
   .brand span:first-child { width: 34px; height: 34px; }
   .brand strong { font-size: 18px; }
-  .dashboard-heading h1 { font-size: 28px; }
   .region-dashboard { padding-top: 20px; }
   .region-picker-main { grid-template-columns: 1fr; }
   .location-button { width: 100%; }
@@ -2430,7 +2412,7 @@ body {
   .impact-cards { grid-template-columns: repeat(2, 1fr); }
   .criteria-details { flex-basis: auto; width: 100%; }
   .public-section, .safety, .forecast-section, .impact-section, .region-summary-card, .region-weather-card { padding: 18px; }
-  .public-section h2, .safety h2, .forecast-section h2, .impact-section h2, .region-summary-head h2, .map-heading h2, .region-weather-card h2 { font-size: 23px; }
+  .public-section h2, .safety h2, .forecast-section h2, .impact-section h2, .region-summary-head h1, .region-summary-head h2, .map-heading h2, .region-weather-card h2 { font-size: 23px; }
   .bottom-nav { position: fixed; right: 0; bottom: 0; left: 0; z-index: 1200; display: grid; grid-template-columns: repeat(4, 1fr); padding: 8px 8px max(8px, env(safe-area-inset-bottom)); border-top: 1px solid var(--line); background: rgba(255, 255, 255, 0.96); box-shadow: 0 -8px 24px rgba(21, 48, 76, 0.1); backdrop-filter: blur(12px); }
   .bottom-nav a { display: grid; place-items: center; min-height: 56px; gap: 1px; border-radius: 9px; color: var(--muted); text-decoration: none; }
   .bottom-nav a:active, .bottom-nav a:focus-visible { background: #eef5fb; color: var(--blue-dark); }
