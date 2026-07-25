@@ -7,6 +7,7 @@
 - 국내 주요 해수욕장 선택 및 OpenStreetMap 지도
 - 현재 기온, 체감온도, 습도, 풍속, 시간별 날씨
 - 기상청 전국 해수욕장 날씨 조회서비스의 파고, 수온, 초단기 예보, 조위, 일출몰
+- 해양수산부 해수욕장정보 서비스의 해변 폭, 총연장, 특징, 비상 연락처, 관련 안내
 - 기상청 공식 자료가 지연될 때 Open-Meteo Marine 참고 예보로 전환
 - 선택 해변 주변 관광지·음식점·숙박 정보
 - 현재 위치와 가까운 해변 찾기
@@ -18,6 +19,7 @@
 - 지도: [OpenStreetMap](https://www.openstreetmap.org/copyright)
 - 날씨: [Open-Meteo](https://open-meteo.com/)
 - 해양·해수욕장 예보: [기상청 전국 해수욕장 날씨 조회서비스](https://www.data.go.kr/data/15102239/openapi.do)
+- 해수욕장 기본정보: [해양수산부 해수욕장정보 서비스](https://www.data.go.kr/data/15058519/openapi.do)
 - 해양 참고 예보: [Open-Meteo Marine](https://open-meteo.com/en/docs/marine-weather-api)
 - 관광정보: [한국관광공사 국문 관광정보 서비스](https://www.data.go.kr/tcs/dss/selectApiDataDetailView.do?publicDataPk=15101578)
 
@@ -25,7 +27,7 @@
 
 ## 환경변수
 
-기존 태풍 API 환경변수 `KMA_AUTH_KEY`는 보존되어 있습니다. 해수욕장 공식 자료는 `KMA_BEACH_API_KEY`를 Cloudflare Pages Secret으로 사용하며, 관광정보를 실제로 조회하려면 별도로 `TOUR_API_KEY`를 추가합니다. 관광 키가 없을 때도 해변 선택, 지도, 날씨, 공식 해양자료는 작동하며 주변 관광정보만 안내 상태로 표시됩니다.
+기존 태풍 API 환경변수 `KMA_AUTH_KEY`는 보존되어 있습니다. 해수욕장 공식 날씨 자료는 `KMA_BEACH_API_KEY`, 해양수산부 기본정보는 `OCEANS_BEACH_API_KEY`를 Cloudflare Pages Secret으로 사용합니다. 관광정보를 실제로 조회하려면 별도로 `TOUR_API_KEY`를 추가합니다. 관광 키가 없을 때도 해변 선택, 지도, 날씨, 공식 해양자료와 기본정보는 작동하며 주변 관광정보만 안내 상태로 표시됩니다.
 
 로컬 테스트용 `.dev.vars` 예시는 `.dev.vars.example`을 참고하세요.
 

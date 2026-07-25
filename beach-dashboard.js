@@ -4,20 +4,21 @@
   const CHECK_KEY = "mustview.beach.checklist.v1";
   const WEATHER_CACHE = "mustview.beach.weather.v1.";
   const MARINE_CACHE = "mustview.beach.marine.v1.";
+  const OCEAN_CACHE = "mustview.beach.ocean.v1.";
   const DEFAULT_CENTER = [36.15, 127.7];
   const BEACHES = [
-    { id: "haeundae", name: "해운대해수욕장", region: "부산 해운대구", kmaNum: 304, lat: 35.1587, lon: 129.1604, description: "도심에서 쉽게 찾는 대표 해변" },
-    { id: "songjeong", name: "송정해수욕장", region: "부산 해운대구", kmaNum: 305, lat: 35.1788, lon: 129.1991, description: "서핑과 산책을 함께 즐기는 해변" },
-    { id: "daedcheon", name: "대천해수욕장", region: "충남 보령시", kmaNum: 41, lat: 36.307, lon: 126.515, description: "넓은 백사장과 해양 레저" },
-    { id: "gyeongpo", name: "경포해수욕장", region: "강원 강릉시", kmaNum: 176, lat: 37.804, lon: 128.907, description: "호수와 바다를 함께 보는 곳" },
-    { id: "sokcho", name: "속초해수욕장", region: "강원 속초시", kmaNum: 201, lat: 38.192, lon: 128.598, description: "설악산과 동해를 함께 여행" },
-    { id: "eulwangni", name: "을왕리해수욕장", region: "인천 중구", kmaNum: 1, lat: 37.447, lon: 126.372, description: "수도권에서 가까운 서해 해변" },
-    { id: "hyeopjae", name: "협재해수욕장", region: "제주 제주시", kmaNum: 346, lat: 33.394, lon: 126.239, description: "맑은 물빛과 비양도 풍경" },
-    { id: "hamdeok", name: "함덕해수욕장", region: "제주 제주시", kmaNum: 352, lat: 33.543, lon: 126.67, description: "완만한 해안과 산책로" },
-    { id: "dadaepo", name: "다대포해수욕장", region: "부산 사하구", kmaNum: 308, lat: 35.048, lon: 128.966, description: "노을과 넓은 모래사장" },
-    { id: "sangju", name: "상주은모래비치", region: "경남 남해군", kmaNum: 327, lat: 34.728, lon: 127.85, description: "남해의 잔잔한 모래 해변" },
-    { id: "byeonsan", name: "변산해수욕장", region: "전북 부안군", kmaNum: 97, lat: 35.648, lon: 126.56, description: "서해 낙조와 갯벌 여행" },
-    { id: "goraebul", name: "고래불해수욕장", region: "경북 영덕군", kmaNum: 288, lat: 36.57, lon: 129.44, description: "동해안 긴 백사장과 소나무숲" }
+    { id: "haeundae", name: "해운대해수욕장", region: "부산 해운대구", sido: "부산", kmaNum: 304, lat: 35.1587, lon: 129.1604, description: "도심에서 쉽게 찾는 대표 해변" },
+    { id: "songjeong", name: "송정해수욕장", region: "부산 해운대구", sido: "부산", kmaNum: 305, lat: 35.1788, lon: 129.1991, description: "서핑과 산책을 함께 즐기는 해변" },
+    { id: "daedcheon", name: "대천해수욕장", region: "충남 보령시", sido: "충남", kmaNum: 41, lat: 36.307, lon: 126.515, description: "넓은 백사장과 해양 레저" },
+    { id: "gyeongpo", name: "경포해수욕장", region: "강원 강릉시", sido: "강원", kmaNum: 176, lat: 37.804, lon: 128.907, description: "호수와 바다를 함께 보는 곳" },
+    { id: "sokcho", name: "속초해수욕장", region: "강원 속초시", sido: "강원", kmaNum: 201, lat: 38.192, lon: 128.598, description: "설악산과 동해를 함께 여행" },
+    { id: "eulwangni", name: "을왕리해수욕장", region: "인천 중구", sido: "인천", kmaNum: 1, lat: 37.447, lon: 126.372, description: "수도권에서 가까운 서해 해변" },
+    { id: "hyeopjae", name: "협재해수욕장", region: "제주 제주시", sido: "제주", kmaNum: 346, lat: 33.394, lon: 126.239, description: "맑은 물빛과 비양도 풍경" },
+    { id: "hamdeok", name: "함덕해수욕장", region: "제주 제주시", sido: "제주", kmaNum: 352, lat: 33.543, lon: 126.67, description: "완만한 해안과 산책로" },
+    { id: "dadaepo", name: "다대포해수욕장", region: "부산 사하구", sido: "부산", kmaNum: 308, lat: 35.048, lon: 128.966, description: "노을과 넓은 모래사장" },
+    { id: "sangju", name: "상주은모래비치", region: "경남 남해군", sido: "경남", kmaNum: 327, lat: 34.728, lon: 127.85, description: "남해의 잔잔한 모래 해변" },
+    { id: "byeonsan", name: "변산해수욕장", region: "전북 부안군", sido: "전북", kmaNum: 97, lat: 35.648, lon: 126.56, description: "서해 낙조와 갯벌 여행" },
+    { id: "goraebul", name: "고래불해수욕장", region: "경북 영덕군", sido: "경북", kmaNum: 288, lat: 36.57, lon: 129.44, description: "동해안 긴 백사장과 소나무숲" }
   ];
   const $ = (selector) => document.querySelector(selector);
   const escapeHtml = (value) => String(value ?? "").replace(/[&<>'"]/g, (char) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", "'": "&#39;", '"': "&quot;" }[char]));
@@ -164,6 +165,44 @@
     }
   }
 
+  function renderOceanInfo(data, beach) {
+    const item = data?.selected || null;
+    $("#beachFacilityBeachName").textContent = beach.name;
+    if (!item) {
+      $("#beachFacilityStatus").textContent = "선택한 해변의 기본정보를 찾지 못했습니다.";
+      $("#beachFacilityMetrics").innerHTML = '<div class="beach-empty-state">해양수산부 자료에서 일치하는 해변 정보를 찾지 못했습니다.</div>';
+      $("#beachFacilityContact").textContent = "현장 안내를 확인하세요.";
+      $("#beachFacilityLink").hidden = true;
+      return;
+    }
+    const metrics = [["해변 특징", item.kind || "-"], ["해변 폭", item.width ? `${formatNumber(item.width)} m` : "-"], ["해변 총연장", item.length ? `${formatNumber(item.length)} m` : "-"], ["비상 연락처", item.phone || "-" ]];
+    $("#beachFacilityMetrics").innerHTML = metrics.map(([label, value]) => `<div class="beach-facility-item"><span>${label}</span><strong>${escapeHtml(value)}</strong></div>`).join("");
+    $("#beachFacilityStatus").textContent = `해양수산부 공식 해수욕장정보 · ${item.province || beach.sido} ${item.district || ""} · ${new Date().toLocaleString("ko-KR", { hour12: false })}`;
+    $("#beachFacilityContact").textContent = item.phone ? `비상 연락처: ${item.phone}` : "등록된 비상 연락처가 없습니다.";
+    const link = $("#beachFacilityLink");
+    let safeLink = "";
+    try { const parsed = new URL(item.link || ""); if (["http:", "https:"].includes(parsed.protocol)) safeLink = parsed.href; } catch {}
+    link.hidden = !safeLink;
+    if (safeLink) { link.href = safeLink; link.textContent = item.linkName ? `${item.linkName} 안내` : "관련 안내 보기"; }
+  }
+
+  async function loadOceanInfo(beach) {
+    const key = beach.id;
+    try {
+      const params = new URLSearchParams({ sido: beach.sido, name: beach.name });
+      const response = await fetch(`/api/oceans-beach?${params}`, { headers: { Accept: "application/json" }, cache: "no-store" });
+      const data = await response.json();
+      if (!response.ok || !data.ok) throw new Error(data.message || "해변 기본정보를 받을 수 없습니다.");
+      writeStorage(OCEAN_CACHE + key, { savedAt: Date.now(), data }); renderOceanInfo(data, beach); return true;
+    } catch (error) {
+      const cached = readStorage(OCEAN_CACHE + key, null);
+      if (cached?.data) { renderOceanInfo(cached.data, beach); $("#beachFacilityStatus").textContent = "연결이 지연되어 마지막 정상 해변 기본정보를 표시합니다."; return false; }
+      $("#beachFacilityStatus").textContent = `해변 기본정보를 불러오지 못했습니다. ${error.message || "잠시 후 다시 시도해 주세요."}`;
+      $("#beachFacilityMetrics").innerHTML = '<div class="beach-empty-state">기상청 날씨와 바다 상태는 계속 확인할 수 있습니다.</div>';
+      return false;
+    }
+  }
+
   async function loadPlaces(beach, contentTypeId) {
     $("#beachPlacesStatus").textContent = `${beach.name} 주변 정보를 확인하고 있습니다.`;
     $("#beachPlacesList").innerHTML = '<div class="beach-skeleton">주변 여행 정보를 불러오는 중입니다.</div>';
@@ -178,7 +217,7 @@
     } catch (error) { $("#beachPlacesList").innerHTML = `<div class="beach-empty-state"><strong>주변 여행 정보가 준비되지 않았습니다.</strong><p>${escapeHtml(error.message || "잠시 후 다시 시도해 주세요.")}</p><small>해변 날씨와 바다 상태는 계속 사용할 수 있습니다.</small></div>`; $("#beachPlacesStatus").textContent = "주변 정보 조회 상태를 확인해 주세요."; }
   }
 
-  function loadBeach(beach) { selectedBeach = beach; selectOnMap(beach); setStatus(`${beach.name} 정보를 새로 확인하고 있습니다.`); $("#beachChoice").value = beach.id; Promise.all([loadWeather(beach), loadMarine(beach)]).then(([weatherOk, marineOk]) => { loadPlaces(beach, currentPlaceType); setStatus(weatherOk && marineOk ? `${beach.name}의 날씨와 바다 상태를 표시했습니다.` : `${beach.name}의 일부 자료가 지연되었습니다. 공식 안내를 함께 확인하세요.`, weatherOk && marineOk ? "success" : "warning"); }); }
+  function loadBeach(beach) { selectedBeach = beach; selectOnMap(beach); setStatus(`${beach.name} 정보를 새로 확인하고 있습니다.`); $("#beachChoice").value = beach.id; Promise.all([loadWeather(beach), loadMarine(beach), loadOceanInfo(beach)]).then(([weatherOk, marineOk, oceanOk]) => { loadPlaces(beach, currentPlaceType); const primaryOk = weatherOk && marineOk; setStatus(primaryOk ? `${beach.name}의 날씨와 바다 상태${oceanOk ? ", 현장 기본정보" : ""}를 표시했습니다.` : `${beach.name}의 일부 자료가 지연되었습니다. 공식 안내를 함께 확인하세요.`, primaryOk && oceanOk ? "success" : "warning"); }); }
   function useLocation() { if (!navigator.geolocation) { setStatus("현재 위치를 사용할 수 없습니다. 해변을 직접 선택해 주세요.", "warning"); return; } setStatus("현재 위치를 확인하고 있습니다."); navigator.geolocation.getCurrentPosition((position) => { const beach = nearestBeach(position.coords.latitude, position.coords.longitude); $("#beachChoice").value = beach.id; loadBeach(beach); if (map) map.setView([position.coords.latitude, position.coords.longitude], 9); }, () => setStatus("위치 권한을 사용할 수 없습니다. 해변을 직접 선택해 주세요.", "warning"), { enableHighAccuracy: true, timeout: 8000, maximumAge: 300000 }); }
   function initChecklist() { const saved = readStorage(CHECK_KEY, {}); document.querySelectorAll("[data-beach-check]").forEach((input) => { input.checked = Boolean(saved[input.dataset.beachCheck]); input.addEventListener("change", () => { saved[input.dataset.beachCheck] = input.checked; writeStorage(CHECK_KEY, saved); }); }); }
   function initMenu() { const menu = $("#beachMenu"), open = $("#beachMenuOpen"), close = $("#beachMenuClose"); if (!menu || !open || !close) return; open.addEventListener("click", () => { menu.showModal(); open.setAttribute("aria-expanded", "true"); }); close.addEventListener("click", () => { menu.close(); open.setAttribute("aria-expanded", "false"); }); menu.addEventListener("click", (event) => { if (event.target === menu) { menu.close(); open.setAttribute("aria-expanded", "false"); } }); menu.querySelectorAll("a").forEach((link) => link.addEventListener("click", () => menu.close())); }
