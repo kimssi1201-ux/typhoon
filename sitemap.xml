@@ -1,11 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://mustview.co.kr/</loc><lastmod>2026-07-23</lastmod><priority>1.0</priority></url>
-  <url><loc>https://mustview.co.kr/about</loc><lastmod>2026-07-23</lastmod><priority>0.7</priority></url>
-  <url><loc>https://mustview.co.kr/privacy</loc><lastmod>2026-07-23</lastmod><priority>0.8</priority></url>
-  <url><loc>https://mustview.co.kr/contact</loc><lastmod>2026-07-23</lastmod><priority>0.6</priority></url>
-  <url><loc>https://mustview.co.kr/data-sources</loc><lastmod>2026-07-23</lastmod><priority>0.9</priority></url>
-  <url><loc>https://mustview.co.kr/typhoon-guide</loc><lastmod>2026-07-23</lastmod><priority>0.9</priority></url>
-  <url><loc>https://mustview.co.kr/readiness-guide</loc><lastmod>2026-07-23</lastmod><priority>0.9</priority></url>
-  <url><loc>https://mustview.co.kr/adsense-readiness</loc><lastmod>2026-07-23</lastmod><priority>0.6</priority></url>
+  <url><loc>https://mustview.co.kr/</loc><lastmod>2026-07-25</lastmod><priority>1.0</priority></url>
+  <url><loc>https://mustview.co.kr/about</loc><lastmod>2026-07-25</lastmod><priority>0.6</priority></url>
+  <url><loc>https://mustview.co.kr/privacy</loc><lastmod>2026-07-25</lastmod><priority>0.5</priority></url>
+  <url><loc>https://mustview.co.kr/contact</loc><lastmod>2026-07-25</lastmod><priority>0.5</priority></url>
 </urlset>

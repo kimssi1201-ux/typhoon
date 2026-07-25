@@ -2427,3 +2427,350 @@ body {
   .map-dashboard { margin-left: calc(50% - 50vw); margin-right: calc(50% - 50vw); padding-right: 10px; padding-left: 10px; }
   .map-range-buttons .button, .map-layer-toggles button { font-size: 12px; }
 }
+
+/* Beach travel dashboard */
+.beach-page { --beach-ink: #123b52; --beach-muted: #607b88; --beach-line: #d7e5e9; --beach-surface: #fff; --beach-bg: #f3f9fa; --beach-teal: #087f95; --beach-deep: #07566f; --beach-sand: #e8a45f; min-width: 320px; background: var(--beach-bg); color: var(--beach-ink); font-size: 16px; }
+.beach-page *, .beach-page *::before, .beach-page *::after { box-sizing: border-box; }
+.beach-page a { color: inherit; }
+.beach-page button, .beach-page select { font: inherit; }
+.beach-header { position: sticky; top: 0; z-index: 1000; border-bottom: 1px solid var(--beach-line); background: rgba(255,255,255,.96); backdrop-filter: blur(14px); }
+.beach-header-inner { display: flex; align-items: center; justify-content: space-between; width: min(1180px, calc(100% - 28px)); min-height: 66px; margin: auto; gap: 16px; }
+.beach-brand { display: inline-flex; align-items: center; gap: 10px; color: var(--beach-deep); text-decoration: none; }
+.beach-brand-mark { display: grid; place-items: center; width: 38px; height: 38px; border-radius: 50%; background: var(--beach-deep); color: #fff; font-size: 24px; }
+.beach-brand span:last-child { display: grid; gap: 1px; }
+.beach-brand strong { font-size: 18px; letter-spacing: -.03em; }
+.beach-brand small { color: var(--beach-muted); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; }
+.beach-header-links { display: flex; align-items: center; gap: 18px; }
+.beach-header-links a { color: var(--beach-muted); font-size: 14px; text-decoration: none; }
+.beach-header-links a:hover, .beach-header-links a:focus-visible { color: var(--beach-teal); }
+.beach-menu-button, .beach-icon-button { border: 0; background: transparent; color: var(--beach-ink); cursor: pointer; }
+.beach-menu-button { min-height: 44px; padding: 0 13px; border: 1px solid var(--beach-line); border-radius: 10px; background: #fff; font-weight: 800; }
+.beach-menu { width: min(420px, calc(100% - 28px)); padding: 0; border: 0; border-radius: 16px; box-shadow: 0 18px 50px rgba(15,49,69,.18); color: var(--beach-ink); }
+.beach-menu::backdrop { background: rgba(9,35,49,.46); }
+.beach-menu-card { padding: 22px; }
+.beach-menu-head { display: flex; justify-content: space-between; align-items: start; padding-bottom: 17px; border-bottom: 1px solid var(--beach-line); }
+.beach-menu-head h2 { margin: 4px 0 0; font-size: 24px; }
+.beach-icon-button { width: 44px; height: 44px; border-radius: 10px; font-size: 29px; line-height: 1; }
+.beach-icon-button:hover, .beach-icon-button:focus-visible { background: var(--beach-bg); }
+.beach-menu-list { display: grid; gap: 4px; padding-top: 12px; }
+.beach-menu-list a { min-height: 46px; padding: 13px 8px; border-radius: 8px; text-decoration: none; }
+.beach-menu-list a:hover, .beach-menu-list a:focus-visible { background: #eef8f8; color: var(--beach-teal); }
+.beach-main { width: min(1180px, calc(100% - 28px)); margin: 0 auto; padding: 24px 0 90px; }
+.beach-select-panel, .beach-overview, .beach-conditions, .beach-weather, .beach-map-section, .beach-places, .beach-safety, .beach-info { margin-bottom: 16px; padding: 22px; border: 1px solid var(--beach-line); border-radius: 14px; background: var(--beach-surface); }
+.beach-section-heading { margin-bottom: 18px; }
+.beach-section-heading.compact { margin-bottom: 15px; }
+.beach-section-heading h1, .beach-section-heading h2, .beach-section-heading h3 { margin: 5px 0 7px; color: var(--beach-ink); letter-spacing: -.03em; }
+.beach-section-heading h1 { font-size: clamp(27px, 5vw, 40px); line-height: 1.15; }
+.beach-section-heading h2 { font-size: clamp(22px, 4vw, 30px); line-height: 1.2; }
+.beach-section-heading p { max-width: 720px; margin: 0; color: var(--beach-muted); line-height: 1.7; }
+.beach-kicker { display: inline-block; color: var(--beach-sand); font-size: 12px; font-weight: 800; letter-spacing: .09em; text-transform: uppercase; }
+.beach-select-form { display: grid; grid-template-columns: minmax(0, 1fr) auto auto; align-items: end; gap: 10px; }
+.beach-select-form label { display: grid; gap: 7px; color: var(--beach-muted); font-size: 13px; font-weight: 800; }
+.beach-page select { width: 100%; min-height: 50px; padding: 0 13px; border: 1px solid #bfd4da; border-radius: 10px; background: #fff; color: var(--beach-ink); cursor: pointer; }
+.beach-page select:focus-visible, .beach-page button:focus-visible, .beach-page a:focus-visible, .beach-page input:focus-visible, .beach-page summary:focus-visible { outline: 3px solid rgba(232,164,95,.42); outline-offset: 2px; }
+.beach-button { min-height: 48px; padding: 0 16px; border-radius: 10px; cursor: pointer; font-weight: 800; white-space: nowrap; }
+.beach-primary { border: 1px solid var(--beach-deep); background: var(--beach-deep); color: #fff; }
+.beach-primary:hover { background: #064459; }
+.beach-secondary { border: 1px solid #b9cfd5; background: #fff; color: var(--beach-deep); }
+.beach-secondary:hover { background: #edf8f8; }
+.beach-status { min-height: 24px; margin: 14px 0 0; color: var(--beach-muted); line-height: 1.5; }
+.beach-status[data-tone="success"] { color: #147052; }
+.beach-status[data-tone="warning"] { color: #9a641e; }
+.beach-quick-wrap { margin-top: 22px; }
+.beach-inline-heading { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 10px; }
+.beach-inline-heading h2, .beach-inline-heading h3 { margin: 0; font-size: 17px; }
+.beach-inline-heading span { color: var(--beach-muted); font-size: 13px; }
+.beach-quick-list { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(190px, 1fr); gap: 9px; overflow-x: auto; padding: 2px 2px 8px; }
+.beach-quick-card { min-height: 86px; padding: 14px; border: 1px solid var(--beach-line); border-radius: 11px; background: #f7fbfb; color: var(--beach-ink); text-align: left; cursor: pointer; }
+.beach-quick-card:hover, .beach-quick-card:focus-visible { border-color: var(--beach-teal); background: #eef8f8; }
+.beach-quick-card strong, .beach-quick-card span { display: block; }
+.beach-quick-card strong { margin-bottom: 7px; font-size: 15px; }
+.beach-quick-card span { color: var(--beach-muted); font-size: 13px; }
+.beach-overview-grid { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 10px; }
+.beach-overview-main, .beach-overview-item { min-height: 94px; padding: 15px; border-radius: 10px; background: #eef8f8; }
+.beach-overview-main span, .beach-overview-item span { color: var(--beach-muted); font-size: 13px; }
+.beach-overview-main strong, .beach-overview-item strong { display: block; margin-top: 7px; color: var(--beach-deep); font-size: 22px; }
+.beach-overview-main strong[data-tone="danger"] { color: #b44537; }
+.beach-overview-main strong[data-tone="warning"] { color: #a56a1f; }
+.beach-overview-main p { margin: 6px 0 0; color: var(--beach-muted); font-size: 13px; line-height: 1.5; }
+.marine-metrics, .beach-weather-metrics { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+.marine-metric, .beach-weather-metrics > div { min-height: 88px; padding: 15px; border: 1px solid var(--beach-line); border-radius: 10px; }
+.marine-metric span, .marine-metric strong, .beach-weather-metrics span, .beach-weather-metrics strong { display: block; }
+.marine-metric span, .beach-weather-metrics span { color: var(--beach-muted); font-size: 13px; }
+.marine-metric strong, .beach-weather-metrics strong { margin-top: 10px; color: var(--beach-deep); font-size: 20px; }
+.marine-hourly, .beach-hourly { display: grid; grid-template-columns: repeat(6, minmax(110px, 1fr)); gap: 8px; overflow-x: auto; }
+.marine-hour-card, .beach-hour-card { min-height: 125px; padding: 12px; border: 1px solid var(--beach-line); border-radius: 10px; background: #fff; }
+.marine-hour-card strong, .marine-hour-card span, .marine-hour-card b, .marine-hour-card small, .beach-hour-card strong, .beach-hour-card span, .beach-hour-card b, .beach-hour-card small { display: block; }
+.marine-hour-card strong, .beach-hour-card strong { color: var(--beach-deep); }
+.marine-hour-card span, .beach-hour-card span { margin: 7px 0; color: var(--beach-muted); font-size: 13px; }
+.marine-hour-card b, .beach-hour-card b { color: var(--beach-teal); }
+.marine-hour-card small, .beach-hour-card small { margin-top: 8px; color: var(--beach-muted); font-size: 11px; line-height: 1.5; }
+.beach-current-weather { min-height: 150px; padding: 17px; border-radius: 11px; background: #e9f7f7; }
+.beach-current-weather span, .beach-current-weather p { color: var(--beach-muted); }
+.beach-current-weather span { font-size: 13px; }
+.beach-current-weather strong { display: block; margin: 6px 0; color: var(--beach-deep); font-size: 47px; line-height: 1; }
+.beach-current-weather p { margin: 0; font-size: 13px; }
+.beach-weather-overview { display: grid; grid-template-columns: 1fr 2fr; gap: 12px; }
+.beach-weather .beach-inline-heading { margin-top: 18px; }
+.beach-heading-row { display: flex; align-items: start; justify-content: space-between; gap: 16px; }
+.beach-map-shell { position: relative; overflow: hidden; border: 1px solid var(--beach-line); border-radius: 11px; background: #d7ecef; }
+.beach-map { min-height: 420px; width: 100%; }
+.beach-map-note { position: absolute; right: 10px; bottom: 10px; z-index: 500; padding: 8px 11px; border: 1px solid rgba(255,255,255,.8); border-radius: 8px; background: rgba(255,255,255,.92); color: var(--beach-muted); font-size: 12px; }
+.beach-marker { display: grid; place-items: center; border: 0; background: transparent; }
+.beach-marker span { display: grid; place-items: center; width: 22px; height: 22px; border: 3px solid white; border-radius: 50%; background: var(--beach-teal); box-shadow: 0 2px 8px rgba(12,61,77,.3); color: transparent; }
+.beach-marker.is-selected span { width: 28px; height: 28px; background: var(--beach-sand); }
+.beach-source-note { margin: 10px 0 0; color: var(--beach-muted); font-size: 12px; line-height: 1.5; }
+.beach-place-filters { display: flex; gap: 7px; margin-bottom: 12px; overflow-x: auto; }
+.beach-place-filters button { min-height: 44px; padding: 0 14px; border: 1px solid var(--beach-line); border-radius: 9px; background: #fff; color: var(--beach-muted); cursor: pointer; font-weight: 800; white-space: nowrap; }
+.beach-place-filters button.is-active { border-color: var(--beach-deep); background: var(--beach-deep); color: #fff; }
+.beach-place-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+.beach-place-card { display: grid; grid-template-columns: 92px minmax(0, 1fr); min-height: 118px; overflow: hidden; border: 1px solid var(--beach-line); border-radius: 11px; background: #fff; }
+.beach-place-card img, .beach-place-placeholder { width: 92px; height: 100%; min-height: 118px; object-fit: cover; background: #e4f2f2; }
+.beach-place-placeholder { display: grid; place-items: center; color: var(--beach-teal); font-size: 32px; }
+.beach-place-card > div { padding: 13px; }
+.beach-place-card span { color: var(--beach-sand); font-size: 12px; font-weight: 800; }
+.beach-place-card h3 { overflow: hidden; margin: 5px 0; font-size: 16px; text-overflow: ellipsis; white-space: nowrap; }
+.beach-place-card p { overflow: hidden; margin: 0 0 7px; color: var(--beach-muted); font-size: 12px; text-overflow: ellipsis; white-space: nowrap; }
+.beach-place-card a { color: var(--beach-teal); font-size: 12px; font-weight: 800; text-decoration: none; }
+.beach-empty-state { padding: 24px 16px; border: 1px dashed #b9d1d5; border-radius: 10px; background: #f8fbfb; color: var(--beach-muted); line-height: 1.6; text-align: center; }
+.beach-empty-state strong, .beach-empty-state p, .beach-empty-state small { display: block; }
+.beach-empty-state strong { color: var(--beach-ink); }
+.beach-empty-state p { margin: 7px 0 0; }
+.beach-empty-state small { margin-top: 7px; }
+.beach-check-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 9px; }
+.beach-check-grid label { display: flex; align-items: start; gap: 9px; min-height: 54px; padding: 15px 13px; border: 1px solid var(--beach-line); border-radius: 10px; background: #fbfcfc; line-height: 1.45; cursor: pointer; }
+.beach-check-grid input { width: 20px; height: 20px; flex: 0 0 auto; margin: 0; accent-color: var(--beach-teal); }
+.beach-safety-note { margin-top: 12px; padding: 14px 16px; border-left: 4px solid var(--beach-sand); border-radius: 8px; background: #fff8ef; }
+.beach-safety-note strong { color: #91551d; }
+.beach-safety-note p { margin: 5px 0 0; color: #6d5b48; line-height: 1.6; }
+.beach-info-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.beach-info-grid details { padding: 14px; border: 1px solid var(--beach-line); border-radius: 10px; }
+.beach-info-grid summary { cursor: pointer; font-weight: 800; }
+.beach-info-grid p { margin: 11px 0 0; color: var(--beach-muted); font-size: 14px; line-height: 1.7; }
+.beach-footer { display: grid; grid-template-columns: 1.2fr 1fr; gap: 20px; width: min(1180px, calc(100% - 28px)); margin: 0 auto; padding: 24px 0 96px; color: var(--beach-muted); }
+.beach-footer strong { color: var(--beach-ink); }
+.beach-footer p { margin: 7px 0 0; font-size: 14px; }
+.beach-footer nav { display: flex; justify-content: flex-end; flex-wrap: wrap; gap: 12px; font-size: 13px; }
+.beach-footer nav a { text-decoration: none; }
+.beach-footer small { grid-column: 1 / -1; padding-top: 12px; border-top: 1px solid var(--beach-line); font-size: 12px; line-height: 1.5; }
+.beach-skeleton { min-height: 64px; padding: 22px; border-radius: 10px; background: linear-gradient(90deg, #eef5f5 25%, #e0eded 37%, #eef5f5 63%); background-size: 400% 100%; animation: beach-skeleton 1.4s ease infinite; color: transparent; }
+@keyframes beach-skeleton { 0% { background-position: 100% 0; } 100% { background-position: 0 0; } }
+.beach-bottom-nav { display: none; }
+@media (max-width: 760px) {
+  .beach-header-inner { width: calc(100% - 20px); min-height: 60px; }
+  .beach-header-links a { display: none; }
+  .beach-brand strong { font-size: 16px; }
+  .beach-brand-mark { width: 34px; height: 34px; }
+  .beach-main { width: calc(100% - 20px); padding-top: 14px; padding-bottom: 96px; }
+  .beach-select-panel, .beach-overview, .beach-conditions, .beach-weather, .beach-map-section, .beach-places, .beach-safety, .beach-info { padding: 17px; border-radius: 12px; }
+  .beach-select-form { grid-template-columns: 1fr 1fr; }
+  .beach-select-form label { grid-column: 1 / -1; }
+  .beach-select-form .beach-button { width: 100%; }
+  .beach-overview-grid, .beach-weather-overview { grid-template-columns: 1fr; }
+  .marine-metrics, .beach-weather-metrics { grid-template-columns: repeat(2, 1fr); }
+  .beach-heading-row { display: block; }
+  .beach-heading-row .beach-button { width: 100%; margin-top: 10px; }
+  .beach-place-list { grid-template-columns: 1fr; }
+  .beach-check-grid, .beach-info-grid { grid-template-columns: 1fr; }
+  .beach-footer { grid-template-columns: 1fr; width: calc(100% - 20px); padding-bottom: 100px; }
+  .beach-footer nav { justify-content: flex-start; }
+  .beach-footer small { grid-column: auto; }
+  .beach-bottom-nav { position: fixed; right: 0; bottom: 0; left: 0; z-index: 1100; display: grid; grid-template-columns: repeat(4, 1fr); padding: 7px 8px max(7px, env(safe-area-inset-bottom)); border-top: 1px solid var(--beach-line); background: rgba(255,255,255,.97); box-shadow: 0 -10px 26px rgba(17,56,76,.1); backdrop-filter: blur(14px); }
+  .beach-bottom-nav a { display: grid; place-items: center; min-height: 54px; gap: 2px; border-radius: 9px; color: var(--beach-muted); text-decoration: none; }
+  .beach-bottom-nav a:active, .beach-bottom-nav a:focus-visible { background: #edf8f8; color: var(--beach-deep); }
+  .beach-bottom-nav span { font-size: 20px; line-height: 1; }
+  .beach-bottom-nav strong { font-size: 11px; }
+}
+
+/* Bicycle travel dashboard */
+.bike-page {
+  --bike-ink: #16364a;
+  --bike-muted: #607687;
+  --bike-line: #d9e4e9;
+  --bike-surface: #ffffff;
+  --bike-background: #f4f8fa;
+  --bike-teal: #0d7897;
+  --bike-deep: #0d5c75;
+  --bike-orange: #ef9140;
+  min-width: 320px;
+  background: var(--bike-background);
+  color: var(--bike-ink);
+  font-size: 16px;
+}
+
+.bike-page *, .bike-page *::before, .bike-page *::after { box-sizing: border-box; }
+.bike-page a { color: inherit; }
+.bike-page button, .bike-page select { font: inherit; }
+.bike-header { position: sticky; top: 0; z-index: 1000; border-bottom: 1px solid var(--bike-line); background: rgba(255,255,255,.96); backdrop-filter: blur(14px); }
+.bike-header-inner { display: flex; align-items: center; justify-content: space-between; width: min(1180px, calc(100% - 28px)); min-height: 66px; margin: auto; gap: 18px; }
+.bike-brand { display: inline-flex; align-items: center; gap: 10px; color: var(--bike-deep); text-decoration: none; }
+.bike-brand-mark { display: grid; place-items: center; width: 38px; height: 38px; border-radius: 12px; background: var(--bike-deep); color: white; font-size: 23px; font-weight: 800; transform: rotate(-12deg); }
+.bike-brand span:last-child { display: grid; gap: 1px; }
+.bike-brand strong { font-size: 18px; letter-spacing: -.02em; }
+.bike-brand small { color: var(--bike-muted); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; }
+.bike-header-links { display: flex; align-items: center; gap: 18px; }
+.bike-header-links a { color: var(--bike-muted); font-size: 14px; text-decoration: none; }
+.bike-header-links a:hover, .bike-header-links a:focus-visible { color: var(--bike-teal); }
+.bike-menu-button, .bike-icon-button { border: 0; background: transparent; color: var(--bike-ink); cursor: pointer; }
+.bike-menu-button { min-height: 44px; padding: 0 13px; border: 1px solid var(--bike-line); border-radius: 10px; background: white; font-weight: 700; }
+.bike-menu { width: min(420px, calc(100% - 28px)); padding: 0; border: 0; border-radius: 16px; box-shadow: 0 18px 50px rgba(15, 49, 69, .18); color: var(--bike-ink); }
+.bike-menu::backdrop { background: rgba(9, 35, 49, .46); }
+.bike-menu-card { padding: 22px; }
+.bike-menu-head { display: flex; justify-content: space-between; align-items: start; padding-bottom: 17px; border-bottom: 1px solid var(--bike-line); }
+.bike-menu-head h2 { margin: 4px 0 0; font-size: 24px; }
+.bike-icon-button { width: 44px; height: 44px; border-radius: 10px; font-size: 29px; line-height: 1; }
+.bike-icon-button:hover, .bike-icon-button:focus-visible { background: var(--bike-background); }
+.bike-menu-list { display: grid; gap: 4px; padding-top: 12px; }
+.bike-menu-list a { min-height: 46px; padding: 13px 8px; border-radius: 8px; color: var(--bike-ink); text-decoration: none; }
+.bike-menu-list a:hover, .bike-menu-list a:focus-visible { background: #eef6f8; color: var(--bike-teal); }
+.bike-main { width: min(1180px, calc(100% - 28px)); margin: 0 auto; padding: 24px 0 88px; }
+.bike-route-panel, .bike-route-result, .bike-map-section, .bike-weather-section, .bike-places-section, .bike-check-section, .bike-info-section { margin-bottom: 16px; padding: 22px; border: 1px solid var(--bike-line); border-radius: 14px; background: var(--bike-surface); }
+.bike-section-heading { margin-bottom: 19px; }
+.bike-section-heading.compact { margin-bottom: 15px; }
+.bike-section-heading h1, .bike-section-heading h2, .bike-section-heading h3 { margin: 5px 0 7px; color: var(--bike-ink); letter-spacing: -.03em; }
+.bike-section-heading h1 { font-size: clamp(26px, 5vw, 40px); line-height: 1.16; }
+.bike-section-heading h2 { font-size: clamp(22px, 4vw, 30px); line-height: 1.22; }
+.bike-section-heading p { max-width: 720px; margin: 0; color: var(--bike-muted); line-height: 1.7; }
+.bike-kicker { display: inline-block; color: var(--bike-orange); font-size: 12px; font-weight: 800; letter-spacing: .09em; text-transform: uppercase; }
+.bike-route-form { display: grid; grid-template-columns: minmax(0, 1fr) 44px minmax(0, 1fr) auto; align-items: end; gap: 10px; }
+.bike-route-form label, .bike-weather-controls label { display: grid; gap: 7px; color: var(--bike-muted); font-size: 13px; font-weight: 700; }
+.bike-page select { width: 100%; min-height: 50px; padding: 0 13px; border: 1px solid #c7d7de; border-radius: 10px; background: white; color: var(--bike-ink); cursor: pointer; }
+.bike-page select:focus-visible, .bike-page button:focus-visible, .bike-page a:focus-visible, .bike-page input:focus-visible, .bike-page summary:focus-visible { outline: 3px solid rgba(239,145,64,.38); outline-offset: 2px; }
+.bike-swap-button { width: 44px; height: 50px; border: 1px solid var(--bike-line); border-radius: 10px; background: #f7fafb; color: var(--bike-deep); cursor: pointer; font-weight: 800; }
+.bike-swap-button:hover { background: #edf6f8; }
+.bike-form-actions, .bike-map-actions, .bike-route-actions, .bike-weather-controls { display: flex; align-items: center; gap: 8px; }
+.bike-button { min-height: 48px; padding: 0 16px; border-radius: 10px; cursor: pointer; font-weight: 800; white-space: nowrap; }
+.bike-button:disabled { cursor: wait; opacity: .6; }
+.bike-button-primary { border: 1px solid var(--bike-deep); background: var(--bike-deep); color: #fff; }
+.bike-button-primary:hover { background: #09485c; }
+.bike-button-secondary { border: 1px solid #b9cdd5; background: #fff; color: var(--bike-deep); }
+.bike-button-secondary:hover { background: #eff7f8; }
+.bike-text-button { min-height: 44px; padding: 0 6px; border: 0; background: transparent; color: var(--bike-teal); cursor: pointer; font-weight: 800; }
+.bike-status { min-height: 24px; margin: 15px 0 0; color: var(--bike-muted); line-height: 1.5; }
+.bike-status[data-tone="success"] { color: #176e55; }
+.bike-status[data-tone="warning"] { color: #a9681a; }
+.bike-status[data-tone="error"] { color: #a23f37; }
+.bike-inline-heading { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 10px; }
+.bike-inline-heading h2, .bike-inline-heading h3 { margin: 0; color: var(--bike-ink); font-size: 17px; }
+.bike-inline-heading span { color: var(--bike-muted); font-size: 13px; }
+.bike-quick-routes { margin-top: 22px; }
+.bike-quick-list { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(190px, 1fr); gap: 10px; overflow-x: auto; padding: 2px 2px 8px; scrollbar-width: thin; }
+.bike-quick-card { min-height: 91px; padding: 14px; border: 1px solid var(--bike-line); border-radius: 11px; background: #f8fbfc; color: var(--bike-ink); text-align: left; cursor: pointer; }
+.bike-quick-card:hover, .bike-quick-card:focus-visible { border-color: var(--bike-teal); background: #eef7f8; }
+.bike-quick-card strong, .bike-quick-card span { display: block; }
+.bike-quick-card strong { margin-bottom: 7px; font-size: 15px; }
+.bike-quick-card span { color: var(--bike-muted); font-size: 13px; }
+.bike-route-metrics { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+.bike-route-metrics > div { min-height: 88px; padding: 14px; border-radius: 10px; background: #f1f7f8; }
+.bike-route-metrics span, .bike-route-metrics strong { display: block; }
+.bike-route-metrics span { color: var(--bike-muted); font-size: 13px; }
+.bike-route-metrics strong { margin-top: 9px; color: var(--bike-deep); font-size: 20px; }
+.bike-route-actions { justify-content: flex-end; margin-top: 14px; }
+.bike-map-section .bike-section-heading { display: flex; align-items: start; justify-content: space-between; gap: 18px; }
+.bike-map-shell { position: relative; overflow: hidden; border: 1px solid var(--bike-line); border-radius: 11px; background: #dbe8eb; }
+.bike-map { min-height: 420px; width: 100%; }
+.bike-map-note { position: absolute; right: 10px; bottom: 10px; z-index: 500; max-width: min(430px, calc(100% - 20px)); padding: 8px 11px; border: 1px solid rgba(255,255,255,.7); border-radius: 8px; background: rgba(255,255,255,.92); color: var(--bike-muted); font-size: 12px; line-height: 1.45; }
+.bike-source-note { margin: 10px 0 0; color: var(--bike-muted); font-size: 12px; }
+.bike-marker { display: grid; place-items: center; border: 0; background: transparent; }
+.bike-marker span { display: grid; place-items: center; width: 34px; height: 34px; border: 3px solid white; border-radius: 50%; box-shadow: 0 2px 9px rgba(13,45,62,.3); color: white; font-size: 12px; font-weight: 800; }
+.bike-marker-start span { background: var(--bike-teal); }
+.bike-marker-end span { background: var(--bike-orange); }
+.bike-weather-controls { justify-content: flex-end; margin-bottom: 15px; }
+.bike-weather-controls label { grid-template-columns: auto minmax(160px, 220px); align-items: center; }
+.bike-weather-overview { display: grid; grid-template-columns: 1fr 2fr; gap: 12px; }
+.bike-current-weather { padding: 17px; border-radius: 11px; background: #eaf5f6; }
+.bike-current-weather span, .bike-current-weather p { color: var(--bike-muted); }
+.bike-current-weather span { font-size: 13px; }
+.bike-current-weather strong { display: block; margin: 5px 0; color: var(--bike-deep); font-size: 47px; line-height: 1; }
+.bike-current-weather p { margin: 0; font-size: 13px; }
+.bike-weather-metrics { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+.bike-weather-metrics > div { padding: 14px; border: 1px solid var(--bike-line); border-radius: 10px; }
+.bike-weather-metrics span, .bike-weather-metrics strong { display: block; }
+.bike-weather-metrics span { color: var(--bike-muted); font-size: 13px; }
+.bike-weather-metrics strong { margin-top: 11px; color: var(--bike-ink); font-size: 18px; }
+.bike-weather-section .bike-inline-heading { margin-top: 18px; }
+.bike-hourly-list { display: grid; grid-template-columns: repeat(6, minmax(110px, 1fr)); gap: 8px; overflow-x: auto; }
+.bike-hourly-card { min-height: 126px; padding: 12px; border: 1px solid var(--bike-line); border-radius: 10px; background: #fff; }
+.bike-hourly-card strong, .bike-hourly-card span, .bike-hourly-card b, .bike-hourly-card small { display: block; }
+.bike-hourly-card strong { color: var(--bike-deep); }
+.bike-hourly-card span { margin: 7px 0; color: var(--bike-muted); font-size: 13px; }
+.bike-hourly-card b { color: #217c99; font-size: 14px; }
+.bike-hourly-card small { margin-top: 8px; color: var(--bike-muted); font-size: 11px; line-height: 1.55; }
+.bike-place-filters { display: flex; gap: 7px; margin-bottom: 12px; overflow-x: auto; }
+.bike-place-filters button { min-height: 44px; padding: 0 14px; border: 1px solid var(--bike-line); border-radius: 9px; background: white; color: var(--bike-muted); cursor: pointer; font-weight: 800; white-space: nowrap; }
+.bike-place-filters button.is-active { border-color: var(--bike-deep); background: var(--bike-deep); color: white; }
+.bike-place-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+.bike-place-card { display: grid; grid-template-columns: 92px minmax(0, 1fr); min-height: 118px; overflow: hidden; border: 1px solid var(--bike-line); border-radius: 11px; background: white; }
+.bike-place-card img, .bike-place-placeholder { width: 92px; height: 100%; min-height: 118px; object-fit: cover; background: #e6f1f2; }
+.bike-place-placeholder { display: grid; place-items: center; color: var(--bike-teal); font-size: 34px; }
+.bike-place-card > div { padding: 13px; }
+.bike-place-card span { color: var(--bike-orange); font-size: 12px; font-weight: 800; }
+.bike-place-card h3 { overflow: hidden; margin: 5px 0; color: var(--bike-ink); font-size: 16px; text-overflow: ellipsis; white-space: nowrap; }
+.bike-place-card p { overflow: hidden; margin: 0 0 7px; color: var(--bike-muted); font-size: 12px; text-overflow: ellipsis; white-space: nowrap; }
+.bike-place-card a { color: var(--bike-teal); font-size: 12px; font-weight: 800; text-decoration: none; }
+.bike-empty-state { padding: 24px 16px; border: 1px dashed #b8cdd4; border-radius: 10px; background: #f8fbfc; color: var(--bike-muted); line-height: 1.6; text-align: center; }
+.bike-empty-state strong, .bike-empty-state p, .bike-empty-state small { display: block; }
+.bike-empty-state strong { color: var(--bike-ink); }
+.bike-empty-state p { margin: 7px 0 0; }
+.bike-empty-state small { margin-top: 7px; }
+.bike-check-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 9px; }
+.bike-check-grid label { display: flex; align-items: start; gap: 9px; min-height: 54px; padding: 15px 13px; border: 1px solid var(--bike-line); border-radius: 10px; background: #fbfcfc; line-height: 1.45; cursor: pointer; }
+.bike-check-grid input { width: 20px; height: 20px; flex: 0 0 auto; margin: 0; accent-color: var(--bike-teal); }
+.bike-safety-note { margin-top: 12px; padding: 14px 16px; border-left: 4px solid var(--bike-orange); border-radius: 8px; background: #fff8ef; }
+.bike-safety-note strong { color: #955314; }
+.bike-safety-note p { margin: 5px 0 0; color: #6c5a45; line-height: 1.6; }
+.bike-info-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.bike-info-grid details { padding: 14px; border: 1px solid var(--bike-line); border-radius: 10px; }
+.bike-info-grid summary { cursor: pointer; color: var(--bike-ink); font-weight: 800; }
+.bike-info-grid p { margin: 11px 0 0; color: var(--bike-muted); font-size: 14px; line-height: 1.7; }
+.bike-footer { display: grid; grid-template-columns: 1.2fr 1fr; gap: 20px; width: min(1180px, calc(100% - 28px)); margin: 0 auto; padding: 24px 0 94px; color: var(--bike-muted); }
+.bike-footer strong { color: var(--bike-ink); }
+.bike-footer p { margin: 7px 0 0; font-size: 14px; }
+.bike-footer nav { display: flex; justify-content: flex-end; align-items: start; flex-wrap: wrap; gap: 12px; font-size: 13px; }
+.bike-footer nav a { text-decoration: none; }
+.bike-footer nav a:hover { color: var(--bike-teal); }
+.bike-footer small { grid-column: 1 / -1; padding-top: 12px; border-top: 1px solid var(--bike-line); font-size: 12px; line-height: 1.5; }
+.bike-skeleton { min-height: 64px; padding: 22px; border-radius: 10px; background: linear-gradient(90deg, #eef4f5 25%, #e1ecee 37%, #eef4f5 63%); background-size: 400% 100%; animation: bike-skeleton 1.4s ease infinite; color: transparent; }
+@keyframes bike-skeleton { 0% { background-position: 100% 0; } 100% { background-position: 0 0; } }
+.bike-bottom-nav { display: none; }
+
+@media (max-width: 760px) {
+  .bike-header-inner { width: calc(100% - 20px); min-height: 60px; }
+  .bike-header-links a { display: none; }
+  .bike-brand strong { font-size: 16px; }
+  .bike-brand-mark { width: 34px; height: 34px; border-radius: 10px; }
+  .bike-main { width: calc(100% - 20px); padding-top: 14px; padding-bottom: 96px; }
+  .bike-route-panel, .bike-route-result, .bike-map-section, .bike-weather-section, .bike-places-section, .bike-check-section, .bike-info-section { padding: 17px; border-radius: 12px; }
+  .bike-route-form { grid-template-columns: minmax(0, 1fr) 40px minmax(0, 1fr); }
+  .bike-form-actions { grid-column: 1 / -1; display: grid; grid-template-columns: 1fr 1fr; }
+  .bike-form-actions .bike-button { width: 100%; }
+  .bike-swap-button { width: 40px; }
+  .bike-map-section .bike-section-heading { display: block; }
+  .bike-map-actions { margin-top: 11px; }
+  .bike-map-actions .bike-button { flex: 1; }
+  .bike-route-metrics { grid-template-columns: repeat(2, 1fr); }
+  .bike-route-metrics strong { font-size: 18px; }
+  .bike-weather-controls { justify-content: stretch; }
+  .bike-weather-controls label { flex: 1; grid-template-columns: 1fr; }
+  .bike-weather-controls .bike-button { align-self: end; }
+  .bike-weather-overview { grid-template-columns: 1fr; }
+  .bike-weather-metrics { grid-template-columns: repeat(2, 1fr); }
+  .bike-hourly-list { grid-template-columns: repeat(6, 112px); }
+  .bike-place-list { grid-template-columns: 1fr; }
+  .bike-check-grid { grid-template-columns: 1fr; }
+  .bike-info-grid { grid-template-columns: 1fr; }
+  .bike-footer { grid-template-columns: 1fr; width: calc(100% - 20px); padding-bottom: 100px; }
+  .bike-footer nav { justify-content: flex-start; }
+  .bike-bottom-nav { position: fixed; right: 0; bottom: 0; left: 0; z-index: 1100; display: grid; grid-template-columns: repeat(4, 1fr); padding: 7px 8px max(7px, env(safe-area-inset-bottom)); border-top: 1px solid var(--bike-line); background: rgba(255,255,255,.97); box-shadow: 0 -10px 26px rgba(17, 56, 76, .1); backdrop-filter: blur(14px); }
+  .bike-bottom-nav a { display: grid; place-items: center; min-height: 54px; gap: 2px; border-radius: 9px; color: var(--bike-muted); text-decoration: none; }
+  .bike-bottom-nav a:active, .bike-bottom-nav a:focus-visible { background: #edf6f8; color: var(--bike-deep); }
+  .bike-bottom-nav span { font-size: 20px; line-height: 1; }
+  .bike-bottom-nav strong { font-size: 11px; }
+}
+
+@media (max-width: 420px) {
+  .bike-route-form { gap: 7px; }
+  .bike-route-metrics { gap: 7px; }
+  .bike-route-metrics > div, .bike-weather-metrics > div { padding: 12px; }
+  .bike-section-heading h1 { font-size: 27px; }
+}

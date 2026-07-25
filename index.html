@@ -3,172 +3,54 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="description" content="내 지역과 태풍의 거리, 현재 날씨, 기상청 태풍 경로를 모바일에서 빠르게 확인하는 태풍 한눈에 대시보드입니다." />
-    <meta name="theme-color" content="#17324d" />
+    <meta name="theme-color" content="#087f95" />
     <meta name="google-adsense-account" content="ca-pub-5751319666030430" />
-    <meta property="og:type" content="website" />
-    <meta property="og:title" content="태풍 한눈에 | 내 지역 태풍·날씨 대시보드" />
-    <meta property="og:description" content="내 지역과 태풍의 거리, 현재 날씨, 공식 발표 링크를 한 화면에서 확인하세요." />
-    <meta property="og:url" content="https://mustview.co.kr/" />
+    <title>해수욕장 한눈에 | MustView Beach</title>
+    <meta name="description" content="전국 해수욕장의 현재 날씨, 파고, 수온, 바람과 주변 여행 정보를 한눈에 확인하세요." />
     <link rel="canonical" href="https://mustview.co.kr/" />
-    <title>태풍 한눈에 | 내 지역 태풍·날씨 대시보드</title>
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-    <link rel="stylesheet" href="styles.css?v=20260723-dashboard1" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="MustView Beach" />
+    <meta property="og:title" content="해수욕장 한눈에" />
+    <meta property="og:description" content="가고 싶은 해수욕장의 날씨와 바다 상태를 한 화면에서 확인하는 여행 대시보드" />
+    <meta property="og:url" content="https://mustview.co.kr/" />
+    <link rel="preconnect" href="https://unpkg.com" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIINfQ3QwJZP0nD9G8T8vJxXk6QqZL6Qe2M=" crossorigin="" />
+    <link rel="stylesheet" href="styles.css?v=20260725-beach1" />
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5751319666030430" crossorigin="anonymous"></script>
   </head>
-  <body>
+  <body class="beach-page">
     <a class="skip-link" href="#main">본문 바로가기</a>
-
-    <header class="site-header">
-      <div class="header-inner">
-        <a class="brand" href="#home" aria-label="태풍 한눈에 홈으로 이동">
-          <span aria-hidden="true">T</span>
-          <span class="brand-copy"><strong>태풍 한눈에</strong><small>MustView Weather</small></span>
-        </a>
-        <nav class="header-nav" aria-label="주요 메뉴">
-          <a href="#region-summary">현재 태풍</a>
-          <a href="#weather">실시간 날씨</a>
-          <button class="menu-button" id="categoryOpen" type="button" aria-haspopup="dialog" aria-controls="categoryModal" aria-expanded="false" aria-label="메뉴 열기" title="메뉴 열기"><span aria-hidden="true">☰</span></button>
-        </nav>
+    <header class="beach-header">
+      <div class="beach-header-inner">
+        <a class="beach-brand" href="#beachSelect" aria-label="해수욕장 한눈에 홈으로 이동"><span class="beach-brand-mark" aria-hidden="true">◒</span><span><strong>해수욕장 한눈에</strong><small>MustView Beach</small></span></a>
+        <nav class="beach-header-links" aria-label="주요 메뉴"><a href="#beachConditions">바다 상태</a><a href="#beachWeather">날씨</a><button class="beach-menu-button" id="beachMenuOpen" type="button" aria-haspopup="dialog" aria-controls="beachMenu" aria-expanded="false">메뉴</button></nav>
       </div>
     </header>
 
-    <dialog class="category-modal" id="categoryModal" aria-labelledby="categoryModalTitle">
-      <div class="category-modal-card">
-        <div class="category-modal-head">
-          <div><p class="eyebrow">MustView Weather</p><h2 id="categoryModalTitle">메뉴</h2></div>
-          <button class="modal-close" id="categoryClose" type="button" aria-label="메뉴 닫기" title="메뉴 닫기">×</button>
-        </div>
-        <nav class="category-list" aria-label="사이트 메뉴">
-          <a href="#region-summary"><strong>현재 태풍</strong><span>내 지역 영향 요약</span></a>
-          <a href="#map"><strong>태풍지도</strong><span>한국 주변·전세계 경로</span></a>
-          <a href="#weather"><strong>실시간 날씨</strong><span>기온·강수·바람</span></a>
-          <a href="typhoon-guide.html"><strong>수치 읽는 방법</strong><span>경로·기압·풍속 해설</span></a>
-          <a href="readiness-guide.html"><strong>대비요령</strong><span>침수·강풍·해안 대비</span></a>
-          <a href="data-sources.html"><strong>자료 출처</strong><span>자료 기준과 갱신 주기</span></a>
-          <a href="about.html"><strong>사이트 소개</strong><span>운영 원칙과 이용 안내</span></a>
-          <a href="contact.html"><strong>문의</strong><span>오류·자료 수정 제안</span></a>
-        </nav>
-      </div>
-    </dialog>
+    <dialog class="beach-menu" id="beachMenu" aria-labelledby="beachMenuTitle"><div class="beach-menu-card"><div class="beach-menu-head"><div><span class="beach-kicker">MUSTVIEW BEACH</span><h2 id="beachMenuTitle">여행 메뉴</h2></div><button class="beach-icon-button" id="beachMenuClose" type="button" aria-label="메뉴 닫기">×</button></div><nav class="beach-menu-list" aria-label="해수욕장 여행 메뉴"><a href="#beachSelect">해수욕장 선택</a><a href="#beachMapSection">전국 지도</a><a href="#beachConditions">바다 상태</a><a href="#beachWeather">여행 날씨</a><a href="#beachPlaces">주변 여행 정보</a><a href="#beachSafety">물놀이 안전</a><a href="about.html">서비스 안내</a><a href="privacy.html">개인정보처리방침</a><a href="contact.html">문의하기</a></nav></div></dialog>
 
-    <main id="main">
-      <section class="region-dashboard" id="home" aria-labelledby="regionSummaryTitle">
-        <div class="region-picker" aria-label="관심 지역 선택">
-          <div class="region-picker-main">
-            <label for="regionSearch">지역 검색
-              <input id="regionSearch" list="regionOptions" inputmode="search" autocomplete="off" placeholder="예: 부산" aria-describedby="regionStatus" />
-            </label>
-            <datalist id="regionOptions">
-              <option value="서울"></option><option value="인천"></option><option value="수원"></option><option value="춘천"></option><option value="강릉"></option><option value="청주"></option><option value="세종"></option><option value="대전"></option><option value="전주"></option><option value="광주"></option><option value="대구"></option><option value="포항"></option><option value="울산"></option><option value="부산"></option><option value="창원"></option><option value="제주"></option><option value="서귀포"></option>
-            </datalist>
-            <label for="regionSelect">지역 목록
-              <select id="regionSelect" aria-label="지역 목록에서 선택"></select>
-            </label>
-            <button class="button primary location-button" id="useLocation" type="button">현재 위치 사용</button>
-          </div>
-          <div class="recent-region-row"><span>최근 조회</span><div id="recentRegions" class="recent-regions"><span class="recent-empty">최근 조회 지역이 없습니다.</span></div></div>
-          <p class="control-status" id="regionStatus" aria-live="polite">서울을 관심 지역으로 사용합니다. 위치 권한 없이도 지역을 직접 선택할 수 있습니다.</p>
-        </div>
+    <main id="main" class="beach-main">
+      <section class="beach-select-panel" id="beachSelect" aria-labelledby="beachSelectTitle"><div class="beach-section-heading"><span class="beach-kicker">오늘 어디로 갈까요?</span><h1 id="beachSelectTitle">해수욕장을 선택하세요</h1><p>방문 전 날씨와 바다 상태, 주변 여행 정보를 함께 확인합니다.</p></div><form class="beach-select-form" id="beachSelectForm"><label>해수욕장<select id="beachChoice" required></select></label><button class="beach-button beach-primary" type="submit">상태 확인</button><button class="beach-button beach-secondary" id="beachUseLocation" type="button">내 위치 주변</button></form><p class="beach-status" id="beachStatus" aria-live="polite">해수욕장을 선택하면 최신 참고 정보를 불러옵니다.</p><div class="beach-quick-wrap"><div class="beach-inline-heading"><h2>많이 찾는 해변</h2><span>한 번에 선택</span></div><div class="beach-quick-list" id="beachQuickList"></div></div></section>
 
-        <section class="region-summary-card" id="region-summary" aria-labelledby="regionSummaryTitle" aria-live="polite">
-          <div class="region-summary-head">
-            <div><p class="eyebrow">선택 지역</p><h1 id="regionSummaryTitle"><span id="regionName">서울</span> 현재 상황</h1><p id="regionCoordinates" class="coordinate-text">37.5665, 126.9780</p></div>
-            <button class="button ghost dashboard-retry" id="dashboardRetry" type="button">다시 확인</button>
-            <div class="summary-updated"><span id="regionDataBasis">자료 기준 시각을 기다리는 중입니다.</span><strong id="regionLastUpdated">마지막 갱신 대기 중</strong></div>
-          </div>
+      <section class="beach-overview" aria-labelledby="beachOverviewTitle"><div class="beach-section-heading compact"><span class="beach-kicker">선택한 해변</span><h2 id="beachOverviewTitle"><span id="selectedBeachName">-</span> 오늘의 바다</h2><p id="selectedBeachRegion">지역 정보를 불러오는 중입니다.</p></div><div class="beach-overview-grid"><div class="beach-overview-main"><span>방문 참고 상태</span><strong id="beachSafetyLevel">확인 중</strong><p id="beachSafetyReason">날씨와 파도 자료를 바탕으로 참고 상태를 계산합니다. 공식 해수욕장 통제 정보가 아닙니다.</p></div><div class="beach-overview-item"><span>자료 기준</span><strong id="beachDataTime">-</strong></div><div class="beach-overview-item"><span>마지막 갱신</span><strong id="beachUpdated">-</strong></div></div></section>
 
-          <div class="no-storm-state" id="regionNoStorm">
-            <strong>현재 활동 중인 태풍이 없습니다.</strong>
-            <span>태풍 자료가 새로 발표되면 이 화면과 지도에 표시됩니다.</span>
-          </div>
+      <section class="beach-conditions" id="beachConditions" aria-labelledby="beachConditionsTitle"><div class="beach-section-heading compact"><span class="beach-kicker">바다 상태</span><h2 id="beachConditionsTitle">지금 바다는 어떤가요?</h2><p id="marineStatus" class="beach-status" aria-live="polite">파도와 수온 자료를 불러오는 중입니다.</p></div><div class="marine-metrics" id="marineMetrics"><div class="beach-skeleton">바다 상태를 불러오는 중입니다.</div></div><div class="beach-inline-heading"><h3>앞으로 6시간 파도</h3><span>참고용 해양예보</span></div><div class="marine-hourly" id="marineHourly"><div class="beach-skeleton">시간별 파도 자료를 불러오는 중입니다.</div></div><p class="beach-source-note">해양 자료는 Open-Meteo Marine 참고 예보입니다. 실제 입수 가능 여부는 현장 안전요원과 공식 안내를 확인하세요.</p></section>
 
-          <div class="data-error-state" id="regionDataError" hidden>
-            <strong>태풍 자료를 불러오지 못했습니다.</strong>
-            <span id="regionDataErrorText">잠시 후 다시 확인하거나 기상청 공식 발표를 확인해 주세요.</span>
-          </div>
+      <section class="beach-weather" id="beachWeather" aria-labelledby="beachWeatherTitle"><div class="beach-section-heading compact"><span class="beach-kicker">여행 날씨</span><h2 id="beachWeatherTitle"><span id="weatherBeachName">선택 해변</span> 날씨</h2><p id="beachWeatherStatus" class="beach-status" aria-live="polite">날씨 정보를 불러오는 중입니다.</p></div><div class="beach-weather-overview"><div class="beach-current-weather"><span>현재 기온</span><strong id="beachTemperature">-</strong><p id="beachWeatherDescription">-</p></div><div class="beach-weather-metrics" id="beachWeatherMetrics"></div></div><div class="beach-inline-heading"><h3>앞으로 6시간</h3><span>비·바람을 먼저 확인하세요</span></div><div class="beach-hourly" id="beachHourly"><div class="beach-skeleton">시간별 날씨를 불러오는 중입니다.</div></div></section>
 
-          <div id="regionStormDetails" class="region-storm-details" hidden>
-            <div class="storm-focus"><span>가장 가까운 활동 태풍</span><strong id="regionStormName">-</strong><p id="regionStormLocation">-</p></div>
-            <div class="summary-metric"><span>현재 거리</span><strong id="regionDistance">-</strong><small>선택 지역과 중심 사이</small></div>
-            <div class="summary-metric"><span>최근접 예상 시각</span><strong id="regionNearestTime">-</strong><small>참고 예상 · 공식 특보 아님</small></div>
-            <div class="summary-metric"><span>최근접 예상 거리</span><strong id="regionNearestDistance">-</strong><small>예측 경로가 있을 때 계산</small></div>
-          </div>
+      <section class="beach-map-section" id="beachMapSection" aria-labelledby="beachMapTitle"><div class="beach-section-heading compact beach-heading-row"><div><span class="beach-kicker">전국 해변 지도</span><h2 id="beachMapTitle">가까운 해수욕장을 찾아보세요</h2></div><button class="beach-button beach-secondary" id="beachMapReset" type="button">전국 보기</button></div><div class="beach-map-shell"><div class="beach-map" id="beachMap" aria-label="전국 해수욕장 위치 지도"></div><div class="beach-map-note">지도 위치와 해변 상태는 참고용입니다.</div></div><p class="beach-source-note">지도: OpenStreetMap · 표시 해변: 국내 주요 해수욕장 목록</p></section>
 
-          <div class="region-data-grid">
-            <article><span>이동 방향</span><strong id="regionDirection">-</strong></article>
-            <article><span>이동속도</span><strong id="regionSpeed">-</strong></article>
-            <article><span>중심기압</span><strong id="regionPressure">-</strong></article>
-            <article><span>최대풍속</span><strong id="regionWind">-</strong></article>
-          </div>
+      <section class="beach-places" id="beachPlaces" aria-labelledby="beachPlacesTitle"><div class="beach-section-heading compact"><span class="beach-kicker">주변 여행 정보</span><h2 id="beachPlacesTitle"><span id="placesBeachName">선택 해변</span> 주변에서 찾아보기</h2><p id="beachPlacesStatus" class="beach-status" aria-live="polite">관광지와 음식점 정보를 확인합니다.</p></div><div class="beach-place-filters" role="group" aria-label="주변 정보 종류"><button class="is-active" type="button" data-place-type="12">관광지</button><button type="button" data-place-type="39">음식점</button><button type="button" data-place-type="32">숙박</button></div><div class="beach-place-list" id="beachPlacesList"><div class="beach-empty-state">해변을 선택하면 주변 정보를 표시합니다.</div></div><p class="beach-source-note">관광 정보: 한국관광공사 공개자료. 운영 시간과 이용 가능 여부는 방문 전 공식 안내를 확인하세요.</p></section>
 
-          <div class="impact-summary-row">
-            <div><span class="metric-label">지역 영향 참고 수준</span><strong id="regionImpactLevel" data-tone="green">현재 활동 중인 태풍 없음</strong><p id="regionImpactReason">현재 활동 중인 태풍이 없습니다. 평상시 날씨와 공식 특보를 확인하세요.</p></div>
-            <details class="criteria-details"><summary>판단 기준 보기</summary><p>태풍 중심과 선택 지역의 계산 거리, 자료에 포함된 풍속을 이용한 참고용 자체 계산입니다. 기상청 공식 특보나 대피 판단을 대신하지 않습니다.</p></details>
-          </div>
+      <section class="beach-safety" id="beachSafety" aria-labelledby="beachSafetyTitle"><div class="beach-section-heading compact"><span class="beach-kicker">물놀이 전 확인</span><h2 id="beachSafetyTitle">안전한 해수욕을 위한 체크</h2><p>체크한 항목은 이 기기에만 저장됩니다.</p></div><div class="beach-check-grid"><label><input type="checkbox" data-beach-check="warning" /> 입수 전 해수욕장 안내 확인</label><label><input type="checkbox" data-beach-check="weather" /> 비·강풍·폭염 확인</label><label><input type="checkbox" data-beach-check="children" /> 어린이 보호자 동행</label><label><input type="checkbox" data-beach-check="float" /> 구명조끼와 물놀이 장비 확인</label><label><input type="checkbox" data-beach-check="sun" /> 물·모자·자외선 차단 준비</label><label><input type="checkbox" data-beach-check="phone" /> 휴대폰 방수·비상 연락 준비</label></div><div class="beach-safety-note"><strong>중요 안내</strong><p>파고와 날씨는 참고자료입니다. 입수 가능 여부, 이안류·너울·해파리·풍랑 정보와 해수욕장 통제는 현장 안전요원 및 공식 재난문자를 우선하세요.</p></div></section>
 
-          <div class="alert-summary"><span class="metric-label">현재 기상특보</span><strong id="regionAlertSummary">연결된 공식 특보 자료가 없습니다. 선택 지역 특보는 기상청 공식 페이지에서 확인하세요.</strong><a class="text-link" href="https://www.weather.go.kr/w/warning/obs-warning.do" target="_blank" rel="noopener">기상청 특보 확인</a></div>
-        </section>
-
-        <section class="region-weather-card" aria-labelledby="regionWeatherTitle">
-          <div class="section-head compact"><p class="eyebrow">선택 지역 현재 날씨</p><h2 id="regionWeatherTitle"><span id="regionNameWeather">내 지역</span> 날씨</h2><p id="regionWeatherStatus" aria-live="polite">자료를 불러오는 중입니다.</p></div>
-          <div class="region-weather-main"><strong id="regionWeatherTemperature">-</strong><div id="regionWeatherMetrics" class="region-weather-metrics"></div><div class="weather-today-note"><span>오늘 최대 풍속</span><strong id="todayMaxWind">-</strong></div></div>
-          <div class="hourly-heading"><strong>오늘 시간대별 강수량</strong><span>예보 모델 참고 자료</span></div>
-          <div class="hourly-weather" id="hourlyWeather"><p class="skeleton-line">시간대별 자료를 불러오는 중입니다.</p></div>
-        </section>
-      </section>
-
-      <div class="notice"><strong>중요:</strong> 대피·통제 판단은 기상청 특보와 재난문자를 가장 먼저 확인하세요. 이 사이트의 거리·영향 수준은 참고용입니다.</div>
-
-      <section class="map-dashboard" id="map" aria-labelledby="mapTitle">
-        <div class="map-heading"><div><p class="eyebrow">태풍지도</p><h2 id="mapTitle">한국어 지명으로 보는 태풍 위치</h2><p>지도는 필요한 때에 움직이고, 상세 수치는 아래 카드와 공식 발표 링크로 확인합니다.</p></div><span class="map-source-label">기상청·GDACS 자료 <span id="mapUpdated">지도 갱신 대기 중</span></span></div>
-        <div class="map-shell"><div id="liveMap" class="live-map" aria-label="한글 지명 레이어가 포함된 태풍 경로 지도"></div><div class="map-playback" id="mapPlayback" hidden aria-label="예측 경로 재생"><button class="playback-toggle" id="playbackToggle" type="button" disabled>재생</button><label for="forecastSlider">예측 시점 <strong id="forecastStepLabel">전체 경로</strong></label><input id="forecastSlider" type="range" min="0" max="0" value="0" step="1" disabled /><div class="forecast-ticks" id="forecastTicks" aria-hidden="true"></div></div><div class="map-legend" aria-label="지도 범례"><span><i class="dot current"></i>현재 분석</span><span><i class="dot forecast"></i>예측 위치</span><span><i class="line"></i>예측 경로</span></div></div>
-        <div class="map-control-bar">
-          <div class="map-range-buttons" aria-label="지도 범위 선택"><button class="button secondary" id="regionMap" type="button">내 지역</button><button class="button secondary" id="refreshMap" type="button">한국 주변</button><button class="button primary" id="globalTrackMap" type="button">전세계</button></div>
-          <div class="map-layer-toggles" aria-label="지도 표시 항목"><button type="button" data-layer-toggle="forecast" aria-pressed="true">예상경로</button><button type="button" data-layer-toggle="probability" aria-pressed="true">70% 확률반경</button><button type="button" data-layer-toggle="wind" aria-pressed="true">강풍반경</button><button type="button" data-layer-toggle="storm" aria-pressed="true">폭풍반경</button></div>
-          <details class="map-settings"><summary>지도 설정</summary><button class="button ghost" id="mapStyleToggle" type="button">일반지도 보기</button></details>
-        </div>
-      </section>
-
-      <section class="forecast-section" aria-labelledby="forecastTitle">
-        <div class="section-head compact"><p class="eyebrow">시간대별 예측</p><h2 id="forecastTitle">내 지역과 경로의 변화</h2><p>예측 경로 자료가 있을 때만 표시합니다. 최근접 시각과 거리는 참고 예상입니다.</p></div>
-        <div class="forecast-tabs" role="tablist" aria-label="예측 시간 선택"><button type="button" data-forecast-hours="24" class="is-active" role="tab" aria-selected="true">24시간</button><button type="button" data-forecast-hours="48" role="tab" aria-selected="false">48시간</button><button type="button" data-forecast-hours="72" role="tab" aria-selected="false">72시간</button></div>
-        <div id="regionForecastTimeline" class="forecast-timeline"><div class="empty-state">공식 예측경로를 기다리는 중입니다.</div></div>
-        <div class="data-caveat">예측 위치와 거리는 발표 자료를 기준으로 한 참고 정보입니다. 실제 위험도는 기상청 특보, 강수·해상 상황, 지역 지형에 따라 달라질 수 있습니다.</div>
-      </section>
-
-      <section class="impact-section" aria-labelledby="impactTitle">
-        <div class="section-head compact"><p class="eyebrow">내 지역 영향</p><h2 id="impactTitle">확인해야 할 정보만 모았습니다</h2></div>
-        <div class="impact-cards"><article><span>최근접 예상 시각</span><strong id="impactTime">위 요약에서 확인</strong><p>공식 발표 시각과 함께 비교하세요.</p></article><article><span>최근접 예상 거리</span><strong id="impactDistance">위 요약에서 확인</strong><p>계산값은 참고 예상입니다.</p></article><article><span>예상 영향 수준</span><strong id="impactLevelCard">위 요약에서 확인</strong><p>안전을 단정하지 않습니다.</p></article><article><span>공식 발표</span><a class="button ghost" href="https://www.weather.go.kr/w/hazard/typhoon/report.do" target="_blank" rel="noopener">기상청 발표 보기</a></article></div>
-      </section>
-
-      <section class="public-section live-api" id="live" aria-labelledby="liveTitle">
-        <div class="section-head"><p class="eyebrow">전세계 현재 태풍</p><h2 id="liveTitle">활성 열대저기압 현황</h2><p>현재 확인되는 전세계 열대저기압을 지도와 목록으로 보여줍니다. 종료된 현상은 현재 목록에 섞지 않습니다.</p></div>
-        <div class="live-section-actions"><div class="api-status" id="typhoonApiStatus" aria-live="polite">현재 태풍 자료를 확인하고 있습니다.</div><button class="button secondary" id="currentTyphoonRefresh" type="button">현재 자료 새로고침</button></div>
-        <div class="storm-cards" id="stormCards"><article class="skeleton-card"></article><article class="skeleton-card"></article></div>
-        <div class="timeline-list" id="timelineList"></div>
-        <div class="track-table-wrap"><table class="track-table"><thead><tr><th>상태</th><th>확인 시각</th><th>위치</th><th>자료 출처</th><th>최대풍속</th><th>위험도</th></tr></thead><tbody id="trackTableBody"><tr><td colspan="6">현재 자료를 불러오는 중입니다.</td></tr></tbody></table></div>
-        <div class="summary-box" id="stormSummary">태풍 자료를 불러오면 요약이 표시됩니다.</div>
-      </section>
-
-      <section class="public-section weather-panel" id="weather" aria-labelledby="weatherTitle">
-        <div class="section-head"><p class="eyebrow">실시간 날씨</p><h2 id="weatherTitle">지역별 현재 날씨와 시간대별 예보</h2><p>현재 날씨는 Open-Meteo 자료를 참고하며, 재난·특보 판단은 기상청 공식 발표를 우선합니다.</p></div>
-        <form id="weatherForm" class="weather-controls"><label for="weatherLocation">지역 선택<select id="weatherLocation" name="city"></select></label><button class="button primary" type="submit">날씨 새로고침</button></form>
-        <div class="api-status" id="weatherStatus" aria-live="polite">서울 현재 날씨를 불러오는 중입니다.</div>
-        <div class="weather-overview" id="weatherOverview"><div class="weather-current"><span>현재 기온</span><strong id="weatherTemperature">-</strong><p id="weatherDescription">자료를 불러오는 중입니다.</p></div><div class="weather-metrics" id="weatherMetrics"></div></div>
-      </section>
-
-      <section class="safety" id="safety" aria-labelledby="safetyTitle"><p class="eyebrow">대비요령</p><h2 id="safetyTitle">태풍 단계별 행동요령</h2><div class="action-grid"><article><span>접근 전</span><h3>집 주변 정리</h3><p>창문, 베란다 물건, 배수구를 확인하고 휴대폰과 보조배터리를 충전합니다.</p></article><article><span>특보 발표 후</span><h3>위험한 곳 피하기</h3><p>하천, 해안, 방파제, 지하차도, 저지대와 공사장 주변에 가지 않습니다.</p></article><article><span>영향 중</span><h3>실내에서 정보 확인</h3><p>창문에서 떨어져 기상청 특보와 재난문자를 확인합니다.</p></article></div><p><a class="button ghost" href="readiness-guide.html">지역별 행동요령 자세히 보기</a></p></section>
-
-      <details class="related-info" id="related-info"><summary><span class="eyebrow">더 알아보기</span><strong>태풍 수치·자료 출처·공식 안내</strong><small>첫 화면을 간단하게 유지하기 위해 필요한 때에 펼쳐 보세요.</small></summary><div class="related-info-grid"><a class="info-card" href="typhoon-guide.html"><strong>태풍 경로·기압·풍속 읽기</strong><p>중심기압, 최대풍속, 강풍반경, 70% 확률반경의 차이를 설명합니다.</p></a><a class="info-card" href="readiness-guide.html"><strong>태풍 행동요령</strong><p>침수·강풍·해안 지역별 대비와 공식 영상을 확인합니다.</p></a><a class="info-card" href="data-sources.html"><strong>자료 출처와 갱신 주기</strong><p>기상청, GDACS, Open-Meteo 자료의 기준을 안내합니다.</p></a><a class="info-card" href="about.html"><strong>사이트 운영 원칙</strong><p>공식 발표 우선 원칙과 참고 계산의 한계를 확인합니다.</p></a></div></details>
+      <section class="beach-info" aria-labelledby="beachInfoTitle"><div class="beach-section-heading compact"><span class="beach-kicker">해변 여행 팁</span><h2 id="beachInfoTitle">방문 전에 알아두면 좋은 것</h2></div><div class="beach-info-grid"><details open><summary>파고를 읽는 방법</summary><p>파고가 높을수록 물결의 움직임이 커질 수 있습니다. 숫자만으로 입수 가능 여부를 판단하지 말고 현장 안내를 함께 확인하세요.</p></details><details><summary>날씨를 볼 때</summary><p>기온뿐 아니라 순간풍속, 강수확률, 체감온도, 자외선과 해 질 시간을 함께 살펴보면 여행 준비가 쉬워집니다.</p></details><details><summary>자료 업데이트</summary><p>날씨와 해양자료는 접속 시 새로 조회하며, 일시적인 지연이 있을 수 있습니다. 이 사이트는 공식 기관의 통제·특보를 대신하지 않습니다.</p></details></div></section>
     </main>
 
-    <nav class="bottom-nav" aria-label="모바일 주요 메뉴"><a href="#home" data-bottom-target="#home"><span aria-hidden="true">⌂</span><strong>홈</strong></a><a href="#map" data-bottom-target="#map"><span aria-hidden="true">◉</span><strong>태풍지도</strong></a><a href="#region-summary" data-bottom-target="#region-summary"><span aria-hidden="true">◎</span><strong>내 지역</strong></a><a href="readiness-guide.html"><span aria-hidden="true">▣</span><strong>대비요령</strong></a></nav>
+    <nav class="beach-bottom-nav" aria-label="모바일 주요 메뉴"><a href="#beachSelect"><span aria-hidden="true">⌂</span><strong>홈</strong></a><a href="#beachConditions"><span aria-hidden="true">≈</span><strong>바다</strong></a><a href="#beachWeather"><span aria-hidden="true">☼</span><strong>날씨</strong></a><a href="#beachSafety"><span aria-hidden="true">✓</span><strong>안전</strong></a></nav>
+    <footer class="beach-footer"><div><strong>해수욕장 한눈에</strong><p>바다 상태와 날씨, 주변 여행 정보를 한 번에 확인하는 MustView Beach입니다.</p></div><nav aria-label="하단 메뉴"><a href="about.html">서비스 안내</a><a href="contact.html">문의</a><a href="privacy.html">개인정보처리방침</a></nav><small>지도·날씨·해양·관광 정보는 참고용이며 공식 기관의 안내를 대신하지 않습니다.</small></footer>
 
-    <footer class="site-footer"><div class="related-links" aria-label="관련 페이지 링크"><a href="https://www.weather.go.kr/w/hazard/typhoon/report.do" target="_blank" rel="noopener">기상청 태풍정보</a><a href="https://www.weather.go.kr/w/warning/obs-warning.do" target="_blank" rel="noopener">기상청 특보</a><a href="typhoon-guide.html">수치 읽는 방법</a><a href="readiness-guide.html">행동요령</a><a href="data-sources.html">자료 출처</a><a href="privacy.html">개인정보처리방침</a><a href="contact.html">문의</a></div><div class="footer-inner"><section><h2>태풍 한눈에</h2><p>내 지역과 태풍의 거리를 빠르게 확인하는 MustView Weather입니다.</p></section><section><h2>자료 기준</h2><p>기상청 공개자료, GDACS, Open-Meteo와 공개 지도 자료를 참고합니다.</p></section><section><h2>중요 안내</h2><p>본 사이트는 기상청 공식 누리집이 아닙니다. 공식 특보와 재난문자를 우선 확인하세요.</p></section></div><p class="copyright">© 2026 MustView Weather. All rights reserved.</p></footer>
-
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    <script src="app.js?v=20260723-dashboard1"></script>
-    <script src="dashboard.js?v=20260723-dashboard1"></script>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    <script src="beach-dashboard.js?v=20260725-beach1"></script>
   </body>
 </html>

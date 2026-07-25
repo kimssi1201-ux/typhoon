@@ -21,43 +21,34 @@ const CITIES = {
 };
 
 const CURRENT_VARIABLES = [
-  "temperature_2m",
-  "relative_humidity_2m",
-  "apparent_temperature",
-  "precipitation",
-  "weather_code",
-  "cloud_cover",
-  "pressure_msl",
-  "wind_speed_10m",
-  "wind_direction_10m",
-  "wind_gusts_10m"
+  "temperature_2m", "relative_humidity_2m", "apparent_temperature", "precipitation", "weather_code", "cloud_cover", "pressure_msl", "wind_speed_10m", "wind_direction_10m", "wind_gusts_10m"
 ].join(",");
-
-const HOURLY_VARIABLES = [
-  "precipitation",
-  "precipitation_probability",
-  "wind_speed_10m",
-  "wind_gusts_10m",
-  "weather_code"
-].join(",");
+const HOURLY_VARIABLES = ["precipitation", "precipitation_probability", "wind_speed_10m", "wind_gusts_10m", "weather_code"].join(",");
 
 function json(data, status = 200) {
-  return new Response(JSON.stringify(data), {
-    status,
-    headers: {
-      "content-type": "application/json; charset=utf-8",
-      "cache-control": "no-store"
-    }
-  });
+  return new Response(JSON.stringify(data), { status, headers: { "content-type": "application/json; charset=utf-8", "cache-control": "no-store" } });
+}
+
+function boundedNumber(value, fallback, minimum, maximum) {
+  const number = Number(value);
+  return Number.isFinite(number) && number >= minimum && number <= maximum ? number : fallback;
 }
 
 export async function onRequestGet({ request }) {
   const requestUrl = new URL(request.url);
   const cityName = requestUrl.searchParams.get("city") || "서울";
+  const requestedLat = requestUrl.searchParams.get("lat");
+  const requestedLon = requestUrl.searchParams.get("lon");
+  const hasCoordinates = requestedLat !== null && requestedLon !== null;
   const city = CITIES[cityName] || CITIES.서울;
+  const location = hasCoordinates ? {
+    lat: boundedNumber(requestedLat, city.lat, 33, 39),
+    lon: boundedNumber(requestedLon, city.lon, 124, 132),
+    name: requestUrl.searchParams.get("name") || "현재 위치"
+  } : city;
   const upstreamUrl = new URL(WEATHER_ENDPOINT);
-  upstreamUrl.searchParams.set("latitude", city.lat);
-  upstreamUrl.searchParams.set("longitude", city.lon);
+  upstreamUrl.searchParams.set("latitude", location.lat);
+  upstreamUrl.searchParams.set("longitude", location.lon);
   upstreamUrl.searchParams.set("current", CURRENT_VARIABLES);
   upstreamUrl.searchParams.set("hourly", HOURLY_VARIABLES);
   upstreamUrl.searchParams.set("forecast_days", "2");
@@ -67,16 +58,12 @@ export async function onRequestGet({ request }) {
   upstreamUrl.searchParams.set("timezone", "Asia/Seoul");
 
   try {
-    const response = await fetch(upstreamUrl, {
-      headers: { accept: "application/json" }
-    });
+    const response = await fetch(upstreamUrl, { headers: { accept: "application/json" } });
     const data = await response.json();
-    if (!response.ok || data.error || !data.current) {
-      return json({ ok: false, message: data.reason || "현재 날씨 자료를 받을 수 없습니다." }, 502);
-    }
+    if (!response.ok || data.error || !data.current) return json({ ok: false, message: data.reason || "현재 날씨 자료를 받을 수 없습니다." }, 502);
     return json({
       ok: true,
-      city,
+      city: location,
       current: data.current,
       units: data.current_units || {},
       hourly: data.hourly || { time: [], precipitation: [], precipitation_probability: [], wind_speed_10m: [], wind_gusts_10m: [], weather_code: [] },
