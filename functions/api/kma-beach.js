@@ -121,7 +121,7 @@ export async function onRequestGet({ request, env }) {
     ["waterTemperature", callKma("getTwBuoyBeach", { searchTime, beach_num: beachNum }, serviceKey)],
     ["tide", callKma("getTideInfoBeach", { Base_date: date, beach_num: beachNum }, serviceKey)],
     ["sun", callKma("getSunInfoBeach", { Base_date: date, beach_num: beachNum }, serviceKey)],
-    ["forecast", callKma("getUltraSrtFcstBeach", { ...forecastBase, beach_num: beachNum }, serviceKey)]
+    ["forecast", callKma("getUltraSrtFcstBeach", { base_date: forecastBase.baseDate, base_time: forecastBase.baseTime, beach_num: beachNum }, serviceKey)]
   ];
   const results = await Promise.allSettled(requests.map(([, promise]) => promise));
   const data = Object.fromEntries(requests.map(([name], index) => [name, results[index].status === "fulfilled" ? results[index].value : { items: [], error: results[index].reason?.message || "자료 없음" }]));
