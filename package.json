@@ -5,7 +5,7 @@
   "type": "module",
   "description": "Mobile-first beach travel dashboard with weather, marine conditions, and tourism information.",
   "scripts": {
-    "check": "node --check app.js && node --check dashboard.js && node --check global-cyclone-tracker.js && node --check beach-dashboard.js && node --check functions/_middleware.js && node --check functions/api/health.js && node --check functions/api/typhoon.js && node --check functions/api/typhoon-list.js && node --check functions/api/typhoon-detail.js && node --check functions/api/korea-typhoons.js && node --check functions/api/current-weather.js && node --check functions/api/global-cyclones.js && node --check functions/api/tourism.js && node --check functions/api/marine.js",
+    "check": "node --check app.js && node --check dashboard.js && node --check global-cyclone-tracker.js && node --check beach-dashboard.js && node --check functions/_middleware.js && node --check functions/api/health.js && node --check functions/api/typhoon.js && node --check functions/api/typhoon-list.js && node --check functions/api/typhoon-detail.js && node --check functions/api/korea-typhoons.js && node --check functions/api/current-weather.js && node --check functions/api/global-cyclones.js && node --check functions/api/tourism.js && node --check functions/api/marine.js && node --check functions/api/kma-beach.js",
     "build": "node -e \"console.log('Static site: no build step required')\"",
     "start": "npx wrangler pages dev .",
     "serve": "npx wrangler pages dev ."

@@ -6,18 +6,18 @@
   const MARINE_CACHE = "mustview.beach.marine.v1.";
   const DEFAULT_CENTER = [36.15, 127.7];
   const BEACHES = [
-    { id: "haeundae", name: "해운대해수욕장", region: "부산 해운대구", lat: 35.1587, lon: 129.1604, description: "도심에서 쉽게 찾는 대표 해변" },
-    { id: "songjeong", name: "송정해수욕장", region: "부산 해운대구", lat: 35.1788, lon: 129.1991, description: "서핑과 산책을 함께 즐기는 해변" },
-    { id: "daedcheon", name: "대천해수욕장", region: "충남 보령시", lat: 36.307, lon: 126.515, description: "넓은 백사장과 해양 레저" },
-    { id: "gyeongpo", name: "경포해수욕장", region: "강원 강릉시", lat: 37.804, lon: 128.907, description: "호수와 바다를 함께 보는 곳" },
-    { id: "sokcho", name: "속초해수욕장", region: "강원 속초시", lat: 38.192, lon: 128.598, description: "설악산과 동해를 함께 여행" },
-    { id: "eulwangni", name: "을왕리해수욕장", region: "인천 중구", lat: 37.447, lon: 126.372, description: "수도권에서 가까운 서해 해변" },
-    { id: "hyeopjae", name: "협재해수욕장", region: "제주 제주시", lat: 33.394, lon: 126.239, description: "맑은 물빛과 비양도 풍경" },
-    { id: "hamdeok", name: "함덕해수욕장", region: "제주 제주시", lat: 33.543, lon: 126.67, description: "완만한 해안과 산책로" },
-    { id: "dadaepo", name: "다대포해수욕장", region: "부산 사하구", lat: 35.048, lon: 128.966, description: "노을과 넓은 모래사장" },
-    { id: "sangju", name: "상주은모래비치", region: "경남 남해군", lat: 34.728, lon: 127.85, description: "남해의 잔잔한 모래 해변" },
-    { id: "byeonsan", name: "변산해수욕장", region: "전북 부안군", lat: 35.648, lon: 126.56, description: "서해 낙조와 갯벌 여행" },
-    { id: "goraebul", name: "고래불해수욕장", region: "경북 영덕군", lat: 36.57, lon: 129.44, description: "동해안 긴 백사장과 소나무숲" }
+    { id: "haeundae", name: "해운대해수욕장", region: "부산 해운대구", kmaNum: 304, lat: 35.1587, lon: 129.1604, description: "도심에서 쉽게 찾는 대표 해변" },
+    { id: "songjeong", name: "송정해수욕장", region: "부산 해운대구", kmaNum: 305, lat: 35.1788, lon: 129.1991, description: "서핑과 산책을 함께 즐기는 해변" },
+    { id: "daedcheon", name: "대천해수욕장", region: "충남 보령시", kmaNum: 41, lat: 36.307, lon: 126.515, description: "넓은 백사장과 해양 레저" },
+    { id: "gyeongpo", name: "경포해수욕장", region: "강원 강릉시", kmaNum: 176, lat: 37.804, lon: 128.907, description: "호수와 바다를 함께 보는 곳" },
+    { id: "sokcho", name: "속초해수욕장", region: "강원 속초시", kmaNum: 201, lat: 38.192, lon: 128.598, description: "설악산과 동해를 함께 여행" },
+    { id: "eulwangni", name: "을왕리해수욕장", region: "인천 중구", kmaNum: 1, lat: 37.447, lon: 126.372, description: "수도권에서 가까운 서해 해변" },
+    { id: "hyeopjae", name: "협재해수욕장", region: "제주 제주시", kmaNum: 346, lat: 33.394, lon: 126.239, description: "맑은 물빛과 비양도 풍경" },
+    { id: "hamdeok", name: "함덕해수욕장", region: "제주 제주시", kmaNum: 352, lat: 33.543, lon: 126.67, description: "완만한 해안과 산책로" },
+    { id: "dadaepo", name: "다대포해수욕장", region: "부산 사하구", kmaNum: 308, lat: 35.048, lon: 128.966, description: "노을과 넓은 모래사장" },
+    { id: "sangju", name: "상주은모래비치", region: "경남 남해군", kmaNum: 327, lat: 34.728, lon: 127.85, description: "남해의 잔잔한 모래 해변" },
+    { id: "byeonsan", name: "변산해수욕장", region: "전북 부안군", kmaNum: 97, lat: 35.648, lon: 126.56, description: "서해 낙조와 갯벌 여행" },
+    { id: "goraebul", name: "고래불해수욕장", region: "경북 영덕군", kmaNum: 288, lat: 36.57, lon: 129.44, description: "동해안 긴 백사장과 소나무숲" }
   ];
   const $ = (selector) => document.querySelector(selector);
   const escapeHtml = (value) => String(value ?? "").replace(/[&<>'"]/g, (char) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", "'": "&#39;", '"': "&quot;" }[char]));
@@ -26,6 +26,8 @@
   const getBeach = (id) => BEACHES.find((beach) => beach.id === id) || BEACHES[0];
   const weatherText = (code) => ({ 0: "맑음", 1: "대체로 맑음", 2: "구름 조금", 3: "흐림", 45: "안개", 48: "안개", 51: "이슬비", 53: "이슬비", 55: "이슬비", 61: "비", 63: "비", 65: "강한 비", 71: "눈", 73: "눈", 75: "강한 눈", 80: "소나기", 81: "소나기", 82: "강한 소나기", 95: "뇌우" }[code] || "날씨 확인 필요");
   const formatHour = (iso) => { try { return new Intl.DateTimeFormat("ko-KR", { hour: "numeric", minute: "2-digit" }).format(new Date(iso)); } catch { return "-"; } };
+  const formatDataTime = (value) => { const digits = String(value ?? ""); if (/^\d{12}$/.test(digits)) return `${Number(digits.slice(4, 6))}월 ${Number(digits.slice(6, 8))}일 ${digits.slice(8, 10)}:${digits.slice(10, 12)}`; return value ? formatHour(value) : "-"; };
+  const formatKmaClock = (value) => { const digits = String(value ?? ""); if (!digits || digits === ":" || digits === "-") return "-"; if (/^\d{4}$/.test(digits)) return `${digits.slice(0, 2)}:${digits.slice(2, 4)}`; return digits; };
   const formatNumber = (value, digits = 1) => Number.isFinite(Number(value)) ? Number(value).toFixed(digits) : "-";
 
   let map;
@@ -79,11 +81,33 @@
     $("#beachSafetyLevel").textContent = level[0];
     $("#beachSafetyReason").textContent = level[1];
     $("#beachSafetyLevel").dataset.tone = level[0] === "주의 필요" ? "danger" : level[0] === "확인 필요" ? "warning" : "calm";
-    $("#beachDataTime").textContent = marine?.current?.time ? formatHour(marine.current.time) : "-";
+    $("#beachDataTime").textContent = marine?.current?.time ? formatDataTime(marine.current.time) : "-";
     $("#beachUpdated").textContent = new Date().toLocaleString("ko-KR", { hour12: false });
   }
 
+  function kmaForecastText(item) {
+    const precipitation = String(item.PTY ?? "0");
+    if (precipitation === "1") return "비";
+    if (precipitation === "2") return "비·눈";
+    if (precipitation === "3") return "눈";
+    if (precipitation === "4") return "소나기";
+    return ({ "1": "맑음", "3": "구름 많음", "4": "흐림" }[String(item.SKY)] || "강수 없음");
+  }
+
   function renderMarine(data) {
+    if (data.source === "기상청 전국 해수욕장 날씨 조회서비스") {
+      const current = data.current || {};
+      const official = data.official || {};
+      const sun = official.sun || {};
+      const tide = official.tide || {};
+      const metrics = [["현재 파고", `${formatNumber(current.wave_height)} m`], ["수온", `${formatNumber(current.sea_surface_temperature)}°C`], ["일출", formatKmaClock(sun.sunrise)], ["일몰", formatKmaClock(sun.sunset)]];
+      $("#marineMetrics").innerHTML = metrics.map(([label, value]) => `<div class="marine-metric"><span>${label}</span><strong>${escapeHtml(value)}</strong></div>`).join("");
+      const forecast = official.forecast?.items || [];
+      $("#marineHourly").innerHTML = forecast.slice(0, 6).map((item) => `<div class="marine-hour-card"><strong>${formatDataTime(item.time)}</strong><span>${kmaForecastText(item)}</span><b>${escapeHtml(item.T1H ?? "-")}°</b><small>강수확률 ${escapeHtml(item.POP ?? "-")}%<br>바람 ${escapeHtml(item.WSD ?? "-")} m/s</small></div>`).join("") || '<div class="beach-empty-state">기상청 초단기 예보가 없습니다.</div>';
+      const tideText = tide.station ? ` · 조위 ${tide.station} 관측소` : "";
+      $("#marineStatus").textContent = `기상청 공식 해수욕장 자료 · 파고·수온 기준 ${formatDataTime(current.time)}${tideText}`;
+      return;
+    }
     const current = data.current || {};
     const metrics = [["현재 파고", `${formatNumber(current.wave_height)} m`], ["파도 주기", `${formatNumber(current.wave_period)} 초`], ["파향", Number.isFinite(Number(current.wave_direction)) ? `${Math.round(current.wave_direction)}°` : "-"], ["수온", `${formatNumber(current.sea_surface_temperature)}°C`]];
     $("#marineMetrics").innerHTML = metrics.map(([label, value]) => `<div class="marine-metric"><span>${label}</span><strong>${escapeHtml(value)}</strong></div>`).join("");
@@ -121,15 +145,22 @@
   async function loadMarine(beach) {
     const key = `${beach.lat.toFixed(2)}-${beach.lon.toFixed(2)}`;
     try {
-      const params = new URLSearchParams({ lat: beach.lat, lon: beach.lon });
-      const response = await fetch(`/api/marine?${params}`, { headers: { Accept: "application/json" }, cache: "no-store" });
+      const response = await fetch(`/api/kma-beach?beachNum=${beach.kmaNum}`, { headers: { Accept: "application/json" }, cache: "no-store" });
       const data = await response.json();
-      if (!response.ok || !data.ok) throw new Error(data.message || "해양 자료를 받을 수 없습니다.");
+      if (!response.ok || !data.ok) throw new Error(data.message || "기상청 해수욕장 자료를 받을 수 없습니다.");
       writeStorage(MARINE_CACHE + key, { savedAt: Date.now(), data }); renderMarine(data); renderOverview(beach, data); return true;
     } catch (error) {
+      try {
+        const params = new URLSearchParams({ lat: beach.lat, lon: beach.lon });
+        const response = await fetch(`/api/marine?${params}`, { headers: { Accept: "application/json" }, cache: "no-store" });
+        const data = await response.json();
+        if (!response.ok || !data.ok) throw new Error(data.message || "참고 해양 자료를 받을 수 없습니다.");
+        writeStorage(MARINE_CACHE + key, { savedAt: Date.now(), data }); renderMarine(data); renderOverview(beach, data); $("#marineStatus").textContent = "기상청 공식 자료가 지연되어 Open-Meteo 참고 예보를 표시합니다."; return false;
+      } catch (fallbackError) {
       const cached = readStorage(MARINE_CACHE + key, null);
       if (cached?.data) { renderMarine(cached.data); renderOverview(beach, cached.data); $("#marineStatus").textContent = "연결이 지연되어 마지막 정상 해양 자료를 표시합니다."; return false; }
-      $("#marineStatus").textContent = `해양 자료를 불러오지 못했습니다. ${error.message || "현장 안내를 우선하세요."}`; renderOverview(beach, null); return false;
+      $("#marineStatus").textContent = `해양 자료를 불러오지 못했습니다. ${fallbackError.message || error.message || "현장 안내를 우선하세요."}`; renderOverview(beach, null); return false;
+      }
     }
   }
 
