@@ -2749,6 +2749,174 @@ body {
 .bike-hourly-card span { margin: 7px 0; color: var(--bike-muted); font-size: 13px; }
 .bike-hourly-card b { color: #217c99; font-size: 14px; }
 .bike-hourly-card small { margin-top: 8px; color: var(--bike-muted); font-size: 11px; line-height: 1.55; }
+
+/* Magazine-style beach refresh */
+.beach-page {
+  --beach-ink: #1b2d38;
+  --beach-muted: #6c777c;
+  --beach-line: #dedbd4;
+  --beach-surface: #fff;
+  --beach-bg: #fbfaf7;
+  --beach-teal: #277d84;
+  --beach-deep: #183f4a;
+  --beach-sand: #d96e37;
+  background: var(--beach-bg);
+}
+
+.beach-header {
+  position: relative;
+  border-bottom: 1px solid var(--beach-line);
+  background: rgba(255, 255, 255, .97);
+  backdrop-filter: none;
+}
+
+.beach-header-inner {
+  min-height: 78px;
+  width: min(1180px, calc(100% - 32px));
+}
+
+.beach-brand-mark {
+  width: 42px;
+  height: 42px;
+  border-radius: 2px;
+  background: var(--beach-deep);
+  font-size: 25px;
+}
+
+.beach-brand strong { font-size: 20px; letter-spacing: -.04em; }
+.beach-brand small { font-size: 10px; letter-spacing: .12em; }
+.beach-header-links { gap: 26px; }
+.beach-header-links a { color: var(--beach-ink); font-size: 14px; font-weight: 700; }
+.beach-menu-button { border-color: var(--beach-ink); border-radius: 3px; }
+
+.beach-category-bar {
+  border-bottom: 1px solid var(--beach-line);
+  background: #fff;
+}
+
+.beach-category-inner {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  width: min(1180px, calc(100% - 32px));
+  min-height: 48px;
+  margin: 0 auto;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.beach-category-inner::-webkit-scrollbar { display: none; }
+.beach-category-inner a {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  min-height: 48px;
+  color: var(--beach-muted);
+  font-size: 13px;
+  font-weight: 800;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.beach-category-inner a:hover,
+.beach-category-inner a:focus-visible,
+.beach-category-inner a.is-active { color: var(--beach-deep); }
+.beach-category-inner a.is-active::after {
+  position: absolute;
+  right: 0;
+  bottom: -1px;
+  left: 0;
+  height: 3px;
+  background: var(--beach-sand);
+  content: "";
+}
+
+.beach-main {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0 34px;
+  width: min(1180px, calc(100% - 32px));
+  padding: 0 0 100px;
+}
+
+.beach-main > section { margin-bottom: 0; }
+.beach-select-panel,
+.beach-map-section,
+.beach-overview,
+.beach-facility,
+.beach-places,
+.beach-safety,
+.beach-info {
+  grid-column: 1 / -1;
+  margin: 0;
+  padding: 38px 0;
+  border: 0;
+  border-bottom: 1px solid var(--beach-line);
+  border-radius: 0;
+  background: transparent;
+}
+
+.beach-select-panel {
+  padding-top: 48px;
+  padding-bottom: 30px;
+}
+
+.beach-select-panel .beach-section-heading { max-width: 680px; margin-bottom: 22px; }
+.beach-select-panel .beach-section-heading h1 { font-size: clamp(34px, 5vw, 52px); letter-spacing: -.06em; }
+.beach-select-panel .beach-section-heading p { font-size: 15px; }
+.beach-section-heading h1, .beach-section-heading h2, .beach-section-heading h3 { letter-spacing: -.045em; }
+.beach-section-heading h2 { font-size: clamp(25px, 3vw, 35px); }
+.beach-kicker { color: var(--beach-sand); font-size: 11px; letter-spacing: .14em; }
+.beach-select-form { max-width: 760px; }
+.beach-page select { border-color: #cfcac2; border-radius: 3px; background: #fff; }
+.beach-button { border-radius: 3px; }
+.beach-primary { background: var(--beach-deep); }
+.beach-secondary { border-color: #bdb8af; }
+.beach-quick-wrap { margin-top: 28px; }
+.beach-inline-heading { border-bottom: 1px solid var(--beach-line); padding-bottom: 10px; }
+.beach-inline-heading h2, .beach-inline-heading h3 { font-size: 18px; letter-spacing: -.03em; }
+.beach-quick-list { grid-auto-columns: minmax(180px, 1fr); gap: 12px; }
+.beach-quick-card { min-height: 82px; border-color: var(--beach-line); border-radius: 3px; background: #fff; }
+.beach-quick-card:hover, .beach-quick-card:focus-visible { border-color: var(--beach-teal); background: #f7fbfa; }
+
+.beach-map-section { padding-top: 42px; }
+.beach-map-shell { border-color: var(--beach-line); border-radius: 5px; box-shadow: 0 12px 26px rgba(27, 45, 56, .08); }
+.beach-map { min-height: 480px; }
+.beach-map-note { border-radius: 3px; }
+
+.beach-feature-grid { gap: 38px; }
+.beach-feature-media { border-radius: 3px; box-shadow: 0 12px 28px rgba(27, 45, 56, .1); }
+.beach-feature-media img { aspect-ratio: 1.42 / 1; }
+.beach-feature-media figcaption { padding: 10px 12px; }
+.beach-feature-copy { justify-content: flex-start; padding-top: 10px; }
+.beach-feature-copy .beach-section-heading h2 { max-width: 460px; font-size: clamp(30px, 4vw, 44px); }
+.beach-overview-grid { grid-template-columns: 1.5fr 1fr 1fr; gap: 12px; }
+.beach-overview-main, .beach-overview-item { border-radius: 3px; background: #eef1ef; }
+.beach-overview-main strong, .beach-overview-item strong { font-size: 21px; }
+.beach-facility-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.beach-facility-item, .marine-metric, .beach-weather-metrics > div, .marine-hour-card, .beach-hour-card { border-radius: 3px; }
+.beach-conditions, .beach-weather { margin: 0; padding: 38px 0; border-bottom: 1px solid var(--beach-line); }
+.beach-conditions { grid-column: 1; }
+.beach-weather { grid-column: 2; }
+.beach-place-card { border-radius: 3px; }
+.beach-info-grid details { border-radius: 3px; }
+
+@media (max-width: 760px) {
+  .beach-header-inner { width: calc(100% - 24px); min-height: 68px; }
+  .beach-header-links { gap: 8px; }
+  .beach-header-links a { display: none; }
+  .beach-category-inner { width: calc(100% - 24px); gap: 22px; }
+  .beach-main { display: block; width: calc(100% - 24px); padding-bottom: 96px; }
+  .beach-select-panel, .beach-map-section, .beach-overview, .beach-facility, .beach-conditions, .beach-weather, .beach-places, .beach-safety, .beach-info { padding: 28px 0; }
+  .beach-select-panel { padding-top: 34px; }
+  .beach-select-panel .beach-section-heading h1 { font-size: 35px; }
+  .beach-map { min-height: 420px; }
+  .beach-feature-grid { grid-template-columns: 1fr; gap: 22px; }
+  .beach-feature-copy { padding-top: 0; }
+  .beach-overview-grid { grid-template-columns: 1fr 1fr; }
+  .beach-overview-main { grid-column: 1 / -1; }
+  .beach-facility-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
 .bike-place-filters { display: flex; gap: 7px; margin-bottom: 12px; overflow-x: auto; }
 .bike-place-filters button { min-height: 44px; padding: 0 14px; border: 1px solid var(--bike-line); border-radius: 9px; background: white; color: var(--bike-muted); cursor: pointer; font-weight: 800; white-space: nowrap; }
 .bike-place-filters button.is-active { border-color: var(--bike-deep); background: var(--bike-deep); color: white; }
