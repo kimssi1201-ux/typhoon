@@ -6,6 +6,12 @@
 /*.html
   Cache-Control: public, max-age=0, must-revalidate
 
+/
+  Cache-Control: no-store, max-age=0, must-revalidate
+
+/index.html
+  Cache-Control: no-store, max-age=0, must-revalidate
+
 /ads.txt
   Content-Type: text/plain; charset=utf-8
   Cache-Control: public, max-age=300, must-revalidate
