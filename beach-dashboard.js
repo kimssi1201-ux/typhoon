@@ -63,6 +63,8 @@
   }
 
   function selectOnMap(beach) {
+    $("#mapSelectedBeach").textContent = beach.name;
+    $("#mapSelectedLocation").textContent = `${beach.region} · 위도 ${beach.lat.toFixed(4)} · 경도 ${beach.lon.toFixed(4)}`;
     if (!map) return;
     if (selectedMarker) selectedMarker.setIcon(beachIcon(false));
     const entry = beachMarkers.find((item) => item.beach.id === beach.id);
@@ -90,6 +92,8 @@
   function renderOverview(beach, marine) {
     $("#selectedBeachName").textContent = beach.name;
     $("#selectedBeachRegion").textContent = `${beach.region} · ${beach.description}`;
+    $("#mapSelectedBeach").textContent = beach.name;
+    $("#mapSelectedLocation").textContent = `${beach.region} · 위도 ${beach.lat.toFixed(4)} · 경도 ${beach.lon.toFixed(4)}`;
     $("#weatherBeachName").textContent = beach.name;
     $("#placesBeachName").textContent = beach.name;
     const wave = Number(marine?.current?.wave_height);
