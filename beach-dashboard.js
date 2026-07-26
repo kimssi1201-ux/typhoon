@@ -5,6 +5,7 @@
   const WEATHER_CACHE = "mustview.beach.weather.v1.";
   const MARINE_CACHE = "mustview.beach.marine.v1.";
   const OCEAN_CACHE = "mustview.beach.ocean.v1.";
+  const DEFAULT_BEACH_IMAGE = "assets/beach-default.png";
   const DEFAULT_CENTER = [36.15, 127.7];
   const BEACHES = [
     { id: "haeundae", name: "해운대해수욕장", region: "부산 해운대구", sido: "부산", kmaNum: 304, lat: 35.1587, lon: 129.1604, description: "도심에서 쉽게 찾는 대표 해변" },
@@ -70,6 +71,21 @@
   }
 
   function nearestBeach(lat, lon) { return BEACHES.reduce((best, beach) => Math.hypot(beach.lat - lat, beach.lon - lon) < Math.hypot(best.lat - lat, best.lon - lon) ? beach : best, BEACHES[0]); }
+
+  function renderBeachImage(beach, data) {
+    const image = $("#beachFeatureImage");
+    const caption = $("#beachFeatureCaption");
+    if (!image || !caption) return;
+    let source = DEFAULT_BEACH_IMAGE;
+    let official = false;
+    try {
+      const parsed = new URL(data?.selected?.image || "", window.location.href);
+      if (parsed.protocol === "https:") { source = parsed.href; official = true; }
+    } catch {}
+    image.src = source;
+    image.alt = `${beach.name} ${official ? "공식 이미지" : "해변 분위기 참고 이미지"}`;
+    caption.textContent = official ? "해양수산부 제공 이미지" : "해변 분위기 참고 이미지";
+  }
 
   function renderOverview(beach, marine) {
     $("#selectedBeachName").textContent = beach.name;
@@ -167,6 +183,7 @@
 
   function renderOceanInfo(data, beach) {
     const item = data?.selected || null;
+    renderBeachImage(beach, data);
     $("#beachFacilityBeachName").textContent = beach.name;
     if (!item) {
       $("#beachFacilityStatus").textContent = "선택한 해변의 기본정보를 찾지 못했습니다.";
@@ -217,7 +234,7 @@
     } catch (error) { $("#beachPlacesList").innerHTML = `<div class="beach-empty-state"><strong>주변 여행 정보가 준비되지 않았습니다.</strong><p>${escapeHtml(error.message || "잠시 후 다시 시도해 주세요.")}</p><small>해변 날씨와 바다 상태는 계속 사용할 수 있습니다.</small></div>`; $("#beachPlacesStatus").textContent = "주변 정보 조회 상태를 확인해 주세요."; }
   }
 
-  function loadBeach(beach) { selectedBeach = beach; selectOnMap(beach); setStatus(`${beach.name} 정보를 새로 확인하고 있습니다.`); $("#beachChoice").value = beach.id; Promise.all([loadWeather(beach), loadMarine(beach), loadOceanInfo(beach)]).then(([weatherOk, marineOk, oceanOk]) => { loadPlaces(beach, currentPlaceType); const primaryOk = weatherOk && marineOk; setStatus(primaryOk ? `${beach.name}의 날씨와 바다 상태${oceanOk ? ", 현장 기본정보" : ""}를 표시했습니다.` : `${beach.name}의 일부 자료가 지연되었습니다. 공식 안내를 함께 확인하세요.`, primaryOk && oceanOk ? "success" : "warning"); }); }
+  function loadBeach(beach) { selectedBeach = beach; selectOnMap(beach); renderBeachImage(beach, null); setStatus(`${beach.name} 정보를 새로 확인하고 있습니다.`); $("#beachChoice").value = beach.id; Promise.all([loadWeather(beach), loadMarine(beach), loadOceanInfo(beach)]).then(([weatherOk, marineOk, oceanOk]) => { loadPlaces(beach, currentPlaceType); const primaryOk = weatherOk && marineOk; setStatus(primaryOk ? `${beach.name}의 날씨와 바다 상태${oceanOk ? ", 현장 기본정보" : ""}를 표시했습니다.` : `${beach.name}의 일부 자료가 지연되었습니다. 공식 안내를 함께 확인하세요.`, primaryOk && oceanOk ? "success" : "warning"); }); }
   function useLocation() { if (!navigator.geolocation) { setStatus("현재 위치를 사용할 수 없습니다. 해변을 직접 선택해 주세요.", "warning"); return; } setStatus("현재 위치를 확인하고 있습니다."); navigator.geolocation.getCurrentPosition((position) => { const beach = nearestBeach(position.coords.latitude, position.coords.longitude); $("#beachChoice").value = beach.id; loadBeach(beach); if (map) map.setView([position.coords.latitude, position.coords.longitude], 9); }, () => setStatus("위치 권한을 사용할 수 없습니다. 해변을 직접 선택해 주세요.", "warning"), { enableHighAccuracy: true, timeout: 8000, maximumAge: 300000 }); }
   function initChecklist() { const saved = readStorage(CHECK_KEY, {}); document.querySelectorAll("[data-beach-check]").forEach((input) => { input.checked = Boolean(saved[input.dataset.beachCheck]); input.addEventListener("change", () => { saved[input.dataset.beachCheck] = input.checked; writeStorage(CHECK_KEY, saved); }); }); }
   function initMenu() { const menu = $("#beachMenu"), open = $("#beachMenuOpen"), close = $("#beachMenuClose"); if (!menu || !open || !close) return; open.addEventListener("click", () => { menu.showModal(); open.setAttribute("aria-expanded", "true"); }); close.addEventListener("click", () => { menu.close(); open.setAttribute("aria-expanded", "false"); }); menu.addEventListener("click", (event) => { if (event.target === menu) { menu.close(); open.setAttribute("aria-expanded", "false"); } }); menu.querySelectorAll("a").forEach((link) => link.addEventListener("click", () => menu.close())); }

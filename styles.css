@@ -2604,6 +2604,11 @@ body {
 .beach-select-panel .beach-section-heading h1 { font-size: 32px; }
 .beach-select-panel .beach-section-heading p { font-size: 14px; }
 .beach-status { margin-top: 10px; font-size: 13px; }
+.beach-feature-grid { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); align-items: stretch; gap: 28px; }
+.beach-feature-media { min-width: 0; margin: 0; overflow: hidden; border-radius: 4px; background: #d9e8e9; }
+.beach-feature-media img { display: block; width: 100%; aspect-ratio: 16 / 9; object-fit: cover; }
+.beach-feature-media figcaption { padding: 8px 10px; color: var(--beach-muted); background: #fff; font-size: 12px; }
+.beach-feature-copy { display: flex; min-width: 0; flex-direction: column; justify-content: center; }
 .beach-quick-wrap { margin-top: 16px; }
 .beach-quick-list { grid-auto-columns: minmax(160px, 1fr); }
 .beach-quick-card { min-height: 68px; border-color: var(--beach-line); border-radius: 4px; background: #fff; }
@@ -2623,6 +2628,8 @@ body {
   .beach-header-links a { display: none; }
   .beach-select-panel .beach-section-heading h1 { font-size: 28px; }
   .beach-select-panel, .beach-overview, .beach-facility, .beach-conditions, .beach-weather, .beach-map-section, .beach-places, .beach-safety, .beach-info { padding: 20px 0; }
+  .beach-feature-grid { grid-template-columns: 1fr; gap: 18px; }
+  .beach-feature-media img { aspect-ratio: 16 / 9; }
   .beach-overview-grid { grid-template-columns: 1fr 1fr; }
   .beach-overview-main { grid-column: 1 / -1; }
   .beach-facility-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
