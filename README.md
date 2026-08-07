@@ -1,43 +1,45 @@
-# MustView Beach
+# MustView Travel
 
-국내 주요 해수욕장의 현재 날씨, 기상청 공식 파고·수온·초단기 예보와 주변 여행 정보를 한 화면에서 확인하는 모바일 중심 웹사이트입니다.
+국내 여행지 이야기, 지역 날씨, 지도와 해수욕장 정보를 함께 제공하는 정적 여행 사이트입니다. 메인 페이지는 편집형 여행 저널로 구성하고, 기존 해수욕장 지도와 공공데이터 조회 기능은 `/beach`에서 유지합니다.
 
-## 주요 기능
+## 주요 페이지
 
-- 국내 주요 해수욕장 선택 및 OpenStreetMap 지도
-- 현재 기온, 체감온도, 습도, 풍속, 시간별 날씨
-- 기상청 전국 해수욕장 날씨 조회서비스의 파고, 수온, 초단기 예보, 조위, 일출몰
-- 해양수산부 해수욕장정보 서비스의 해변 폭, 총연장, 특징, 비상 연락처, 관련 안내
-- 기상청 공식 자료가 지연될 때 Open-Meteo Marine 참고 예보로 전환
-- 선택 해변 주변 관광지·음식점·숙박 정보
-- 현재 위치와 가까운 해변 찾기
-- 방문 전 안전 체크리스트와 참고 상태 표시
-- localStorage 기반 체크리스트 저장
+- `/`: 여행 홈, 추천 목적지, 지역 날씨와 여행 지도
+- `/destinations`: 부산·서울·제주·강릉·전주·순천 여행 동선
+- `/travel-guide`: 교통, 날씨, 숙소와 안전 준비 가이드
+- `/beach`: 전국 주요 해수욕장 지도, 날씨, 해양·시설 정보
+- `/sources`: 데이터 출처, 갱신 기준과 이용 한계
+- `/about`, `/privacy`, `/contact`: 서비스 소개와 정책
 
 ## 데이터 출처
 
 - 지도: [OpenStreetMap](https://www.openstreetmap.org/copyright)
-- 날씨: [Open-Meteo](https://open-meteo.com/)
-- 해양·해수욕장 예보: [기상청 전국 해수욕장 날씨 조회서비스](https://www.data.go.kr/data/15102239/openapi.do)
-- 해수욕장 기본정보: [해양수산부 해수욕장정보 서비스](https://www.data.go.kr/data/15058519/openapi.do)
+- 일반 날씨: [Open-Meteo](https://open-meteo.com/)
+- 해수욕장 예보: 기상청 전국 해수욕장 날씨 조회서비스
+- 해수욕장 기본정보: 해양수산부 해수욕장정보 서비스
 - 해양 참고 예보: [Open-Meteo Marine](https://open-meteo.com/en/docs/marine-weather-api)
-- 관광정보: [한국관광공사 국문 관광정보 서비스](https://www.data.go.kr/tcs/dss/selectApiDataDetailView.do?publicDataPk=15101578)
-
-화면의 파도·날씨·참고 상태는 공식 해수욕장 통제나 입수 가능 여부를 대신하지 않습니다. 실제 방문 시 현장 안전요원, 해수욕장 안내, 기상특보와 재난문자를 우선하세요.
+- 주변 관광정보: 한국관광공사 국문 관광정보 서비스
 
 ## 환경변수
 
-기존 태풍 API 환경변수 `KMA_AUTH_KEY`는 보존되어 있습니다. 해수욕장 공식 날씨 자료는 `KMA_BEACH_API_KEY`, 해양수산부 기본정보는 `OCEANS_BEACH_API_KEY`를 Cloudflare Pages Secret으로 사용합니다. 관광정보를 실제로 조회하려면 별도로 `TOUR_API_KEY`를 추가합니다. 관광 키가 없을 때도 해변 선택, 지도, 날씨, 공식 해양자료와 기본정보는 작동하며 주변 관광정보만 안내 상태로 표시됩니다.
+기존 태풍 Functions 호환을 위한 `KMA_AUTH_KEY`를 유지합니다. 해수욕장 기능은 `KMA_BEACH_API_KEY`, `OCEANS_BEACH_API_KEY`를 사용하며 주변 관광정보는 선택 항목인 `TOUR_API_KEY`를 사용합니다. 실제 키는 저장소에 커밋하지 않고 Cloudflare Pages Secret에 설정합니다.
 
-로컬 테스트용 `.dev.vars` 예시는 `.dev.vars.example`을 참고하세요.
+로컬 Functions 테스트용 값 형식은 `.dev.vars.example`을 참고해 개인 `.dev.vars` 파일에 설정하세요.
 
-## 실행 및 검증
+## 실행과 검증
 
 ```powershell
 npm.cmd install
-npm.cmd run check
-npm.cmd run build
 npm.cmd run serve
 ```
 
-Cloudflare Pages Functions를 포함하므로 일반 정적 서버보다 Wrangler Pages 개발 서버로 확인하는 것이 좋습니다.
+Cloudflare Pages Functions까지 포함해 Wrangler 개발 서버에서 확인합니다.
+
+```powershell
+npm.cmd run lint
+npm.cmd test
+npm.cmd run build
+git diff --check
+```
+
+외부 API 테스트는 실제 서비스에 요청하지 않고 mock 응답을 사용합니다. `main` 브랜치 배포는 기존 GitHub Actions와 Cloudflare Pages 프로젝트 설정을 그대로 사용합니다.

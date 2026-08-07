@@ -44,6 +44,7 @@ export async function onRequest(context) {
   const response = await context.next();
   const contentType = response.headers.get("content-type") || "";
   if (!contentType.includes("text/html")) return response;
+  if (response.status >= 400) return response;
 
   let html = await response.text();
   const canonical = canonicalTag(context.request.url);

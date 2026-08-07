@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#ffffff" />
+    <meta name="google-adsense-account" content="ca-pub-5751319666030430" />
+    <title>바다여행 | MustView Travel</title>
+    <meta name="description" content="전국 해수욕장의 현재 날씨, 파고, 수온, 바람과 주변 여행 정보를 한눈에 확인하세요." />
+    <link rel="canonical" href="https://mustview.co.kr/beach" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="MustView Travel" />
+    <meta property="og:title" content="전국 해수욕장 날씨와 바다 상태" />
+    <meta property="og:description" content="가고 싶은 해수욕장의 날씨와 바다 상태를 한 화면에서 확인하는 여행 대시보드" />
+    <meta property="og:url" content="https://mustview.co.kr/beach" />
+    <link rel="preconnect" href="https://unpkg.com" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+    <link rel="stylesheet" href="styles.css?v=20260807-editorial1" />
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5751319666030430" crossorigin="anonymous"></script>
+  </head>
+  <body class="beach-page">
+    <a class="skip-link" href="#main">본문 바로가기</a>
+    <header class="beach-header">
+      <div class="beach-header-inner">
+        <button class="beach-menu-button" id="beachMenuOpen" type="button" aria-label="전체 메뉴 열기" aria-haspopup="dialog" aria-controls="beachMenu" aria-expanded="false"><span aria-hidden="true">☰</span></button>
+        <a class="beach-brand" href="index.html" aria-label="MustView Travel 홈으로 이동"><strong>MustView</strong><small>BEACH JOURNAL</small></a>
+        <a class="beach-map-shortcut" href="#beachMapSection">전국 해변 지도</a>
+      </div>
+    </header>
+
+    <nav class="beach-category-bar" aria-label="해변 여행 카테고리">
+      <div class="beach-category-inner">
+        <a href="index.html">여행 홈</a>
+        <a class="is-active" href="#beachSelect">오늘의 해변</a>
+        <a href="#beachMapSection">전국 해변 지도</a>
+        <a href="#beachConditions">바다 상태</a>
+        <a href="#beachPlaces">주변 여행</a>
+        <a href="#beachSafety">안전 가이드</a>
+      </div>
+    </nav>
+
+    <dialog class="beach-menu" id="beachMenu" aria-labelledby="beachMenuTitle"><div class="beach-menu-card"><div class="beach-menu-head"><div><span class="beach-kicker">MUSTVIEW BEACH</span><h2 id="beachMenuTitle">여행 메뉴</h2></div><button class="beach-icon-button" id="beachMenuClose" type="button" aria-label="메뉴 닫기">×</button></div><nav class="beach-menu-list" aria-label="해수욕장 여행 메뉴"><a href="index.html">여행 홈</a><a href="#beachSelect">해수욕장 선택</a><a href="#beachMapSection">전국 지도</a><a href="#beachConditions">바다 상태</a><a href="#beachWeather">여행 날씨</a><a href="#beachPlaces">주변 여행 정보</a><a href="#beachSafety">물놀이 안전</a><a href="about.html">서비스 안내</a><a href="privacy.html">개인정보처리방침</a><a href="contact.html">문의하기</a></nav></div></dialog>
+
+    <main id="main" class="beach-main">
+      <section class="beach-select-panel" id="beachSelect" aria-labelledby="beachSelectTitle"><div class="beach-section-heading"><span class="beach-kicker">TODAY · BEACH NOTE</span><h1 id="beachSelectTitle">오늘의 해변</h1><p>가고 싶은 해변을 고르고, 출발 전 바다와 날씨를 확인하세요.</p></div><form class="beach-select-form" id="beachSelectForm"><label>해수욕장<select id="beachChoice" required></select></label><button class="beach-button beach-primary" type="submit">조회</button><button class="beach-button beach-secondary" id="beachUseLocation" type="button">내 주변</button></form><p class="beach-status" id="beachStatus" aria-live="polite">해변을 선택하면 최신 참고 정보가 표시됩니다.</p></section>
+
+      <section class="beach-map-section" id="beachMapSection" aria-labelledby="beachMapTitle"><div class="beach-section-heading compact beach-heading-row"><div><span class="beach-kicker">BEACH MAP</span><h2 id="beachMapTitle"><span id="mapSelectedBeach">선택 해변</span> 위치 지도</h2><p id="mapSelectedLocation">해변을 선택하면 위치와 좌표를 표시합니다.</p></div><button class="beach-button beach-secondary" id="beachMapReset" type="button">전국 보기</button></div><div class="beach-map-shell"><div class="beach-map" id="beachMap" aria-label="전국 해수욕장 위치 지도"></div><div class="beach-map-note">선택 해변은 주황색 마커로 표시됩니다.</div></div><p class="beach-source-note">지도: OpenStreetMap · 해변 위치: 해양수산부·기상청 해수욕장 자료 기준</p></section>
+
+      <section class="beach-popular" aria-labelledby="popularBeachTitle"><div class="beach-quick-wrap"><div class="beach-inline-heading"><h2 id="popularBeachTitle">인기 해변</h2><span>BEACH PICK</span></div><div class="beach-quick-list" id="beachQuickList"></div></div></section>
+
+      <section class="beach-overview" aria-labelledby="beachOverviewTitle"><div class="beach-section-heading compact"><span class="beach-kicker">선택한 해변 · 현재 요약</span><h2 id="beachOverviewTitle"><span id="selectedBeachName">-</span> 오늘의 바다</h2><p id="selectedBeachRegion">지역 정보를 불러오는 중입니다.</p></div><div class="beach-overview-grid"><div class="beach-overview-main"><span>방문 참고 상태</span><strong id="beachSafetyLevel">확인 중</strong><p id="beachSafetyReason">날씨와 파도 자료를 바탕으로 참고 상태를 계산합니다. 공식 해수욕장 통제 정보가 아닙니다.</p></div><div class="beach-overview-item"><span>자료 기준</span><strong id="beachDataTime">-</strong></div><div class="beach-overview-item"><span>마지막 갱신</span><strong id="beachUpdated">-</strong></div></div></section>
+
+      <section class="beach-facility" id="beachFacility" aria-labelledby="beachFacilityTitle"><div class="beach-section-heading compact"><span class="beach-kicker">현장 기본정보</span><h2 id="beachFacilityTitle"><span id="beachFacilityBeachName">선택 해변</span> 해변 정보</h2><p id="beachFacilityStatus" class="beach-status" aria-live="polite">해양수산부 해수욕장 기본정보를 불러오는 중입니다.</p></div><div class="beach-facility-grid" id="beachFacilityMetrics"><div class="beach-skeleton">해변 정보를 불러오는 중입니다.</div></div><div class="beach-facility-actions"><span id="beachFacilityContact">비상 연락처를 확인하는 중입니다.</span><a id="beachFacilityLink" href="#" target="_blank" rel="noopener" hidden>관련 안내 보기</a></div><p class="beach-source-note">해변 폭·총연장·특징·비상 연락처는 해양수산부 해수욕장정보 서비스 자료입니다. 운영 여부와 현장 통제는 방문 전 공식 안내를 확인하세요.</p></section>
+
+      <section class="beach-conditions" id="beachConditions" aria-labelledby="beachConditionsTitle"><div class="beach-section-heading compact"><span class="beach-kicker">바다 상태</span><h2 id="beachConditionsTitle">지금 바다는 어떤가요?</h2><p id="marineStatus" class="beach-status" aria-live="polite">파도와 수온 자료를 불러오는 중입니다.</p></div><div class="marine-metrics" id="marineMetrics"><div class="beach-skeleton">바다 상태를 불러오는 중입니다.</div></div><div class="beach-inline-heading"><h3>앞으로 6시간 예보</h3><span>기상청 초단기 예보</span></div><div class="marine-hourly" id="marineHourly"><div class="beach-skeleton">시간별 파도 자료를 불러오는 중입니다.</div></div><p class="beach-source-note">파고·수온·초단기 예보는 기상청 전국 해수욕장 날씨 조회서비스를 사용합니다. 실제 입수 가능 여부는 현장 안전요원과 공식 안내를 확인하세요.</p></section>
+
+      <section class="beach-weather" id="beachWeather" aria-labelledby="beachWeatherTitle"><div class="beach-section-heading compact"><span class="beach-kicker">여행 날씨</span><h2 id="beachWeatherTitle"><span id="weatherBeachName">선택 해변</span> 날씨</h2><p id="beachWeatherStatus" class="beach-status" aria-live="polite">날씨 정보를 불러오는 중입니다.</p></div><div class="beach-weather-overview"><div class="beach-current-weather"><span>현재 기온</span><strong id="beachTemperature">-</strong><p id="beachWeatherDescription">-</p></div><div class="beach-weather-metrics" id="beachWeatherMetrics"></div></div><div class="beach-inline-heading"><h3>앞으로 6시간</h3><span>비·바람을 먼저 확인하세요</span></div><div class="beach-hourly" id="beachHourly"><div class="beach-skeleton">시간별 날씨를 불러오는 중입니다.</div></div></section>
+
+      <section class="beach-places" id="beachPlaces" aria-labelledby="beachPlacesTitle"><div class="beach-section-heading compact"><span class="beach-kicker">주변 여행 정보</span><h2 id="beachPlacesTitle"><span id="placesBeachName">선택 해변</span> 주변에서 찾아보기</h2><p id="beachPlacesStatus" class="beach-status" aria-live="polite">관광지와 음식점 정보를 확인합니다.</p></div><div class="beach-place-filters" role="group" aria-label="주변 정보 종류"><button class="is-active" type="button" data-place-type="12">관광지</button><button type="button" data-place-type="39">음식점</button><button type="button" data-place-type="32">숙박</button></div><div class="beach-place-list" id="beachPlacesList"><div class="beach-empty-state">해변을 선택하면 주변 정보를 표시합니다.</div></div><p class="beach-source-note">관광 정보: 한국관광공사 공개자료. 운영 시간과 이용 가능 여부는 방문 전 공식 안내를 확인하세요.</p></section>
+
+      <section class="beach-safety" id="beachSafety" aria-labelledby="beachSafetyTitle"><div class="beach-section-heading compact"><span class="beach-kicker">물놀이 전 확인</span><h2 id="beachSafetyTitle">안전한 해수욕을 위한 체크</h2><p>체크한 항목은 이 기기에만 저장됩니다.</p></div><div class="beach-check-grid"><label><input type="checkbox" data-beach-check="warning" /> 입수 전 해수욕장 안내 확인</label><label><input type="checkbox" data-beach-check="weather" /> 비·강풍·폭염 확인</label><label><input type="checkbox" data-beach-check="children" /> 어린이 보호자 동행</label><label><input type="checkbox" data-beach-check="float" /> 구명조끼와 물놀이 장비 확인</label><label><input type="checkbox" data-beach-check="sun" /> 물·모자·자외선 차단 준비</label><label><input type="checkbox" data-beach-check="phone" /> 휴대폰 방수·비상 연락 준비</label></div><div class="beach-safety-note"><strong>중요 안내</strong><p>파고와 날씨는 참고자료입니다. 입수 가능 여부, 이안류·너울·해파리·풍랑 정보와 해수욕장 통제는 현장 안전요원 및 공식 재난문자를 우선하세요.</p></div></section>
+
+      <section class="beach-info" aria-labelledby="beachInfoTitle"><div class="beach-section-heading compact"><span class="beach-kicker">해변 여행 팁</span><h2 id="beachInfoTitle">방문 전에 알아두면 좋은 것</h2></div><div class="beach-info-grid"><details open><summary>파고를 읽는 방법</summary><p>파고가 높을수록 물결의 움직임이 커질 수 있습니다. 숫자만으로 입수 가능 여부를 판단하지 말고 현장 안내를 함께 확인하세요.</p></details><details><summary>날씨를 볼 때</summary><p>기온뿐 아니라 순간풍속, 강수확률, 체감온도, 자외선과 해 질 시간을 함께 살펴보면 여행 준비가 쉬워집니다.</p></details><details><summary>자료 업데이트</summary><p>날씨와 해양자료는 접속 시 새로 조회하며, 일시적인 지연이 있을 수 있습니다. 이 사이트는 공식 기관의 통제·특보를 대신하지 않습니다.</p></details></div></section>
+    </main>
+
+    <nav class="beach-bottom-nav" aria-label="모바일 주요 메뉴"><a href="#beachSelect"><span aria-hidden="true">⌂</span><strong>홈</strong></a><a href="#beachConditions"><span aria-hidden="true">≈</span><strong>바다</strong></a><a href="#beachWeather"><span aria-hidden="true">☼</span><strong>날씨</strong></a><a href="#beachSafety"><span aria-hidden="true">✓</span><strong>안전</strong></a></nav>
+    <footer class="beach-footer"><div><strong>MustView</strong><p>바다 상태와 날씨, 주변 여행 정보를 한 번에 확인하는 해수욕장 여행 가이드입니다.</p></div><nav aria-label="하단 메뉴"><a href="about.html">서비스 안내</a><a href="contact.html">문의</a><a href="privacy.html">개인정보처리방침</a></nav><small>지도·날씨·해양·관광 정보는 참고용이며 공식 기관의 안내를 대신하지 않습니다.</small></footer>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    <script src="beach-dashboard.js?v=20260807-nav1"></script>
+  </body>
+</html>

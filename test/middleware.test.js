@@ -1,0 +1,39 @@
+import assert from "node:assert/strict";
+import test from "node:test";
+import { onRequest } from "../functions/_middleware.js";
+import { makeRequest } from "./helpers.js";
+
+test("HTML middleware preserves the response and injects canonical, AdSense, and map hooks", async () => {
+  const html = '<!doctype html><html><head><link rel="canonical" href="https://old.example/old"></head><body><div id="liveMap"></div><script src="app.js"></script></body></html>';
+  const response = await onRequest({
+    request: makeRequest("/map?from=test"),
+    next: async () => new Response(html, { status: 200, headers: { "content-type": "text/html; charset=utf-8" } })
+  });
+  const body = await response.text();
+
+  assert.equal(response.status, 200);
+  assert.match(body, /canonical" href="https:\/\/mustview\.co\.kr\/map/);
+  assert.match(body, /google-adsense-account/);
+  assert.match(body, /pagead2\.googlesyndication\.com\/pagead\/js\/adsbygoogle\.js/);
+  assert.match(body, /id="leaflet-map-capture"/);
+  assert.match(body, /id="global-cyclone-tracker-loader"/);
+});
+
+test("HTML middleware does not rewrite non-HTML responses", async () => {
+  const original = new Response(JSON.stringify({ ok: true }), { status: 200, headers: { "content-type": "application/json" } });
+  const response = await onRequest({ request: makeRequest("/api/health"), next: async () => original });
+  assert.equal(response, original);
+  assert.deepEqual(await response.json(), { ok: true });
+});
+
+test("HTML middleware leaves error pages untouched and does not inject advertising", async () => {
+  const html = '<!doctype html><html><head><meta name="robots" content="noindex"></head><body>Not found</body></html>';
+  const original = new Response(html, { status: 404, headers: { "content-type": "text/html; charset=utf-8" } });
+  const response = await onRequest({ request: makeRequest("/missing"), next: async () => original });
+  const body = await response.text();
+
+  assert.equal(response, original);
+  assert.equal(response.status, 404);
+  assert.doesNotMatch(body, /adsbygoogle|google-adsense-account/);
+  assert.doesNotMatch(body, /rel="canonical"/);
+});

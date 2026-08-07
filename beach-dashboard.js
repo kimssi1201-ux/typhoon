@@ -225,9 +225,10 @@
   function useLocation() { if (!navigator.geolocation) { setStatus("현재 위치를 사용할 수 없습니다. 해변을 직접 선택해 주세요.", "warning"); return; } setStatus("현재 위치를 확인하고 있습니다."); navigator.geolocation.getCurrentPosition((position) => { const beach = nearestBeach(position.coords.latitude, position.coords.longitude); $("#beachChoice").value = beach.id; loadBeach(beach); if (map) map.setView([position.coords.latitude, position.coords.longitude], 9); }, () => setStatus("위치 권한을 사용할 수 없습니다. 해변을 직접 선택해 주세요.", "warning"), { enableHighAccuracy: true, timeout: 8000, maximumAge: 300000 }); }
   function initChecklist() { const saved = readStorage(CHECK_KEY, {}); document.querySelectorAll("[data-beach-check]").forEach((input) => { input.checked = Boolean(saved[input.dataset.beachCheck]); input.addEventListener("change", () => { saved[input.dataset.beachCheck] = input.checked; writeStorage(CHECK_KEY, saved); }); }); }
   function initMenu() { const menu = $("#beachMenu"), open = $("#beachMenuOpen"), close = $("#beachMenuClose"); if (!menu || !open || !close) return; open.addEventListener("click", () => { menu.showModal(); open.setAttribute("aria-expanded", "true"); }); close.addEventListener("click", () => { menu.close(); open.setAttribute("aria-expanded", "false"); }); menu.addEventListener("click", (event) => { if (event.target === menu) { menu.close(); open.setAttribute("aria-expanded", "false"); } }); menu.querySelectorAll("a").forEach((link) => link.addEventListener("click", () => menu.close())); }
+  function initCategoryNavigation() { const links = [...document.querySelectorAll(".beach-category-inner a")]; links.forEach((link) => link.addEventListener("click", () => links.forEach((item) => item.classList.toggle("is-active", item === link)))); }
 
   function init() {
-    fillBeachChoice(); renderQuickBeaches(); initMap(); initChecklist(); initMenu();
+    fillBeachChoice(); renderQuickBeaches(); initMap(); initChecklist(); initMenu(); initCategoryNavigation();
     $("#beachSelectForm")?.addEventListener("submit", (event) => { event.preventDefault(); loadBeach(getBeach($("#beachChoice").value)); });
     $("#beachUseLocation")?.addEventListener("click", useLocation);
     $("#beachMapReset")?.addEventListener("click", () => { if (map) map.setView(DEFAULT_CENTER, 7); });

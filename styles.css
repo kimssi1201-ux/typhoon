@@ -2842,6 +2842,7 @@ body {
 .beach-main > section { margin-bottom: 0; }
 .beach-select-panel,
 .beach-map-section,
+.beach-popular,
 .beach-overview,
 .beach-facility,
 .beach-places,
@@ -2994,4 +2995,541 @@ body {
   .bike-route-metrics { gap: 7px; }
   .bike-route-metrics > div, .bike-weather-metrics > div { padding: 12px; }
   .bike-section-heading h1 { font-size: 27px; }
+}
+
+/* MustView editorial refresh: magazine rhythm without a hero section. */
+.beach-page {
+  --beach-ink: #16191b;
+  --beach-muted: #667078;
+  --beach-line: #d9dde0;
+  --beach-surface: #ffffff;
+  --beach-bg: #ffffff;
+  --beach-teal: #087f95;
+  --beach-deep: #12394b;
+  --beach-sand: #e06b33;
+  background: #ffffff;
+  color: var(--beach-ink);
+  font-family: Arial, "Noto Sans KR", sans-serif;
+  letter-spacing: 0;
+  overflow-x: clip;
+}
+
+.beach-page h1,
+.beach-page h2,
+.beach-page h3,
+.beach-page strong,
+.beach-page small,
+.beach-page a,
+.beach-page button,
+.beach-page select {
+  letter-spacing: 0;
+}
+
+.beach-header {
+  position: relative;
+  z-index: 1000;
+  border-top: 4px solid var(--beach-ink);
+  border-bottom: 1px solid var(--beach-line);
+  background: #ffffff;
+  box-shadow: none;
+  backdrop-filter: none;
+}
+
+.beach-header-inner {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  width: min(1180px, calc(100% - 32px));
+  min-height: 108px;
+  margin: 0 auto;
+  gap: 18px;
+}
+
+.beach-menu-button {
+  display: grid;
+  place-items: center;
+  justify-self: start;
+  width: 46px;
+  min-height: 46px;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: var(--beach-ink);
+  font-size: 25px;
+  line-height: 1;
+}
+
+.beach-menu-button:hover,
+.beach-menu-button:focus-visible {
+  background: #f1f4f5;
+}
+
+.beach-brand {
+  display: grid;
+  grid-column: 2;
+  justify-items: center;
+  gap: 1px;
+  color: var(--beach-ink);
+  text-align: center;
+  text-decoration: none;
+}
+
+.beach-brand strong {
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 43px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.beach-brand small {
+  color: var(--beach-teal);
+  font-size: 10px;
+  font-weight: 800;
+  line-height: 1.4;
+}
+
+.beach-brand-mark,
+.beach-header-links {
+  display: none;
+}
+
+.beach-map-shortcut {
+  justify-self: end;
+  min-height: 44px;
+  padding: 13px 0;
+  border-bottom: 2px solid var(--beach-ink);
+  color: var(--beach-ink);
+  font-size: 13px;
+  font-weight: 800;
+  text-decoration: none;
+}
+
+.beach-map-shortcut:hover,
+.beach-map-shortcut:focus-visible {
+  border-color: var(--beach-teal);
+  color: var(--beach-teal);
+}
+
+.beach-menu {
+  border-radius: 6px;
+}
+
+.beach-menu-card {
+  border-radius: 6px;
+}
+
+.beach-category-bar {
+  border-bottom: 1px solid var(--beach-ink);
+  background: #ffffff;
+}
+
+.beach-category-inner {
+  justify-content: center;
+  width: min(1180px, calc(100% - 32px));
+  min-height: 54px;
+  gap: clamp(24px, 5vw, 66px);
+}
+
+.beach-category-inner a {
+  min-height: 54px;
+  padding: 0 4px;
+  border-radius: 0;
+  background: transparent;
+  color: #33383c;
+  font-size: 14px;
+}
+
+.beach-category-inner a.is-active {
+  background: transparent;
+  color: var(--beach-deep);
+}
+
+.beach-category-inner a.is-active::after {
+  height: 3px;
+  background: var(--beach-teal);
+}
+
+.beach-main {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0 46px;
+  width: min(1180px, calc(100% - 32px));
+  padding-bottom: 104px;
+}
+
+.beach-main > section,
+.beach-select-panel,
+.beach-map-section,
+.beach-popular,
+.beach-overview,
+.beach-facility,
+.beach-conditions,
+.beach-weather,
+.beach-places,
+.beach-safety,
+.beach-info {
+  margin: 0;
+  padding: 42px 0;
+  border: 0;
+  border-bottom: 1px solid var(--beach-line);
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.beach-select-panel,
+.beach-map-section,
+.beach-popular,
+.beach-overview,
+.beach-facility,
+.beach-places,
+.beach-safety,
+.beach-info {
+  grid-column: 1 / -1;
+}
+
+.beach-select-panel {
+  padding-top: 38px;
+  padding-bottom: 32px;
+}
+
+.beach-popular .beach-quick-wrap {
+  margin-top: 0;
+}
+
+.beach-select-panel .beach-section-heading {
+  max-width: 660px;
+  margin-bottom: 20px;
+}
+
+.beach-select-panel .beach-section-heading h1 {
+  margin: 5px 0 8px;
+  font-size: 34px;
+  line-height: 1.2;
+}
+
+.beach-section-heading h1,
+.beach-section-heading h2,
+.beach-section-heading h3 {
+  color: var(--beach-ink);
+}
+
+.beach-section-heading h2 {
+  font-size: clamp(25px, 3vw, 34px);
+  line-height: 1.25;
+}
+
+.beach-kicker {
+  color: var(--beach-teal);
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.beach-select-form {
+  grid-template-columns: minmax(0, 1fr) 112px 112px;
+  max-width: 780px;
+}
+
+.beach-page select,
+.beach-button {
+  min-height: 50px;
+  border-radius: 2px;
+}
+
+.beach-primary {
+  border-color: var(--beach-ink);
+  background: var(--beach-ink);
+}
+
+.beach-secondary {
+  border-color: #aeb5b9;
+  color: var(--beach-ink);
+}
+
+.beach-inline-heading {
+  border-bottom: 1px solid var(--beach-ink);
+}
+
+.beach-quick-list {
+  gap: 14px;
+}
+
+.beach-quick-card {
+  min-height: 84px;
+  border-radius: 2px;
+  background: #ffffff;
+}
+
+.beach-map-section {
+  padding-top: 46px;
+}
+
+.beach-map-shell {
+  border: 1px solid #aeb6ba;
+  border-radius: 2px;
+  box-shadow: none;
+}
+
+.beach-map {
+  height: 500px;
+  min-height: 500px;
+}
+
+.beach-map-note {
+  border-radius: 2px;
+}
+
+.beach-overview-grid {
+  gap: 0;
+  border-top: 1px solid var(--beach-ink);
+  border-bottom: 1px solid var(--beach-ink);
+}
+
+.beach-overview-main,
+.beach-overview-item {
+  min-height: 128px;
+  border: 0;
+  border-right: 1px solid var(--beach-line);
+  border-radius: 0;
+  background: #ffffff;
+}
+
+.beach-overview-grid > :last-child {
+  border-right: 0;
+}
+
+.beach-facility-item,
+.marine-metric,
+.beach-weather-metrics > div,
+.marine-hour-card,
+.beach-hour-card {
+  border-radius: 2px;
+  background: #ffffff;
+  box-shadow: none;
+}
+
+.beach-conditions {
+  grid-column: 1;
+}
+
+.beach-weather {
+  grid-column: 2;
+}
+
+.beach-place-filters {
+  margin-bottom: 22px;
+}
+
+.beach-place-filters button {
+  border-radius: 2px;
+}
+
+.beach-place-list {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 26px;
+}
+
+.beach-place-card {
+  display: block;
+  min-height: 0;
+  overflow: hidden;
+  border: 0;
+  border-top: 2px solid var(--beach-ink);
+  border-radius: 0;
+  background: #ffffff;
+}
+
+.beach-place-card img,
+.beach-place-placeholder {
+  width: 100%;
+  height: auto;
+  min-height: 0;
+  aspect-ratio: 16 / 10;
+  object-fit: cover;
+  background: #e8edef;
+}
+
+.beach-place-placeholder {
+  display: grid;
+  place-items: center;
+  color: var(--beach-teal);
+  font-size: 42px;
+}
+
+.beach-place-card > div {
+  padding: 15px 0 4px;
+}
+
+.beach-place-card h3,
+.beach-place-card p {
+  overflow: visible;
+  text-overflow: clip;
+  white-space: normal;
+}
+
+.beach-place-card h3 {
+  margin: 7px 0;
+  font-size: 19px;
+  line-height: 1.4;
+}
+
+.beach-place-card p {
+  min-height: 34px;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.beach-place-card a {
+  display: inline-block;
+  min-height: 44px;
+  padding: 13px 0;
+  border-bottom: 1px solid var(--beach-teal);
+}
+
+.beach-check-grid label,
+.beach-info-grid details,
+.beach-safety-note {
+  border-radius: 2px;
+}
+
+.beach-footer {
+  border-top: 4px solid var(--beach-ink);
+  color: var(--beach-muted);
+}
+
+.beach-footer strong {
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 25px;
+}
+
+@media (max-width: 760px) {
+  .beach-header {
+    position: sticky;
+    top: 0;
+  }
+
+  .beach-header-inner {
+    grid-template-columns: 46px minmax(0, 1fr) 46px;
+    width: calc(100% - 20px);
+    min-height: 70px;
+    gap: 8px;
+  }
+
+  .beach-brand strong {
+    font-size: 27px;
+  }
+
+  .beach-brand small {
+    font-size: 8px;
+  }
+
+  .beach-map-shortcut {
+    width: 46px;
+    overflow: hidden;
+    padding: 14px 0;
+    border: 0;
+    color: transparent;
+    font-size: 0;
+    text-align: center;
+  }
+
+  .beach-map-shortcut::before {
+    color: var(--beach-ink);
+    font-size: 12px;
+    font-weight: 800;
+    content: "지도";
+  }
+
+  .beach-category-inner {
+    justify-content: flex-start;
+    width: calc(100% - 20px);
+    min-height: 48px;
+    gap: 24px;
+  }
+
+  .beach-category-inner a {
+    min-height: 48px;
+    font-size: 13px;
+  }
+
+  .beach-main {
+    display: block;
+    width: calc(100% - 24px);
+    padding-bottom: 96px;
+  }
+
+  .beach-main > section,
+  .beach-select-panel,
+  .beach-map-section,
+  .beach-popular,
+  .beach-overview,
+  .beach-facility,
+  .beach-conditions,
+  .beach-weather,
+  .beach-places,
+  .beach-safety,
+  .beach-info {
+    padding: 30px 0;
+    scroll-margin-top: 86px;
+  }
+
+  .beach-select-panel {
+    padding-top: 28px;
+  }
+
+  .beach-select-panel .beach-section-heading h1 {
+    font-size: 29px;
+  }
+
+  .beach-select-form {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .beach-select-form label {
+    grid-column: 1 / -1;
+  }
+
+  .beach-map {
+    height: 420px;
+    min-height: 420px;
+  }
+
+  .beach-overview-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .beach-overview-main {
+    grid-column: 1 / -1;
+    border-right: 0;
+    border-bottom: 1px solid var(--beach-line);
+  }
+
+  .beach-overview-item {
+    min-height: 108px;
+  }
+
+  .beach-place-list {
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+
+  .beach-place-card img,
+  .beach-place-placeholder {
+    aspect-ratio: 16 / 9;
+  }
+
+  .beach-footer {
+    width: calc(100% - 24px);
+  }
+}
+
+@media (max-width: 420px) {
+  .beach-brand strong {
+    font-size: 24px;
+  }
+
+  .beach-section-heading h2 {
+    font-size: 25px;
+  }
 }
