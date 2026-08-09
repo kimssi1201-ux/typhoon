@@ -46,7 +46,7 @@ test("the preserved beach dashboard keeps its map, location, and API sections wi
 });
 
 test("public content pages have production metadata and the custom 404 stays unmonetized", async () => {
-  const publicPages = ["index.html", "destinations.html", "travel-guide.html", "beach.html", "sources.html", "about.html", "privacy.html", "contact.html"];
+  const publicPages = ["index.html", "destinations.html", "travel-guide.html", "beach.html", "sources.html", "about.html", "privacy.html", "contact.html", "busan-coast.html", "seoul-jeongdong.html", "jeju-east.html", "gangneung-sea.html", "jeonju-hanok.html", "suncheon-bay.html"];
   const pages = await Promise.all(publicPages.map(readProjectFile));
 
   pages.forEach((html, index) => {
@@ -60,13 +60,41 @@ test("public content pages have production metadata and the custom 404 stays unm
   assert.doesNotMatch(notFound, /adsbygoogle|google-adsense-account/);
 });
 
+test("destination cards lead to substantial standalone travel stories", async () => {
+  const stories = [
+    ["busan-coast.html", "travel-busan.webp"],
+    ["seoul-jeongdong.html", "travel-seoul.webp"],
+    ["jeju-east.html", "travel-jeju.webp"],
+    ["gangneung-sea.html", "travel-gangneung.webp"],
+    ["jeonju-hanok.html", "travel-jeonju.webp"],
+    ["suncheon-bay.html", "travel-suncheon.webp"]
+  ];
+  const [home, destinations, ...pages] = await Promise.all([
+    readProjectFile("index.html"),
+    readProjectFile("destinations.html"),
+    ...stories.map(([path]) => readProjectFile(path))
+  ]);
+
+  stories.forEach(([path, image], index) => {
+    const html = pages[index];
+    const visibleText = html.replace(/<script[\s\S]*?<\/script>/g, " ").replace(/<style[\s\S]*?<\/style>/g, " ").replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim();
+    assert.match(home, new RegExp(`href=["']${path}["']`), `${path} is linked from the home page`);
+    assert.match(destinations, new RegExp(`href=["']${path}["']`), `${path} is linked from the destination index`);
+    assert.match(html, /class=["']travel-post-body["']/);
+    assert.match(html, /application\/ld\+json/);
+    assert.match(html, new RegExp(`assets/${image}`));
+    assert.ok((html.match(/<h2/g) || []).length >= 5, `${path} has useful article sections`);
+    assert.ok(visibleText.length >= 1800, `${path} has substantial original body copy`);
+  });
+});
+
 test("sitemap and Cloudflare workflow include the current travel site", async () => {
   const [sitemap, workflow] = await Promise.all([
     readProjectFile("sitemap.xml"),
     readProjectFile(".github/workflows/deploy-cloudflare-pages.yml")
   ]);
 
-  for (const path of ["/destinations", "/travel-guide", "/beach", "/sources", "/about", "/privacy", "/contact"]) {
+  for (const path of ["/destinations", "/busan-coast", "/seoul-jeongdong", "/jeju-east", "/gangneung-sea", "/jeonju-hanok", "/suncheon-bay", "/travel-guide", "/beach", "/sources", "/about", "/privacy", "/contact"]) {
     assert.match(sitemap, new RegExp(`https://mustview\\.co\\.kr${path}`));
   }
   assert.doesNotMatch(sitemap, /typhoon-guide|readiness-guide/);
