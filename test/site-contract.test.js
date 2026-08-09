@@ -13,7 +13,7 @@ test("the travel home wires editorial content, filters, weather, map, and menu",
   for (const id of ["travelMenu", "travelMenuOpen", "travelCover", "travelCoverPrev", "travelCoverNext", "travelFilterStatus", "travelWeatherForm", "travelWeatherPlace", "travelMap", "travelMapReset"]) {
     assert.match(html, new RegExp(`id=["']${id}["']`), `${id} is present on the travel home`);
   }
-  for (const image of ["travel-busan.webp", "travel-seoul.webp", "travel-jeju.webp", "travel-gangneung.webp", "travel-jeonju.webp", "travel-suncheon.webp", "travel-andong-hahoe.png", "travel-pohang-homigot-guryongpo.png"]) {
+  for (const image of ["travel-busan.webp", "travel-seoul.webp", "travel-jeju.webp", "travel-gangneung.webp", "travel-jeonju.webp", "travel-suncheon.webp", "travel-andong-hahoe.png", "travel-pohang-homigot-guryongpo.png", "travel-ulsan-taehwagang-daewangam.png"]) {
     assert.match(html, new RegExp(`assets/${image}`), `${image} is used by the travel home`);
   }
   assert.match(html, /MustView Travel/);
@@ -46,7 +46,7 @@ test("the preserved beach dashboard keeps its map, location, and API sections wi
 });
 
 test("public content pages have production metadata and the custom 404 stays unmonetized", async () => {
-  const publicPages = ["index.html", "destinations.html", "travel-guide.html", "beach.html", "sources.html", "about.html", "privacy.html", "contact.html", "busan-coast.html", "seoul-jeongdong.html", "jeju-east.html", "gangneung-sea.html", "jeonju-hanok.html", "suncheon-bay.html", "andong-hahoe-byeongsan.html", "tongyeong-dongpirang-cablecar.html", "damyang-bamboo.html", "gyeongju-night-walk.html", "pohang-homigot-guryongpo.html"];
+  const publicPages = ["index.html", "destinations.html", "travel-guide.html", "beach.html", "sources.html", "about.html", "privacy.html", "contact.html", "busan-coast.html", "seoul-jeongdong.html", "jeju-east.html", "gangneung-sea.html", "jeonju-hanok.html", "suncheon-bay.html", "andong-hahoe-byeongsan.html", "tongyeong-dongpirang-cablecar.html", "damyang-bamboo.html", "gyeongju-night-walk.html", "pohang-homigot-guryongpo.html", "ulsan-taehwagang-daewangam.html"];
   const pages = await Promise.all(publicPages.map(readProjectFile));
 
   pages.forEach((html, index) => {
@@ -72,7 +72,8 @@ test("destination cards lead to substantial standalone travel stories", async ()
     ["tongyeong-dongpirang-cablecar.html", "travel-tongyeong.png"],
     ["damyang-bamboo.html", "travel-damyang-bamboo.png"],
     ["gyeongju-night-walk.html", "travel-gyeongju-night.png"],
-    ["pohang-homigot-guryongpo.html", "travel-pohang-homigot-guryongpo.png"]
+    ["pohang-homigot-guryongpo.html", "travel-pohang-homigot-guryongpo.png"],
+    ["ulsan-taehwagang-daewangam.html", "travel-ulsan-taehwagang-daewangam.png"]
   ];
   const [home, destinations, ...pages] = await Promise.all([
     readProjectFile("index.html"),
@@ -99,7 +100,7 @@ test("sitemap and Cloudflare workflow include the current travel site", async ()
     readProjectFile(".github/workflows/deploy-cloudflare-pages.yml")
   ]);
 
-  for (const path of ["/destinations", "/busan-coast", "/seoul-jeongdong", "/jeju-east", "/gangneung-sea", "/jeonju-hanok", "/suncheon-bay", "/andong-hahoe-byeongsan", "/tongyeong-dongpirang-cablecar", "/damyang-bamboo", "/gyeongju-night-walk", "/pohang-homigot-guryongpo", "/travel-guide", "/beach", "/sources", "/about", "/privacy", "/contact"]) {
+  for (const path of ["/destinations", "/busan-coast", "/seoul-jeongdong", "/jeju-east", "/gangneung-sea", "/jeonju-hanok", "/suncheon-bay", "/andong-hahoe-byeongsan", "/tongyeong-dongpirang-cablecar", "/damyang-bamboo", "/gyeongju-night-walk", "/pohang-homigot-guryongpo", "/ulsan-taehwagang-daewangam", "/travel-guide", "/beach", "/sources", "/about", "/privacy", "/contact"]) {
     assert.match(sitemap, new RegExp(`https://mustview\\.co\\.kr${path}`));
   }
   assert.doesNotMatch(sitemap, /typhoon-guide|readiness-guide/);
