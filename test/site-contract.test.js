@@ -46,7 +46,7 @@ test("the preserved beach dashboard keeps its map, location, and API sections wi
 });
 
 test("public content pages have production metadata and the custom 404 stays unmonetized", async () => {
-  const publicPages = ["index.html", "destinations.html", "travel-guide.html", "beach.html", "sources.html", "about.html", "privacy.html", "contact.html", "busan-coast.html", "seoul-jeongdong.html", "jeju-east.html", "gangneung-sea.html", "jeonju-hanok.html", "suncheon-bay.html", "andong-hahoe-byeongsan.html", "tongyeong-dongpirang-cablecar.html", "damyang-bamboo.html", "gyeongju-night-walk.html", "pohang-homigot-guryongpo.html", "ulsan-taehwagang-daewangam.html", "mokpo-modern-history-yudal.html", "suwon-hwaseong-haenggung.html", "buyeo-baekje-gungnamji.html", "yeongju-buseoksa-sosuseowon.html", "haenam-ttangkkeut-daeheungsa.html", "jecheon-uirimji-cheongpung.html", "gongju-gongsanseong-jemincheon.html", "gangjin-dasan-baekryeonsa.html", "jinju-jinjuseong-namgang.html"];
+  const publicPages = ["index.html", "destinations.html", "travel-guide.html", "beach.html", "sources.html", "about.html", "privacy.html", "contact.html", "busan-coast.html", "seoul-jeongdong.html", "jeju-east.html", "gangneung-sea.html", "jeonju-hanok.html", "suncheon-bay.html", "andong-hahoe-byeongsan.html", "tongyeong-dongpirang-cablecar.html", "damyang-bamboo.html", "gyeongju-night-walk.html", "pohang-homigot-guryongpo.html", "ulsan-taehwagang-daewangam.html", "mokpo-modern-history-yudal.html", "suwon-hwaseong-haenggung.html", "buyeo-baekje-gungnamji.html", "yeongju-buseoksa-sosuseowon.html", "haenam-ttangkkeut-daeheungsa.html", "jecheon-uirimji-cheongpung.html", "gongju-gongsanseong-jemincheon.html", "gangjin-dasan-baekryeonsa.html", "jinju-jinjuseong-namgang.html", "namhae-german-darangyi.html"];
   const pages = await Promise.all(publicPages.map(readProjectFile));
 
   pages.forEach((html, index) => {
@@ -123,6 +123,11 @@ test("destination cards lead to substantial standalone travel stories", async ()
       assert.match(html, /href=["']jecheon-uirimji-cheongpung\.html["']/);
       assert.match(html, /href=["']travel-guide\.html["']/);
     }
+    if (path === "namhae-german-darangyi.html") {
+      assert.match(html, /href=["']busan-coast\.html["']/);
+      assert.match(html, /href=["']jeju-east\.html["']/);
+      assert.match(html, /href=["']travel-guide\.html["']/);
+    }
     if (path === "gangjin-dasan-baekryeonsa.html") {
       assert.match(html, /href=["']haenam-ttangkkeut-daeheungsa\.html["']/);
       assert.match(html, /href=["']mokpo-modern-history-yudal\.html["']/);
@@ -142,7 +147,7 @@ test("sitemap and Cloudflare workflow include the current travel site", async ()
     readProjectFile(".github/workflows/deploy-cloudflare-pages.yml")
   ]);
 
-  for (const path of ["/destinations", "/busan-coast", "/seoul-jeongdong", "/jeju-east", "/gangneung-sea", "/jeonju-hanok", "/suncheon-bay", "/andong-hahoe-byeongsan", "/tongyeong-dongpirang-cablecar", "/damyang-bamboo", "/gyeongju-night-walk", "/pohang-homigot-guryongpo", "/ulsan-taehwagang-daewangam", "/mokpo-modern-history-yudal", "/suwon-hwaseong-haenggung", "/buyeo-baekje-gungnamji", "/yeongju-buseoksa-sosuseowon", "/haenam-ttangkkeut-daeheungsa", "/jecheon-uirimji-cheongpung", "/gongju-gongsanseong-jemincheon", "/gangjin-dasan-baekryeonsa", "/jinju-jinjuseong-namgang", "/travel-guide", "/beach", "/sources", "/about", "/privacy", "/contact"]) {
+  for (const path of ["/destinations", "/busan-coast", "/seoul-jeongdong", "/jeju-east", "/gangneung-sea", "/jeonju-hanok", "/suncheon-bay", "/andong-hahoe-byeongsan", "/tongyeong-dongpirang-cablecar", "/damyang-bamboo", "/gyeongju-night-walk", "/pohang-homigot-guryongpo", "/ulsan-taehwagang-daewangam", "/mokpo-modern-history-yudal", "/suwon-hwaseong-haenggung", "/buyeo-baekje-gungnamji", "/yeongju-buseoksa-sosuseowon", "/haenam-ttangkkeut-daeheungsa", "/jecheon-uirimji-cheongpung", "/gongju-gongsanseong-jemincheon", "/gangjin-dasan-baekryeonsa", "/jinju-jinjuseong-namgang", "/namhae-german-darangyi", "/travel-guide", "/beach", "/sources", "/about", "/privacy", "/contact"]) {
     assert.match(sitemap, new RegExp(`https://mustview\\.co\\.kr${path}`));
   }
   assert.doesNotMatch(sitemap, /typhoon-guide|readiness-guide/);
