@@ -46,7 +46,7 @@ test("the preserved beach dashboard keeps its map, location, and API sections wi
 });
 
 test("public content pages have production metadata and the custom 404 stays unmonetized", async () => {
-  const publicPages = ["index.html", "destinations.html", "travel-guide.html", "beach.html", "sources.html", "about.html", "privacy.html", "contact.html", "busan-coast.html", "seoul-jeongdong.html", "jeju-east.html", "gangneung-sea.html", "jeonju-hanok.html", "suncheon-bay.html", "andong-hahoe-byeongsan.html", "tongyeong-dongpirang-cablecar.html", "damyang-bamboo.html", "gyeongju-night-walk.html", "pohang-homigot-guryongpo.html", "ulsan-taehwagang-daewangam.html", "mokpo-modern-history-yudal.html", "suwon-hwaseong-haenggung.html", "buyeo-baekje-gungnamji.html", "buan-chaeseokgang-naesosa.html", "yeongju-buseoksa-sosuseowon.html", "haenam-ttangkkeut-daeheungsa.html", "jecheon-uirimji-cheongpung.html", "cheongsong-juwangsan-jusanji.html", "danyang-dodam-mancheonha-jando.html", "gongju-gongsanseong-jemincheon.html", "gangjin-dasan-baekryeonsa.html", "jinju-jinjuseong-namgang.html", "namhae-german-darangyi.html", "namwon-gwanghallu-yocheon.html", "ganghwa-goryeogungji-jeondungsa-dongmak.html", "seocheon-janghang-skywalk-ecology.html", "cheongsando-slow-road.html", "jindo-unnim-sebang-sinbi.html", "yeosu-odongdo-dolsan-hyangilam.html", "taean-anmyeondo-kkotji-chollipo.html", "sokcho-central-abaimaeul-cheongchoho.html", "miryang-yeongnamnu-wiyangji.html", "yeongwol-cheongnyeongpo-jangneung-byeolmaro.html", "iksan-mireuksa-wanggungri.html"];
+  const publicPages = ["index.html", "destinations.html", "travel-guide.html", "beach.html", "sources.html", "about.html", "privacy.html", "contact.html", "busan-coast.html", "seoul-jeongdong.html", "jeju-east.html", "gangneung-sea.html", "jeonju-hanok.html", "suncheon-bay.html", "andong-hahoe-byeongsan.html", "tongyeong-dongpirang-cablecar.html", "damyang-bamboo.html", "gyeongju-night-walk.html", "pohang-homigot-guryongpo.html", "ulsan-taehwagang-daewangam.html", "mokpo-modern-history-yudal.html", "suwon-hwaseong-haenggung.html", "buyeo-baekje-gungnamji.html", "buan-chaeseokgang-naesosa.html", "yeongju-buseoksa-sosuseowon.html", "haenam-ttangkkeut-daeheungsa.html", "jecheon-uirimji-cheongpung.html", "cheongsong-juwangsan-jusanji.html", "danyang-dodam-mancheonha-jando.html", "gongju-gongsanseong-jemincheon.html", "gangjin-dasan-baekryeonsa.html", "jinju-jinjuseong-namgang.html", "namhae-german-darangyi.html", "namwon-gwanghallu-yocheon.html", "ganghwa-goryeogungji-jeondungsa-dongmak.html", "seocheon-janghang-skywalk-ecology.html", "cheongsando-slow-road.html", "geoje-windy-hill-oedo-haegeumgang.html", "jindo-unnim-sebang-sinbi.html", "yeosu-odongdo-dolsan-hyangilam.html", "taean-anmyeondo-kkotji-chollipo.html", "sokcho-central-abaimaeul-cheongchoho.html", "miryang-yeongnamnu-wiyangji.html", "yeongwol-cheongnyeongpo-jangneung-byeolmaro.html", "iksan-mireuksa-wanggungri.html"];
   const pages = await Promise.all(publicPages.map(readProjectFile));
 
   pages.forEach((html, index) => {
@@ -88,6 +88,7 @@ test("destination cards lead to substantial standalone travel stories", async ()
     ["yeongwol-cheongnyeongpo-jangneung-byeolmaro.html", "travel-yeongwol-cheongnyeongpo-jangneung-byeolmaro.png"],
     ["taean-anmyeondo-kkotji-chollipo.html", "travel-taean-anmyeondo-kkotji-chollipo.png"],
     ["cheongsando-slow-road.html", "travel-cheongsando-slow-road.png"],
+    ["geoje-windy-hill-oedo-haegeumgang.html", "travel-geoje-windy-hill-oedo-haegeumgang.png"],
     ["jindo-unnim-sebang-sinbi.html", "travel-jindo-unnim-sebang-sinbi.png"],
     ["yeosu-odongdo-dolsan-hyangilam.html", "travel-yeosu-odongdo-dolsan-hyangilam.png"],
     ["jinju-jinjuseong-namgang.html", "travel-jinju-jinjuseong-namgang.png"],
@@ -186,6 +187,12 @@ test("destination cards lead to substantial standalone travel stories", async ()
     if (path === "cheongsando-slow-road.html") {
       assert.match(html, /href=["']haenam-ttangkkeut-daeheungsa\.html["']/);
       assert.match(html, /href=["']jindo-unnim-sebang-sinbi\.html["']/);
+      assert.match(html, /href=["']travel-guide\.html["']/);
+    }
+    if (path === "geoje-windy-hill-oedo-haegeumgang.html") {
+      assert.match(html, /href=["']busan-coast\.html["']/);
+      assert.match(html, /href=["']tongyeong-dongpirang-cablecar\.html["']/);
+      assert.match(html, /href=["']namhae-german-darangyi\.html["']/);
       assert.match(html, /href=["']travel-guide\.html["']/);
     }
     if (path === "gongju-gongsanseong-jemincheon.html") {
