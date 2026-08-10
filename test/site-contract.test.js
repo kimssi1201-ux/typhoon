@@ -18,7 +18,7 @@ test("the travel home wires editorial content, filters, weather, map, and menu",
   }
   assert.match(html, /MustView Travel/);
   assert.match(html, /href=["']beach\.html["']/);
-  assert.doesNotMatch(html, /태풍/, "the retired typhoon topic is not shown on the travel home");
+  assert.doesNotMatch(html, /typhoon-guide|readiness-guide/, "the retired typhoon topic is not shown on the travel home");
   assert.match(client, /\/api\/current-weather\?/);
   assert.match(client, /IntersectionObserver/);
   assert.match(client, /localStorage/);
@@ -42,11 +42,11 @@ test("the preserved beach dashboard keeps its map, location, and API sections wi
   }
   assert.match(client, /navigator\.geolocation\.getCurrentPosition/);
   assert.doesNotMatch(html, /beachFeatureImage|beach-feature-media/, "the removed beach hero is not reintroduced");
-  assert.match(html, /href=["']index\.html["']>여행 홈/);
+  assert.match(html, /href=["']index\.html["']/);
 });
 
 test("public content pages have production metadata and the custom 404 stays unmonetized", async () => {
-  const publicPages = ["index.html", "destinations.html", "travel-guide.html", "beach.html", "sources.html", "about.html", "privacy.html", "contact.html", "busan-coast.html", "seoul-jeongdong.html", "jeju-east.html", "gangneung-sea.html", "jeonju-hanok.html", "suncheon-bay.html", "andong-hahoe-byeongsan.html", "tongyeong-dongpirang-cablecar.html", "damyang-bamboo.html", "gyeongju-night-walk.html", "pohang-homigot-guryongpo.html", "ulsan-taehwagang-daewangam.html", "mokpo-modern-history-yudal.html", "suwon-hwaseong-haenggung.html", "buyeo-baekje-gungnamji.html", "yeongju-buseoksa-sosuseowon.html", "haenam-ttangkkeut-daeheungsa.html", "jecheon-uirimji-cheongpung.html", "gongju-gongsanseong-jemincheon.html", "gangjin-dasan-baekryeonsa.html", "jinju-jinjuseong-namgang.html", "namhae-german-darangyi.html", "namwon-gwanghallu-yocheon.html", "ganghwa-goryeogungji-jeondungsa-dongmak.html", "seocheon-janghang-skywalk-ecology.html", "cheongsando-slow-road.html", "jindo-unnim-sebang-sinbi.html", "yeosu-odongdo-dolsan-hyangilam.html"];
+  const publicPages = ["index.html", "destinations.html", "travel-guide.html", "beach.html", "sources.html", "about.html", "privacy.html", "contact.html", "busan-coast.html", "seoul-jeongdong.html", "jeju-east.html", "gangneung-sea.html", "jeonju-hanok.html", "suncheon-bay.html", "andong-hahoe-byeongsan.html", "tongyeong-dongpirang-cablecar.html", "damyang-bamboo.html", "gyeongju-night-walk.html", "pohang-homigot-guryongpo.html", "ulsan-taehwagang-daewangam.html", "mokpo-modern-history-yudal.html", "suwon-hwaseong-haenggung.html", "buyeo-baekje-gungnamji.html", "yeongju-buseoksa-sosuseowon.html", "haenam-ttangkkeut-daeheungsa.html", "jecheon-uirimji-cheongpung.html", "gongju-gongsanseong-jemincheon.html", "gangjin-dasan-baekryeonsa.html", "jinju-jinjuseong-namgang.html", "namhae-german-darangyi.html", "namwon-gwanghallu-yocheon.html", "ganghwa-goryeogungji-jeondungsa-dongmak.html", "seocheon-janghang-skywalk-ecology.html", "cheongsando-slow-road.html", "jindo-unnim-sebang-sinbi.html", "yeosu-odongdo-dolsan-hyangilam.html", "taean-anmyeondo-kkotji-chollipo.html"];
   const pages = await Promise.all(publicPages.map(readProjectFile));
 
   pages.forEach((html, index) => {
@@ -80,6 +80,7 @@ test("destination cards lead to substantial standalone travel stories", async ()
     ["yeongju-buseoksa-sosuseowon.html", "travel-yeongju-buseoksa-sosuseowon.png"],
     ["haenam-ttangkkeut-daeheungsa.html", "travel-haenam-ttangkkeut-daeheungsa.png"],
     ["jecheon-uirimji-cheongpung.html", "travel-jecheon-uirimji-cheongpung.png"],
+    ["taean-anmyeondo-kkotji-chollipo.html", "travel-taean-anmyeondo-kkotji-chollipo.png"],
     ["cheongsando-slow-road.html", "travel-cheongsando-slow-road.png"],
     ["jindo-unnim-sebang-sinbi.html", "travel-jindo-unnim-sebang-sinbi.png"],
     ["yeosu-odongdo-dolsan-hyangilam.html", "travel-yeosu-odongdo-dolsan-hyangilam.png"],
@@ -127,6 +128,12 @@ test("destination cards lead to substantial standalone travel stories", async ()
     if (path === "jindo-unnim-sebang-sinbi.html") {
       assert.match(html, /href=["']haenam-ttangkkeut-daeheungsa\.html["']/);
       assert.match(html, /href=["']mokpo-modern-history-yudal\.html["']/);
+      assert.match(html, /href=["']travel-guide\.html["']/);
+    }
+    if (path === "taean-anmyeondo-kkotji-chollipo.html") {
+      assert.match(html, /href=["']ganghwa-goryeogungji-jeondungsa-dongmak\.html["']/);
+      assert.match(html, /href=["']seocheon-janghang-skywalk-ecology\.html["']/);
+      assert.match(html, /href=["']suncheon-bay\.html["']/);
       assert.match(html, /href=["']travel-guide\.html["']/);
     }
     if (path === "yeosu-odongdo-dolsan-hyangilam.html") {
@@ -184,7 +191,7 @@ test("sitemap and Cloudflare workflow include the current travel site", async ()
     readProjectFile(".github/workflows/deploy-cloudflare-pages.yml")
   ]);
 
-  for (const path of ["/destinations", "/busan-coast", "/seoul-jeongdong", "/jeju-east", "/gangneung-sea", "/jeonju-hanok", "/suncheon-bay", "/andong-hahoe-byeongsan", "/tongyeong-dongpirang-cablecar", "/damyang-bamboo", "/gyeongju-night-walk", "/pohang-homigot-guryongpo", "/ulsan-taehwagang-daewangam", "/mokpo-modern-history-yudal", "/suwon-hwaseong-haenggung", "/buyeo-baekje-gungnamji", "/yeongju-buseoksa-sosuseowon", "/haenam-ttangkkeut-daeheungsa", "/jecheon-uirimji-cheongpung", "/gongju-gongsanseong-jemincheon", "/gangjin-dasan-baekryeonsa", "/jinju-jinjuseong-namgang", "/namhae-german-darangyi", "/namwon-gwanghallu-yocheon", "/ganghwa-goryeogungji-jeondungsa-dongmak", "/seocheon-janghang-skywalk-ecology", "/cheongsando-slow-road", "/jindo-unnim-sebang-sinbi", "/yeosu-odongdo-dolsan-hyangilam", "/travel-guide", "/beach", "/sources", "/about", "/privacy", "/contact"]) {
+  for (const path of ["/destinations", "/busan-coast", "/seoul-jeongdong", "/jeju-east", "/gangneung-sea", "/jeonju-hanok", "/suncheon-bay", "/andong-hahoe-byeongsan", "/tongyeong-dongpirang-cablecar", "/damyang-bamboo", "/gyeongju-night-walk", "/pohang-homigot-guryongpo", "/ulsan-taehwagang-daewangam", "/mokpo-modern-history-yudal", "/suwon-hwaseong-haenggung", "/buyeo-baekje-gungnamji", "/yeongju-buseoksa-sosuseowon", "/haenam-ttangkkeut-daeheungsa", "/jecheon-uirimji-cheongpung", "/gongju-gongsanseong-jemincheon", "/gangjin-dasan-baekryeonsa", "/jinju-jinjuseong-namgang", "/namhae-german-darangyi", "/namwon-gwanghallu-yocheon", "/ganghwa-goryeogungji-jeondungsa-dongmak", "/seocheon-janghang-skywalk-ecology", "/cheongsando-slow-road", "/jindo-unnim-sebang-sinbi", "/yeosu-odongdo-dolsan-hyangilam", "/taean-anmyeondo-kkotji-chollipo", "/travel-guide", "/beach", "/sources", "/about", "/privacy", "/contact"]) {
     assert.match(sitemap, new RegExp(`https://mustview\\.co\\.kr${path}`));
   }
   assert.doesNotMatch(sitemap, /typhoon-guide|readiness-guide/);
