@@ -1,4 +1,4 @@
-import assert from "node:assert/strict";
+﻿import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 import test from "node:test";
 
@@ -46,7 +46,7 @@ test("the preserved beach dashboard keeps its map, location, and API sections wi
 });
 
 test("public content pages have production metadata and the custom 404 stays unmonetized", async () => {
-  const publicPages = ["index.html", "destinations.html", "travel-guide.html", "beach.html", "sources.html", "about.html", "privacy.html", "contact.html", "busan-coast.html", "seoul-jeongdong.html", "jeju-east.html", "gangneung-sea.html", "jeonju-hanok.html", "suncheon-bay.html", "andong-hahoe-byeongsan.html", "tongyeong-dongpirang-cablecar.html", "damyang-bamboo.html", "gyeongju-night-walk.html", "pohang-homigot-guryongpo.html", "ulsan-taehwagang-daewangam.html", "mokpo-modern-history-yudal.html", "suwon-hwaseong-haenggung.html", "buyeo-baekje-gungnamji.html", "buan-chaeseokgang-naesosa.html", "yeongju-buseoksa-sosuseowon.html", "haenam-ttangkkeut-daeheungsa.html", "jecheon-uirimji-cheongpung.html", "cheongsong-juwangsan-jusanji.html", "uljin-wangpicheon-mangyang-jeukbyeon.html", "gochang-eupseong-seonunsa-ungeok.html", "danyang-dodam-mancheonha-jando.html", "gongju-gongsanseong-jemincheon.html", "gangjin-dasan-baekryeonsa.html", "jinju-jinjuseong-namgang.html", "namhae-german-darangyi.html", "namwon-gwanghallu-yocheon.html", "ganghwa-goryeogungji-jeondungsa-dongmak.html", "seocheon-janghang-skywalk-ecology.html", "cheongsando-slow-road.html", "geoje-windy-hill-oedo-haegeumgang.html", "jindo-unnim-sebang-sinbi.html", "yeosu-odongdo-dolsan-hyangilam.html", "taean-anmyeondo-kkotji-chollipo.html", "sokcho-central-abaimaeul-cheongchoho.html", "miryang-yeongnamnu-wiyangji.html", "yeongwol-cheongnyeongpo-jangneung-byeolmaro.html", "iksan-mireuksa-wanggungri.html", "wanju-samnye-bibijeong-daedunsan.html"];
+  const publicPages = ["index.html", "destinations.html", "travel-guide.html", "beach.html", "sources.html", "about.html", "privacy.html", "contact.html", "busan-coast.html", "seoul-jeongdong.html", "jeju-east.html", "gangneung-sea.html", "jeonju-hanok.html", "suncheon-bay.html", "andong-hahoe-byeongsan.html", "tongyeong-dongpirang-cablecar.html", "damyang-bamboo.html", "gyeongju-night-walk.html", "pohang-homigot-guryongpo.html", "ulsan-taehwagang-daewangam.html", "mokpo-modern-history-yudal.html", "suwon-hwaseong-haenggung.html", "buyeo-baekje-gungnamji.html", "buan-chaeseokgang-naesosa.html", "yeongju-buseoksa-sosuseowon.html", "haenam-ttangkkeut-daeheungsa.html", "jecheon-uirimji-cheongpung.html", "cheongsong-juwangsan-jusanji.html", "uljin-wangpicheon-mangyang-jeukbyeon.html", "gochang-eupseong-seonunsa-ungeok.html", "danyang-dodam-mancheonha-jando.html", "gongju-gongsanseong-jemincheon.html", "gangjin-dasan-baekryeonsa.html", "jinju-jinjuseong-namgang.html", "namhae-german-darangyi.html", "namwon-gwanghallu-yocheon.html", "ganghwa-goryeogungji-jeondungsa-dongmak.html", "seocheon-janghang-skywalk-ecology.html", "cheongsando-slow-road.html", "geoje-windy-hill-oedo-haegeumgang.html", "jindo-unnim-sebang-sinbi.html", "yeosu-odongdo-dolsan-hyangilam.html", "taean-anmyeondo-kkotji-chollipo.html", "sokcho-central-abaimaeul-cheongchoho.html", "miryang-yeongnamnu-wiyangji.html", "yeongwol-cheongnyeongpo-jangneung-byeolmaro.html", "iksan-mireuksa-wanggungri.html", "wanju-samnye-bibijeong-daedunsan.html", "taebaek-hwangji-coalmuseum-yongyeon.html"];
   const pages = await Promise.all(publicPages.map(readProjectFile));
 
   pages.forEach((html, index) => {
@@ -100,7 +100,8 @@ test("destination cards lead to substantial standalone travel stories", async ()
     ["namwon-gwanghallu-yocheon.html", "travel-namwon-gwanghallu-yocheon.png"],
     ["ganghwa-goryeogungji-jeondungsa-dongmak.html", "travel-ganghwa-goryeogungji-jeondungsa-dongmak.png"],
     ["seocheon-janghang-skywalk-ecology.html", "travel-seocheon-janghang-skywalk.png"],
-    ["sokcho-central-abaimaeul-cheongchoho.html", "travel-sokcho-central-abaimaeul-cheongchoho.png"]
+    ["sokcho-central-abaimaeul-cheongchoho.html", "travel-sokcho-central-abaimaeul-cheongchoho.png"],
+    ["taebaek-hwangji-coalmuseum-yongyeon.html", "travel-taebaek-hwangji-coalmuseum-yongyeon.png"]
   ];
   const [home, destinations, ...pages] = await Promise.all([
     readProjectFile("index.html"),
@@ -180,6 +181,11 @@ test("destination cards lead to substantial standalone travel stories", async ()
       assert.match(html, /href=["']jeonju-hanok\.html["']/);
       assert.match(html, /href=["']gongju-gongsanseong-jemincheon\.html["']/);
       assert.match(html, /href=["']namwon-gwanghallu-yocheon\.html["']/);
+      assert.match(html, /href=["']travel-guide\.html["']/);
+    }
+    if (path === "taebaek-hwangji-coalmuseum-yongyeon.html") {
+      assert.match(html, /href=["']jecheon-uirimji-cheongpung\.html["']/);
+      assert.match(html, /href=["']cheongsong-juwangsan-jusanji\.html["']/);
       assert.match(html, /href=["']travel-guide\.html["']/);
     }
     if (path === "danyang-dodam-mancheonha-jando.html") {
