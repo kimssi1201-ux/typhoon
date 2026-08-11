@@ -46,7 +46,7 @@ test("the preserved beach dashboard keeps its map, location, and API sections wi
 });
 
 test("public content pages have production metadata and the custom 404 stays unmonetized", async () => {
-  const publicPages = ["index.html", "destinations.html", "travel-guide.html", "beach.html", "sources.html", "about.html", "privacy.html", "contact.html", "busan-coast.html", "seoul-jeongdong.html", "jeju-east.html", "gangneung-sea.html", "jeonju-hanok.html", "suncheon-bay.html", "andong-hahoe-byeongsan.html", "tongyeong-dongpirang-cablecar.html", "damyang-bamboo.html", "gyeongju-night-walk.html", "pohang-homigot-guryongpo.html", "ulsan-taehwagang-daewangam.html", "mokpo-modern-history-yudal.html", "suwon-hwaseong-haenggung.html", "buyeo-baekje-gungnamji.html", "buan-chaeseokgang-naesosa.html", "yeongju-buseoksa-sosuseowon.html", "haenam-ttangkkeut-daeheungsa.html", "jecheon-uirimji-cheongpung.html", "cheongsong-juwangsan-jusanji.html", "uljin-wangpicheon-mangyang-jeukbyeon.html", "gochang-eupseong-seonunsa-ungeok.html", "danyang-dodam-mancheonha-jando.html", "gongju-gongsanseong-jemincheon.html", "gangjin-dasan-baekryeonsa.html", "jinju-jinjuseong-namgang.html", "namhae-german-darangyi.html", "namwon-gwanghallu-yocheon.html", "ganghwa-goryeogungji-jeondungsa-dongmak.html", "ganghwa-gyodongdo-daeryong-hwagaejeongwon.html", "seocheon-janghang-skywalk-ecology.html", "cheongsando-slow-road.html", "geoje-windy-hill-oedo-haegeumgang.html", "jindo-unnim-sebang-sinbi.html", "yeosu-odongdo-dolsan-hyangilam.html", "taean-anmyeondo-kkotji-chollipo.html", "sokcho-central-abaimaeul-cheongchoho.html", "miryang-yeongnamnu-wiyangji.html", "yeongwol-cheongnyeongpo-jangneung-byeolmaro.html", "iksan-mireuksa-wanggungri.html", "wanju-samnye-bibijeong-daedunsan.html", "taebaek-hwangji-coalmuseum-yongyeon.html", "chuncheon-uiam-samaksan-gongjicheon.html", "jeongseon-arirang-market-arihills-hwaam.html", "yeongdeok-blue-road-jangsa-goraebul.html", "hapcheon-haeinsa-hwangmaesan.html", "pyeongchang-odaesan-woljeongsa-sangwonsa.html", "samcheok-chogok-jangho-hwanseon.html", "gunsan-time-travel-museum-railway.html", "pocheon-hantangang-sanjeonghosu.html", "goseong-tongil-dmz-hwajinpo.html"];
+  const publicPages = ["index.html", "destinations.html", "travel-guide.html", "beach.html", "sources.html", "about.html", "privacy.html", "contact.html", "busan-coast.html", "seoul-jeongdong.html", "jeju-east.html", "gangneung-sea.html", "jeonju-hanok.html", "suncheon-bay.html", "suncheon-nagan-seonamsa-garden.html", "andong-hahoe-byeongsan.html", "tongyeong-dongpirang-cablecar.html", "damyang-bamboo.html", "gyeongju-night-walk.html", "pohang-homigot-guryongpo.html", "ulsan-taehwagang-daewangam.html", "mokpo-modern-history-yudal.html", "suwon-hwaseong-haenggung.html", "buyeo-baekje-gungnamji.html", "buan-chaeseokgang-naesosa.html", "yeongju-buseoksa-sosuseowon.html", "haenam-ttangkkeut-daeheungsa.html", "jecheon-uirimji-cheongpung.html", "cheongsong-juwangsan-jusanji.html", "uljin-wangpicheon-mangyang-jeukbyeon.html", "gochang-eupseong-seonunsa-ungeok.html", "danyang-dodam-mancheonha-jando.html", "gongju-gongsanseong-jemincheon.html", "gangjin-dasan-baekryeonsa.html", "jinju-jinjuseong-namgang.html", "namhae-german-darangyi.html", "namwon-gwanghallu-yocheon.html", "ganghwa-goryeogungji-jeondungsa-dongmak.html", "ganghwa-gyodongdo-daeryong-hwagaejeongwon.html", "seocheon-janghang-skywalk-ecology.html", "cheongsando-slow-road.html", "geoje-windy-hill-oedo-haegeumgang.html", "jindo-unnim-sebang-sinbi.html", "yeosu-odongdo-dolsan-hyangilam.html", "taean-anmyeondo-kkotji-chollipo.html", "sokcho-central-abaimaeul-cheongchoho.html", "miryang-yeongnamnu-wiyangji.html", "yeongwol-cheongnyeongpo-jangneung-byeolmaro.html", "iksan-mireuksa-wanggungri.html", "wanju-samnye-bibijeong-daedunsan.html", "taebaek-hwangji-coalmuseum-yongyeon.html", "chuncheon-uiam-samaksan-gongjicheon.html", "jeongseon-arirang-market-arihills-hwaam.html", "yeongdeok-blue-road-jangsa-goraebul.html", "hapcheon-haeinsa-hwangmaesan.html", "pyeongchang-odaesan-woljeongsa-sangwonsa.html", "samcheok-chogok-jangho-hwanseon.html", "gunsan-time-travel-museum-railway.html", "pocheon-hantangang-sanjeonghosu.html", "goseong-tongil-dmz-hwajinpo.html"];
   const pages = await Promise.all(publicPages.map(readProjectFile));
 
   pages.forEach((html, index) => {
@@ -77,6 +77,7 @@ test("destination cards lead to substantial standalone travel stories", async ()
     ["gangneung-sea.html", "travel-gangneung.webp"],
     ["jeonju-hanok.html", "travel-jeonju.webp"],
     ["suncheon-bay.html", "travel-suncheon.webp"],
+    ["suncheon-nagan-seonamsa-garden.html", "travel-suncheon-nagan-seonamsa-garden.png"],
     ["andong-hahoe-byeongsan.html", "travel-andong-hahoe.png"],
     ["tongyeong-dongpirang-cablecar.html", "travel-tongyeong.png"],
     ["damyang-bamboo.html", "travel-damyang-bamboo.png"],
@@ -149,6 +150,11 @@ test("destination cards lead to substantial standalone travel stories", async ()
     if (path === "ganghwa-gyodongdo-daeryong-hwagaejeongwon.html") {
       assert.match(html, /href=["']ganghwa-goryeogungji-jeondungsa-dongmak\.html["']/);
       assert.match(html, /href=["']goseong-tongil-dmz-hwajinpo\.html["']/);
+      assert.match(html, /href=["']travel-guide\.html["']/);
+    }
+    if (path === "suncheon-nagan-seonamsa-garden.html") {
+      assert.match(html, /href=["']suncheon-bay\.html["']/);
+      assert.match(html, /href=["']jeonju-hanok\.html["']/);
       assert.match(html, /href=["']travel-guide\.html["']/);
     }
     if (path === "buan-chaeseokgang-naesosa.html") {
@@ -324,6 +330,10 @@ test("destination cards lead to substantial standalone travel stories", async ()
       assert.match(html, /href=["']travel-guide\.html["']/);
     }
   });
+
+  const suncheonBay = await readProjectFile("suncheon-bay.html");
+  assert.match(suncheonBay, /href=["']suncheon-nagan-seonamsa-garden\.html["']/);
+  assert.match(suncheonBay, /href=["']travel-guide\.html["']/);
 });
 
 test("sitemap and Cloudflare workflow include the current travel site", async () => {
