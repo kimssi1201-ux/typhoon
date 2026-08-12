@@ -70,15 +70,18 @@ test("the housing home wires search, filters, results, favorites, menu, and offi
   assert.match(client, /textContent/);
   assert.match(html, /policy-news\.js/);
   assert.match(html, /housing-support\.js/);
-  assert.match(html, /gov\.kr\/portal\/rcvfvrSvc\/main/);
+  assert.match(html, /data\.go\.kr\/data\/15090532/);
   assert.match(html, /holiday-parking\.html/);
   assert.match(html, /명절 무료 주차장 찾기/);
   assert.match(html, /housing-complexes\.html/);
   assert.match(html, /지역별 임대단지 찾기/);
   assert.equal((html.match(/data-support-topic=/g) || []).length, 4);
   assert.match(supportClient, /\/api\/housing-support/);
+  assert.match(supportClient, /\/api\/welfare-services/);
   assert.match(supportClient, /localStorage/);
   assert.match(supportClient, /AbortController/);
+  assert.match(supportClient, /support-detail-button/);
+  assert.match(supportClient, /지원대상·신청방법/);
   assert.match(supportClient, /textContent/);
   assert.doesNotMatch(supportClient, /innerHTML\s*=/, "external support fields are not injected as HTML");
   assert.match(html, /korea\.kr\/news\/policyNewsList\.do/);
@@ -239,12 +242,13 @@ test("sources, about, and privacy explain authority, limits, caching, and local 
 
   assert.match(sources, /data\.go\.kr\/data\/15058530/);
   assert.match(sources, /data\.go\.kr\/data\/15110581/);
+  assert.match(sources, /data\.go\.kr\/data\/15090532/);
   assert.match(sources, /data\.go\.kr\/data\/15095335/);
   assert.match(sources, /data\.go\.kr\/data\/15113968/);
   assert.match(sources, /data\.go\.kr\/data\/15109768/);
   assert.match(sources, /eshare\.go\.kr\/OpenApi\/Info\/detail\.do\?svcNo=21/);
   assert.match(sources, /apply\.lh\.or\.kr/);
-  assert.match(sources, /gov\.kr\/portal\/rcvfvrSvc\/main/);
+  assert.match(sources, /bokjiro\.go\.kr/);
   assert.match(sources, /korea\.kr\/news\/policyNewsList\.do/);
   assert.match(sources, /최근 3일/);
   assert.match(sources, /기사 사진과 기사 본문 전체는 사이트에 복제하지 않습니다/);
@@ -289,6 +293,7 @@ test("sitemap indexes only current housing pages and legacy travel routes redire
   assert.match(pkg.scripts.check, /housing-region-codes\.js/);
   assert.match(pkg.scripts.check, /housing-notices\.js/);
   assert.match(pkg.scripts.check, /functions\/api\/housing-complexes\.js/);
+  assert.match(pkg.scripts.check, /functions\/api\/welfare-services\.js/);
   assert.match(pkg.scripts.check, /policy-news\.js/);
   assert.match(pkg.scripts.check, /housing-support\.js/);
   assert.match(pkg.scripts.check, /family-facilities\.js/);

@@ -4,7 +4,7 @@
 
 ## 주요 페이지
 
-- `/`: 전국 임대주택 공고 검색, 관심 공고, 정부24 주거지원과 최근 정책뉴스
+- `/`: 전국 임대주택 공고 검색, 관심 공고, 복지로 주거지원 상세정보와 최근 정책뉴스
 - `/housing-complexes`: 지역별 공공임대주택 단지, 면적과 기본 임대조건 조회
 - `/housing-guide`: 공고문, 신청자격, 일정과 제출서류 확인 가이드
 - `/family-facilities`: 지역별 한부모가족복지시설 검색과 입소 안내
@@ -20,7 +20,7 @@
 
 임대단지 정보는 [마이홈포털 공공임대주택 단지정보 조회 서비스](https://www.data.go.kr/data/15110581/openapi.do)를 이용합니다. 지역별 단지명, 주소, 세대수, 면적과 기본 보증금·월임대료를 표시하며 현재 모집 여부와 실제 계약 조건은 최신 공식 공고문을 기준으로 확인해야 합니다.
 
-주거지원 서비스는 [행정안전부 대한민국 공공서비스(혜택) 정보](https://www.data.go.kr/data/15113968/openapi.do)를 이용합니다. 주거, 임대주택, 월세와 전세 관련 서비스의 대상과 신청기한을 요약하고 상세 내용은 [정부24](https://www.gov.kr/portal/rcvfvrSvc/main) 공식 페이지로 연결합니다.
+주거지원 서비스는 [한국사회보장정보원 중앙부처복지서비스](https://www.data.go.kr/data/15090532/openapi.do)를 우선 이용합니다. 주거, 임대주택, 월세와 전세 관련 서비스의 대상 구분과 지원주기를 요약하고, 항목을 펼치면 지원대상·선정기준·지원내용·신청방법과 문의처를 확인할 수 있습니다. 연결이 지연될 때는 기존 [행정안전부 대한민국 공공서비스(혜택) 정보](https://www.data.go.kr/data/15113968/openapi.do)를 대체 자료로 사용합니다. 실제 자격과 신청은 [복지로](https://www.bokjiro.go.kr/ssis-tbu/index.do)의 최신 내용을 기준으로 확인해야 합니다.
 
 한부모가족 주거시설은 [성평등가족부 한부모가족복지시설](https://www.data.go.kr/data/15109768/openapi.do)을 이용합니다. 지역과 시설명으로 검색하고 주소, 대표전화, 운영 여부, 지원 내용과 입소 안내를 표시합니다. 실제 운영과 입소 가능 여부는 시설 및 관할 시·군·구에 확인해야 합니다.
 
@@ -36,6 +36,7 @@
 - `LH_COMPLEX_API_KEY`: 선택적인 공공임대주택 단지정보 전용 인증키이며 없으면 `LH_API_KEY` 사용
 - `POLICY_NEWS_API_KEY`: 문화체육관광부 정책브리핑 정책뉴스 서비스용 인증키
 - `GOV24_API_KEY`: 행정안전부 대한민국 공공서비스 정보용 인증키
+- `WELFARE_API_KEY`: 선택적인 중앙부처복지서비스 전용 인증키이며 없으면 `DATA_GO_KR_API_KEY` 또는 `LH_API_KEY` 사용
 - `SINGLE_PARENT_FACILITY_API_KEY`: 성평등가족부 한부모가족복지시설용 인증키
 - `ESHARE_API_KEY`: 공유누리 명절 무료 주차장 서비스용 인증키
 - `DATA_GO_KR_API_KEY`: 선택적인 공공데이터 공용키
@@ -51,7 +52,7 @@ npm.cmd install
 npm.cmd run serve
 ```
 
-Wrangler 개발 서버를 사용해야 `/api/housing-notices`, `/api/housing-complexes`, `/api/housing-support`, `/api/single-parent-facilities`, `/api/holiday-parking`, `/api/policy-news` Function까지 함께 확인할 수 있습니다.
+Wrangler 개발 서버를 사용해야 `/api/housing-notices`, `/api/housing-complexes`, `/api/housing-support`, `/api/welfare-services`, `/api/single-parent-facilities`, `/api/holiday-parking`, `/api/policy-news` Function까지 함께 확인할 수 있습니다.
 
 ## 검증
 

@@ -852,6 +852,7 @@ img {
 .support-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: start;
   margin-top: 20px;
   gap: 14px;
 }
@@ -963,6 +964,113 @@ img {
 
 .support-footer a::after {
   content: " →";
+}
+
+.support-card-actions {
+  display: flex;
+  align-items: center;
+  flex: 0 0 auto;
+  gap: 8px;
+}
+
+.support-detail-button {
+  min-height: 44px;
+  padding: 0 12px;
+  border: 1px solid var(--blue);
+  border-radius: 5px;
+  background: white;
+  color: var(--blue-dark);
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.support-detail-button:hover,
+.support-detail-button:focus-visible,
+.support-detail-button[aria-expanded="true"] {
+  background: var(--blue-soft);
+}
+
+.support-detail {
+  margin-top: 18px;
+  padding-top: 18px;
+  border-top: 1px solid var(--line);
+}
+
+.support-detail[hidden] {
+  display: none;
+}
+
+.support-detail-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 18px;
+  gap: 12px;
+}
+
+.support-detail-heading strong {
+  font-size: 16px;
+}
+
+.support-detail-heading span {
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.support-detail-section + .support-detail-section {
+  margin-top: 16px;
+}
+
+.support-detail-section h4 {
+  margin: 0 0 6px;
+  color: var(--ink);
+  font-size: 13px;
+}
+
+.support-detail-section p,
+.support-detail-section ol,
+.support-detail > p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.7;
+}
+
+.support-detail-section ol {
+  padding-left: 20px;
+}
+
+.support-detail-section li + li {
+  margin-top: 6px;
+}
+
+.support-detail-actions {
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 18px;
+  gap: 8px 18px;
+}
+
+.support-detail-actions a,
+.support-detail.is-error > a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  color: var(--blue-dark);
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.support-detail.is-loading,
+.support-detail.is-error {
+  color: var(--muted);
+}
+
+.support-detail.is-error strong {
+  display: block;
+  margin-bottom: 6px;
+  color: var(--ink);
+  font-size: 13px;
 }
 
 .support-source {
@@ -1678,6 +1786,26 @@ img {
   .support-card,
   .support-skeleton {
     min-height: 0;
+  }
+
+  .support-footer {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .support-card-actions,
+  .support-detail-button {
+    width: 100%;
+  }
+
+  .support-detail-button {
+    justify-content: center;
+  }
+
+  .support-detail-heading {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 3px;
   }
 
   .support-source {
