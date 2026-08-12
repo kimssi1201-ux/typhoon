@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#ffffff" />
+    <meta name="google-adsense-account" content="ca-pub-5751319666030430" />
+    <title>전국 공공임대주택 단지 찾기 | 임대주택 한눈에</title>
+    <meta name="description" content="전국 공공임대주택 단지를 시도와 시군구별로 찾고 주소, 세대수, 전용면적, 기본 임대보증금과 월임대료를 확인하세요." />
+    <link rel="canonical" href="https://mustview.co.kr/housing-complexes" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="임대주택 한눈에" />
+    <meta property="og:title" content="전국 공공임대주택 단지 찾기" />
+    <meta property="og:description" content="지역별 공공임대주택 단지의 주소, 세대수, 면적과 기본 임대조건을 확인하세요." />
+    <meta property="og:url" content="https://mustview.co.kr/housing-complexes" />
+    <meta property="og:image" content="https://mustview.co.kr/assets/housing-neighborhood.webp" />
+    <link rel="stylesheet" href="housing.css?v=20260812-housing7" />
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5751319666030430" crossorigin="anonymous"></script>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "CollectionPage",
+        "name": "전국 공공임대주택 단지 찾기",
+        "url": "https://mustview.co.kr/housing-complexes",
+        "inLanguage": "ko-KR",
+        "isPartOf": { "@type": "WebSite", "name": "임대주택 한눈에", "url": "https://mustview.co.kr/" },
+        "description": "공공임대주택 단지정보 공식 자료를 지역별로 찾는 페이지"
+      }
+    </script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">본문 바로가기</a>
+    <header class="site-header">
+      <div class="site-header-inner subpage-header">
+        <a class="brand" href="index.html" aria-label="임대주택 한눈에 홈"><span class="brand-mark" aria-hidden="true">H</span><span><strong>임대주택 한눈에</strong><small>MustView Housing</small></span></a>
+        <nav class="desktop-nav" aria-label="주요 메뉴">
+          <a href="index.html">공고 찾기</a>
+          <a class="is-active" href="housing-complexes.html">단지 찾기</a>
+          <a href="housing-guide.html">신청 가이드</a>
+          <a href="sources.html">자료 출처</a>
+        </nav>
+        <a class="sub-home-link" href="index.html">홈</a>
+      </div>
+    </header>
+
+    <main class="facility-page-main" id="main">
+      <header class="facility-page-intro complex-page-intro">
+        <div>
+          <span class="eyebrow">PUBLIC RENTAL COMPLEX</span>
+          <h1>공공임대주택 단지 찾기</h1>
+          <p>살고 싶은 지역을 선택해 공공임대주택 단지의 위치, 세대수, 면적과 기본 임대조건을 확인할 수 있습니다.</p>
+        </div>
+        <aside>
+          <strong>단지정보와 모집공고는 다릅니다</strong>
+          <p>단지가 검색되어도 현재 입주자를 모집한다는 뜻은 아닙니다. 신청 가능 여부는 최신 모집공고에서 확인하세요.</p>
+        </aside>
+      </header>
+
+      <section class="facility-search-section complex-search-section" aria-labelledby="complexResultsTitle">
+        <form class="facility-search-form complex-search-form" id="complexSearchForm">
+          <div class="field">
+            <label for="complexRegion">시·도</label>
+            <select id="complexRegion" name="region" aria-label="시도 선택"></select>
+          </div>
+          <div class="field">
+            <label for="complexDistrict">시·군·구</label>
+            <select id="complexDistrict" name="district" aria-label="시군구 선택"></select>
+          </div>
+          <button class="facility-search-submit complex-search-submit" type="submit">임대단지 검색</button>
+        </form>
+
+        <div class="facility-results-heading complex-results-heading">
+          <div><span class="eyebrow">OFFICIAL COMPLEX DATA</span><h2 id="complexResultsTitle"><span id="complexArea">지역 확인 중</span> <strong id="complexTotal">확인 중</strong></h2></div>
+          <div class="sync-state" id="complexSync" aria-live="polite">공식 단지정보를 확인하고 있습니다.</div>
+        </div>
+        <div class="complex-state" id="complexState" aria-live="polite"></div>
+        <div class="complex-result-grid" id="complexList" aria-label="공공임대주택 단지 검색 결과"></div>
+        <button class="facility-load-more" id="complexLoadMore" type="button" hidden>단지 더 보기</button>
+      </section>
+
+      <section class="facility-guidance complex-guidance" aria-labelledby="complexGuideTitle">
+        <span class="eyebrow">HOW TO READ</span>
+        <h2 id="complexGuideTitle">단지정보를 볼 때 확인할 내용</h2>
+        <ol>
+          <li><strong>공급 유형</strong><p>국민임대, 영구임대, 행복주택 등 유형에 따라 신청 대상과 임대기간이 다릅니다.</p></li>
+          <li><strong>기본 임대조건</strong><p>보증금과 월임대료는 주택형별 기본값이며 계약 시점의 실제 금액과 다를 수 있습니다.</p></li>
+          <li><strong>면적과 세대수</strong><p>전용면적은 세대 내부 사용 면적이며 세대수와 주차대수는 단지 전체 기준일 수 있습니다.</p></li>
+          <li><strong>현재 모집 여부</strong><p>입주 신청, 자격, 잔여세대와 일정은 단지정보가 아니라 최신 공식 모집공고를 확인합니다.</p></li>
+        </ol>
+        <div class="facility-source-note complex-source-note">
+          <div><strong>자료 출처</strong><p>공공데이터포털의 공공임대주택 단지정보 조회 서비스를 사용합니다. 표시 금액과 단지정보는 참고자료이며 계약 조건을 보장하지 않습니다.</p></div>
+          <a href="https://www.data.go.kr/data/15058476/openapi.do" target="_blank" rel="noopener noreferrer">공식 자료 설명</a>
+        </div>
+      </section>
+    </main>
+
+    <nav class="bottom-nav" aria-label="모바일 주요 메뉴">
+      <a href="index.html"><span aria-hidden="true">⌂</span><strong>홈</strong></a>
+      <a href="index.html#notices"><span aria-hidden="true">≡</span><strong>공고</strong></a>
+      <a class="is-active" href="housing-complexes.html"><span aria-hidden="true">▦</span><strong>단지</strong></a>
+      <a href="housing-guide.html"><span aria-hidden="true">?</span><strong>가이드</strong></a>
+    </nav>
+    <footer class="site-footer">
+      <div class="content-width footer-grid">
+        <div><a class="footer-brand" href="index.html">임대주택 한눈에</a><p>전국 임대주택 공고와 단지정보를 명확하게 확인하는 정보 서비스입니다.</p></div>
+        <nav aria-label="하단 메뉴"><a href="index.html">공고 찾기</a><a href="housing-complexes.html">단지 찾기</a><a href="housing-guide.html">신청 가이드</a><a href="sources.html">자료 출처</a><a href="about.html">사이트 소개</a><a href="privacy.html">개인정보처리방침</a></nav>
+        <small>단지 기본정보와 현재 모집 여부는 다릅니다. 입주 판단은 최신 공식 모집공고를 우선하세요.</small>
+      </div>
+    </footer>
+    <script type="module" src="housing-complexes.js?v=20260812-complex1"></script>
+  </body>
+</html>

@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 import test from "node:test";
+import { HOUSING_REGIONS } from "../housing-region-codes.js";
 
 const readProjectFile = (path) => readFile(new URL("../" + path, import.meta.url), "utf8");
 const publisherId = "ca-pub-5751319666030430";
@@ -72,6 +73,8 @@ test("the housing home wires search, filters, results, favorites, menu, and offi
   assert.match(html, /gov\.kr\/portal\/rcvfvrSvc\/main/);
   assert.match(html, /holiday-parking\.html/);
   assert.match(html, /명절 무료 주차장 찾기/);
+  assert.match(html, /housing-complexes\.html/);
+  assert.match(html, /지역별 임대단지 찾기/);
   assert.equal((html.match(/data-support-topic=/g) || []).length, 4);
   assert.match(supportClient, /\/api\/housing-support/);
   assert.match(supportClient, /localStorage/);
@@ -88,6 +91,7 @@ test("the housing home wires search, filters, results, favorites, menu, and offi
 test("public housing pages have production metadata, ads ownership, and healthy Korean text", async () => {
   const pages = [
     "index.html",
+    "housing-complexes.html",
     "housing-guide.html",
     "family-facilities.html",
     "holiday-parking.html",
@@ -189,6 +193,43 @@ test("the holiday parking page wires official filters, pending state, maps, and 
   assert.match(css, /min-height:\s*44px/);
 });
 
+test("the housing complexes page wires official region codes, grouped results, and approval states", async () => {
+  const [html, client, server, css] = await Promise.all([
+    readProjectFile("housing-complexes.html"),
+    readProjectFile("housing-complexes.js"),
+    readProjectFile("functions/api/housing-complexes.js"),
+    readProjectFile("housing.css")
+  ]);
+
+  for (const id of [
+    "complexSearchForm", "complexRegion", "complexDistrict", "complexState",
+    "complexList", "complexLoadMore", "complexArea", "complexTotal"
+  ]) {
+    assert.match(html, new RegExp("id=[\"']" + id + "[\"']"), id + " is present on complexes page");
+  }
+  assertHealthyKorean(html, "housing-complexes.html");
+  assert.match(html, /data\.go\.kr\/data\/15058476/);
+  assert.match(html, /단지정보와 모집공고는 다릅니다/);
+  assert.match(client, /\/api\/housing-complexes/);
+  assert.match(client, /housing-region-codes\.js/);
+  assert.match(client, /localStorage/);
+  assert.match(client, /AbortController/);
+  assert.match(client, /textContent/);
+  assert.match(client, /encodeURIComponent/);
+  assert.match(client, /map\.naver\.com/);
+  assert.doesNotMatch(client, /innerHTML\s*=/, "external complex fields are not injected as HTML");
+  assert.match(server, /LH_COMPLEX_API_KEY/);
+  assert.match(server, /data\.myhome\.go\.kr/);
+  assert.match(server, /authorization/);
+  assert.doesNotMatch(server, /["'][a-f0-9]{64}["']/i, "a real public-data key is not committed");
+  assert.equal(HOUSING_REGIONS.length, 16);
+  assert.equal(HOUSING_REGIONS.reduce((total, region) => total + region.districts.length, 0), 284);
+  assert.equal(HOUSING_REGIONS.find((region) => region.code === "11").districts.find((district) => district.code === "140").name, "중구");
+  assert.match(css, /\.complex-result-grid/);
+  assert.match(css, /\.complex-message\.is-pending/);
+  assert.match(css, /min-height:\s*44px/);
+});
+
 test("sources, about, and privacy explain authority, limits, caching, and local storage", async () => {
   const [sources, about, privacy] = await Promise.all([
     readProjectFile("sources.html"),
@@ -197,6 +238,7 @@ test("sources, about, and privacy explain authority, limits, caching, and local 
   ]);
 
   assert.match(sources, /data\.go\.kr\/data\/15058530/);
+  assert.match(sources, /data\.go\.kr\/data\/15058476/);
   assert.match(sources, /data\.go\.kr\/data\/15095335/);
   assert.match(sources, /data\.go\.kr\/data\/15113968/);
   assert.match(sources, /data\.go\.kr\/data\/15109768/);
@@ -214,12 +256,13 @@ test("sources, about, and privacy explain authority, limits, caching, and local 
   assert.match(about, /공식 사이트가 아닙니다/);
   assert.match(about, /신청 가능 여부를 판정하지 않습니다/);
   assert.match(about, /명절 무료 주차장/);
+  assert.match(about, /단지정보/);
 
   assert.match(privacy, /localStorage/);
   assert.match(privacy, /주민등록번호/);
   assert.match(privacy, /Google AdSense/);
   assert.match(privacy, /사이트 데이터 삭제/);
-  assert.match(privacy, /명절 주차장 검색조건/);
+  assert.match(privacy, /임대단지·시설·명절 주차장 검색조건/);
 });
 
 test("sitemap indexes only current housing pages and legacy travel routes redirect", async () => {
@@ -231,7 +274,7 @@ test("sitemap indexes only current housing pages and legacy travel routes redire
   ]);
 
   const indexed = [...sitemap.matchAll(/<loc>https:\/\/mustview\.co\.kr\/?([^<]*)<\/loc>/g)].map((match) => match[1]);
-  assert.deepEqual(indexed, ["", "housing-guide", "family-facilities", "holiday-parking", "sources", "about", "privacy", "contact"]);
+  assert.deepEqual(indexed, ["", "housing-complexes", "housing-guide", "family-facilities", "holiday-parking", "sources", "about", "privacy", "contact"]);
   assert.doesNotMatch(sitemap, /travel|beach|typhoon|destinations/);
   assert.match(redirects, /\/destinations \/ 301/);
   assert.match(redirects, /\/travel-guide \/housing-guide 301/);
@@ -242,7 +285,10 @@ test("sitemap indexes only current housing pages and legacy travel routes redire
   const pkg = JSON.parse(packageJson);
   assert.equal(pkg.name, "mustview-housing");
   assert.match(pkg.scripts.check, /housing-dashboard\.js/);
+  assert.match(pkg.scripts.check, /housing-complexes\.js/);
+  assert.match(pkg.scripts.check, /housing-region-codes\.js/);
   assert.match(pkg.scripts.check, /housing-notices\.js/);
+  assert.match(pkg.scripts.check, /functions\/api\/housing-complexes\.js/);
   assert.match(pkg.scripts.check, /policy-news\.js/);
   assert.match(pkg.scripts.check, /housing-support\.js/);
   assert.match(pkg.scripts.check, /family-facilities\.js/);
