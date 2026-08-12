@@ -1,5 +1,6 @@
 const LH_NOTICE_ENDPOINT = "https://apis.data.go.kr/B552555/lhLeaseNoticeInfo1/lhLeaseNoticeInfo1";
 const OFFICIAL_NOTICE_HOME = "https://apply.lh.or.kr/lhapply/apply/sc/list.do";
+const AUTHORIZATION_ERROR = /등록되지 않은 서비스|service[_\s-]*access[_\s-]*denied|service key|인증키|활용신청/i;
 
 const REGION_CODES = new Set([
   "11", "26", "27", "28", "29", "30", "31", "36",
@@ -128,6 +129,19 @@ function upstreamMessage(payload, response) {
   return "";
 }
 
+function unavailable(message, options = {}) {
+  const needsAuthorization = AUTHORIZATION_ERROR.test(String(message || ""));
+  return json({
+    ok: false,
+    configured: true,
+    reason: needsAuthorization ? "authorization" : "upstream",
+    message: needsAuthorization
+      ? "LH 공식 공고 자료 연결을 준비하고 있습니다. 그동안 공식 공고에서 바로 확인해 주세요."
+      : options.fallback || "공식 공고 제공처의 응답이 지연되고 있습니다. 잠시 후 다시 시도해 주세요.",
+    officialUrl: OFFICIAL_NOTICE_HOME
+  }, 503);
+}
+
 export async function onRequestGet({ request, env }) {
   const key = serviceKey(env);
   if (!key) {
@@ -174,15 +188,18 @@ export async function onRequestGet({ request, env }) {
         ? AbortSignal.timeout(9000)
         : undefined
     });
+    const responseText = await response.text();
     let payload;
     try {
-      payload = await response.json();
+      payload = JSON.parse(responseText);
     } catch {
-      return json({ ok: false, message: "공식 공고 응답을 읽지 못했습니다. 잠시 후 다시 시도해 주세요." }, 502);
+      return unavailable(responseText, {
+        fallback: "공식 공고 응답을 읽지 못했습니다. 잠시 후 다시 시도해 주세요."
+      });
     }
 
     const errorMessage = upstreamMessage(payload, response);
-    if (errorMessage) return json({ ok: false, message: errorMessage, officialUrl: OFFICIAL_NOTICE_HOME }, 502);
+    if (errorMessage) return unavailable(errorMessage);
 
     const rows = locateArray(payload, "dsList");
     const notices = rows
@@ -212,13 +229,11 @@ export async function onRequestGet({ request, env }) {
     });
   } catch (error) {
     const timedOut = error?.name === "TimeoutError" || error?.name === "AbortError";
-    return json({
-      ok: false,
-      message: timedOut
+    return unavailable("", {
+      fallback: timedOut
         ? "공식 공고 조회가 지연되고 있습니다. 잠시 후 다시 시도해 주세요."
-        : "공식 공고 제공처에 연결하지 못했습니다. 잠시 후 다시 시도해 주세요.",
-      officialUrl: OFFICIAL_NOTICE_HOME
-    }, 502);
+        : "공식 공고 제공처에 연결하지 못했습니다. 잠시 후 다시 시도해 주세요."
+    });
   }
 }
 
@@ -229,5 +244,6 @@ export const __test = {
   locateArray,
   normalizeNotice,
   officialUrl,
-  searchDates
+  searchDates,
+  unavailable
 };

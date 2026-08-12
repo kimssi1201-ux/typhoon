@@ -148,20 +148,22 @@ test("housing notices handle upstream status, malformed JSON, and network errors
     { resHeader: [{ SS_CODE: "N", RS_MSG: "등록되지 않은 서비스" }] },
     { dsList: [] }
   ]), () => onRequestGet({ request: makeRequest("/api/housing-notices"), env }));
-  assert.equal(upstreamError.status, 502);
-  assert.match((await readJson(upstreamError)).message, /등록되지 않은 서비스/);
+  assert.equal(upstreamError.status, 503);
+  const upstreamBody = await readJson(upstreamError);
+  assert.equal(upstreamBody.reason, "authorization");
+  assert.match(upstreamBody.message, /공식 공고 자료 연결/);
 
   const malformed = await withFetchMock(async () => new Response("<html>error</html>", {
     status: 502,
     headers: { "content-type": "text/html" }
   }), () => onRequestGet({ request: makeRequest("/api/housing-notices"), env }));
-  assert.equal(malformed.status, 502);
+  assert.equal(malformed.status, 503);
   assert.match((await readJson(malformed)).message, /응답을 읽지 못했습니다/);
 
   const network = await withFetchMock(async () => {
     throw new Error("network down");
   }, () => onRequestGet({ request: makeRequest("/api/housing-notices"), env }));
-  assert.equal(network.status, 502);
+  assert.equal(network.status, 503);
   assert.match((await readJson(network)).message, /연결하지 못했습니다/);
 });
 
