@@ -45,7 +45,9 @@ test("the housing home wires search, filters, results, favorites, menu, and offi
     "noticeLoadMore",
     "savedNotices",
     "savedList",
-    "siteMenu"
+    "siteMenu",
+    "policyNews",
+    "policyNewsList"
   ]) {
     assert.match(html, new RegExp("id=[\"']" + id + "[\"']"), id + " is present on home");
   }
@@ -61,6 +63,8 @@ test("the housing home wires search, filters, results, favorites, menu, and offi
   assert.match(client, /CACHE_FALLBACK_MS/);
   assert.match(client, /FAVORITES_KEY/);
   assert.match(client, /textContent/);
+  assert.match(html, /policy-news\.js/);
+  assert.match(html, /korea\.kr\/news\/policyNewsList\.do/);
   assert.doesNotMatch(client, /innerHTML\s*=\s*notice\./, "external notice fields are not injected as HTML");
   assert.match(css, /min-height:\s*48px/);
   assert.match(css, /\.bottom-nav/);
@@ -124,7 +128,11 @@ test("sources, about, and privacy explain authority, limits, caching, and local 
   ]);
 
   assert.match(sources, /data\.go\.kr\/data\/15058530/);
+  assert.match(sources, /data\.go\.kr\/data\/15095335/);
   assert.match(sources, /apply\.lh\.or\.kr/);
+  assert.match(sources, /korea\.kr\/news\/policyNewsList\.do/);
+  assert.match(sources, /최근 3일/);
+  assert.match(sources, /기사 사진과 기사 본문 전체는 사이트에 복제하지 않습니다/);
   assert.match(sources, /약 10분/);
   assert.match(sources, /마지막 정상 자료/);
   assert.match(sources, /자체 계산/);
@@ -160,6 +168,7 @@ test("sitemap indexes only current housing pages and legacy travel routes redire
   assert.equal(pkg.name, "mustview-housing");
   assert.match(pkg.scripts.check, /housing-dashboard\.js/);
   assert.match(pkg.scripts.check, /housing-notices\.js/);
+  assert.match(pkg.scripts.check, /policy-news\.js/);
 });
 
 test("Cloudflare deployment validates before publishing and AdSense ownership remains correct", async () => {

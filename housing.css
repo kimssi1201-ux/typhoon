@@ -797,6 +797,165 @@ img {
   to { background-position: 0 0; }
 }
 
+.policy-news-section {
+  padding: 64px 0;
+  border-top: 1px solid var(--line);
+  background: #eef2f5;
+}
+
+.policy-news-heading {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 28px;
+}
+
+.policy-news-heading h2 {
+  margin: 5px 0 4px;
+  font-size: 30px;
+  line-height: 1.35;
+}
+
+.policy-news-heading p {
+  margin: 0;
+  color: var(--muted);
+}
+
+.policy-news-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin-top: 28px;
+  gap: 14px;
+}
+
+.policy-news-card,
+.policy-skeleton {
+  min-width: 0;
+  min-height: 280px;
+  padding: 22px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: white;
+}
+
+.policy-news-card {
+  display: flex;
+  flex-direction: column;
+}
+
+.policy-news-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  color: var(--muted);
+  font-size: 12px;
+  gap: 7px 10px;
+}
+
+.policy-topic {
+  display: inline-grid;
+  min-height: 26px;
+  padding: 0 8px;
+  place-items: center;
+  border-radius: 4px;
+  background: #eef1f4;
+  color: var(--muted);
+  font-weight: 800;
+}
+
+.policy-topic.topic-housing {
+  background: var(--blue-soft);
+  color: var(--blue-dark);
+}
+
+.policy-topic.topic-living {
+  background: var(--green-soft);
+  color: var(--green);
+}
+
+.policy-news-card h3 {
+  margin: 17px 0 10px;
+  font-size: 19px;
+  line-height: 1.48;
+  word-break: keep-all;
+}
+
+.policy-news-card h3 a {
+  text-decoration: none;
+}
+
+.policy-news-card h3 a:hover,
+.policy-news-card h3 a:focus-visible {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.policy-news-card > p {
+  margin: 0 0 20px;
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+.policy-read-more {
+  width: max-content;
+  min-height: 40px;
+  margin-top: auto;
+  color: var(--blue-dark);
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.policy-read-more::after {
+  content: " →";
+}
+
+.policy-skeleton .skeleton.title {
+  width: 92%;
+}
+
+.policy-skeleton .skeleton.line {
+  width: 100%;
+}
+
+.policy-skeleton .skeleton.line.short {
+  width: 64%;
+}
+
+.policy-news-message {
+  display: grid;
+  min-height: 180px;
+  margin-top: 28px;
+  padding: 28px;
+  place-content: center;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: white;
+  text-align: center;
+}
+
+.policy-news-message p {
+  max-width: 620px;
+  margin: 8px 0 18px;
+  color: var(--muted);
+}
+
+.policy-news-source {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 18px;
+  color: var(--muted);
+  font-size: 12px;
+  gap: 20px;
+}
+
+.policy-news-source a {
+  min-height: 40px;
+  color: var(--blue-dark);
+  font-weight: 800;
+}
+
 .application-guide {
   padding: 68px 0;
   border-top: 1px solid var(--line);
@@ -1212,6 +1371,36 @@ img {
 
   .application-guide {
     padding: 48px 0;
+  }
+
+  .policy-news-section {
+    padding: 48px 0;
+  }
+
+  .policy-news-heading {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .policy-news-heading h2 {
+    font-size: 26px;
+  }
+
+  .policy-news-grid {
+    grid-template-columns: 1fr;
+    margin-top: 22px;
+  }
+
+  .policy-news-card,
+  .policy-skeleton {
+    min-height: 0;
+  }
+
+  .policy-news-source {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 6px;
   }
 
   .guide-layout h2 {
