@@ -433,6 +433,7 @@ async function loadNotices({ page = 1, append = false, force = false } = {}) {
       const error = new Error(data?.message || "공고 정보를 불러오지 못했습니다.");
       error.officialUrl = data?.officialUrl;
       error.configured = data?.configured;
+      error.reason = data?.reason;
       throw error;
     }
 
@@ -452,8 +453,9 @@ async function loadNotices({ page = 1, append = false, force = false } = {}) {
     elements.urgent.textContent = "-";
     elements.regionName.textContent = elements.region.options[elements.region.selectedIndex]?.textContent || "전국";
     elements.sync.textContent = "공식 자료 연결을 확인해 주세요.";
+    const connectionPending = error.configured === false || error.reason === "authorization";
     renderMessage(
-      error.configured === false ? "공식 공고 연결을 준비하고 있습니다." : "공고를 불러오지 못했습니다.",
+      connectionPending ? "공식 공고 연결을 준비하고 있습니다." : "공고를 불러오지 못했습니다.",
       error.message,
       { retry: true, officialUrl: error.officialUrl }
     );
