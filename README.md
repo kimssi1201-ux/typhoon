@@ -28,7 +28,7 @@
 
 한부모가족 주거시설은 [성평등가족부 한부모가족복지시설](https://www.data.go.kr/data/15109768/openapi.do)을 이용합니다. 지역과 시설명으로 검색하고 주소, 대표전화, 운영 여부, 지원 내용과 입소 안내를 표시합니다. 실제 운영과 입소 가능 여부는 시설 및 관할 시·군·구에 확인해야 합니다.
 
-장기요양기관은 [국민건강보험공단 장기요양기관 검색 서비스](https://www.data.go.kr/data/15059029/openapi.do)를 이용합니다. 시·도, 시·군·구와 기관명으로 검색하고 기관 유형, 기관 기호, 지정일과 등록일을 표시합니다. 주소, 연락처와 현재 이용 가능 여부는 국민건강보험공단 공식 상세정보와 해당 기관에 확인해야 합니다.
+장기요양기관은 [국민건강보험공단 장기요양기관 검색 서비스](https://www.data.go.kr/data/15059029/openapi.do)와 [시설별 상세조회 서비스](https://www.data.go.kr/data/15058856/openapi.do)를 이용합니다. 시·도, 시·군·구와 기관명으로 검색하고 기관 유형, 기관 기호, 지정일과 등록일을 표시합니다. 사용자가 선택한 기관만 상세조회하여 연락처, 주소, 등록 인력, 정원·현원·대기인원과 방문 안내를 보여줍니다. 등록 인원은 실시간 이용 가능 여부가 아니므로 실제 이용 전 해당 기관에 확인해야 합니다.
 
 명절 무료 주차장은 [행정안전부 공유누리 명절 무료 주차장 리스트](https://www.eshare.go.kr/OpenApi/Info/detail.do?svcNo=21)를 이용합니다. 연도, 설·추석, 지역과 검색어로 찾고 주소, 개방시간과 지도 위치를 표시합니다. 실시간 빈자리와 당일 개방 여부는 현장 안내 및 관리기관 공지를 우선합니다.
 
@@ -62,7 +62,7 @@ npm.cmd install
 npm.cmd run serve
 ```
 
-Wrangler 개발 서버를 사용해야 `/api/myhome-notices`, `/api/private-rental-notices`, `/api/private-rental-competition`, `/api/housing-notices`, `/api/housing-complexes`, `/api/housing-support`, `/api/welfare-services`, `/api/single-parent-facilities`, `/api/long-term-care`, `/api/holiday-parking`, `/api/policy-news` Function까지 함께 확인할 수 있습니다.
+Wrangler 개발 서버를 사용해야 `/api/myhome-notices`, `/api/private-rental-notices`, `/api/private-rental-competition`, `/api/housing-notices`, `/api/housing-complexes`, `/api/housing-support`, `/api/welfare-services`, `/api/single-parent-facilities`, `/api/long-term-care`, `/api/long-term-care-detail`, `/api/holiday-parking`, `/api/policy-news` Function까지 함께 확인할 수 있습니다.
 
 ## 검증
 

@@ -225,11 +225,12 @@ test("the family facilities page wires official search, pagination, safe phone l
   assert.match(css, /min-height:\s*44px/);
 });
 
-test("the long-term care page wires official regional search, safe details, caching, and guidance", async () => {
-  const [html, client, server, css] = await Promise.all([
+test("the long-term care page wires official regional search, lazy facility details, caching, and guidance", async () => {
+  const [html, client, server, detailServer, css] = await Promise.all([
     readProjectFile("long-term-care.html"),
     readProjectFile("long-term-care.js"),
     readProjectFile("functions/api/long-term-care.js"),
+    readProjectFile("functions/api/long-term-care-detail.js"),
     readProjectFile("housing.css")
   ]);
 
@@ -240,9 +241,12 @@ test("the long-term care page wires official regional search, safe details, cach
     assert.match(html, new RegExp("id=[\"']" + id + "[\"']"), id + " is present on long-term care page");
   }
   assertHealthyKorean(html, "long-term-care.html");
-  assert.match(html, /data\.go\.kr\/data\/15059029/);
-  assert.match(html, /주소와 이용 가능 여부는 공식 상세에서 확인/);
+  assert.match(html, /data\.go\.kr\/data\/15058856/);
+  assert.match(html, /기관별 연락처와 시설 현황까지 확인/);
   assert.match(client, /\/api\/long-term-care/);
+  assert.match(client, /\/api\/long-term-care-detail/);
+  assert.match(client, /시설 상세정보 보기/);
+  assert.match(client, /실시간 입소 가능 인원을 뜻하지 않습니다/);
   assert.match(client, /housing-region-codes\.js/);
   assert.match(client, /localStorage/);
   assert.match(client, /AbortController/);
@@ -252,8 +256,15 @@ test("the long-term care page wires official regional search, safe details, cach
   assert.match(server, /LONG_TERM_CARE_API_KEY/);
   assert.match(server, /longtermcare\.or\.kr/);
   assert.doesNotMatch(server, /["'][a-f0-9]{64}["']/i, "a real public-data key is not committed");
+  assert.match(detailServer, /B550928\/getLtcInsttDetailInfoService02/);
+  assert.match(detailServer, /getGeneralSttusDetailInfoItem02/);
+  assert.match(detailServer, /getStaffSttusDetailInfoItem02/);
+  assert.match(detailServer, /getAceptncNmprDetailInfoItem02/);
+  assert.match(detailServer, /getInsttEtcDetailInfoItem02/);
+  assert.doesNotMatch(detailServer, /["'][a-f0-9]{64}["']/i, "a real detail key is not committed");
   assert.match(css, /\.care-search-form/);
   assert.match(css, /\.care-official-link/);
+  assert.match(css, /\.care-live-detail/);
   assert.match(css, /min-height:\s*44px/);
 });
 
@@ -340,7 +351,8 @@ test("sources, about, and privacy explain authority, limits, caching, and local 
   assert.match(sources, /data\.go\.kr\/data\/15113968/);
   assert.match(sources, /data\.go\.kr\/data\/15109768/);
   assert.match(sources, /data\.go\.kr\/data\/15059029/);
-  assert.match(sources, /국민건강보험공단 장기요양기관 검색/);
+  assert.match(sources, /data\.go\.kr\/data\/15058856/);
+  assert.match(sources, /국민건강보험공단 장기요양기관 정보/);
   assert.match(sources, /eshare\.go\.kr\/OpenApi\/Info\/detail\.do\?svcNo=21/);
   assert.match(sources, /apply\.lh\.or\.kr/);
   assert.match(sources, /bokjiro\.go\.kr/);
@@ -400,6 +412,7 @@ test("sitemap indexes only current housing pages and legacy travel routes redire
   assert.match(pkg.scripts.check, /family-facilities\.js/);
   assert.match(pkg.scripts.check, /long-term-care\.js/);
   assert.match(pkg.scripts.check, /functions\/api\/long-term-care\.js/);
+  assert.match(pkg.scripts.check, /functions\/api\/long-term-care-detail\.js/);
   assert.match(pkg.scripts.check, /holiday-parking\.js/);
   assert.match(pkg.scripts.check, /functions\/api\/holiday-parking\.js/);
 });

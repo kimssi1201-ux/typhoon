@@ -1,12 +1,16 @@
 import { HOUSING_REGIONS } from "./housing-region-codes.js";
 
 const API_PATH = "/api/long-term-care";
+const DETAIL_API_PATH = "/api/long-term-care-detail";
 const CACHE_PREFIX = "mustview:housing:long-term-care:v1:";
+const DETAIL_CACHE_PREFIX = "mustview:housing:long-term-care-detail:v1:";
 const FILTERS_KEY = "mustview:housing:long-term-care-filters:v1";
 const DATASET_URL = "https://www.data.go.kr/data/15059029/openapi.do";
 const OFFICIAL_SEARCH_URL = "https://www.longtermcare.or.kr/npbs/r/a/201/selectLtcoSrch.web";
 const CACHE_FRESH_MS = 60 * 60 * 1000;
 const CACHE_FALLBACK_MS = 24 * 60 * 60 * 1000;
+const DETAIL_CACHE_FRESH_MS = 60 * 60 * 1000;
+const DETAIL_CACHE_FALLBACK_MS = 24 * 60 * 60 * 1000;
 
 const REGION_LABELS = new Map([
   ["11", "서울"], ["12", "광주·전남"], ["26", "부산"], ["27", "대구"],
@@ -212,6 +216,191 @@ function detailRow(label, value) {
   return row;
 }
 
+function detailRequestUrl(item) {
+  const url = new URL(DETAIL_API_PATH, window.location.origin);
+  url.searchParams.set("institution", item.institutionNumber);
+  url.searchParams.set("type", item.typeCode);
+  return url;
+}
+
+function detailCacheKey(item) {
+  return `${DETAIL_CACHE_PREFIX}${item.institutionNumber}:${item.typeCode}`;
+}
+
+function readDetailCache(item, maxAge) {
+  const cached = readStorage(detailCacheKey(item), null);
+  if (!cached?.savedAt || Date.now() - cached.savedAt > maxAge) return null;
+  return cached.data;
+}
+
+function saveDetailCache(item, data) {
+  writeStorage(detailCacheKey(item), { savedAt: Date.now(), data });
+}
+
+function numberText(value) {
+  return Number.isInteger(value) && value >= 0 ? `${value.toLocaleString("ko-KR")}명` : "";
+}
+
+function appendDetailFact(list, label, value, options = {}) {
+  if (value === "" || value === null || value === undefined) return;
+  const row = createElement("div", "care-detail-fact");
+  row.append(createElement("dt", "", label));
+  const definition = createElement("dd");
+  if (options.href) {
+    const link = createElement("a", "", String(value));
+    link.href = options.href;
+    if (options.external) {
+      link.target = "_blank";
+      link.rel = "noopener noreferrer";
+    }
+    definition.append(link);
+  } else {
+    definition.textContent = String(value);
+  }
+  row.append(definition);
+  list.append(row);
+}
+
+function detailSection(title) {
+  const section = createElement("section", "care-detail-section");
+  section.append(createElement("h3", "", title));
+  const list = createElement("dl", "care-detail-facts");
+  section.append(list);
+  return { section, list };
+}
+
+function renderLiveDetail(panel, data, { fromCache = false } = {}) {
+  panel.replaceChildren();
+  panel.classList.remove("is-error", "is-loading");
+
+  if (!data.available) {
+    const empty = createElement("div", "care-detail-empty");
+    empty.append(
+      createElement("strong", "", "공개된 상세정보가 없습니다"),
+      createElement("p", "", "기관의 최신 연락처와 이용 가능 여부는 국민건강보험공단 공식 화면 또는 해당 기관에서 확인하세요.")
+    );
+    panel.append(empty);
+  } else {
+    const general = data.general || {};
+    const contact = detailSection("연락처와 위치");
+    const address = general.address
+      ? [general.address, general.floor ? `${general.floor}층` : ""].filter(Boolean).join(" ")
+      : "";
+    appendDetailFact(contact.list, "기관명", general.name);
+    appendDetailFact(contact.list, "전화", general.phone, general.phone ? { href: `tel:${general.phone}` } : {});
+    appendDetailFact(contact.list, "주소", address);
+    appendDetailFact(contact.list, "우편번호", general.postalCode);
+    if (contact.list.children.length) panel.append(contact.section);
+
+    const occupancy = data.occupancy || {};
+    const occupancySection = detailSection("등록 인원 현황");
+    if (Number.isInteger(occupancy.capacity) && occupancy.capacity > 0) {
+      appendDetailFact(occupancySection.list, "정원", numberText(occupancy.capacity));
+    }
+    appendDetailFact(occupancySection.list, "현원", numberText(occupancy.current));
+    appendDetailFact(occupancySection.list, "대기인원", numberText(occupancy.waiting));
+    if (occupancySection.list.children.length) {
+      occupancySection.section.append(createElement("p", "care-detail-caution", "공단 등록 현황이며 실시간 입소 가능 인원을 뜻하지 않습니다."));
+      panel.append(occupancySection.section);
+    }
+
+    if (Array.isArray(data.staff) && data.staff.length) {
+      const staffSection = createElement("section", "care-detail-section");
+      staffSection.append(createElement("h3", "", "등록 인력 현황"));
+      const staffList = createElement("ul", "care-staff-list");
+      data.staff.forEach((staff) => {
+        const staffItem = createElement("li");
+        staffItem.append(createElement("span", "", staff.label), createElement("strong", "", numberText(staff.count)));
+        staffList.append(staffItem);
+      });
+      staffSection.append(staffList);
+      panel.append(staffSection);
+    }
+
+    const etc = data.etc || {};
+    const access = detailSection("방문 안내");
+    appendDetailFact(access.list, "교통편", etc.transport);
+    appendDetailFact(access.list, "주차", etc.parking);
+    appendDetailFact(access.list, "홈페이지", etc.homepage ? "홈페이지 열기" : "", etc.homepage ? { href: etc.homepage, external: true } : {});
+    if (access.list.children.length) panel.append(access.section);
+  }
+
+  const meta = createElement("p", "care-detail-meta", `${formatFetchedAt(data.fetchedAt)}${fromCache ? " · 저장 자료" : ""}${data.partial ? " · 일부 항목만 확인됨" : ""}`);
+  panel.append(meta);
+}
+
+function renderDetailError(panel, item, message, retry) {
+  panel.replaceChildren();
+  panel.classList.remove("is-loading");
+  panel.classList.add("is-error");
+  panel.append(createElement("strong", "", "상세정보를 불러오지 못했습니다"), createElement("p", "", message));
+  const actions = createElement("div", "care-detail-actions");
+  const retryButton = createElement("button", "", "다시 시도");
+  retryButton.type = "button";
+  retryButton.addEventListener("click", retry);
+  const official = createElement("a", "", "공식 상세 보기");
+  official.href = item.officialUrl || OFFICIAL_SEARCH_URL;
+  official.target = "_blank";
+  official.rel = "noopener noreferrer";
+  actions.append(retryButton, official);
+  panel.append(actions);
+}
+
+async function loadLiveDetail(item, panel, button, { force = false } = {}) {
+  if (button.dataset.loading === "true") return;
+  button.dataset.loading = "true";
+  button.disabled = true;
+  button.textContent = "상세정보 확인 중";
+  panel.hidden = false;
+  panel.classList.add("is-loading");
+  panel.replaceChildren(createElement("div", "care-detail-spinner", "국민건강보험공단 상세자료를 확인하고 있습니다."));
+
+  const fresh = !force ? readDetailCache(item, DETAIL_CACHE_FRESH_MS) : null;
+  if (fresh) {
+    renderLiveDetail(panel, fresh, { fromCache: true });
+    button.dataset.loaded = "true";
+    button.dataset.loading = "false";
+    button.disabled = false;
+    button.textContent = "상세정보 닫기";
+    button.setAttribute("aria-expanded", "true");
+    return;
+  }
+
+  const fallback = readDetailCache(item, DETAIL_CACHE_FALLBACK_MS);
+  const controller = new AbortController();
+  const timeout = window.setTimeout(() => controller.abort(), 15000);
+  try {
+    const response = await fetch(detailRequestUrl(item), {
+      signal: controller.signal,
+      headers: { accept: "application/json" }
+    });
+    const data = await response.json().catch(() => ({}));
+    if (!response.ok || !data.ok) throw new Error(data.message || "기관 상세자료를 불러오지 못했습니다.");
+    saveDetailCache(item, data);
+    renderLiveDetail(panel, data);
+    button.dataset.loaded = "true";
+  } catch (error) {
+    if (fallback) {
+      renderLiveDetail(panel, fallback, { fromCache: true });
+      const delayed = createElement("p", "care-detail-caution", "새 자료 연결이 지연되어 마지막 정상 자료를 표시합니다.");
+      panel.prepend(delayed);
+      button.dataset.loaded = "true";
+    } else {
+      const message = error.name === "AbortError"
+        ? "응답 시간이 길어지고 있습니다. 잠시 후 다시 시도해 주세요."
+        : error.message;
+      renderDetailError(panel, item, message, () => loadLiveDetail(item, panel, button, { force: true }));
+      button.dataset.loaded = "false";
+    }
+  } finally {
+    window.clearTimeout(timeout);
+    button.dataset.loading = "false";
+    button.disabled = false;
+    button.textContent = button.dataset.loaded === "true" ? "상세정보 닫기" : "상세정보 다시 보기";
+    button.setAttribute("aria-expanded", "true");
+  }
+}
+
 function institutionCard(item) {
   const article = createElement("article", "facility-result-card care-result-card");
   const meta = createElement("div", "facility-result-meta");
@@ -223,10 +412,10 @@ function institutionCard(item) {
 
   const title = createElement("h2", "", item.name || "장기요양기관");
   const area = createElement("p", "facility-address", [item.regionName, item.districtName].filter(Boolean).join(" · "));
-  const description = createElement("p", "facility-support", "국민건강보험공단에 등록된 기관입니다. 주소, 연락처와 현재 이용 가능 여부는 공식 상세정보에서 확인하세요.");
+  const description = createElement("p", "facility-support", "국민건강보험공단에 등록된 기관입니다. 시설 상세정보에서 연락처, 인력과 등록 인원 현황을 확인할 수 있습니다.");
 
   const details = createElement("details", "facility-details");
-  const summary = createElement("summary", "", "기관 정보 보기");
+  const summary = createElement("summary", "", "등록정보 보기");
   const facts = createElement("dl");
   facts.append(
     detailRow("기관 유형", item.typeName),
@@ -236,6 +425,28 @@ function institutionCard(item) {
   );
   details.append(summary, facts);
 
+  const liveDetailId = `care-detail-${String(item.id || item.institutionNumber).replace(/[^a-z0-9-]/gi, "-")}`;
+  const liveDetailButton = createElement("button", "care-detail-button", "시설 상세정보 보기");
+  liveDetailButton.type = "button";
+  liveDetailButton.setAttribute("aria-expanded", "false");
+  liveDetailButton.setAttribute("aria-controls", liveDetailId);
+  const liveDetailPanel = createElement("div", "care-live-detail");
+  liveDetailPanel.id = liveDetailId;
+  liveDetailPanel.hidden = true;
+  liveDetailPanel.setAttribute("aria-live", "polite");
+  liveDetailButton.addEventListener("click", () => {
+    if (liveDetailButton.dataset.loaded === "true") {
+      const shouldOpen = liveDetailPanel.hidden;
+      liveDetailPanel.hidden = !shouldOpen;
+      article.classList.toggle("is-detail-open", shouldOpen);
+      liveDetailButton.setAttribute("aria-expanded", String(shouldOpen));
+      liveDetailButton.textContent = shouldOpen ? "상세정보 닫기" : "시설 상세정보 보기";
+      return;
+    }
+    article.classList.add("is-detail-open");
+    loadLiveDetail(item, liveDetailPanel, liveDetailButton);
+  });
+
   const footer = createElement("div", "facility-card-footer");
   const official = createElement("a", "care-official-link", "공식 상세 확인");
   official.href = /^https:\/\/www\.longtermcare\.or\.kr\//.test(item.officialUrl || "") ? item.officialUrl : OFFICIAL_SEARCH_URL;
@@ -244,7 +455,7 @@ function institutionCard(item) {
   official.setAttribute("aria-label", `${item.name} 국민건강보험공단 공식 상세 확인`);
   footer.append(official, createElement("span", "facility-confirm-note", "이용 전 기관에 최신 정보 확인"));
 
-  article.append(meta, title, area, description, details, footer);
+  article.append(meta, title, area, description, details, liveDetailButton, liveDetailPanel, footer);
   return article;
 }
 

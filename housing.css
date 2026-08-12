@@ -1988,6 +1988,7 @@ img {
   .skeleton {
     animation: none;
   }
+
 }
 
 .sub-home-link {
@@ -2512,6 +2513,7 @@ img {
 .facility-result-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: start;
   margin-top: 20px;
   gap: 14px;
 }
@@ -2669,6 +2671,207 @@ img {
 
 .care-result-card .facility-details {
   margin-bottom: 16px;
+}
+
+.care-result-card.is-detail-open {
+  grid-column: 1 / -1;
+}
+
+.care-detail-button {
+  width: 100%;
+  min-height: 48px;
+  margin-bottom: 4px;
+  border: 1px solid var(--blue);
+  border-radius: 6px;
+  background: var(--blue);
+  color: white;
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.care-detail-button:hover,
+.care-detail-button:focus-visible {
+  background: var(--blue-dark);
+}
+
+.care-detail-button:disabled {
+  cursor: wait;
+  opacity: 0.72;
+}
+
+.care-live-detail {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin: 14px -2px 2px;
+  padding: 18px 2px 4px;
+  border-top: 2px solid var(--blue-soft);
+  gap: 0 28px;
+}
+
+.care-live-detail[hidden] {
+  display: none;
+}
+
+.care-detail-section + .care-detail-section {
+  margin-top: 0;
+  padding-top: 0;
+  border-top: 0;
+}
+
+.care-detail-section {
+  padding-bottom: 18px;
+  border-bottom: 1px solid var(--soft-line);
+}
+
+.care-detail-section h3 {
+  margin: 0 0 11px;
+  color: var(--blue-dark);
+  font-size: 15px;
+}
+
+.care-detail-facts {
+  display: grid;
+  margin: 0;
+  gap: 10px;
+}
+
+.care-detail-fact {
+  display: grid;
+  grid-template-columns: 76px minmax(0, 1fr);
+  gap: 10px;
+}
+
+.care-detail-fact dt {
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.care-detail-fact dd {
+  min-width: 0;
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.65;
+  overflow-wrap: anywhere;
+}
+
+.care-detail-fact a {
+  color: var(--blue-dark);
+  font-weight: 800;
+  text-underline-offset: 3px;
+}
+
+.care-staff-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  gap: 8px 14px;
+}
+
+.care-staff-list li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-width: 0;
+  padding-bottom: 7px;
+  border-bottom: 1px solid var(--soft-line);
+  color: var(--muted);
+  font-size: 12px;
+  gap: 8px;
+}
+
+.care-staff-list strong {
+  flex: 0 0 auto;
+  color: var(--ink);
+  font-size: 13px;
+}
+
+.care-detail-caution,
+.care-detail-meta {
+  margin: 10px 0 0;
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 1.6;
+}
+
+.care-detail-meta {
+  grid-column: 1 / -1;
+  margin-top: 18px;
+}
+
+.care-detail-empty,
+.care-live-detail.is-error,
+.care-detail-spinner {
+  grid-column: 1 / -1;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.65;
+}
+
+.care-detail-empty strong,
+.care-live-detail.is-error > strong {
+  color: var(--ink);
+  font-size: 14px;
+}
+
+.care-detail-empty p,
+.care-live-detail.is-error > p {
+  margin: 6px 0 0;
+}
+
+.care-detail-spinner {
+  position: relative;
+  min-height: 76px;
+  padding-left: 22px;
+}
+
+.care-detail-spinner::before {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  margin: 4px 0 0 -22px;
+  border: 2px solid var(--line);
+  border-top-color: var(--blue);
+  border-radius: 50%;
+  content: "";
+  animation: care-detail-spin 0.8s linear infinite;
+}
+
+@keyframes care-detail-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .care-detail-spinner::before {
+    animation: none;
+  }
+}
+
+.care-detail-actions {
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 12px;
+  gap: 8px;
+}
+
+.care-detail-actions button,
+.care-detail-actions a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 0 13px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: white;
+  color: var(--blue-dark);
+  font-size: 12px;
+  font-weight: 800;
+  text-decoration: none;
 }
 
 .facility-skeleton .skeleton.title {
@@ -3029,6 +3232,22 @@ img {
     gap: 2px;
   }
 
+  .care-live-detail {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+
+  .care-detail-section + .care-detail-section {
+    margin-top: 20px;
+    padding-top: 18px;
+    border-top: 1px solid var(--soft-line);
+  }
+
+  .care-detail-section {
+    padding-bottom: 0;
+    border-bottom: 0;
+  }
+
   .facility-confirm-note {
     text-align: left;
   }
@@ -3182,6 +3401,14 @@ img {
 }
 
 @media (max-width: 420px) {
+  .care-staff-list {
+    grid-template-columns: 1fr;
+  }
+
+  .care-detail-fact {
+    grid-template-columns: 70px minmax(0, 1fr);
+  }
+
   .facility-guidance > ol {
     grid-template-columns: 1fr;
   }
