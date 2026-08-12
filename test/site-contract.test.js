@@ -60,7 +60,12 @@ test("the housing home wires search, filters, results, favorites, menu, and offi
 
   assertHealthyKorean(html, "index.html");
   assert.match(html, /임대주택 한눈에/);
-  assert.match(html, /MustView Housing/);
+  assert.match(html, /공공임대 정보서비스/);
+  assert.doesNotMatch(
+    visibleText(html),
+    /LATEST NOTICES|SAVED|GOVERNMENT SUPPORT|POLICY BRIEFING|BEFORE YOU APPLY|HOUSING TYPES/,
+    "decorative English section labels are not shown to users"
+  );
   assert.match(html, /assets\/housing-neighborhood\.webp/);
   assert.match(html, /myhome\.go\.kr/);
   assert.match(html, /국토교통부·공급기관 자료/);
@@ -99,6 +104,8 @@ test("the housing home wires search, filters, results, favorites, menu, and offi
   assert.doesNotMatch(client, /innerHTML\s*=\s*notice\./, "external notice fields are not injected as HTML");
   assert.match(css, /min-height:\s*48px/);
   assert.match(css, /\.bottom-nav/);
+  assert.match(css, /Editorial public-information design/);
+  assert.match(css, /\.brand-mark\s*\{[\s\S]*?width:\s*5px/);
   assert.match(css, /@media \(max-width: 760px\)/);
   assert.doesNotMatch(html, /MustView Travel|여행 저널|해수욕장|태풍/);
 });
@@ -125,6 +132,10 @@ test("public housing pages have production metadata, ads ownership, and healthy 
     assert.ok(html.includes(publisherId), path + " uses the configured publisher");
     assert.match(html, /href=["']index\.html["']/, path + " links back home");
     assert.match(html, /housing\.css/, path + " uses the housing design system");
+    assert.doesNotMatch(html, /<small>MustView Housing<\/small>/, path + " has no template-style English brand subtitle");
+    for (const match of html.matchAll(/class=["']eyebrow["']>([^<]+)</g)) {
+      assert.match(match[1], /[가-힣0-9]/, path + " uses a Korean information label");
+    }
     assert.doesNotMatch(html, /MustView Travel|KOREA TRAVEL JOURNAL|여행 저널|해수욕장|태풍/, path + " has no retired topic branding");
   }
 

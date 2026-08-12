@@ -4364,3 +4364,437 @@ img {
     border-top: 0;
   }
 }
+
+/* Editorial public-information design */
+:root {
+  --ink: #20292e;
+  --muted: #5f696e;
+  --line: #d1d6d7;
+  --soft-line: #e6e9e9;
+  --paper: #ffffff;
+  --canvas: #f3f4f3;
+  --blue: #0b6670;
+  --blue-dark: #084e57;
+  --blue-soft: #e8f1f1;
+  --green: #2f6a4e;
+  --green-soft: #eaf3ed;
+  --orange: #9a4e16;
+  --orange-soft: #fbf0e7;
+  --red: #a72f2f;
+  --red-soft: #f9eaea;
+}
+
+body {
+  background: var(--canvas);
+  color: var(--ink);
+}
+
+.site-header {
+  min-height: 66px;
+  border-bottom-color: #c9cecf;
+  background: rgba(255, 255, 255, .98);
+}
+
+.site-header-inner {
+  min-height: 66px;
+  gap: 30px;
+}
+
+.brand {
+  gap: 12px;
+}
+
+.brand-mark {
+  width: 5px;
+  height: 36px;
+  border-radius: 0;
+  background: var(--blue);
+  color: transparent;
+  font-size: 0;
+}
+
+.brand strong {
+  font-size: 19px;
+  font-weight: 800;
+}
+
+.brand small {
+  margin-top: 2px;
+  color: #727a7d;
+  font-size: 10px;
+  font-weight: 650;
+  text-transform: none;
+}
+
+.desktop-nav {
+  height: 66px;
+}
+
+.desktop-nav a {
+  color: #4e595e;
+  font-weight: 650;
+}
+
+.desktop-nav a.is-active::after {
+  height: 2px;
+}
+
+.official-header-link,
+.sub-home-link {
+  min-height: 38px;
+  padding: 0 3px;
+  border: 0;
+  border-bottom: 1px solid var(--blue);
+  border-radius: 0;
+}
+
+.site-menu::backdrop {
+  background: rgba(32, 41, 46, .48);
+}
+
+.site-menu-panel {
+  border-left: 1px solid var(--line);
+}
+
+.site-menu-head small {
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: none;
+}
+
+.site-menu-head button {
+  border-radius: 2px;
+}
+
+.eyebrow {
+  display: inline-flex;
+  position: relative;
+  align-items: center;
+  min-height: 20px;
+  padding-left: 12px;
+  color: var(--blue-dark);
+  font-size: 12px;
+  font-weight: 750;
+  text-transform: none;
+}
+
+.eyebrow::before {
+  position: absolute;
+  top: 4px;
+  bottom: 4px;
+  left: 0;
+  width: 3px;
+  background: var(--blue);
+  content: "";
+}
+
+.search-section {
+  padding: 34px 0 28px;
+  border-bottom-color: #cbd0d1;
+}
+
+.section-heading h1 {
+  font-size: 32px;
+}
+
+.section-heading h2,
+.notice-toolbar h2,
+.policy-news-heading h2,
+.guide-layout h2,
+.support-heading h2 {
+  font-size: 28px;
+}
+
+.source-badge span {
+  width: 8px;
+  height: 8px;
+  box-shadow: none;
+}
+
+.search-form,
+.facility-search-form,
+.private-rental-search-form {
+  padding: 18px;
+  border: 0;
+  border-top: 2px solid var(--ink);
+  border-bottom: 1px solid var(--line);
+  border-radius: 0;
+  background: #f7f8f7;
+}
+
+.field input,
+.field select,
+.search-submit,
+.facility-search-submit,
+.private-rental-search-submit {
+  border-radius: 2px;
+}
+
+.quick-filter,
+.quick-keyword,
+.support-filters button {
+  border-radius: 2px;
+}
+
+.quick-filter.is-active,
+.support-filters button.is-active {
+  border-color: var(--blue-dark);
+  background: var(--blue-dark);
+}
+
+.notice-section {
+  padding-top: 40px;
+}
+
+.summary-strip {
+  border: 0;
+  border-top: 2px solid var(--ink);
+  border-bottom: 1px solid var(--line);
+  border-radius: 0;
+}
+
+.summary-strip > div {
+  min-height: 78px;
+}
+
+.state-message,
+.support-message,
+.facility-message,
+.private-rental-message,
+.parking-message,
+.complex-message {
+  border-radius: 2px;
+}
+
+.notice-list,
+.skeleton-list {
+  gap: 8px;
+}
+
+.notice-card,
+.skeleton-card {
+  border: 0;
+  border-top: 1px solid var(--line);
+  border-left: 4px solid #c2cccd;
+  border-radius: 0;
+}
+
+.badge,
+.support-type,
+.policy-topic,
+.facility-status,
+.parking-type,
+.private-rental-status,
+.private-rental-type,
+.complex-type {
+  border-radius: 2px;
+}
+
+.favorite-button {
+  border-radius: 2px;
+  font-size: 21px;
+}
+
+.official-link,
+.load-more,
+.state-actions button,
+.state-actions a,
+.support-detail-button,
+.official-notice a,
+.source-list a,
+.contact-box > a,
+.article-action > a,
+.facility-source-note a,
+.private-rental-card-footer a,
+.complex-map-link {
+  border-radius: 2px;
+}
+
+.saved-panel {
+  border: 0;
+  border-top: 3px solid var(--ink);
+  border-radius: 0;
+}
+
+.saved-head > span {
+  border-radius: 2px;
+  background: var(--blue-dark);
+}
+
+.support-card,
+.support-skeleton,
+.policy-news-card,
+.policy-skeleton,
+.facility-result-card,
+.facility-skeleton,
+.parking-result-card,
+.parking-skeleton,
+.private-rental-card,
+.private-rental-skeleton,
+.complex-result-card,
+.complex-skeleton {
+  border-radius: 2px;
+  border-color: #cbd1d2;
+}
+
+.support-card,
+.policy-news-card,
+.facility-result-card,
+.parking-result-card,
+.private-rental-card,
+.complex-result-card {
+  border-top: 2px solid #aebbbc;
+}
+
+.home-service-links {
+  border-top: 2px solid var(--ink);
+}
+
+.home-service-entry small {
+  color: var(--blue-dark);
+}
+
+.policy-news-section {
+  background: #ecefef;
+}
+
+.guide-layout img {
+  border-radius: 0;
+}
+
+.application-steps li > span,
+.schedule-line span {
+  border-radius: 2px;
+}
+
+.site-footer {
+  background: #293236;
+}
+
+.site-footer small {
+  border-top-color: #4a555a;
+}
+
+.article-main {
+  width: min(calc(100% - 32px), 1020px);
+}
+
+.article-intro {
+  gap: 42px;
+}
+
+.article-intro h1 {
+  font-size: clamp(32px, 4vw, 42px);
+}
+
+.article-section h2 {
+  font-size: 27px;
+}
+
+.mistake-grid {
+  gap: 8px;
+}
+
+.mistake-grid article,
+.contact-box,
+.article-action {
+  border-radius: 2px;
+}
+
+.contact-box,
+.article-action {
+  border-top: 2px solid var(--ink);
+}
+
+.article-action {
+  border-color: #9fbfc2;
+}
+
+.facility-page-intro h1 {
+  font-size: clamp(31px, 4vw, 40px);
+}
+
+.facility-source-note,
+.private-rental-source-note {
+  border-radius: 2px;
+}
+
+@media (max-width: 760px) {
+  .site-header,
+  .site-header-inner {
+    min-height: 60px;
+  }
+
+  .brand-mark {
+    width: 4px;
+    height: 31px;
+  }
+
+  .brand strong {
+    font-size: 17px;
+  }
+
+  .brand small {
+    font-size: 9px;
+  }
+
+  .search-section {
+    padding: 25px 0 21px;
+  }
+
+  .section-heading h1 {
+    font-size: 27px;
+  }
+
+  .search-form,
+  .facility-search-form,
+  .private-rental-search-form {
+    margin-right: -12px;
+    margin-left: -12px;
+    padding: 16px 12px;
+  }
+
+  .notice-section {
+    padding-top: 28px;
+  }
+
+  .notice-toolbar h2,
+  .policy-news-heading h2,
+  .guide-layout h2,
+  .support-heading h2 {
+    font-size: 25px;
+  }
+
+  .summary-strip > div {
+    min-height: 72px;
+  }
+
+  .notice-card,
+  .support-card,
+  .policy-news-card,
+  .facility-result-card,
+  .parking-result-card,
+  .private-rental-card,
+  .complex-result-card {
+    padding: 17px;
+  }
+
+  .article-main {
+    width: calc(100% - 24px);
+    padding-top: 34px;
+  }
+
+  .article-intro h1,
+  .facility-page-intro h1 {
+    font-size: 29px;
+  }
+
+  .article-section h2 {
+    font-size: 24px;
+  }
+
+  .bottom-nav {
+    background: rgba(255, 255, 255, .99);
+  }
+}
