@@ -4,119 +4,73 @@ import test from "node:test";
 
 const readProjectFile = (path) => readFile(new URL("../" + path, import.meta.url), "utf8");
 const publisherId = "ca-pub-5751319666030430";
-const coreSlugs = new Set([
-  "",
-  "destinations",
-  "travel-guide",
-  "beach",
-  "sources",
-  "about",
-  "privacy",
-  "contact"
-]);
 
-const visibleText = (html) =>
-  html
+function visibleText(html) {
+  return html
     .replace(/<script\b[\s\S]*?<\/script>/gi, " ")
     .replace(/<style\b[\s\S]*?<\/style>/gi, " ")
     .replace(/<[^>]+>/g, " ")
     .replace(/&(?:[a-z]+|#\d+);/gi, " ")
     .replace(/\s+/g, " ")
     .trim();
+}
 
-const assertEncodingIsHealthy = (html, path) => {
+function assertHealthyKorean(html, path) {
   const questionMarks = (html.match(/\?/g) || []).length;
-  const suspiciousCharacters = (html.match(/[援紐諛蹂筌癲繹袁]/g) || []).length;
+  const suspicious = (html.match(/[援紐諛蹂筌癲繹袁]/g) || []).length;
 
-  assert.ok(questionMarks <= 20, path + " contains an unusual number of replacement question marks");
-  assert.ok(suspiciousCharacters <= 2, path + " contains likely Korean mojibake");
-  assert.doesNotMatch(html, /�/, path + " contains Unicode replacement characters");
+  assert.ok(questionMarks <= 20, path + " has unusual replacement question marks");
+  assert.ok(suspicious <= 2, path + " contains likely Korean mojibake");
+  assert.doesNotMatch(html, /�/, path + " contains replacement characters");
   assert.match(html, /<title>[^<]*[가-힣][^<]*<\/title>/, path + " has a closed Korean title");
   assert.match(html, /<h1\b[^>]*>[\s\S]*?[가-힣][\s\S]*?<\/h1>/, path + " has a closed Korean h1");
-};
+}
 
-test("the travel home wires editorial content, weather, map, carousel, and menu", async () => {
-  const [html, client] = await Promise.all([
+test("the housing home wires search, filters, results, favorites, menu, and official links", async () => {
+  const [html, client, css] = await Promise.all([
     readProjectFile("index.html"),
-    readProjectFile("travel-dashboard.js")
+    readProjectFile("housing-dashboard.js"),
+    readProjectFile("housing.css")
   ]);
 
   for (const id of [
-    "travelMenu",
-    "travelMenuOpen",
-    "travelCover",
-    "travelCoverPrev",
-    "travelCoverNext",
-    "travelFilterStatus",
-    "travelWeatherForm",
-    "travelWeatherPlace",
-    "travelMap",
-    "travelMapReset"
+    "housingSearchForm",
+    "housingKeyword",
+    "housingRegion",
+    "housingStatus",
+    "housingType",
+    "housingDays",
+    "noticeState",
+    "noticeList",
+    "noticeLoadMore",
+    "savedNotices",
+    "savedList",
+    "siteMenu"
   ]) {
-    assert.match(html, new RegExp("id=[\"']" + id + "[\"']"), id + " is present on the travel home");
+    assert.match(html, new RegExp("id=[\"']" + id + "[\"']"), id + " is present on home");
   }
 
-  for (const article of [
-    "changnyeong-upo-santokki-mannyeongyo.html",
-    "yangyang-naksan-hajodae-jukdo.html",
-    "seosan-haemi-gaesimsa-ganweolam-birdland.html",
-    "gurye-hwaeomsa-seomjingang-saseongam.html"
-  ]) {
-    assert.match(html, new RegExp("href=[\"']" + article.replace(".", "\\.") + "[\"']"), article + " is linked from home");
-  }
-
-  assertEncodingIsHealthy(html, "index.html");
-  assert.match(html, /MustView Travel/);
-  assert.match(html, /href=["']beach\.html["']/);
-  assert.doesNotMatch(html, /typhoon-guide|readiness-guide/);
-  assert.match(client, /\/api\/current-weather\?/);
-  assert.match(client, /IntersectionObserver/);
+  assertHealthyKorean(html, "index.html");
+  assert.match(html, /임대주택 한눈에/);
+  assert.match(html, /MustView Housing/);
+  assert.match(html, /assets\/housing-neighborhood\.webp/);
+  assert.match(html, /apply\.lh\.or\.kr/);
+  assert.match(client, /\/api\/housing-notices/);
   assert.match(client, /localStorage/);
   assert.match(client, /AbortController/);
-  assert.match(client, /initCoverCarousel/);
-  assert.match(client, /aria-pressed/);
+  assert.match(client, /CACHE_FALLBACK_MS/);
+  assert.match(client, /FAVORITES_KEY/);
+  assert.match(client, /textContent/);
+  assert.doesNotMatch(client, /innerHTML\s*=\s*notice\./, "external notice fields are not injected as HTML");
+  assert.match(css, /min-height:\s*48px/);
+  assert.match(css, /\.bottom-nav/);
+  assert.match(css, /@media \(max-width: 760px\)/);
+  assert.doesNotMatch(html, /MustView Travel|여행 저널|해수욕장|태풍/);
 });
-
-test("the preserved beach dashboard keeps its map, location, and API sections wired", async () => {
-  const [html, client] = await Promise.all([
-    readProjectFile("beach.html"),
-    readProjectFile("beach-dashboard.js")
-  ]);
-
-  for (const id of [
-    "beachChoice",
-    "beachUseLocation",
-    "beachMap",
-    "beachMapReset",
-    "marineMetrics",
-    "beachWeatherMetrics",
-    "beachFacilityMetrics",
-    "beachPlacesList"
-  ]) {
-    assert.match(html, new RegExp("id=[\"']" + id + "[\"']"), id + " is present in beach.html");
-  }
-
-  for (const route of [
-    "/api/current-weather?",
-    "/api/kma-beach?",
-    "/api/marine?",
-    "/api/oceans-beach?",
-    "/api/tourism?"
-  ]) {
-    assert.ok(client.includes(route), route + " is used by the beach client");
-  }
-
-  assert.match(client, /navigator\.geolocation\.getCurrentPosition/);
-  assert.doesNotMatch(html, /beachFeatureImage|beach-feature-media/);
-  assert.match(html, /href=["']index\.html["']/);
-});
-
-test("public core pages keep production metadata and valid Korean encoding", async () => {
+test("public housing pages have production metadata, ads ownership, and healthy Korean text", async () => {
   const pages = [
     "index.html",
-    "destinations.html",
-    "travel-guide.html",
-    "beach.html",
+    "housing-guide.html",
     "sources.html",
     "about.html",
     "privacy.html",
@@ -125,102 +79,101 @@ test("public core pages keep production metadata and valid Korean encoding", asy
 
   for (const path of pages) {
     const html = await readProjectFile(path);
-    assertEncodingIsHealthy(html, path);
+    assertHealthyKorean(html, path);
     assert.match(html, /rel=["']canonical["']/, path + " has a canonical link");
     assert.match(html, /google-adsense-account/, path + " has the AdSense ownership meta tag");
-    assert.ok(html.includes(publisherId), path + " uses the configured AdSense publisher");
+    assert.ok(html.includes(publisherId), path + " uses the configured publisher");
+    assert.match(html, /href=["']index\.html["']/, path + " links back home");
+    assert.match(html, /housing\.css/, path + " uses the housing design system");
+    assert.doesNotMatch(html, /MustView Travel|KOREA TRAVEL JOURNAL|여행 저널|해수욕장|태풍/, path + " has no retired topic branding");
   }
 
   const notFound = await readProjectFile("404.html");
   assert.match(notFound, /noindex, nofollow/);
+  assert.match(notFound, /임대주택 한눈에/);
   assert.doesNotMatch(notFound, /adsbygoogle|google-adsense-account/);
 });
 
-test("every indexed travel story is readable, substantial, and structurally complete", async () => {
-  const sitemap = await readProjectFile("sitemap.xml");
-  const slugs = [...sitemap.matchAll(/<loc>https:\/\/mustview\.co\.kr\/([^<]*)<\/loc>/g)]
-    .map((match) => match[1].replace(/\/$/, ""))
-    .filter((slug) => !coreSlugs.has(slug));
+test("the application guide is substantial and FAQ structured data matches visible questions", async () => {
+  const html = await readProjectFile("housing-guide.html");
+  const text = visibleText(html);
+  const headings = html.match(/<h2\b/gi) || [];
+  const jsonLdBlocks = [...html.matchAll(/<script\s+type=["']application\/ld\+json["'][^>]*>([\s\S]*?)<\/script>/gi)];
 
-  assert.ok(slugs.length >= 50, "the sitemap retains the travel story archive");
-  assert.equal(new Set(slugs).size, slugs.length, "the sitemap has no duplicate story URLs");
-
-  for (const slug of slugs) {
-    const path = slug + ".html";
-    const html = await readProjectFile(path);
-    const text = visibleText(html);
-    const headings = html.match(/<h2\b/gi) || [];
-    const jsonLdBlocks = [...html.matchAll(/<script\s+type=["']application\/ld\+json["'][^>]*>([\s\S]*?)<\/script>/gi)];
-
-    assertEncodingIsHealthy(html, path);
-    assert.match(html, /class=["'][^"']*travel-post-body/, path + " has a story body");
-    assert.ok(text.length >= 1500, path + " has substantial original reading content");
-    assert.ok(headings.length >= 4, path + " has a useful article structure");
-    assert.match(html, /rel=["']canonical["']/, path + " has a canonical link");
-    assert.ok(html.includes("https://mustview.co.kr/" + slug), path + " declares its public URL");
-    assert.ok(html.includes(publisherId), path + " uses the configured AdSense publisher");
-    assert.ok(jsonLdBlocks.length >= 1, path + " has structured article data");
-
-    for (const block of jsonLdBlocks) {
-      assert.doesNotThrow(() => JSON.parse(block[1]), path + " has valid JSON-LD");
-    }
-
-    const assetPaths = [...html.matchAll(/<img\b[^>]*\bsrc=["'](assets\/[^"']+)["']/gi)].map((match) => match[1]);
-    assert.ok(assetPaths.length >= 1, path + " has an editorial image");
-    for (const assetPath of assetPaths) {
-      await assert.doesNotReject(readProjectFile(assetPath), path + " references an existing image");
-    }
-  }
+  assert.ok(text.length >= 4500, "housing guide has substantial original content");
+  assert.ok(headings.length >= 7, "housing guide has a useful article structure");
+  assert.match(html, /공고일/);
+  assert.match(html, /무주택/);
+  assert.match(html, /소득/);
+  assert.match(html, /자산/);
+  assert.match(html, /제출서류/);
+  assert.match(html, /예비입주자/);
+  assert.equal((html.match(/<details>/g) || []).length, 4);
+  assert.equal(jsonLdBlocks.length, 1);
+  const faq = JSON.parse(jsonLdBlocks[0][1]);
+  assert.equal(faq["@type"], "FAQPage");
+  assert.equal(faq.mainEntity.length, 4);
+  faq.mainEntity.forEach((item) => assert.ok(html.includes(item.name)));
 });
 
-test("the destination archive links current stories and excludes damaged legacy pages", async () => {
-  const [html, sitemap, redirects] = await Promise.all([
-    readProjectFile("destinations.html"),
-    readProjectFile("sitemap.xml"),
-    readProjectFile("_redirects")
+test("sources, about, and privacy explain authority, limits, caching, and local storage", async () => {
+  const [sources, about, privacy] = await Promise.all([
+    readProjectFile("sources.html"),
+    readProjectFile("about.html"),
+    readProjectFile("privacy.html")
   ]);
 
-  for (const slug of [
-    "changnyeong-upo-santokki-mannyeongyo",
-    "yangyang-naksan-hajodae-jukdo",
-    "seosan-haemi-gaesimsa-ganweolam-birdland",
-    "gurye-hwaeomsa-seomjingang-saseongam",
-    "hadong-hwagae-ssanggyesa-choinam-palsari"
-  ]) {
-    assert.ok(html.includes(slug + ".html"), slug + " is linked from the archive");
-  }
+  assert.match(sources, /data\.go\.kr\/data\/15058530/);
+  assert.match(sources, /apply\.lh\.or\.kr/);
+  assert.match(sources, /약 10분/);
+  assert.match(sources, /마지막 정상 자료/);
+  assert.match(sources, /자체 계산/);
 
-  for (const slug of ["iksan-mireuksa-wanggungri", "miryang-yeongnamnu-wiyangji"]) {
-    assert.doesNotMatch(sitemap, new RegExp("<loc>https://mustview\\\\.co\\\\.kr/" + slug + "</loc>"));
-    assert.ok(redirects.includes("/" + slug + " /destinations 301"), slug + " redirects to the healthy archive");
-  }
+  assert.match(about, /독립 정보 서비스/);
+  assert.match(about, /공식 사이트가 아닙니다/);
+  assert.match(about, /신청 가능 여부를 판정하지 않습니다/);
+
+  assert.match(privacy, /localStorage/);
+  assert.match(privacy, /주민등록번호/);
+  assert.match(privacy, /Google AdSense/);
+  assert.match(privacy, /사이트 데이터 삭제/);
 });
 
-test("sitemap and Cloudflare workflow validate before deployment", async () => {
-  const [sitemap, workflow, robots, ads] = await Promise.all([
+test("sitemap indexes only current housing pages and legacy travel routes redirect", async () => {
+  const [sitemap, redirects, robots, packageJson] = await Promise.all([
     readProjectFile("sitemap.xml"),
-    readProjectFile(".github/workflows/deploy-cloudflare-pages.yml"),
+    readProjectFile("_redirects"),
     readProjectFile("robots.txt"),
-    readProjectFile("ads.txt")
+    readProjectFile("package.json")
   ]);
 
-  for (const path of [
-    "/destinations",
-    "/travel-guide",
-    "/beach",
-    "/sources",
-    "/about",
-    "/privacy",
-    "/contact"
-  ]) {
-    assert.ok(sitemap.includes("https://mustview.co.kr" + path), path + " is indexed");
-  }
+  const indexed = [...sitemap.matchAll(/<loc>https:\/\/mustview\.co\.kr\/?([^<]*)<\/loc>/g)].map((match) => match[1]);
+  assert.deepEqual(indexed, ["", "housing-guide", "sources", "about", "privacy", "contact"]);
+  assert.doesNotMatch(sitemap, /travel|beach|typhoon|destinations/);
+  assert.match(redirects, /\/destinations \/ 301/);
+  assert.match(redirects, /\/travel-guide \/housing-guide 301/);
+  assert.match(redirects, /\/beach \/ 301/);
+  assert.match(redirects, /\/busan-coast \/ 301/);
+  assert.match(robots, /Sitemap:\s*https:\/\/mustview\.co\.kr\/sitemap\.xml/);
 
-  assert.doesNotMatch(sitemap, /typhoon-guide|readiness-guide/);
+  const pkg = JSON.parse(packageJson);
+  assert.equal(pkg.name, "mustview-housing");
+  assert.match(pkg.scripts.check, /housing-dashboard\.js/);
+  assert.match(pkg.scripts.check, /housing-notices\.js/);
+});
+
+test("Cloudflare deployment validates before publishing and AdSense ownership remains correct", async () => {
+  const [workflow, ads, headers] = await Promise.all([
+    readProjectFile(".github/workflows/deploy-cloudflare-pages.yml"),
+    readProjectFile("ads.txt"),
+    readProjectFile("_headers")
+  ]);
+
   assert.match(workflow, /npm run check/);
   assert.match(workflow, /npm run test/);
   assert.match(workflow, /npm run build/);
   assert.match(workflow, /cloudflare\/wrangler-action/);
-  assert.match(robots, /Sitemap:\s*https:\/\/mustview\.co\.kr\/sitemap\.xml/);
   assert.match(ads, /google\.com,\s*pub-5751319666030430,\s*DIRECT,\s*f08c47fec0942fa0/);
+  assert.match(headers, /X-Content-Type-Options:\s*nosniff/i);
+  assert.match(headers, /Cache-Control:\s*no-store/i);
 });
