@@ -101,6 +101,35 @@ async function requestNotices(path, params, signal) {
   throw error;
 }
 
+function noticeResultTotal(data) {
+  const total = Number(data?.summary?.total);
+  if (Number.isFinite(total) && total >= 0) return total;
+  return Array.isArray(data?.notices) ? data.notices.length : 0;
+}
+
+async function requestBestNoticeData(params, signal) {
+  const [myhomeResult, lhResult] = await Promise.allSettled([
+    requestNotices(PRIMARY_API_PATH, params, signal),
+    requestNotices(FALLBACK_API_PATH, params, signal)
+  ]);
+  const myhomeData = myhomeResult.status === "fulfilled" ? myhomeResult.value : null;
+  const lhData = lhResult.status === "fulfilled" ? lhResult.value : null;
+
+  if (!myhomeData && !lhData) {
+    const abortError = [myhomeResult, lhResult]
+      .find((result) => result.status === "rejected" && result.reason?.name === "AbortError");
+    if (abortError) throw abortError.reason;
+    throw myhomeResult.reason || lhResult.reason;
+  }
+
+  if (lhData && (!myhomeData || noticeResultTotal(lhData) > noticeResultTotal(myhomeData))) {
+    lhData.sourceMode = "fallback";
+    return lhData;
+  }
+  myhomeData.sourceMode = "myhome";
+  return myhomeData;
+}
+
 function cacheKey(params) {
   return CACHE_PREFIX + JSON.stringify(params);
 }
@@ -153,12 +182,6 @@ function restoreFilters() {
     if (control.tagName === "SELECT" && ![...control.options].some((option) => option.value === value)) return;
     control.value = value;
   });
-}
-
-function isEmptyNoticeResult(data) {
-  return Array.isArray(data?.notices)
-    && data.notices.length === 0
-    && Number(data.summary?.total || 0) === 0;
 }
 
 function persistFilters(params) {
@@ -449,26 +472,7 @@ async function loadNotices({ page = 1, append = false, force = false } = {}) {
   }
 
   try {
-    let data;
-    try {
-      data = await requestNotices(PRIMARY_API_PATH, requestParams, controller.signal);
-      data.sourceMode = "myhome";
-      if (isEmptyNoticeResult(data)) {
-        try {
-          const fallbackData = await requestNotices(FALLBACK_API_PATH, requestParams, controller.signal);
-          if (!isEmptyNoticeResult(fallbackData)) {
-            data = fallbackData;
-            data.sourceMode = "fallback";
-          }
-        } catch (fallbackError) {
-          if (fallbackError.name === "AbortError") throw fallbackError;
-        }
-      }
-    } catch (primaryError) {
-      if (primaryError.name === "AbortError") throw primaryError;
-      data = await requestNotices(FALLBACK_API_PATH, requestParams, controller.signal);
-      data.sourceMode = "fallback";
-    }
+    const data = await requestBestNoticeData(requestParams, controller.signal);
     if (state.controller !== controller) return;
 
     saveCache(params, data);
