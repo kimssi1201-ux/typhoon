@@ -2475,6 +2475,10 @@ img {
   gap: 12px;
 }
 
+.care-search-form {
+  grid-template-columns: 190px 220px minmax(260px, 1fr) 150px;
+}
+
 .facility-search-submit {
   min-height: 48px;
   border: 1px solid var(--blue);
@@ -2642,6 +2646,29 @@ img {
 
 .facility-confirm-note {
   text-align: right;
+}
+
+.care-official-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 0 14px;
+  border: 1px solid var(--blue);
+  border-radius: 6px;
+  color: var(--blue-dark);
+  font-size: 13px;
+  font-weight: 800;
+  text-decoration: none;
+}
+
+.care-official-link:hover,
+.care-official-link:focus-visible {
+  background: var(--blue-soft);
+}
+
+.care-result-card .facility-details {
+  margin-bottom: 16px;
 }
 
 .facility-skeleton .skeleton.title {
@@ -2955,13 +2982,26 @@ img {
     gap: 12px 9px;
   }
 
-  .facility-name-field {
+  .care-search-form {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .facility-name-field,
+  .care-name-field {
     grid-column: 1 / -1;
     grid-row: 1;
   }
 
+  .care-name-field {
+    grid-row: auto;
+  }
+
   .facility-search-submit {
     min-height: 48px;
+  }
+
+  .care-search-form .facility-search-submit {
+    grid-column: 1 / -1;
   }
 
   .facility-results-heading {
@@ -3650,6 +3690,15 @@ img {
 }
 
 @media (max-width: 1050px) {
+  .care-search-form {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .care-name-field,
+  .care-search-form .facility-search-submit {
+    grid-column: 1 / -1;
+  }
+
   .private-rental-search-form {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }

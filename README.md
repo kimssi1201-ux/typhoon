@@ -9,6 +9,7 @@
 - `/housing-complexes`: 지역별 공공임대주택 단지, 면적과 기본 임대조건 조회
 - `/housing-guide`: 공고문, 신청자격, 일정과 제출서류 확인 가이드
 - `/family-facilities`: 지역별 한부모가족복지시설 검색과 입소 안내
+- `/long-term-care`: 지역별 국민건강보험공단 장기요양기관 검색
 - `/holiday-parking`: 설·추석 무료 개방 주차장 검색과 개방시간 안내
 - `/sources`: 공식 데이터 출처, 갱신과 캐시 기준
 - `/about`: 서비스 목적과 운영 원칙
@@ -27,6 +28,8 @@
 
 한부모가족 주거시설은 [성평등가족부 한부모가족복지시설](https://www.data.go.kr/data/15109768/openapi.do)을 이용합니다. 지역과 시설명으로 검색하고 주소, 대표전화, 운영 여부, 지원 내용과 입소 안내를 표시합니다. 실제 운영과 입소 가능 여부는 시설 및 관할 시·군·구에 확인해야 합니다.
 
+장기요양기관은 [국민건강보험공단 장기요양기관 검색 서비스](https://www.data.go.kr/data/15059029/openapi.do)를 이용합니다. 시·도, 시·군·구와 기관명으로 검색하고 기관 유형, 기관 기호, 지정일과 등록일을 표시합니다. 주소, 연락처와 현재 이용 가능 여부는 국민건강보험공단 공식 상세정보와 해당 기관에 확인해야 합니다.
+
 명절 무료 주차장은 [행정안전부 공유누리 명절 무료 주차장 리스트](https://www.eshare.go.kr/OpenApi/Info/detail.do?svcNo=21)를 이용합니다. 연도, 설·추석, 지역과 검색어로 찾고 주소, 개방시간과 지도 위치를 표시합니다. 실시간 빈자리와 당일 개방 여부는 현장 안내 및 관리기관 공지를 우선합니다.
 
 최근 정책뉴스는 [문화체육관광부 정책브리핑 정책뉴스 API](https://www.data.go.kr/data/15095335/openapi.do)를 이용합니다. 최근 3일의 제목과 짧은 요약만 표시하고 전체 내용은 [대한민국 정책브리핑](https://www.korea.kr/news/policyNewsList.do) 공식 원문으로 연결합니다.
@@ -44,6 +47,7 @@
 - `GOV24_API_KEY`: 행정안전부 대한민국 공공서비스 정보용 인증키
 - `WELFARE_API_KEY`: 선택적인 중앙부처복지서비스 전용 인증키이며 없으면 `DATA_GO_KR_API_KEY` 또는 `LH_API_KEY` 사용
 - `SINGLE_PARENT_FACILITY_API_KEY`: 성평등가족부 한부모가족복지시설용 인증키
+- `LONG_TERM_CARE_API_KEY`: 선택적인 국민건강보험공단 장기요양기관 검색 전용 인증키이며 없으면 `DATA_GO_KR_API_KEY` 또는 `LH_API_KEY` 사용
 - `ESHARE_API_KEY`: 공유누리 명절 무료 주차장 서비스용 인증키
 - `DATA_GO_KR_API_KEY`: 선택적인 공공데이터 공용키
 - `OCEANS_BEACH_API_KEY`: 기존 배포 호환용 키이며 LH 키가 없을 때 서버에서만 대체키로 확인
@@ -58,7 +62,7 @@ npm.cmd install
 npm.cmd run serve
 ```
 
-Wrangler 개발 서버를 사용해야 `/api/myhome-notices`, `/api/private-rental-notices`, `/api/private-rental-competition`, `/api/housing-notices`, `/api/housing-complexes`, `/api/housing-support`, `/api/welfare-services`, `/api/single-parent-facilities`, `/api/holiday-parking`, `/api/policy-news` Function까지 함께 확인할 수 있습니다.
+Wrangler 개발 서버를 사용해야 `/api/myhome-notices`, `/api/private-rental-notices`, `/api/private-rental-competition`, `/api/housing-notices`, `/api/housing-complexes`, `/api/housing-support`, `/api/welfare-services`, `/api/single-parent-facilities`, `/api/long-term-care`, `/api/holiday-parking`, `/api/policy-news` Function까지 함께 확인할 수 있습니다.
 
 ## 검증
 
