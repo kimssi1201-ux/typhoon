@@ -5,6 +5,7 @@
 ## 주요 페이지
 
 - `/`: 전국 임대주택 공고 검색, 관심 공고, 복지로 주거지원 상세정보와 최근 정책뉴스
+- `/private-rental`: 청약홈 민간임대·공공지원 민간임대 공고 검색
 - `/housing-complexes`: 지역별 공공임대주택 단지, 면적과 기본 임대조건 조회
 - `/housing-guide`: 공고문, 신청자격, 일정과 제출서류 확인 가이드
 - `/family-facilities`: 지역별 한부모가족복지시설 검색과 입소 안내
@@ -17,6 +18,8 @@
 ## 공식 데이터
 
 공고 목록은 [국토교통부 마이홈포털 공공주택 모집공고 조회 서비스](https://www.data.go.kr/data/15108420/openapi.do)를 우선 이용합니다. LH와 지방공사 등 자료에 등록된 공급기관을 함께 표시하며, 연결이 지연되면 기존 [한국토지주택공사 분양임대공고문 조회 서비스](https://www.data.go.kr/data/15058530/openapi.do)를 대체 자료로 사용합니다. 공고 원문과 실제 신청은 마이홈 또는 해당 공급기관의 최신 안내에서 확인합니다.
+
+민간임대 청약은 [한국부동산원 청약홈 분양정보 조회 서비스](https://www.data.go.kr/tcs/dss/selectApiDataDetailView.do?publicDataPk=15098547)의 민간임대와 공공지원 민간임대 자료를 별도 화면에서 조회합니다. 접수 상태는 공식 접수 시작일과 종료일을 기준으로 표시하며 실제 자격, 임대조건과 계약은 청약홈 최신 공고문을 확인해야 합니다.
 
 임대단지 정보는 [마이홈포털 공공임대주택 단지정보 조회 서비스](https://www.data.go.kr/data/15110581/openapi.do)를 이용합니다. 지역별 단지명, 주소, 세대수, 면적과 기본 보증금·월임대료를 표시하며 현재 모집 여부와 실제 계약 조건은 최신 공식 공고문을 기준으로 확인해야 합니다.
 
@@ -33,6 +36,7 @@
 ## 환경변수
 
 - `MYHOME_NOTICE_API_KEY`: 선택적인 마이홈 공공주택 모집공고 전용 인증키이며 없으면 `LH_API_KEY` 또는 `DATA_GO_KR_API_KEY` 사용
+- `APPLYHOME_API_KEY`: 선택적인 청약홈 민간임대 전용 인증키이며 없으면 `DATA_GO_KR_API_KEY` 또는 `LH_API_KEY` 사용
 - `LH_API_KEY`: LH 분양임대공고문 조회 서비스용 공공데이터 인증키이며 마이홈 전용 키가 없을 때도 재사용
 - `LH_COMPLEX_API_KEY`: 선택적인 공공임대주택 단지정보 전용 인증키이며 없으면 `LH_API_KEY` 사용
 - `POLICY_NEWS_API_KEY`: 문화체육관광부 정책브리핑 정책뉴스 서비스용 인증키
@@ -53,7 +57,7 @@ npm.cmd install
 npm.cmd run serve
 ```
 
-Wrangler 개발 서버를 사용해야 `/api/myhome-notices`, `/api/housing-notices`, `/api/housing-complexes`, `/api/housing-support`, `/api/welfare-services`, `/api/single-parent-facilities`, `/api/holiday-parking`, `/api/policy-news` Function까지 함께 확인할 수 있습니다.
+Wrangler 개발 서버를 사용해야 `/api/myhome-notices`, `/api/private-rental-notices`, `/api/housing-notices`, `/api/housing-complexes`, `/api/housing-support`, `/api/welfare-services`, `/api/single-parent-facilities`, `/api/holiday-parking`, `/api/policy-news` Function까지 함께 확인할 수 있습니다.
 
 ## 검증
 

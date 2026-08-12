@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#ffffff" />
+    <meta name="google-adsense-account" content="ca-pub-5751319666030430" />
+    <title>민간임대 청약 공고 찾기 | 임대주택 한눈에</title>
+    <meta name="description" content="청약홈 민간임대와 공공지원 민간임대 공고를 지역, 접수 상태와 검색어로 찾고 청약 기간, 공급 세대수와 공식 공고문을 확인하세요." />
+    <link rel="canonical" href="https://mustview.co.kr/private-rental" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="임대주택 한눈에" />
+    <meta property="og:title" content="전국 민간임대 청약 공고 찾기" />
+    <meta property="og:description" content="민간임대와 공공지원 민간임대의 접수 일정, 공급 위치와 공식 청약홈 공고를 한곳에서 확인하세요." />
+    <meta property="og:url" content="https://mustview.co.kr/private-rental" />
+    <meta property="og:image" content="https://mustview.co.kr/assets/housing-neighborhood.webp" />
+    <link rel="stylesheet" href="housing.css?v=20260812-private1" />
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5751319666030430" crossorigin="anonymous"></script>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "CollectionPage",
+        "name": "전국 민간임대 청약 공고 찾기",
+        "url": "https://mustview.co.kr/private-rental",
+        "inLanguage": "ko-KR",
+        "isPartOf": { "@type": "WebSite", "name": "임대주택 한눈에", "url": "https://mustview.co.kr/" },
+        "description": "한국부동산원 청약홈의 민간임대와 공공지원 민간임대 공고를 조건별로 찾는 페이지"
+      }
+    </script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">본문 바로가기</a>
+    <header class="site-header">
+      <div class="site-header-inner subpage-header">
+        <a class="brand" href="index.html" aria-label="임대주택 한눈에 홈"><span class="brand-mark" aria-hidden="true">H</span><span><strong>임대주택 한눈에</strong><small>MustView Housing</small></span></a>
+        <nav class="desktop-nav" aria-label="주요 메뉴">
+          <a href="index.html">공공임대</a>
+          <a class="is-active" href="private-rental.html">민간임대</a>
+          <a href="housing-complexes.html">단지 찾기</a>
+          <a href="housing-guide.html">신청 가이드</a>
+          <a href="sources.html">자료 출처</a>
+        </nav>
+        <a class="sub-home-link" href="index.html">홈</a>
+      </div>
+    </header>
+
+    <main class="facility-page-main" id="main">
+      <header class="facility-page-intro private-rental-intro">
+        <div>
+          <span class="eyebrow">PRIVATE RENTAL NOTICES</span>
+          <h1>민간임대 청약 공고 찾기</h1>
+          <p>청약홈에 등록된 민간임대와 공공지원 민간임대 공고를 지역과 접수 상태로 찾고, 신청 전 공식 공고문으로 바로 이동할 수 있습니다.</p>
+        </div>
+        <aside>
+          <strong>공공임대 공고와 구분됩니다</strong>
+          <p>조건은 공고마다 다릅니다. 이 화면은 검색을 돕고 신청 가능 여부를 판정하지 않습니다.</p>
+        </aside>
+      </header>
+
+      <section class="private-rental-search-section" aria-labelledby="privateRentalResultsTitle">
+        <form class="private-rental-search-form" id="privateRentalSearchForm">
+          <div class="field private-rental-query-field">
+            <label for="privateRentalQuery">공고명·주소 검색</label>
+            <input id="privateRentalQuery" name="query" type="search" maxlength="50" autocomplete="off" placeholder="예: 서울, 역세권, 단지명" />
+          </div>
+          <div class="field private-rental-region-field">
+            <label for="privateRentalRegion">지역</label>
+            <select id="privateRentalRegion" name="region">
+              <option value="">전국</option>
+              <option value="서울">서울</option><option value="부산">부산</option><option value="대구">대구</option><option value="인천">인천</option>
+              <option value="광주">광주</option><option value="대전">대전</option><option value="울산">울산</option><option value="세종">세종</option>
+              <option value="경기">경기</option><option value="강원">강원</option><option value="충북">충북</option><option value="충남">충남</option>
+              <option value="전북">전북</option><option value="전남">전남</option><option value="경북">경북</option><option value="경남">경남</option><option value="제주">제주</option>
+            </select>
+          </div>
+          <div class="field private-rental-type-field">
+            <label for="privateRentalType">공급 유형</label>
+            <select id="privateRentalType" name="type">
+              <option value="all">전체 민간임대</option>
+              <option value="private">민간임대</option>
+              <option value="public-support">공공지원 민간임대</option>
+            </select>
+          </div>
+          <div class="field private-rental-status-field">
+            <label for="privateRentalStatus">접수 상태</label>
+            <select id="privateRentalStatus" name="status">
+              <option value="">전체 상태</option>
+              <option value="open">접수중</option>
+              <option value="upcoming">접수예정</option>
+              <option value="closed">접수마감</option>
+            </select>
+          </div>
+          <button class="private-rental-search-submit" type="submit">공고 검색</button>
+        </form>
+
+        <div class="private-rental-results-heading">
+          <div><span class="eyebrow">APPLYHOME NOTICES</span><h2 id="privateRentalResultsTitle"><span id="privateRentalArea">전국</span> 민간임대 <strong id="privateRentalTotal">확인 중</strong></h2></div>
+          <div class="sync-state" id="privateRentalSync" aria-live="polite">청약홈 공식 자료를 확인하고 있습니다.</div>
+        </div>
+        <div class="private-rental-state" id="privateRentalState" aria-live="polite"></div>
+        <div class="private-rental-grid" id="privateRentalList" aria-label="민간임대 청약 공고 검색 결과"></div>
+        <button class="private-rental-load-more" id="privateRentalLoadMore" type="button" hidden>공고 더 보기</button>
+      </section>
+
+      <section class="private-rental-guide" aria-labelledby="privateRentalGuideTitle">
+        <span class="eyebrow">BEFORE APPLYING</span>
+        <h2 id="privateRentalGuideTitle">신청 전 확인할 핵심 항목</h2>
+        <div class="private-rental-guide-grid">
+          <article><span>01</span><h3>임대 유형</h3><p>민간임대와 공공지원 민간임대는 임대료 기준, 입주 자격과 거주기간이 다를 수 있습니다.</p></article>
+          <article><span>02</span><h3>청약 일정</h3><p>접수 시작과 마감 시각, 당첨자 발표일과 계약일을 공식 공고문에서 다시 확인하세요.</p></article>
+          <article><span>03</span><h3>주택 조건</h3><p>보증금, 월 임대료, 면적, 전매·양도 제한과 갱신 조건은 단지별 공고 내용을 기준으로 판단하세요.</p></article>
+          <article><span>04</span><h3>사업주체</h3><p>시행사와 임대사업자, 보증 가입 여부, 문의처를 확인한 뒤 공식 청약 절차를 이용하세요.</p></article>
+        </div>
+      </section>
+
+      <aside class="private-rental-source-note">
+        <div><strong>자료 출처와 이용 기준</strong><p>한국부동산원 청약홈 분양정보 조회 서비스의 민간임대·공공지원 민간임대 자료를 정리합니다. 화면의 상태 표시는 접수 시작일과 종료일을 기준으로 계산한 참고 정보입니다.</p></div>
+        <a href="https://www.data.go.kr/tcs/dss/selectApiDataDetailView.do?publicDataPk=15098547" target="_blank" rel="noopener noreferrer">공식 자료 설명</a>
+      </aside>
+    </main>
+
+    <nav class="bottom-nav" aria-label="모바일 주요 메뉴">
+      <a href="index.html"><span aria-hidden="true">⌂</span><strong>홈</strong></a>
+      <a href="index.html#notices"><span aria-hidden="true">≡</span><strong>공공</strong></a>
+      <a class="is-active" href="private-rental.html"><span aria-hidden="true">▤</span><strong>민간</strong></a>
+      <a href="housing-guide.html"><span aria-hidden="true">?</span><strong>가이드</strong></a>
+    </nav>
+
+    <footer class="site-footer">
+      <div class="content-width footer-grid">
+        <div><a class="footer-brand" href="index.html">임대주택 한눈에</a><p>전국 공공임대와 민간임대 공고를 찾고 공식 원문을 확인하는 독립 정보 서비스입니다.</p></div>
+        <nav aria-label="하단 메뉴"><a href="index.html">공공임대</a><a href="private-rental.html">민간임대</a><a href="housing-guide.html">신청 가이드</a><a href="sources.html">자료 출처</a><a href="contact.html">문의</a><a href="privacy.html">개인정보처리방침</a></nav>
+        <small>이 사이트는 청약홈, 마이홈, LH 또는 정부기관의 공식 사이트가 아닙니다. 신청과 계약 판단은 최신 공식 공고문을 우선하세요.</small>
+      </div>
+    </footer>
+    <script src="private-rental.js?v=20260812-private1" defer></script>
+  </body>
+</html>
