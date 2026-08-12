@@ -1,5 +1,6 @@
-const API_PATH = "/api/housing-notices";
-const CACHE_PREFIX = "mustview:housing:notices:v1:";
+const PRIMARY_API_PATH = "/api/myhome-notices";
+const FALLBACK_API_PATH = "/api/housing-notices";
+const CACHE_PREFIX = "mustview:housing:notices:v3:";
 const FAVORITES_KEY = "mustview:housing:favorites:v1";
 const FILTERS_KEY = "mustview:housing:filters:v1";
 const CACHE_FRESH_MS = 10 * 60 * 1000;
@@ -76,12 +77,27 @@ function formParams(page = 1) {
   };
 }
 
-function apiUrl(params) {
-  const url = new URL(API_PATH, window.location.origin);
+function apiUrl(path, params) {
+  const url = new URL(path, window.location.origin);
   Object.entries(params).forEach(([key, value]) => {
     if (value !== "") url.searchParams.set(key, value);
   });
   return url;
+}
+
+async function requestNotices(path, params, signal) {
+  const response = await fetch(apiUrl(path, params), {
+    headers: { accept: "application/json" },
+    signal
+  });
+  const data = await response.json().catch(() => null);
+  if (response.ok && data?.ok) return data;
+
+  const error = new Error(data?.message || "공고 정보를 불러오지 못했습니다.");
+  error.officialUrl = data?.officialUrl;
+  error.configured = data?.configured;
+  error.reason = data?.reason;
+  throw error;
 }
 
 function cacheKey(params) {
@@ -193,8 +209,8 @@ function renderMessage(title, message, options = {}) {
     actions.append(retry);
   }
 
-  const official = createElement("a", "", "LH 공식 공고 보기");
-  official.href = options.officialUrl || "https://apply.lh.or.kr/lhapply/apply/sc/list.do";
+  const official = createElement("a", "", "공식 공고 보기");
+  official.href = options.officialUrl || "https://www.myhome.go.kr/hws/portal/sch/selectRsdtRcritNtcView.do";
   official.target = "_blank";
   official.rel = "noopener noreferrer";
   actions.append(official);
@@ -346,7 +362,8 @@ function updateSummary(data, notices) {
   elements.open.textContent = openCount + "건";
   elements.urgent.textContent = urgentCount + "건";
   elements.regionName.textContent = selected?.textContent || "전국";
-  elements.sync.textContent = (data.fromCache ? "저장된 자료" : "공식 자료") + " · " + formatFetchedAt(data.fetchedAt);
+  const sourceLabel = data.sourceMode === "fallback" ? "LH 대체 자료" : "마이홈 공고";
+  elements.sync.textContent = (data.fromCache ? "저장된 " : "") + sourceLabel + " · " + formatFetchedAt(data.fetchedAt);
 }
 
 function formatFetchedAt(value) {
@@ -403,6 +420,7 @@ async function loadNotices({ page = 1, append = false, force = false } = {}) {
   state.controller = controller;
 
   const params = formParams(page);
+  const requestParams = force ? { ...params, refresh: String(Date.now()) } : params;
   persistFilters(params);
   setQuickStatus(params.status);
 
@@ -423,19 +441,16 @@ async function loadNotices({ page = 1, append = false, force = false } = {}) {
   }
 
   try {
-    const response = await fetch(apiUrl(params), {
-      headers: { accept: "application/json" },
-      signal: controller.signal
-    });
-    const data = await response.json().catch(() => null);
-    if (state.controller !== controller) return;
-    if (!response.ok || !data?.ok) {
-      const error = new Error(data?.message || "공고 정보를 불러오지 못했습니다.");
-      error.officialUrl = data?.officialUrl;
-      error.configured = data?.configured;
-      error.reason = data?.reason;
-      throw error;
+    let data;
+    try {
+      data = await requestNotices(PRIMARY_API_PATH, requestParams, controller.signal);
+      data.sourceMode = "myhome";
+    } catch (primaryError) {
+      if (primaryError.name === "AbortError") throw primaryError;
+      data = await requestNotices(FALLBACK_API_PATH, requestParams, controller.signal);
+      data.sourceMode = "fallback";
     }
+    if (state.controller !== controller) return;
 
     saveCache(params, data);
     renderResults(data, append);

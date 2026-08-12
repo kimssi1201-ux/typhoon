@@ -16,7 +16,7 @@
 
 ## 공식 데이터
 
-공고 목록은 [한국토지주택공사 분양임대공고문 조회 서비스](https://www.data.go.kr/data/15058530/openapi.do)를 이용합니다. 공고 원문과 실제 신청은 [LH 청약플러스](https://apply.lh.or.kr/lhapply/apply/sc/list.do)에서 확인합니다.
+공고 목록은 [국토교통부 마이홈포털 공공주택 모집공고 조회 서비스](https://www.data.go.kr/data/15108420/openapi.do)를 우선 이용합니다. LH와 지방공사 등 자료에 등록된 공급기관을 함께 표시하며, 연결이 지연되면 기존 [한국토지주택공사 분양임대공고문 조회 서비스](https://www.data.go.kr/data/15058530/openapi.do)를 대체 자료로 사용합니다. 공고 원문과 실제 신청은 마이홈 또는 해당 공급기관의 최신 안내에서 확인합니다.
 
 임대단지 정보는 [마이홈포털 공공임대주택 단지정보 조회 서비스](https://www.data.go.kr/data/15110581/openapi.do)를 이용합니다. 지역별 단지명, 주소, 세대수, 면적과 기본 보증금·월임대료를 표시하며 현재 모집 여부와 실제 계약 조건은 최신 공식 공고문을 기준으로 확인해야 합니다.
 
@@ -32,7 +32,8 @@
 
 ## 환경변수
 
-- `LH_API_KEY`: LH 분양임대공고문 조회 서비스용 공공데이터 인증키
+- `MYHOME_NOTICE_API_KEY`: 선택적인 마이홈 공공주택 모집공고 전용 인증키이며 없으면 `LH_API_KEY` 또는 `DATA_GO_KR_API_KEY` 사용
+- `LH_API_KEY`: LH 분양임대공고문 조회 서비스용 공공데이터 인증키이며 마이홈 전용 키가 없을 때도 재사용
 - `LH_COMPLEX_API_KEY`: 선택적인 공공임대주택 단지정보 전용 인증키이며 없으면 `LH_API_KEY` 사용
 - `POLICY_NEWS_API_KEY`: 문화체육관광부 정책브리핑 정책뉴스 서비스용 인증키
 - `GOV24_API_KEY`: 행정안전부 대한민국 공공서비스 정보용 인증키
@@ -52,7 +53,7 @@ npm.cmd install
 npm.cmd run serve
 ```
 
-Wrangler 개발 서버를 사용해야 `/api/housing-notices`, `/api/housing-complexes`, `/api/housing-support`, `/api/welfare-services`, `/api/single-parent-facilities`, `/api/holiday-parking`, `/api/policy-news` Function까지 함께 확인할 수 있습니다.
+Wrangler 개발 서버를 사용해야 `/api/myhome-notices`, `/api/housing-notices`, `/api/housing-complexes`, `/api/housing-support`, `/api/welfare-services`, `/api/single-parent-facilities`, `/api/holiday-parking`, `/api/policy-news` Function까지 함께 확인할 수 있습니다.
 
 ## 검증
 

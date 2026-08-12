@@ -28,10 +28,11 @@ function assertHealthyKorean(html, path) {
 }
 
 test("the housing home wires search, filters, results, favorites, menu, and official links", async () => {
-  const [html, client, supportClient, css] = await Promise.all([
+  const [html, client, supportClient, server, css] = await Promise.all([
     readProjectFile("index.html"),
     readProjectFile("housing-dashboard.js"),
     readProjectFile("housing-support.js"),
+    readProjectFile("functions/api/myhome-notices.js"),
     readProjectFile("housing.css")
   ]);
 
@@ -61,8 +62,14 @@ test("the housing home wires search, filters, results, favorites, menu, and offi
   assert.match(html, /임대주택 한눈에/);
   assert.match(html, /MustView Housing/);
   assert.match(html, /assets\/housing-neighborhood\.webp/);
-  assert.match(html, /apply\.lh\.or\.kr/);
+  assert.match(html, /myhome\.go\.kr/);
+  assert.match(html, /국토교통부·공급기관 자료/);
+  assert.match(client, /\/api\/myhome-notices/);
   assert.match(client, /\/api\/housing-notices/);
+  assert.match(client, /sourceMode = "fallback"/);
+  assert.match(server, /apis\.data\.go\.kr\/1613000\/HWSPR02\/rsdtRcritNtcList/);
+  assert.match(server, /MYHOME_NOTICE_API_KEY/);
+  assert.doesNotMatch(server, /["'][a-f0-9]{64}["']/i, "a real public-data key is not committed");
   assert.match(client, /localStorage/);
   assert.match(client, /AbortController/);
   assert.match(client, /CACHE_FALLBACK_MS/);
@@ -240,6 +247,7 @@ test("sources, about, and privacy explain authority, limits, caching, and local 
     readProjectFile("privacy.html")
   ]);
 
+  assert.match(sources, /data\.go\.kr\/data\/15108420/);
   assert.match(sources, /data\.go\.kr\/data\/15058530/);
   assert.match(sources, /data\.go\.kr\/data\/15110581/);
   assert.match(sources, /data\.go\.kr\/data\/15090532/);
@@ -292,6 +300,7 @@ test("sitemap indexes only current housing pages and legacy travel routes redire
   assert.match(pkg.scripts.check, /housing-complexes\.js/);
   assert.match(pkg.scripts.check, /housing-region-codes\.js/);
   assert.match(pkg.scripts.check, /housing-notices\.js/);
+  assert.match(pkg.scripts.check, /myhome-notices\.js/);
   assert.match(pkg.scripts.check, /functions\/api\/housing-complexes\.js/);
   assert.match(pkg.scripts.check, /functions\/api\/welfare-services\.js/);
   assert.match(pkg.scripts.check, /policy-news\.js/);
