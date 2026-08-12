@@ -110,6 +110,17 @@ test("housing notices map official LH data and query filters", async () => {
   assert.match(calls[0].url.searchParams.get("CLSG_DT"), /^\d{4}\.\d{2}\.\d{2}$/);
 });
 
+test("housing notices accept the unified Gwangju and Jeonnam region code", async () => {
+  const { fetchMock, calls } = captureFetch(async () => jsonResponse(samplePayload));
+  const response = await withFetchMock(fetchMock, () => onRequestGet({
+    request: makeRequest("/api/housing-notices?region=12&type=06&days=180"),
+    env: { LH_API_KEY: "test-key" }
+  }));
+
+  assert.equal(response.status, 200);
+  assert.equal(calls[0].url.searchParams.get("CNP_CD"), "12");
+});
+
 test("housing notices can reuse the existing encrypted public-data key", async () => {
   const { fetchMock, calls } = captureFetch(async () => jsonResponse(samplePayload));
   const response = await withFetchMock(fetchMock, () => onRequestGet({

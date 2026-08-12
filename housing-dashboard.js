@@ -130,9 +130,10 @@ function updateUrl(params) {
 function restoreFilters() {
   const saved = readStorage(FILTERS_KEY, {});
   const url = new URL(window.location.href);
+  const storedRegion = url.searchParams.get("region") ?? saved.region ?? "";
   const values = {
     query: url.searchParams.get("query") ?? saved.query ?? "",
-    region: url.searchParams.get("region") ?? saved.region ?? "",
+    region: ["29", "46"].includes(storedRegion) ? "12" : storedRegion,
     status: url.searchParams.get("status") ?? saved.status ?? "",
     type: url.searchParams.get("type") ?? saved.type ?? "06",
     days: url.searchParams.get("days") ?? saved.days ?? "180"
@@ -152,6 +153,12 @@ function restoreFilters() {
     if (control.tagName === "SELECT" && ![...control.options].some((option) => option.value === value)) return;
     control.value = value;
   });
+}
+
+function isEmptyNoticeResult(data) {
+  return Array.isArray(data?.notices)
+    && data.notices.length === 0
+    && Number(data.summary?.total || 0) === 0;
 }
 
 function persistFilters(params) {
@@ -363,7 +370,7 @@ function updateSummary(data, notices) {
   elements.open.textContent = openCount + "건";
   elements.urgent.textContent = urgentCount + "건";
   elements.regionName.textContent = selected?.textContent || "전국";
-  const sourceLabel = data.sourceMode === "fallback" ? "LH 대체 자료" : "마이홈 공고";
+  const sourceLabel = data.sourceMode === "fallback" ? "LH 모집공고" : "마이홈 공고";
   elements.sync.textContent = (data.fromCache ? "저장된 " : "") + sourceLabel + " · " + formatFetchedAt(data.fetchedAt);
 }
 
@@ -446,6 +453,17 @@ async function loadNotices({ page = 1, append = false, force = false } = {}) {
     try {
       data = await requestNotices(PRIMARY_API_PATH, requestParams, controller.signal);
       data.sourceMode = "myhome";
+      if (isEmptyNoticeResult(data)) {
+        try {
+          const fallbackData = await requestNotices(FALLBACK_API_PATH, requestParams, controller.signal);
+          if (!isEmptyNoticeResult(fallbackData)) {
+            data = fallbackData;
+            data.sourceMode = "fallback";
+          }
+        } catch (fallbackError) {
+          if (fallbackError.name === "AbortError") throw fallbackError;
+        }
+      }
     } catch (primaryError) {
       if (primaryError.name === "AbortError") throw primaryError;
       data = await requestNotices(FALLBACK_API_PATH, requestParams, controller.signal);

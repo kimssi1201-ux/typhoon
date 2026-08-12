@@ -3,7 +3,7 @@ const OFFICIAL_NOTICE_HOME = "https://apply.lh.or.kr/lhapply/apply/sc/list.do";
 const AUTHORIZATION_ERROR = /등록되지 않은 서비스|service[_\s-]*access[_\s-]*denied|service key|인증키|활용신청/i;
 
 const REGION_CODES = new Set([
-  "11", "26", "27", "28", "29", "30", "31", "36",
+  "11", "12", "26", "27", "28", "29", "30", "31", "36",
   "41", "42", "43", "44", "45", "46", "47", "48", "50", "51", "52"
 ]);
 const NOTICE_TYPES = new Set(["06", "13"]);
