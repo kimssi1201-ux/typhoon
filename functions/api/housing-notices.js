@@ -123,8 +123,12 @@ function normalizeNotice(row) {
 function upstreamMessage(payload, response) {
   const header = firstObject(payload, "resHeader");
   const portalHeader = payload?.response?.header || {};
+  const commonHeader = payload?.OpenAPI_ServiceResponse?.cmmMsgHeader || {};
   if (header.SS_CODE && header.SS_CODE !== "Y") return header.RS_MSG || "LH 공고 자료를 불러오지 못했습니다.";
   if (portalHeader.resultCode && portalHeader.resultCode !== "00") return portalHeader.resultMsg || "공공데이터 응답에 오류가 있습니다.";
+  if (commonHeader.errMsg || commonHeader.returnAuthMsg) {
+    return [commonHeader.errMsg, commonHeader.returnAuthMsg].filter(Boolean).join(" ");
+  }
   if (!response.ok) return "공식 공고 제공처의 응답이 지연되고 있습니다.";
   return "";
 }

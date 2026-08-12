@@ -153,6 +153,18 @@ test("housing notices handle upstream status, malformed JSON, and network errors
   assert.equal(upstreamBody.reason, "authorization");
   assert.match(upstreamBody.message, /공식 공고 자료 연결/);
 
+  const portalAuthorization = await withFetchMock(async () => jsonResponse({
+    OpenAPI_ServiceResponse: {
+      cmmMsgHeader: {
+        errMsg: "SERVICE_KEY_IS_NOT_REGISTERED_ERROR",
+        returnAuthMsg: "등록되지 않은 서비스키"
+      }
+    }
+  }, 403), () => onRequestGet({ request: makeRequest("/api/housing-notices"), env }));
+  const authorizationBody = await readJson(portalAuthorization);
+  assert.equal(portalAuthorization.status, 503);
+  assert.equal(authorizationBody.reason, "authorization");
+
   const malformed = await withFetchMock(async () => new Response("<html>error</html>", {
     status: 502,
     headers: { "content-type": "text/html" }
