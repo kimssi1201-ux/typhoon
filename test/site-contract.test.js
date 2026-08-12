@@ -87,6 +87,7 @@ test("public housing pages have production metadata, ads ownership, and healthy 
   const pages = [
     "index.html",
     "housing-guide.html",
+    "family-facilities.html",
     "sources.html",
     "about.html",
     "privacy.html",
@@ -132,6 +133,31 @@ test("the application guide is substantial and FAQ structured data matches visib
   faq.mainEntity.forEach((item) => assert.ok(html.includes(item.name)));
 });
 
+test("the family facilities page wires official search, pagination, safe phone links, and guidance", async () => {
+  const [html, client, css] = await Promise.all([
+    readProjectFile("family-facilities.html"),
+    readProjectFile("family-facilities.js"),
+    readProjectFile("housing.css")
+  ]);
+
+  for (const id of ["facilitySearchForm", "facilityRegion", "facilityQuery", "facilityState", "facilityList", "facilityLoadMore"]) {
+    assert.match(html, new RegExp("id=[\"']" + id + "[\"']"), id + " is present on facilities page");
+  }
+  assertHealthyKorean(html, "family-facilities.html");
+  assert.equal((html.match(/<option\b/g) || []).length, 18);
+  assert.match(html, /data\.go\.kr\/data\/15109768/);
+  assert.match(html, /입소 가능 여부는 시설·지자체 확인|입소 가능 인원/);
+  assert.match(client, /\/api\/single-parent-facilities/);
+  assert.match(client, /localStorage/);
+  assert.match(client, /AbortController/);
+  assert.match(client, /textContent/);
+  assert.match(client, /\^tel:/);
+  assert.doesNotMatch(client, /innerHTML\s*=/, "external facility fields are not injected as HTML");
+  assert.match(css, /\.facility-result-grid/);
+  assert.match(css, /\.facility-details/);
+  assert.match(css, /min-height:\s*44px/);
+});
+
 test("sources, about, and privacy explain authority, limits, caching, and local storage", async () => {
   const [sources, about, privacy] = await Promise.all([
     readProjectFile("sources.html"),
@@ -142,6 +168,7 @@ test("sources, about, and privacy explain authority, limits, caching, and local 
   assert.match(sources, /data\.go\.kr\/data\/15058530/);
   assert.match(sources, /data\.go\.kr\/data\/15095335/);
   assert.match(sources, /data\.go\.kr\/data\/15113968/);
+  assert.match(sources, /data\.go\.kr\/data\/15109768/);
   assert.match(sources, /apply\.lh\.or\.kr/);
   assert.match(sources, /gov\.kr\/portal\/rcvfvrSvc\/main/);
   assert.match(sources, /korea\.kr\/news\/policyNewsList\.do/);
@@ -170,7 +197,7 @@ test("sitemap indexes only current housing pages and legacy travel routes redire
   ]);
 
   const indexed = [...sitemap.matchAll(/<loc>https:\/\/mustview\.co\.kr\/?([^<]*)<\/loc>/g)].map((match) => match[1]);
-  assert.deepEqual(indexed, ["", "housing-guide", "sources", "about", "privacy", "contact"]);
+  assert.deepEqual(indexed, ["", "housing-guide", "family-facilities", "sources", "about", "privacy", "contact"]);
   assert.doesNotMatch(sitemap, /travel|beach|typhoon|destinations/);
   assert.match(redirects, /\/destinations \/ 301/);
   assert.match(redirects, /\/travel-guide \/housing-guide 301/);
@@ -184,6 +211,7 @@ test("sitemap indexes only current housing pages and legacy travel routes redire
   assert.match(pkg.scripts.check, /housing-notices\.js/);
   assert.match(pkg.scripts.check, /policy-news\.js/);
   assert.match(pkg.scripts.check, /housing-support\.js/);
+  assert.match(pkg.scripts.check, /family-facilities\.js/);
 });
 
 test("Cloudflare deployment validates before publishing and AdSense ownership remains correct", async () => {
