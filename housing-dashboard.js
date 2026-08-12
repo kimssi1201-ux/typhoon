@@ -207,7 +207,7 @@ function renderMessage(title, message, options = {}) {
 function normalizeDate(value) {
   const match = String(value || "").match(/(\d{4})[.\-/]?(\d{2})[.\-/]?(\d{2})/);
   if (!match) return null;
-  return new Date(Number(match[1]), Number(match[2]) - 1, Number(match[3]), 23, 59, 59);
+  return new Date(Number(match[1]), Number(match[2]) - 1, Number(match[3]));
 }
 
 function displayDate(value) {
@@ -225,7 +225,7 @@ function deadlineInfo(value) {
   if (!date) return { text: "마감일 확인", urgent: false, days: null };
   const today = new Date();
   today.setHours(0, 0, 0, 0);
-  const days = Math.ceil((date.getTime() - today.getTime()) / 86400000);
+  const days = Math.round((date.getTime() - today.getTime()) / 86400000);
   if (days < 0) return { text: "접수 종료", urgent: false, days };
   if (days === 0) return { text: "오늘 마감", urgent: true, days };
   if (days <= 7) return { text: "D-" + days, urgent: true, days };
