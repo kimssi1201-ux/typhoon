@@ -1,6 +1,6 @@
 const PRIMARY_API_PATH = "/api/myhome-notices";
 const FALLBACK_API_PATH = "/api/housing-notices";
-const CACHE_PREFIX = "mustview:housing:notices:v3:";
+const CACHE_PREFIX = "mustview:housing:notices:v4:";
 const FAVORITES_KEY = "mustview:housing:favorites:v1";
 const FILTERS_KEY = "mustview:housing:filters:v1";
 const CACHE_FRESH_MS = 10 * 60 * 1000;

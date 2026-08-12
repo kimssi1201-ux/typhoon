@@ -77,6 +77,7 @@ test("the housing home wires search, filters, results, favorites, menu, and offi
   assert.match(client, /requestBestNoticeData/);
   assert.match(client, /Promise\.allSettled/);
   assert.match(client, /noticeResultTotal\(lhData\) > noticeResultTotal\(myhomeData\)/);
+  assert.match(client, /mustview:housing:notices:v4:/);
   assert.match(html, /option value="12">전남광주통합특별시 \(광주·전남\)<\/option>/);
   assert.doesNotMatch(html, /option value="(?:29|46)">/);
   assert.match(server, /apis\.data\.go\.kr\/1613000\/HWSPR02\/rsdtRcritNtcList/);
