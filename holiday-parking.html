@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#ffffff" />
+    <meta name="google-adsense-account" content="ca-pub-5751319666030430" />
+    <title>전국 명절 무료 주차장 찾기 | 임대주택 한눈에</title>
+    <meta name="description" content="설과 추석 연휴에 무료 개방되는 전국 공공 주차장을 연도와 지역별로 검색하고 주소, 개방시간과 지도 위치를 확인하세요." />
+    <link rel="canonical" href="https://mustview.co.kr/holiday-parking" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="임대주택 한눈에" />
+    <meta property="og:title" content="전국 명절 무료 주차장 찾기" />
+    <meta property="og:description" content="설·추석 무료 개방 주차장의 주소, 개방시간과 위치를 확인하세요." />
+    <meta property="og:url" content="https://mustview.co.kr/holiday-parking" />
+    <meta property="og:image" content="https://mustview.co.kr/assets/housing-neighborhood.webp" />
+    <link rel="stylesheet" href="housing.css?v=20260812-housing6" />
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5751319666030430" crossorigin="anonymous"></script>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "CollectionPage",
+        "name": "전국 명절 무료 주차장 찾기",
+        "url": "https://mustview.co.kr/holiday-parking",
+        "inLanguage": "ko-KR",
+        "isPartOf": { "@type": "WebSite", "name": "임대주택 한눈에", "url": "https://mustview.co.kr/" },
+        "description": "행정안전부 공유누리의 설·추석 무료 개방 주차장 공식 자료를 지역별로 찾는 페이지"
+      }
+    </script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">본문 바로가기</a>
+    <header class="site-header">
+      <div class="site-header-inner subpage-header">
+        <a class="brand" href="index.html" aria-label="임대주택 한눈에 홈"><span class="brand-mark" aria-hidden="true">H</span><span><strong>임대주택 한눈에</strong><small>MustView Housing</small></span></a>
+        <nav class="desktop-nav" aria-label="주요 메뉴">
+          <a href="index.html">공고 찾기</a>
+          <a class="is-active" href="holiday-parking.html">무료주차</a>
+          <a href="housing-guide.html">신청 가이드</a>
+          <a href="sources.html">자료 출처</a>
+        </nav>
+        <a class="sub-home-link" href="index.html">홈</a>
+      </div>
+    </header>
+
+    <main class="facility-page-main" id="main">
+      <header class="facility-page-intro parking-page-intro">
+        <div>
+          <span class="eyebrow">HOLIDAY OPEN PARKING</span>
+          <h1>명절 무료 주차장 찾기</h1>
+          <p>설과 추석 연휴에 무료 개방되는 공공 주차장의 주소와 개방시간을 지역별로 확인할 수 있습니다.</p>
+        </div>
+        <aside>
+          <strong>출발 전 다시 확인</strong>
+          <p>개방시간과 진입 조건은 현장 사정에 따라 달라질 수 있습니다. 주차장 입구 안내와 관리기관 공지를 우선하세요.</p>
+        </aside>
+      </header>
+
+      <section class="facility-search-section parking-search-section" aria-labelledby="parkingResultsTitle">
+        <form class="facility-search-form parking-search-form" id="parkingSearchForm">
+          <div class="field">
+            <label for="parkingYear">연도</label>
+            <select id="parkingYear" name="year"><option value="2026">2026년</option></select>
+          </div>
+          <div class="field">
+            <label for="parkingHoliday">명절</label>
+            <select id="parkingHoliday" name="holiday"><option value="설">설</option><option value="추석">추석</option></select>
+          </div>
+          <div class="field">
+            <label for="parkingRegion">지역</label>
+            <select id="parkingRegion" name="region">
+              <option value="">전국</option>
+              <option value="서울">서울</option><option value="부산">부산</option><option value="대구">대구</option><option value="인천">인천</option>
+              <option value="광주">광주</option><option value="대전">대전</option><option value="울산">울산</option><option value="세종">세종</option>
+              <option value="경기">경기</option><option value="강원">강원</option><option value="충북">충북</option><option value="충남">충남</option>
+              <option value="전북">전북</option><option value="전남">전남</option><option value="경북">경북</option><option value="경남">경남</option><option value="제주">제주</option>
+            </select>
+          </div>
+          <div class="field parking-query-field">
+            <label for="parkingQuery">주차장·주소 검색</label>
+            <input id="parkingQuery" name="query" type="search" maxlength="40" autocomplete="off" placeholder="예: 구청, 서울 중구" />
+          </div>
+          <button class="facility-search-submit parking-search-submit" type="submit">무료주차장 검색</button>
+        </form>
+
+        <div class="facility-results-heading parking-results-heading">
+          <div><span class="eyebrow">OFFICIAL OPEN PARKING</span><h2 id="parkingResultsTitle"><span id="parkingPeriod">조회 조건 확인 중</span> <strong id="parkingTotal">확인 중</strong></h2></div>
+          <div class="sync-state" id="parkingSync" aria-live="polite">공식 무료주차장 자료를 확인하고 있습니다.</div>
+        </div>
+        <div class="parking-state" id="parkingState" aria-live="polite"></div>
+        <div class="parking-result-grid" id="parkingList" aria-label="명절 무료 주차장 검색 결과"></div>
+        <button class="facility-load-more" id="parkingLoadMore" type="button" hidden>주차장 더 보기</button>
+      </section>
+
+      <section class="facility-guidance parking-guidance" aria-labelledby="parkingGuideTitle">
+        <span class="eyebrow">BEFORE PARKING</span>
+        <h2 id="parkingGuideTitle">이용 전에 확인할 내용</h2>
+        <ol>
+          <li><strong>개방 날짜</strong><p>선택한 설·추석 연휴 자료인지 확인하고 실제 방문일이 무료 개방일에 포함되는지 살펴봅니다.</p></li>
+          <li><strong>개방 시간</strong><p>종일개방과 시간제 개방을 구분하고 마지막 날 폐쇄 시각 전에 출차합니다.</p></li>
+          <li><strong>차량 제한</strong><p>학교와 공공기관 주차장은 대형차, 캠핑카 또는 장기주차가 제한될 수 있습니다.</p></li>
+          <li><strong>현장 안내</strong><p>공식 목록과 현장 안내가 다르면 주차장 입구 표지와 관리기관 공지를 우선합니다.</p></li>
+        </ol>
+        <div class="facility-source-note parking-source-note">
+          <div><strong>자료 출처</strong><p>행정안전부 공유누리의 명절 무료 주차장 공식 공개자료를 사용합니다. 실시간 빈자리나 주차 가능 여부를 보장하지 않습니다.</p></div>
+          <a href="https://www.eshare.go.kr/OpenApi/Info/detail.do?svcNo=21" target="_blank" rel="noopener noreferrer">공유누리 공식 설명</a>
+        </div>
+      </section>
+    </main>
+
+    <nav class="bottom-nav" aria-label="모바일 주요 메뉴">
+      <a href="index.html"><span aria-hidden="true">⌂</span><strong>홈</strong></a>
+      <a href="index.html#notices"><span aria-hidden="true">≡</span><strong>공고</strong></a>
+      <a class="is-active" href="holiday-parking.html"><span aria-hidden="true">P</span><strong>주차</strong></a>
+      <a href="housing-guide.html"><span aria-hidden="true">?</span><strong>가이드</strong></a>
+    </nav>
+    <footer class="site-footer">
+      <div class="content-width footer-grid">
+        <div><a class="footer-brand" href="index.html">임대주택 한눈에</a><p>전국 임대주택 공고와 생활에 필요한 공공정보를 명확하게 확인하는 정보 서비스입니다.</p></div>
+        <nav aria-label="하단 메뉴"><a href="index.html">공고 찾기</a><a href="family-facilities.html">주거시설</a><a href="housing-guide.html">신청 가이드</a><a href="sources.html">자료 출처</a><a href="about.html">사이트 소개</a><a href="privacy.html">개인정보처리방침</a></nav>
+        <small>무료 개방 여부와 이용 판단은 최신 공식 자료, 관리기관 공지와 현장 안내를 우선하세요.</small>
+      </div>
+    </footer>
+    <script src="holiday-parking.js?v=20260812-parking1" defer></script>
+  </body>
+</html>

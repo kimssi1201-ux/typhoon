@@ -70,6 +70,8 @@ test("the housing home wires search, filters, results, favorites, menu, and offi
   assert.match(html, /policy-news\.js/);
   assert.match(html, /housing-support\.js/);
   assert.match(html, /gov\.kr\/portal\/rcvfvrSvc\/main/);
+  assert.match(html, /holiday-parking\.html/);
+  assert.match(html, /명절 무료 주차장 찾기/);
   assert.equal((html.match(/data-support-topic=/g) || []).length, 4);
   assert.match(supportClient, /\/api\/housing-support/);
   assert.match(supportClient, /localStorage/);
@@ -88,6 +90,7 @@ test("public housing pages have production metadata, ads ownership, and healthy 
     "index.html",
     "housing-guide.html",
     "family-facilities.html",
+    "holiday-parking.html",
     "sources.html",
     "about.html",
     "privacy.html",
@@ -158,6 +161,34 @@ test("the family facilities page wires official search, pagination, safe phone l
   assert.match(css, /min-height:\s*44px/);
 });
 
+test("the holiday parking page wires official filters, pending state, maps, and pagination", async () => {
+  const [html, client, css] = await Promise.all([
+    readProjectFile("holiday-parking.html"),
+    readProjectFile("holiday-parking.js"),
+    readProjectFile("housing.css")
+  ]);
+
+  for (const id of [
+    "parkingSearchForm", "parkingYear", "parkingHoliday", "parkingRegion", "parkingQuery",
+    "parkingState", "parkingList", "parkingLoadMore"
+  ]) {
+    assert.match(html, new RegExp("id=[\"']" + id + "[\"']"), id + " is present on parking page");
+  }
+  assertHealthyKorean(html, "holiday-parking.html");
+  assert.match(html, /eshare\.go\.kr\/OpenApi\/Info\/detail\.do\?svcNo=21/);
+  assert.match(html, /실시간 빈자리|당일 개방/);
+  assert.match(client, /\/api\/holiday-parking/);
+  assert.match(client, /localStorage/);
+  assert.match(client, /AbortController/);
+  assert.match(client, /textContent/);
+  assert.match(client, /openstreetmap\.org/);
+  assert.match(client, /authorization/);
+  assert.doesNotMatch(client, /innerHTML\s*=/, "external parking fields are not injected as HTML");
+  assert.match(css, /\.parking-result-grid/);
+  assert.match(css, /\.parking-message\.is-pending/);
+  assert.match(css, /min-height:\s*44px/);
+});
+
 test("sources, about, and privacy explain authority, limits, caching, and local storage", async () => {
   const [sources, about, privacy] = await Promise.all([
     readProjectFile("sources.html"),
@@ -169,6 +200,7 @@ test("sources, about, and privacy explain authority, limits, caching, and local 
   assert.match(sources, /data\.go\.kr\/data\/15095335/);
   assert.match(sources, /data\.go\.kr\/data\/15113968/);
   assert.match(sources, /data\.go\.kr\/data\/15109768/);
+  assert.match(sources, /eshare\.go\.kr\/OpenApi\/Info\/detail\.do\?svcNo=21/);
   assert.match(sources, /apply\.lh\.or\.kr/);
   assert.match(sources, /gov\.kr\/portal\/rcvfvrSvc\/main/);
   assert.match(sources, /korea\.kr\/news\/policyNewsList\.do/);
@@ -181,11 +213,13 @@ test("sources, about, and privacy explain authority, limits, caching, and local 
   assert.match(about, /독립 정보 서비스/);
   assert.match(about, /공식 사이트가 아닙니다/);
   assert.match(about, /신청 가능 여부를 판정하지 않습니다/);
+  assert.match(about, /명절 무료 주차장/);
 
   assert.match(privacy, /localStorage/);
   assert.match(privacy, /주민등록번호/);
   assert.match(privacy, /Google AdSense/);
   assert.match(privacy, /사이트 데이터 삭제/);
+  assert.match(privacy, /명절 주차장 검색조건/);
 });
 
 test("sitemap indexes only current housing pages and legacy travel routes redirect", async () => {
@@ -197,7 +231,7 @@ test("sitemap indexes only current housing pages and legacy travel routes redire
   ]);
 
   const indexed = [...sitemap.matchAll(/<loc>https:\/\/mustview\.co\.kr\/?([^<]*)<\/loc>/g)].map((match) => match[1]);
-  assert.deepEqual(indexed, ["", "housing-guide", "family-facilities", "sources", "about", "privacy", "contact"]);
+  assert.deepEqual(indexed, ["", "housing-guide", "family-facilities", "holiday-parking", "sources", "about", "privacy", "contact"]);
   assert.doesNotMatch(sitemap, /travel|beach|typhoon|destinations/);
   assert.match(redirects, /\/destinations \/ 301/);
   assert.match(redirects, /\/travel-guide \/housing-guide 301/);
@@ -212,6 +246,8 @@ test("sitemap indexes only current housing pages and legacy travel routes redire
   assert.match(pkg.scripts.check, /policy-news\.js/);
   assert.match(pkg.scripts.check, /housing-support\.js/);
   assert.match(pkg.scripts.check, /family-facilities\.js/);
+  assert.match(pkg.scripts.check, /holiday-parking\.js/);
+  assert.match(pkg.scripts.check, /functions\/api\/holiday-parking\.js/);
 });
 
 test("Cloudflare deployment validates before publishing and AdSense ownership remains correct", async () => {
