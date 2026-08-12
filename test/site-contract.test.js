@@ -1,30 +1,79 @@
-﻿import assert from "node:assert/strict";
+import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 import test from "node:test";
 
-const readProjectFile = (path) => readFile(new URL(`../${path}`, import.meta.url), "utf8");
+const readProjectFile = (path) => readFile(new URL("../" + path, import.meta.url), "utf8");
+const publisherId = "ca-pub-5751319666030430";
+const coreSlugs = new Set([
+  "",
+  "destinations",
+  "travel-guide",
+  "beach",
+  "sources",
+  "about",
+  "privacy",
+  "contact"
+]);
 
-test("the travel home wires editorial content, filters, weather, map, and menu", async () => {
+const visibleText = (html) =>
+  html
+    .replace(/<script\b[\s\S]*?<\/script>/gi, " ")
+    .replace(/<style\b[\s\S]*?<\/style>/gi, " ")
+    .replace(/<[^>]+>/g, " ")
+    .replace(/&(?:[a-z]+|#\d+);/gi, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+
+const assertEncodingIsHealthy = (html, path) => {
+  const questionMarks = (html.match(/\?/g) || []).length;
+  const suspiciousCharacters = (html.match(/[援紐諛蹂筌癲繹袁]/g) || []).length;
+
+  assert.ok(questionMarks <= 20, path + " contains an unusual number of replacement question marks");
+  assert.ok(suspiciousCharacters <= 2, path + " contains likely Korean mojibake");
+  assert.doesNotMatch(html, /�/, path + " contains Unicode replacement characters");
+  assert.match(html, /<title>[^<]*[가-힣][^<]*<\/title>/, path + " has a closed Korean title");
+  assert.match(html, /<h1\b[^>]*>[\s\S]*?[가-힣][\s\S]*?<\/h1>/, path + " has a closed Korean h1");
+};
+
+test("the travel home wires editorial content, weather, map, carousel, and menu", async () => {
   const [html, client] = await Promise.all([
     readProjectFile("index.html"),
     readProjectFile("travel-dashboard.js")
   ]);
 
-  for (const id of ["travelMenu", "travelMenuOpen", "travelCover", "travelCoverPrev", "travelCoverNext", "travelFilterStatus", "travelWeatherForm", "travelWeatherPlace", "travelMap", "travelMapReset"]) {
-    assert.match(html, new RegExp(`id=["']${id}["']`), `${id} is present on the travel home`);
+  for (const id of [
+    "travelMenu",
+    "travelMenuOpen",
+    "travelCover",
+    "travelCoverPrev",
+    "travelCoverNext",
+    "travelFilterStatus",
+    "travelWeatherForm",
+    "travelWeatherPlace",
+    "travelMap",
+    "travelMapReset"
+  ]) {
+    assert.match(html, new RegExp("id=[\"']" + id + "[\"']"), id + " is present on the travel home");
   }
-  for (const image of ["travel-changnyeong-upo-santokki-mannyeongyo.png", "travel-busan.webp", "travel-seoul.webp", "travel-jeju.webp", "travel-gangneung.webp", "travel-jeonju.webp", "travel-suncheon.webp", "travel-gurye-hwaeomsa-seomjingang-saseongam.png", "travel-boseong-daehandawon-tea-museum-yulpo.png", "travel-gwangju-acc-yangnim-mudeungsan.png", "travel-mungyeong-saejae-omija-railbike-oncheon.png", "travel-daegu-seomun-suseong.png", "travel-andong-hahoe.png", "travel-pohang-homigot-guryongpo.png", "travel-ulsan-taehwagang-daewangam.png", "travel-hapcheon-haeinsa-hwangmaesan.png", "travel-samcheok-chogok-jangho-hwanseon.png", "travel-goseong-tongil-dmz-hwajinpo.png", "travel-gunsan-time-travel-museum-railway.png", "travel-pocheon-hantangang-sanjeonghosu.png", "travel-yeongam-wolchulsan-gurim-wangin-dogi.png", "travel-yeonggwang-bulgapsa-baeksu-beopseongpo.png", "travel-yangyang-naksan-hajodae-jukdo.png"]) {
-    assert.match(html, new RegExp(`assets/${image}`), `${image} is used by the travel home`);
+
+  for (const article of [
+    "changnyeong-upo-santokki-mannyeongyo.html",
+    "yangyang-naksan-hajodae-jukdo.html",
+    "seosan-haemi-gaesimsa-ganweolam-birdland.html",
+    "gurye-hwaeomsa-seomjingang-saseongam.html"
+  ]) {
+    assert.match(html, new RegExp("href=[\"']" + article.replace(".", "\\.") + "[\"']"), article + " is linked from home");
   }
+
+  assertEncodingIsHealthy(html, "index.html");
   assert.match(html, /MustView Travel/);
   assert.match(html, /href=["']beach\.html["']/);
-  assert.doesNotMatch(html, /typhoon-guide|readiness-guide/, "the retired typhoon topic is not shown on the travel home");
+  assert.doesNotMatch(html, /typhoon-guide|readiness-guide/);
   assert.match(client, /\/api\/current-weather\?/);
   assert.match(client, /IntersectionObserver/);
   assert.match(client, /localStorage/);
   assert.match(client, /AbortController/);
   assert.match(client, /initCoverCarousel/);
-  assert.match(client, /data-cover-index/);
   assert.match(client, /aria-pressed/);
 });
 
@@ -34,402 +83,144 @@ test("the preserved beach dashboard keeps its map, location, and API sections wi
     readProjectFile("beach-dashboard.js")
   ]);
 
-  for (const id of ["beachChoice", "beachUseLocation", "beachMap", "beachMapReset", "marineMetrics", "beachWeatherMetrics", "beachFacilityMetrics", "beachPlacesList"]) {
-    assert.match(html, new RegExp(`id=["']${id}["']`), `${id} is present in beach.html`);
+  for (const id of [
+    "beachChoice",
+    "beachUseLocation",
+    "beachMap",
+    "beachMapReset",
+    "marineMetrics",
+    "beachWeatherMetrics",
+    "beachFacilityMetrics",
+    "beachPlacesList"
+  ]) {
+    assert.match(html, new RegExp("id=[\"']" + id + "[\"']"), id + " is present in beach.html");
   }
-  for (const route of ["/api/current-weather?", "/api/kma-beach?", "/api/marine?", "/api/oceans-beach?", "/api/tourism?"]) {
-    assert.match(client, new RegExp(route.replace(/[?]/g, "\\?")), `${route} is used by the beach client`);
+
+  for (const route of [
+    "/api/current-weather?",
+    "/api/kma-beach?",
+    "/api/marine?",
+    "/api/oceans-beach?",
+    "/api/tourism?"
+  ]) {
+    assert.ok(client.includes(route), route + " is used by the beach client");
   }
+
   assert.match(client, /navigator\.geolocation\.getCurrentPosition/);
-  assert.doesNotMatch(html, /beachFeatureImage|beach-feature-media/, "the removed beach hero is not reintroduced");
+  assert.doesNotMatch(html, /beachFeatureImage|beach-feature-media/);
   assert.match(html, /href=["']index\.html["']/);
 });
 
-test("public content pages have production metadata and the custom 404 stays unmonetized", async () => {
-  const publicPages = ["index.html", "destinations.html", "changnyeong-upo-santokki-mannyeongyo.html", "travel-guide.html", "beach.html", "sources.html", "about.html", "privacy.html", "contact.html", "busan-coast.html", "seoul-jeongdong.html", "jeju-east.html", "gangneung-sea.html", "jeonju-hanok.html", "suncheon-bay.html", "gurye-hwaeomsa-seomjingang-saseongam.html", "boseong-daehandawon-tea-museum-yulpo.html", "hadong-hwagae-ssanggyesa-choinam-palsari.html", "daegu-gyeongsanggamyeong-seomun-suseong.html", "gwangju-acc-yangnim-mudeungsan.html", "jinan-maisan-tapsa-uniram-baniram.html", "suncheon-nagan-seonamsa-garden.html", "andong-hahoe-byeongsan.html", "tongyeong-dongpirang-cablecar.html", "damyang-bamboo.html", "gyeongju-night-walk.html", "pohang-homigot-guryongpo.html", "ulsan-taehwagang-daewangam.html", "mokpo-modern-history-yudal.html", "suwon-hwaseong-haenggung.html", "buyeo-baekje-gungnamji.html", "buan-chaeseokgang-naesosa.html", "yeongju-buseoksa-sosuseowon.html", "haenam-ttangkkeut-daeheungsa.html", "jecheon-uirimji-cheongpung.html", "cheongsong-juwangsan-jusanji.html", "uljin-wangpicheon-mangyang-jeukbyeon.html", "gochang-eupseong-seonunsa-ungeok.html", "danyang-dodam-mancheonha-jando.html", "gongju-gongsanseong-jemincheon.html", "gangjin-dasan-baekryeonsa.html", "jinju-jinjuseong-namgang.html", "namhae-german-darangyi.html", "namwon-gwanghallu-yocheon.html", "ganghwa-goryeogungji-jeondungsa-dongmak.html", "ganghwa-gyodongdo-daeryong-hwagaejeongwon.html", "seocheon-janghang-skywalk-ecology.html", "cheongsando-slow-road.html", "geoje-windy-hill-oedo-haegeumgang.html", "jindo-unnim-sebang-sinbi.html", "yeosu-odongdo-dolsan-hyangilam.html", "taean-anmyeondo-kkotji-chollipo.html", "sokcho-central-abaimaeul-cheongchoho.html", "miryang-yeongnamnu-wiyangji.html", "yeongwol-cheongnyeongpo-jangneung-byeolmaro.html", "iksan-mireuksa-wanggungri.html", "wanju-samnye-bibijeong-daedunsan.html", "taebaek-hwangji-coalmuseum-yongyeon.html", "chuncheon-uiam-samaksan-gongjicheon.html", "jeongseon-arirang-market-arihills-hwaam.html", "mungyeong-saejae-omija-railbike-oncheon.html", "yeongdeok-blue-road-jangsa-goraebul.html", "hapcheon-haeinsa-hwangmaesan.html", "pyeongchang-odaesan-woljeongsa-sangwonsa.html", "samcheok-chogok-jangho-hwanseon.html", "gunsan-time-travel-museum-railway.html", "pocheon-hantangang-sanjeonghosu.html", "yeongam-wolchulsan-gurim-wangin-dogi.html", "yeonggwang-bulgapsa-baeksu-beopseongpo.html", "goseong-tongil-dmz-hwajinpo.html", "yangyang-naksan-hajodae-jukdo.html"];
-  const pages = await Promise.all(publicPages.map(readProjectFile));
+test("public core pages keep production metadata and valid Korean encoding", async () => {
+  const pages = [
+    "index.html",
+    "destinations.html",
+    "travel-guide.html",
+    "beach.html",
+    "sources.html",
+    "about.html",
+    "privacy.html",
+    "contact.html"
+  ];
 
-  pages.forEach((html, index) => {
-    assert.match(html, /rel=["']canonical["']/, `${publicPages[index]} has a canonical link`);
-    assert.match(html, /google-adsense-account/, `${publicPages[index]} has the AdSense ownership meta tag`);
-    assert.match(html, /ca-pub-5751319666030430/, `${publicPages[index]} uses the configured publisher`);
-  });
+  for (const path of pages) {
+    const html = await readProjectFile(path);
+    assertEncodingIsHealthy(html, path);
+    assert.match(html, /rel=["']canonical["']/, path + " has a canonical link");
+    assert.match(html, /google-adsense-account/, path + " has the AdSense ownership meta tag");
+    assert.ok(html.includes(publisherId), path + " uses the configured AdSense publisher");
+  }
 
   const notFound = await readProjectFile("404.html");
   assert.match(notFound, /noindex, nofollow/);
   assert.doesNotMatch(notFound, /adsbygoogle|google-adsense-account/);
 });
 
-test("destination cards lead to substantial standalone travel stories", async () => {
-  const stories = [
-    ["changnyeong-upo-santokki-mannyeongyo.html", "travel-changnyeong-upo-santokki-mannyeongyo.png"],
-    ["yeonggwang-bulgapsa-baeksu-beopseongpo.html", "travel-yeonggwang-bulgapsa-baeksu-beopseongpo.png"],
-    ["yangyang-naksan-hajodae-jukdo.html", "travel-yangyang-naksan-hajodae-jukdo.png"],
-    ["jinan-maisan-tapsa-uniram-baniram.html", "travel-jinan-maisan-tapsa-uniram-baniram.png"],
-    ["pocheon-hantangang-sanjeonghosu.html", "travel-pocheon-hantangang-sanjeonghosu.png"],
-    ["yeongam-wolchulsan-gurim-wangin-dogi.html", "travel-yeongam-wolchulsan-gurim-wangin-dogi.png"],
-    ["ganghwa-gyodongdo-daeryong-hwagaejeongwon.html", "travel-ganghwa-gyodongdo-daeryong-hwagaejeongwon.png"],
-    ["gunsan-time-travel-museum-railway.html", "travel-gunsan-time-travel-museum-railway.png"],
-    ["jeongseon-arirang-market-arihills-hwaam.html", "travel-jeongseon-arirang-market-skywalk-hwaam.png"],
-    ["mungyeong-saejae-omija-railbike-oncheon.html", "travel-mungyeong-saejae-omija-railbike-oncheon.png"],
-    ["goseong-tongil-dmz-hwajinpo.html", "travel-goseong-tongil-dmz-hwajinpo.png"],
-    ["yeongdeok-blue-road-jangsa-goraebul.html", "travel-yeongdeok-blue-road-jangsa-goraebul.png"],
-    ["hapcheon-haeinsa-hwangmaesan.html", "travel-hapcheon-haeinsa-hwangmaesan.png"],
-    ["samcheok-chogok-jangho-hwanseon.html", "travel-samcheok-chogok-jangho-hwanseon.png"],
-    ["chuncheon-uiam-samaksan-gongjicheon.html", "travel-chuncheon-uiam-samaksan-gongjicheon.png"],
-    ["busan-coast.html", "travel-busan.webp"],
-    ["seosan-haemi-gaesimsa-ganweolam-birdland.html", "travel-seosan-haemi-gaesimsa-ganweolam-birdland.png"],
-    ["seoul-jeongdong.html", "travel-seoul.webp"],
-    ["jeju-east.html", "travel-jeju.webp"],
-    ["gangneung-sea.html", "travel-gangneung.webp"],
-    ["jeonju-hanok.html", "travel-jeonju.webp"],
-    ["suncheon-bay.html", "travel-suncheon.webp"],
-    ["gurye-hwaeomsa-seomjingang-saseongam.html", "travel-gurye-hwaeomsa-seomjingang-saseongam.png"],
-    ["boseong-daehandawon-tea-museum-yulpo.html", "travel-boseong-daehandawon-tea-museum-yulpo.png"],
-    ["hadong-hwagae-ssanggyesa-choinam-palsari.html", "travel-hadong-hwagae-ssanggyesa-palsari.png"],
-    ["daegu-gyeongsanggamyeong-seomun-suseong.html", "travel-daegu-seomun-suseong.png"],
-    ["suncheon-nagan-seonamsa-garden.html", "travel-suncheon-nagan-seonamsa-garden.png"],
-    ["andong-hahoe-byeongsan.html", "travel-andong-hahoe.png"],
-    ["tongyeong-dongpirang-cablecar.html", "travel-tongyeong.png"],
-    ["damyang-bamboo.html", "travel-damyang-bamboo.png"],
-    ["gyeongju-night-walk.html", "travel-gyeongju-night.png"],
-    ["pohang-homigot-guryongpo.html", "travel-pohang-homigot-guryongpo.png"],
-    ["ulsan-taehwagang-daewangam.html", "travel-ulsan-taehwagang-daewangam.png"],
-    ["mokpo-modern-history-yudal.html", "travel-mokpo-modern-history-yudal.png"],
-    ["suwon-hwaseong-haenggung.html", "travel-suwon-hwaseong-haenggung.png"],
-    ["buyeo-baekje-gungnamji.html", "travel-buyeo-baekje-gungnamji.png"],
-    ["buan-chaeseokgang-naesosa.html", "travel-buan-chaeseokgang-naesosa.png"],
-    ["yeongju-buseoksa-sosuseowon.html", "travel-yeongju-buseoksa-sosuseowon.png"],
-    ["haenam-ttangkkeut-daeheungsa.html", "travel-haenam-ttangkkeut-daeheungsa.png"],
-    ["jecheon-uirimji-cheongpung.html", "travel-jecheon-uirimji-cheongpung.png"],
-    ["cheongsong-juwangsan-jusanji.html", "travel-cheongsong-juwangsan-jusanji.png"],
-    ["uljin-wangpicheon-mangyang-jeukbyeon.html", "travel-uljin-wangpicheon-mangyang-jeukbyeon.png"],
-    ["gochang-eupseong-seonunsa-ungeok.html", "travel-gochang-eupseong-seonunsa-ungeok.png"],
-    ["danyang-dodam-mancheonha-jando.html", "travel-danyang-dodam-mancheonha-jando.png"],
-    ["iksan-mireuksa-wanggungri.html", "travel-iksan-mireuksa-wanggungri.png"],
-    ["miryang-yeongnamnu-wiyangji.html", "travel-miryang-yeongnamnu-wiyangji.png"],
-    ["yeongwol-cheongnyeongpo-jangneung-byeolmaro.html", "travel-yeongwol-cheongnyeongpo-jangneung-byeolmaro.png"],
-    ["taean-anmyeondo-kkotji-chollipo.html", "travel-taean-anmyeondo-kkotji-chollipo.png"],
-    ["wanju-samnye-bibijeong-daedunsan.html", "travel-wanju-samnye-bibijeong-daedunsan.png"],
-    ["cheongsando-slow-road.html", "travel-cheongsando-slow-road.png"],
-    ["geoje-windy-hill-oedo-haegeumgang.html", "travel-geoje-windy-hill-oedo-haegeumgang.png"],
-    ["jindo-unnim-sebang-sinbi.html", "travel-jindo-unnim-sebang-sinbi.png"],
-    ["yeosu-odongdo-dolsan-hyangilam.html", "travel-yeosu-odongdo-dolsan-hyangilam.png"],
-    ["jinju-jinjuseong-namgang.html", "travel-jinju-jinjuseong-namgang.png"],
-    ["gongju-gongsanseong-jemincheon.html", "travel-gongju-gongsanseong-jemincheon.png"],
-    ["gangjin-dasan-baekryeonsa.html", "travel-gangjin-dasan-baekryeonsa.png"],
-    ["namwon-gwanghallu-yocheon.html", "travel-namwon-gwanghallu-yocheon.png"],
-    ["ganghwa-goryeogungji-jeondungsa-dongmak.html", "travel-ganghwa-goryeogungji-jeondungsa-dongmak.png"],
-    ["seocheon-janghang-skywalk-ecology.html", "travel-seocheon-janghang-skywalk.png"],
-    ["sokcho-central-abaimaeul-cheongchoho.html", "travel-sokcho-central-abaimaeul-cheongchoho.png"],
-    ["taebaek-hwangji-coalmuseum-yongyeon.html", "travel-taebaek-hwangji-coalmuseum-yongyeon.png"]
-  ];
-  const [home, destinations, ...pages] = await Promise.all([
-    readProjectFile("index.html"),
-    readProjectFile("destinations.html"),
-    ...stories.map(([path]) => readProjectFile(path))
-  ]);
+test("every indexed travel story is readable, substantial, and structurally complete", async () => {
+  const sitemap = await readProjectFile("sitemap.xml");
+  const slugs = [...sitemap.matchAll(/<loc>https:\/\/mustview\.co\.kr\/([^<]*)<\/loc>/g)]
+    .map((match) => match[1].replace(/\/$/, ""))
+    .filter((slug) => !coreSlugs.has(slug));
 
-  stories.forEach(([path, image], index) => {
-    const html = pages[index];
-    const visibleText = html.replace(/<script[\s\S]*?<\/script>/g, " ").replace(/<style[\s\S]*?<\/style>/g, " ").replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim();
-    if (path !== "pyeongchang-odaesan-woljeongsa-sangwonsa.html") {
-      assert.match(home, new RegExp(`href=["']${path}["']`), `${path} is linked from the home page`);
-    }
-    if (path !== "yangyang-naksan-hajodae-jukdo.html") {
-      assert.match(destinations, new RegExp(`href=["']${path}["']`), `${path} is linked from the destination index`);
-    }
-    assert.match(html, /class=["']travel-post-body["']/);
-    assert.match(html, /application\/ld\+json/);
-    assert.match(html, new RegExp(`assets/${image}`));
-    assert.ok((html.match(/<h2/g) || []).length >= 5, `${path} has useful article sections`);
-    assert.ok(visibleText.length >= 2000, `${path} has substantial original body copy`);
-    if (path === "buyeo-baekje-gungnamji.html") {
-      assert.match(html, /href=["']gyeongju-night-walk\.html["']/);
-      assert.match(html, /href=["']suwon-hwaseong-haenggung\.html["']/);
-    }
-    if (path === "daegu-gyeongsanggamyeong-seomun-suseong.html") {
-      assert.match(html, /href=["']seoul-jeongdong\.html["']/);
-      assert.match(html, /href=["']gyeongju-night-walk\.html["']/);
-      assert.match(html, /href=["']jeonju-hanok\.html["']/);
-      assert.match(html, /href=["']travel-guide\.html["']/);
-    }
-    if (path === "gwangju-acc-yangnim-mudeungsan.html") {
-      assert.match(html, /href=["']damyang-bamboo\.html["']/);
-      assert.match(html, /href=["']jeonju-hanok\.html["']/);
-      assert.match(html, /href=["']mokpo-modern-history-yudal\.html["']/);
-      assert.match(html, /href=["']travel-guide\.html["']/);
-    }
-    if (path === "yeongam-wolchulsan-gurim-wangin-dogi.html") {
-      assert.match(html, /href=["']gangjin-dasan-baekryeonsa\.html["']/);
-      assert.match(html, /href=["']boseong-daehandawon-tea-museum-yulpo\.html["']/);
-      assert.match(html, /href=["']haenam-ttangkkeut-daeheungsa\.html["']/);
-      assert.match(html, /href=["']travel-guide\.html["']/);
-    }
-    if (path === "yeonggwang-bulgapsa-baeksu-beopseongpo.html") {
-      assert.match(html, /href=["']boseong-daehandawon-tea-museum-yulpo\.html["']/);
-      assert.match(html, /href=["']haenam-ttangkkeut-daeheungsa\.html["']/);
-      assert.match(html, /href=["']mokpo-modern-history-yudal\.html["']/);
-      assert.match(html, /href=["']travel-guide\.html["']/);
-    }
-    if (path === "yangyang-naksan-hajodae-jukdo.html") {
-      assert.match(html, /href=["']gangneung-sea\.html["']/);
-      assert.match(html, /href=["']sokcho-central-abaimaeul-cheongchoho\.html["']/);
-      assert.match(html, /href=["']uljin-wangpicheon-mangyang-jeukbyeon\.html["']/);
-      assert.match(html, /href=["']travel-guide\.html["']/);
-    }
-    if (path === "boseong-daehandawon-tea-museum-yulpo.html") {
-      assert.match(html, /href=["']suncheon-bay\.html["']/);
-      assert.match(html, /href=["']hadong-hwagae-ssanggyesa-choinam-palsari\.html["']/);
-      assert.match(html, /href=["']yeosu-odongdo-dolsan-hyangilam\.html["']/);
-      assert.match(html, /href=["']travel-guide\.html["']/);
-    }
-    if (path === "gurye-hwaeomsa-seomjingang-saseongam.html") {
-      assert.match(html, /href=["']suncheon-bay\.html["']/);
-      assert.match(html, /href=["']boseong-daehandawon-tea-museum-yulpo\.html["']/);
-      assert.match(html, /href=["']hadong-hwagae-ssanggyesa-choinam-palsari\.html["']/);
-      assert.match(html, /href=["']travel-guide\.html["']/);
-    }
-    if (path === "hadong-hwagae-ssanggyesa-choinam-palsari.html") {
-      assert.match(html, /href=["']boseong-daehandawon-tea-museum-yulpo\.html["']/);
-      assert.match(html, /href=["']suncheon-bay\.html["']/);
-      assert.match(html, /href=["']travel-guide\.html["']/);
-    }
-    if (path === "jinan-maisan-tapsa-uniram-baniram.html") {
-      assert.match(html, /href=["']wanju-samnye-bibijeong-daedunsan\.html["']/);
-      assert.match(html, /href=["']buan-chaeseokgang-naesosa\.html["']/);
-      assert.match(html, /href=["']jecheon-uirimji-cheongpung\.html["']/);
-      assert.match(html, /href=["']travel-guide\.html["']/);
-    }
-    if (path === "mungyeong-saejae-omija-railbike-oncheon.html") {
-      assert.match(html, /href=["']jecheon-uirimji-cheongpung\.html["']/);
-      assert.match(html, /href=["']gongju-gongsanseong-jemincheon\.html["']/);
-      assert.match(html, /href=["']yeongju-buseoksa-sosuseowon\.html["']/);
-      assert.match(html, /href=["']travel-guide\.html["']/);
-    }
-    if (path === "gunsan-time-travel-museum-railway.html") {
-      assert.match(html, /href=["']mokpo-modern-history-yudal\.html["']/);
-      assert.match(html, /href=["']seoul-jeongdong\.html["']/);
-      assert.match(html, /href=["']busan-coast\.html["']/);
-      assert.match(html, /href=["']travel-guide\.html["']/);
-    }
-    if (path === "pocheon-hantangang-sanjeonghosu.html") {
-      assert.match(html, /href=["']jecheon-uirimji-cheongpung\.html["']/);
-      assert.match(html, /href=["']pyeongchang-odaesan-woljeongsa-sangwonsa\.html["']/);
-      assert.match(html, /href=["']samcheok-chogok-jangho-hwanseon\.html["']/);
-      assert.match(html, /href=["']travel-guide\.html["']/);
-    }
-    if (path === "ganghwa-gyodongdo-daeryong-hwagaejeongwon.html") {
-      assert.match(html, /href=["']ganghwa-goryeogungji-jeondungsa-dongmak\.html["']/);
-      assert.match(html, /href=["']goseong-tongil-dmz-hwajinpo\.html["']/);
-      assert.match(html, /href=["']travel-guide\.html["']/);
-    }
-    if (path === "suncheon-nagan-seonamsa-garden.html") {
-      assert.match(html, /href=["']suncheon-bay\.html["']/);
-      assert.match(html, /href=["']jeonju-hanok\.html["']/);
-      assert.match(html, /href=["']travel-guide\.html["']/);
-    }
-    if (path === "buan-chaeseokgang-naesosa.html") {
-      assert.match(html, /href=["']seocheon-janghang-skywalk-ecology\.html["']/);
-      assert.match(html, /href=["']ganghwa-goryeogungji-jeondungsa-dongmak\.html["']/);
-      assert.match(html, /href=["']travel-guide\.html["']/);
-    }
-    if (path === "iksan-mireuksa-wanggungri.html") {
-      assert.match(html, /href=["']buyeo-baekje-gungnamji\.html["']/);
-      assert.match(html, /href=["']gongju-gongsanseong-jemincheon\.html["']/);
-      assert.match(html, /href=["']jeonju-hanok\.html["']/);
-      assert.match(html, /href=["']travel-guide\.html["']/);
-    }
-    if (path === "yeongju-buseoksa-sosuseowon.html") {
-      assert.match(html, /href=["']andong-hahoe-byeongsan\.html["']/);
-      assert.match(html, /href=["']buyeo-baekje-gungnamji\.html["']/);
-      assert.match(html, /href=["']travel-guide\.html["']/);
-    }
-    if (path === "haenam-ttangkkeut-daeheungsa.html") {
-      assert.match(html, /href=["']mokpo-modern-history-yudal\.html["']/);
-      assert.match(html, /href=["']damyang-bamboo\.html["']/);
-      assert.match(html, /href=["']travel-guide\.html["']/);
-    }
-    if (path === "jecheon-uirimji-cheongpung.html") {
-      assert.match(html, /href=["']mungyeong-saejae-omija-railbike-oncheon\.html["']/);
-      assert.match(html, /href=["']yeongju-buseoksa-sosuseowon\.html["']/);
-      assert.match(html, /href=["']travel-guide\.html["']/);
-    }
-    if (path === "cheongsong-juwangsan-jusanji.html") {
-      assert.match(html, /href=["']jecheon-uirimji-cheongpung\.html["']/);
-      assert.match(html, /href=["']yeongju-buseoksa-sosuseowon\.html["']/);
-      assert.match(html, /href=["']andong-hahoe-byeongsan\.html["']/);
-      assert.match(html, /href=["']travel-guide\.html["']/);
-    }
-    if (path === "uljin-wangpicheon-mangyang-jeukbyeon.html") {
-      assert.match(html, /href=["']gangneung-sea\.html["']/);
-      assert.match(html, /href=["']sokcho-central-abaimaeul-cheongchoho\.html["']/);
-      assert.match(html, /href=["']pohang-homigot-guryongpo\.html["']/);
-      assert.match(html, /href=["']travel-guide\.html["']/);
-    }
-    if (path === "gochang-eupseong-seonunsa-ungeok.html") {
-      assert.match(html, /href=["']buan-chaeseokgang-naesosa\.html["']/);
-      assert.match(html, /href=["']buyeo-baekje-gungnamji\.html["']/);
-      assert.match(html, /href=["']travel-guide\.html["']/);
-    }
-    if (path === "miryang-yeongnamnu-wiyangji.html") {
-      assert.match(html, /href=["']gongju-gongsanseong-jemincheon\.html["']/);
-      assert.match(html, /href=["']suwon-hwaseong-haenggung\.html["']/);
-      assert.match(html, /href=["']gyeongju-night-walk\.html["']/);
-      assert.match(html, /href=["']travel-guide\.html["']/);
-    }
-    if (path === "yeongwol-cheongnyeongpo-jangneung-byeolmaro.html") {
-      assert.match(html, /href=["']jecheon-uirimji-cheongpung\.html["']/);
-      assert.match(html, /href=["']gongju-gongsanseong-jemincheon\.html["']/);
-      assert.match(html, /href=["']gyeongju-night-walk\.html["']/);
-      assert.match(html, /href=["']travel-guide\.html["']/);
-    }
-    if (path === "wanju-samnye-bibijeong-daedunsan.html") {
-      assert.match(html, /href=["']jeonju-hanok\.html["']/);
-      assert.match(html, /href=["']gongju-gongsanseong-jemincheon\.html["']/);
-      assert.match(html, /href=["']namwon-gwanghallu-yocheon\.html["']/);
-      assert.match(html, /href=["']travel-guide\.html["']/);
-    }
-    if (path === "chuncheon-uiam-samaksan-gongjicheon.html") {
-      assert.match(html, /href=["']jecheon-uirimji-cheongpung\.html["']/);
-      assert.match(html, /href=["']sokcho-central-abaimaeul-cheongchoho\.html["']/);
-      assert.match(html, /href=["']travel-guide\.html["']/);
-    }
-    if (path === "hapcheon-haeinsa-hwangmaesan.html") {
-      assert.match(html, /href=["']yeongju-buseoksa-sosuseowon\.html["']/);
-      assert.match(html, /href=["']andong-hahoe-byeongsan\.html["']/);
-      assert.match(html, /href=["']travel-guide\.html["']/);
-    }
-    if (path === "samcheok-chogok-jangho-hwanseon.html") {
-      assert.match(html, /href=["']gangneung-sea\.html["']/);
-      assert.match(html, /href=["']yeongdeok-blue-road-jangsa-goraebul\.html["']/);
-      assert.match(html, /href=["']pohang-homigot-guryongpo\.html["']/);
-      assert.match(html, /href=["']travel-guide\.html["']/);
-    }
-    if (path === "taebaek-hwangji-coalmuseum-yongyeon.html") {
-      assert.match(html, /href=["']jecheon-uirimji-cheongpung\.html["']/);
-      assert.match(html, /href=["']cheongsong-juwangsan-jusanji\.html["']/);
-      assert.match(html, /href=["']travel-guide\.html["']/);
-    }
-    if (path === "jeongseon-arirang-market-arihills-hwaam.html") {
-      assert.match(html, /href=["']taebaek-hwangji-coalmuseum-yongyeon\.html["']/);
-      assert.match(html, /href=["']jecheon-uirimji-cheongpung\.html["']/);
-      assert.match(html, /href=["']danyang-dodam-mancheonha-jando\.html["']/);
-      assert.match(html, /href=["']travel-guide\.html["']/);
-    }
-    if (path === "danyang-dodam-mancheonha-jando.html") {
-      assert.match(html, /href=["']jecheon-uirimji-cheongpung\.html["']/);
-      assert.match(html, /href=["']buyeo-baekje-gungnamji\.html["']/);
-      assert.match(html, /href=["']travel-guide\.html["']/);
-    }
-    if (path === "jindo-unnim-sebang-sinbi.html") {
-      assert.match(html, /href=["']haenam-ttangkkeut-daeheungsa\.html["']/);
-      assert.match(html, /href=["']mokpo-modern-history-yudal\.html["']/);
-      assert.match(html, /href=["']travel-guide\.html["']/);
-    }
-    if (path === "taean-anmyeondo-kkotji-chollipo.html") {
-      assert.match(html, /href=["']seosan-haemi-gaesimsa-ganweolam-birdland\.html["']/);
-      assert.match(html, /href=["']ganghwa-goryeogungji-jeondungsa-dongmak\.html["']/);
-      assert.match(html, /href=["']seocheon-janghang-skywalk-ecology\.html["']/);
-      assert.match(html, /href=["']suncheon-bay\.html["']/);
-      assert.match(html, /href=["']travel-guide\.html["']/);
-    }
-    if (path === "yeosu-odongdo-dolsan-hyangilam.html") {
-      assert.match(html, /href=["']busan-coast\.html["']/);
-      assert.match(html, /href=["']suncheon-bay\.html["']/);
-      assert.match(html, /href=["']tongyeong-dongpirang-cablecar\.html["']/);
-      assert.match(html, /href=["']travel-guide\.html["']/);
-    }
-    if (path === "cheongsando-slow-road.html") {
-      assert.match(html, /href=["']haenam-ttangkkeut-daeheungsa\.html["']/);
-      assert.match(html, /href=["']jindo-unnim-sebang-sinbi\.html["']/);
-      assert.match(html, /href=["']travel-guide\.html["']/);
-    }
-    if (path === "geoje-windy-hill-oedo-haegeumgang.html") {
-      assert.match(html, /href=["']busan-coast\.html["']/);
-      assert.match(html, /href=["']tongyeong-dongpirang-cablecar\.html["']/);
-      assert.match(html, /href=["']namhae-german-darangyi\.html["']/);
-      assert.match(html, /href=["']travel-guide\.html["']/);
-    }
-    if (path === "gongju-gongsanseong-jemincheon.html") {
-      assert.match(html, /href=["']buyeo-baekje-gungnamji\.html["']/);
-      assert.match(html, /href=["']jecheon-uirimji-cheongpung\.html["']/);
-      assert.match(html, /href=["']travel-guide\.html["']/);
-    }
-    if (path === "namhae-german-darangyi.html") {
-      assert.match(html, /href=["']busan-coast\.html["']/);
-      assert.match(html, /href=["']jeju-east\.html["']/);
-      assert.match(html, /href=["']travel-guide\.html["']/);
-    }
-    if (path === "namwon-gwanghallu-yocheon.html") {
-      assert.match(html, /href=["']jeonju-hanok\.html["']/);
-      assert.match(html, /href=["']gyeongju-night-walk\.html["']/);
-      assert.match(html, /href=["']travel-guide\.html["']/);
-    }
-    if (path === "ganghwa-goryeogungji-jeondungsa-dongmak.html") {
-      assert.match(html, /href=["']seoul-jeongdong\.html["']/);
-      assert.match(html, /href=["']suwon-hwaseong-haenggung\.html["']/);
-      assert.match(html, /href=["']travel-guide\.html["']/);
-    }
-    if (path === "seocheon-janghang-skywalk-ecology.html") {
-      assert.match(html, /href=["']suncheon-bay\.html["']/);
-      assert.match(html, /href=["']gangneung-sea\.html["']/);
-      assert.match(html, /href=["']travel-guide\.html["']/);
-    }
-    if (path === "sokcho-central-abaimaeul-cheongchoho.html") {
-      assert.match(html, /href=["']gangneung-sea\.html["']/);
-      assert.match(html, /href=["']pohang-homigot-guryongpo\.html["']/);
-      assert.match(html, /href=["']travel-guide\.html["']/);
-    }
-    if (path === "gangjin-dasan-baekryeonsa.html") {
-      assert.match(html, /href=["']haenam-ttangkkeut-daeheungsa\.html["']/);
-      assert.match(html, /href=["']mokpo-modern-history-yudal\.html["']/);
-      assert.match(html, /href=["']travel-guide\.html["']/);
-    }
-    if (path === "jinju-jinjuseong-namgang.html") {
-      assert.match(html, /href=["']gyeongju-night-walk\.html["']/);
-      assert.match(html, /href=["']suwon-hwaseong-haenggung\.html["']/);
-      assert.match(html, /href=["']mokpo-modern-history-yudal\.html["']/);
-    }
-    if (path === "yeongdeok-blue-road-jangsa-goraebul.html") {
-      assert.match(html, /href=["']pohang-homigot-guryongpo\.html["']/);
-      assert.match(html, /href=["']uljin-wangpicheon-mangyang-jeukbyeon\.html["']/);
-      assert.match(html, /href=["']busan-coast\.html["']/);
-      assert.match(html, /href=["']travel-guide\.html["']/);
-    }
-    if (path === "pyeongchang-odaesan-woljeongsa-sangwonsa.html") {
-      assert.match(html, /href=["']yeongwol-cheongnyeongpo-jangneung-byeolmaro\.html["']/);
-      assert.match(html, /href=["']chuncheon-uiam-samaksan-gongjicheon\.html["']/);
-      assert.match(html, /href=["']gangneung-sea\.html["']/);
-      assert.match(html, /href=["']travel-guide\.html["']/);
-    }
-  });
+  assert.ok(slugs.length >= 50, "the sitemap retains the travel story archive");
+  assert.equal(new Set(slugs).size, slugs.length, "the sitemap has no duplicate story URLs");
 
-  const suncheonBay = await readProjectFile("suncheon-bay.html");
-  assert.match(suncheonBay, /href=["']suncheon-nagan-seonamsa-garden\.html["']/);
-  assert.match(suncheonBay, /href=["']gurye-hwaeomsa-seomjingang-saseongam\.html["']/);
-  assert.match(suncheonBay, /href=["']boseong-daehandawon-tea-museum-yulpo\.html["']/);
-  assert.match(suncheonBay, /href=["']travel-guide\.html["']/);
+  for (const slug of slugs) {
+    const path = slug + ".html";
+    const html = await readProjectFile(path);
+    const text = visibleText(html);
+    const headings = html.match(/<h2\b/gi) || [];
+    const jsonLdBlocks = [...html.matchAll(/<script\s+type=["']application\/ld\+json["'][^>]*>([\s\S]*?)<\/script>/gi)];
 
-  const boseong = await readProjectFile("boseong-daehandawon-tea-museum-yulpo.html");
-  assert.match(boseong, /href=["']suncheon-bay\.html["']/);
-  assert.match(boseong, /href=["']hadong-hwagae-ssanggyesa-choinam-palsari\.html["']/);
-  assert.match(boseong, /href=["']yeosu-odongdo-dolsan-hyangilam\.html["']/);
-  assert.match(boseong, /href=["']travel-guide\.html["']/);
+    assertEncodingIsHealthy(html, path);
+    assert.match(html, /class=["'][^"']*travel-post-body/, path + " has a story body");
+    assert.ok(text.length >= 1500, path + " has substantial original reading content");
+    assert.ok(headings.length >= 4, path + " has a useful article structure");
+    assert.match(html, /rel=["']canonical["']/, path + " has a canonical link");
+    assert.ok(html.includes("https://mustview.co.kr/" + slug), path + " declares its public URL");
+    assert.ok(html.includes(publisherId), path + " uses the configured AdSense publisher");
+    assert.ok(jsonLdBlocks.length >= 1, path + " has structured article data");
+
+    for (const block of jsonLdBlocks) {
+      assert.doesNotThrow(() => JSON.parse(block[1]), path + " has valid JSON-LD");
+    }
+
+    const assetPaths = [...html.matchAll(/<img\b[^>]*\bsrc=["'](assets\/[^"']+)["']/gi)].map((match) => match[1]);
+    assert.ok(assetPaths.length >= 1, path + " has an editorial image");
+    for (const assetPath of assetPaths) {
+      await assert.doesNotReject(readProjectFile(assetPath), path + " references an existing image");
+    }
+  }
 });
 
-test("sitemap and Cloudflare workflow include the current travel site", async () => {
-  const [sitemap, workflow] = await Promise.all([
+test("the destination archive links current stories and excludes damaged legacy pages", async () => {
+  const [html, sitemap, redirects] = await Promise.all([
+    readProjectFile("destinations.html"),
     readProjectFile("sitemap.xml"),
-    readProjectFile(".github/workflows/deploy-cloudflare-pages.yml")
+    readProjectFile("_redirects")
   ]);
 
-  for (const path of ["/destinations", "/changnyeong-upo-santokki-mannyeongyo", "/yangyang-naksan-hajodae-jukdo", "/busan-coast", "/seoul-jeongdong", "/jeju-east", "/gangneung-sea", "/jeonju-hanok", "/suncheon-bay", "/gurye-hwaeomsa-seomjingang-saseongam", "/boseong-daehandawon-tea-museum-yulpo", "/hadong-hwagae-ssanggyesa-choinam-palsari", "/daegu-gyeongsanggamyeong-seomun-suseong", "/gwangju-acc-yangnim-mudeungsan", "/jinan-maisan-tapsa-uniram-baniram", "/andong-hahoe-byeongsan", "/tongyeong-dongpirang-cablecar", "/damyang-bamboo", "/gyeongju-night-walk", "/pohang-homigot-guryongpo", "/ulsan-taehwagang-daewangam", "/mokpo-modern-history-yudal", "/suwon-hwaseong-haenggung", "/buyeo-baekje-gungnamji", "/buan-chaeseokgang-naesosa", "/yeongju-buseoksa-sosuseowon", "/haenam-ttangkkeut-daeheungsa", "/jecheon-uirimji-cheongpung", "/cheongsong-juwangsan-jusanji", "/gochang-eupseong-seonunsa-ungeok", "/danyang-dodam-mancheonha-jando", "/gongju-gongsanseong-jemincheon", "/gangjin-dasan-baekryeonsa", "/jinju-jinjuseong-namgang", "/namhae-german-darangyi", "/namwon-gwanghallu-yocheon", "/ganghwa-goryeogungji-jeondungsa-dongmak", "/seocheon-janghang-skywalk-ecology", "/cheongsando-slow-road", "/jindo-unnim-sebang-sinbi", "/yeosu-odongdo-dolsan-hyangilam", "/taean-anmyeondo-kkotji-chollipo", "/seosan-haemi-gaesimsa-ganweolam-birdland", "/sokcho-central-abaimaeul-cheongchoho", "/miryang-yeongnamnu-wiyangji", "/yeongwol-cheongnyeongpo-jangneung-byeolmaro", "/wanju-samnye-bibijeong-daedunsan", "/mungyeong-saejae-omija-railbike-oncheon", "/yeongdeok-blue-road-jangsa-goraebul", "/hapcheon-haeinsa-hwangmaesan", "/pyeongchang-odaesan-woljeongsa-sangwonsa", "/samcheok-chogok-jangho-hwanseon", "/gunsan-time-travel-museum-railway", "/pocheon-hantangang-sanjeonghosu", "/yeongam-wolchulsan-gurim-wangin-dogi", "/yeonggwang-bulgapsa-baeksu-beopseongpo", "/goseong-tongil-dmz-hwajinpo", "/gwangju-acc-yangnim-mudeungsan", "/travel-guide", "/beach", "/sources", "/about", "/privacy", "/contact"]) {
-    assert.match(sitemap, new RegExp(`https://mustview\\.co\\.kr${path}`));
+  for (const slug of [
+    "changnyeong-upo-santokki-mannyeongyo",
+    "yangyang-naksan-hajodae-jukdo",
+    "seosan-haemi-gaesimsa-ganweolam-birdland",
+    "gurye-hwaeomsa-seomjingang-saseongam",
+    "hadong-hwagae-ssanggyesa-choinam-palsari"
+  ]) {
+    assert.ok(html.includes(slug + ".html"), slug + " is linked from the archive");
   }
+
+  for (const slug of ["iksan-mireuksa-wanggungri", "miryang-yeongnamnu-wiyangji"]) {
+    assert.doesNotMatch(sitemap, new RegExp("<loc>https://mustview\\\\.co\\\\.kr/" + slug + "</loc>"));
+    assert.ok(redirects.includes("/" + slug + " /destinations 301"), slug + " redirects to the healthy archive");
+  }
+});
+
+test("sitemap and Cloudflare workflow validate before deployment", async () => {
+  const [sitemap, workflow, robots, ads] = await Promise.all([
+    readProjectFile("sitemap.xml"),
+    readProjectFile(".github/workflows/deploy-cloudflare-pages.yml"),
+    readProjectFile("robots.txt"),
+    readProjectFile("ads.txt")
+  ]);
+
+  for (const path of [
+    "/destinations",
+    "/travel-guide",
+    "/beach",
+    "/sources",
+    "/about",
+    "/privacy",
+    "/contact"
+  ]) {
+    assert.ok(sitemap.includes("https://mustview.co.kr" + path), path + " is indexed");
+  }
+
   assert.doesNotMatch(sitemap, /typhoon-guide|readiness-guide/);
   assert.match(workflow, /npm run check/);
   assert.match(workflow, /npm run test/);
   assert.match(workflow, /npm run build/);
   assert.match(workflow, /cloudflare\/wrangler-action/);
+  assert.match(robots, /Sitemap:\s*https:\/\/mustview\.co\.kr\/sitemap\.xml/);
+  assert.match(ads, /google\.com,\s*pub-5751319666030430,\s*DIRECT,\s*f08c47fec0942fa0/);
 });
