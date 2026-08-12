@@ -3,10 +3,7 @@ import test from "node:test";
 import { onRequestGet, __test } from "../functions/api/housing-complexes.js";
 import { captureFetch, jsonResponse, makeRequest, readJson, withFetchMock } from "./helpers.js";
 
-const samplePayload = {
-  code: "000",
-  msg: "OK",
-  hsmpList: [
+const sampleRows = [
     {
       numOfRows: "20",
       pageNo: 1,
@@ -67,7 +64,16 @@ const samplePayload = {
       bassRentGtn: "2000000",
       bassMtRntchrg: "396760"
     }
-  ]
+  ];
+
+const samplePayload = {
+  header: { resultCode: "00", resultMsg: "NORMAL SERVICE." },
+  body: {
+    totalCount: "3",
+    numOfRows: "20",
+    pageNo: "1",
+    item: sampleRows
+  }
 };
 
 test("housing complexes require a server-side key", async () => {
@@ -96,7 +102,10 @@ test("housing complexes validate location pairs and pagination boundaries", asyn
     assert.equal(response.status, 400, path);
   }
 
-  const { fetchMock, calls } = captureFetch(async () => jsonResponse({ code: "000", hsmpList: [] }));
+  const { fetchMock, calls } = captureFetch(async () => jsonResponse({
+    header: { resultCode: "00", resultMsg: "NORMAL SERVICE." },
+    body: { totalCount: "0", item: [] }
+  }));
   const response = await withFetchMock(fetchMock, () => onRequestGet({
     request: makeRequest("/api/housing-complexes?region=52&district=800&page=100&pageSize=40"),
     env
@@ -129,14 +138,18 @@ test("housing complexes map, group, and protect official rows", async () => {
   assert.equal(body.summary.totalRows, 3);
   assert.equal(body.summary.returnedComplexes, 2);
   assert.equal(calls.length, 1);
-  assert.equal(calls[0].url.hostname, "data.myhome.go.kr");
-  assert.equal(calls[0].url.searchParams.get("ServiceKey"), "encoded+key=");
+  assert.equal(calls[0].url.hostname, "apis.data.go.kr");
+  assert.equal(calls[0].url.pathname, "/1613000/HWSPR04/rentalHouseGwList");
+  assert.equal(calls[0].url.searchParams.get("serviceKey"), "encoded+key=");
   assert.equal(calls[0].url.searchParams.get("brtcCode"), "11");
   assert.equal(calls[0].url.searchParams.get("signguCode"), "140");
 });
 
 test("housing complexes return a clear empty state", async () => {
-  const response = await withFetchMock(async () => jsonResponse({ code: "000", msg: "OK", hsmpList: [] }), () => onRequestGet({
+  const response = await withFetchMock(async () => jsonResponse({
+    header: { resultCode: "00", resultMsg: "NORMAL SERVICE." },
+    body: { totalCount: "0", item: [] }
+  }), () => onRequestGet({
     request: makeRequest("/api/housing-complexes?region=36&district=110"),
     env: { LH_API_KEY: "test-key" }
   }));
@@ -145,6 +158,15 @@ test("housing complexes return a clear empty state", async () => {
   assert.deepEqual(body.complexes, []);
   assert.equal(body.location.regionName, "세종특별자치시");
   assert.equal(body.summary.hasMore, false);
+
+  const noData = await withFetchMock(async () => jsonResponse({
+    header: { resultCode: "03", resultMsg: "NO_DATA" }
+  }), () => onRequestGet({
+    request: makeRequest("/api/housing-complexes?region=36&district=110"),
+    env: { LH_API_KEY: "test-key" }
+  }));
+  assert.equal(noData.status, 200);
+  assert.deepEqual((await readJson(noData)).complexes, []);
 });
 
 test("housing complexes distinguish authorization and rate limits", async () => {
@@ -165,6 +187,12 @@ test("housing complexes distinguish authorization and rate limits", async () => 
   const rateBody = await readJson(rateLimit);
   assert.equal(rateBody.reason, "rate-limit");
   assert.match(rateBody.message, /조회 한도/);
+
+  const forbidden = await withFetchMock(async () => new Response("Forbidden", { status: 403 }), () => onRequestGet({
+    request: makeRequest("/api/housing-complexes"), env
+  }));
+  assert.equal(forbidden.status, 503);
+  assert.equal((await readJson(forbidden)).reason, "authorization");
 });
 
 test("housing complexes handle malformed and network responses", async () => {
@@ -191,4 +219,6 @@ test("housing complex helpers reject objects, invalid dates, and unsafe values",
   assert.equal(__test.cleanDate("20240229"), "2024-02-29");
   assert.equal(__test.locationFor("11", "140").districtName, "중구");
   assert.equal(__test.locationFor("11", "999"), null);
+  assert.deepEqual(__test.locateRows({ body: { item: sampleRows[0] } }), [sampleRows[0]]);
+  assert.deepEqual(__test.locateRows({ body: { item: {} } }), []);
 });

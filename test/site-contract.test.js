@@ -208,7 +208,7 @@ test("the housing complexes page wires official region codes, grouped results, a
     assert.match(html, new RegExp("id=[\"']" + id + "[\"']"), id + " is present on complexes page");
   }
   assertHealthyKorean(html, "housing-complexes.html");
-  assert.match(html, /data\.go\.kr\/data\/15058476/);
+  assert.match(html, /data\.go\.kr\/data\/15110581/);
   assert.match(html, /단지정보와 모집공고는 다릅니다/);
   assert.match(client, /\/api\/housing-complexes/);
   assert.match(client, /housing-region-codes\.js/);
@@ -219,7 +219,7 @@ test("the housing complexes page wires official region codes, grouped results, a
   assert.match(client, /map\.naver\.com/);
   assert.doesNotMatch(client, /innerHTML\s*=/, "external complex fields are not injected as HTML");
   assert.match(server, /LH_COMPLEX_API_KEY/);
-  assert.match(server, /data\.myhome\.go\.kr/);
+  assert.match(server, /apis\.data\.go\.kr\/1613000\/HWSPR04/);
   assert.match(server, /authorization/);
   assert.doesNotMatch(server, /["'][a-f0-9]{64}["']/i, "a real public-data key is not committed");
   assert.equal(HOUSING_REGIONS.length, 16);
@@ -238,7 +238,7 @@ test("sources, about, and privacy explain authority, limits, caching, and local 
   ]);
 
   assert.match(sources, /data\.go\.kr\/data\/15058530/);
-  assert.match(sources, /data\.go\.kr\/data\/15058476/);
+  assert.match(sources, /data\.go\.kr\/data\/15110581/);
   assert.match(sources, /data\.go\.kr\/data\/15095335/);
   assert.match(sources, /data\.go\.kr\/data\/15113968/);
   assert.match(sources, /data\.go\.kr\/data\/15109768/);

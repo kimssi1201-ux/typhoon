@@ -1,7 +1,7 @@
 import { HOUSING_REGIONS } from "../../housing-region-codes.js";
 
-const COMPLEX_ENDPOINT = "https://data.myhome.go.kr:443/rentalHouseList";
-const OFFICIAL_DATASET_URL = "https://www.data.go.kr/data/15058476/openapi.do";
+const COMPLEX_ENDPOINT = "https://apis.data.go.kr/1613000/HWSPR04/rentalHouseGwList";
+const OFFICIAL_DATASET_URL = "https://www.data.go.kr/data/15110581/openapi.do";
 const AUTHORIZATION_ERROR = /service[_\s-]*(?:key|access)|not registered|permission denied|expired|인증|승인|활용신청/i;
 
 const LOCATION_NAMES = new Map();
@@ -76,6 +76,14 @@ function cleanDate(value) {
 }
 
 function locateRows(payload) {
+  const currentItems = payload?.body?.item
+    ?? payload?.response?.body?.items?.item
+    ?? payload?.response?.body?.item;
+  if (Array.isArray(currentItems)) return currentItems;
+  if (currentItems && typeof currentItems === "object") {
+    return Object.keys(currentItems).length ? [currentItems] : [];
+  }
+
   const queue = payload && typeof payload === "object" ? [payload] : [];
   while (queue.length) {
     const current = queue.shift();
@@ -183,9 +191,21 @@ function failure(reason, fallback) {
 }
 
 function classifyError(payload, response) {
-  const code = cleanText(payload?.code || payload?.response?.header?.resultCode, 20);
-  const message = cleanText(payload?.msg || payload?.response?.header?.resultMsg, 300);
-  if ((!code || code === "000" || code === "00") && response.ok) return null;
+  const code = cleanText(
+    payload?.code
+      || payload?.header?.resultCode
+      || payload?.response?.header?.resultCode,
+    20
+  );
+  const message = cleanText(
+    payload?.msg
+      || payload?.header?.resultMsg
+      || payload?.response?.header?.resultMsg,
+    300
+  );
+  if ([401, 403].includes(response.status)) return { reason: "authorization", message: "" };
+  if (response.status === 429) return { reason: "rate-limit", message: "" };
+  if ((!code || ["000", "00", "03"].includes(code)) && response.ok) return null;
   if (["20", "30", "31"].includes(code) || AUTHORIZATION_ERROR.test(message)) {
     return { reason: "authorization", message: "" };
   }
@@ -216,7 +236,7 @@ export async function onRequestGet({ request, env }) {
   if (page === null || pageSize === null) return json({ ok: false, message: "조회 페이지 범위를 다시 확인해 주세요." }, 400);
 
   const upstreamUrl = new URL(COMPLEX_ENDPOINT);
-  upstreamUrl.searchParams.set("ServiceKey", key);
+  upstreamUrl.searchParams.set("serviceKey", key);
   upstreamUrl.searchParams.set("brtcCode", regionCode);
   upstreamUrl.searchParams.set("signguCode", districtCode);
   upstreamUrl.searchParams.set("numOfRows", String(pageSize));
@@ -234,6 +254,10 @@ export async function onRequestGet({ request, env }) {
     try {
       payload = JSON.parse(responseText);
     } catch {
+      if ([401, 403].includes(response.status) || AUTHORIZATION_ERROR.test(responseText)) {
+        return failure("authorization");
+      }
+      if (response.status === 429) return failure("rate-limit");
       return failure("upstream", "공식 단지정보 응답을 읽지 못했습니다. 잠시 후 다시 시도해 주세요.");
     }
 
@@ -242,7 +266,13 @@ export async function onRequestGet({ request, env }) {
 
     const rows = locateRows(payload);
     const complexes = groupComplexes(rows);
-    const rawTotal = cleanNumber(payload.totalCount ?? rows[0]?.totalCount, true);
+    const rawTotal = cleanNumber(
+      payload?.body?.totalCount
+        ?? payload?.response?.body?.totalCount
+        ?? payload?.totalCount
+        ?? rows[0]?.totalCount,
+      true
+    );
     const totalRows = rawTotal === null ? rows.length : rawTotal;
 
     return json({

@@ -3,7 +3,7 @@ import { HOUSING_REGIONS } from "./housing-region-codes.js";
 const API_PATH = "/api/housing-complexes";
 const CACHE_PREFIX = "mustview:housing:complexes:v1:";
 const FILTERS_KEY = "mustview:housing:complex-filters:v1";
-const DATASET_URL = "https://www.data.go.kr/data/15058476/openapi.do";
+const DATASET_URL = "https://www.data.go.kr/data/15110581/openapi.do";
 const CACHE_FRESH_MS = 30 * 60 * 1000;
 const CACHE_FALLBACK_MS = 24 * 60 * 60 * 1000;
 
