@@ -49,6 +49,8 @@ test("the housing home wires search, filters, results, favorites, menu, and offi
     "savedNotices",
     "savedList",
     "siteMenu",
+    "headerSearch",
+    "shortcutTitle",
     "housingSupport",
     "housingSupportFilters",
     "housingSupportList",
@@ -105,6 +107,10 @@ test("the housing home wires search, filters, results, favorites, menu, and offi
   assert.match(css, /min-height:\s*48px/);
   assert.match(css, /\.bottom-nav/);
   assert.match(css, /Editorial public-information design/);
+  assert.match(css, /Mobile information-portal home/);
+  assert.match(html, /class="shortcut-grid"/);
+  assert.match(client, /setupHeaderSearch/);
+  assert.match(client, /scrollIntoView/);
   assert.match(css, /\.brand-mark\s*\{[\s\S]*?width:\s*5px/);
   assert.match(css, /@media \(max-width: 760px\)/);
   assert.doesNotMatch(html, /MustView Travel|여행 저널|해수욕장|태풍/);

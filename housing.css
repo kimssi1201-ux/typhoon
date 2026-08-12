@@ -4798,3 +4798,337 @@ body {
     background: rgba(255, 255, 255, .99);
   }
 }
+
+/* Mobile information-portal home */
+.header-tools {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.header-search-button {
+  display: grid;
+  position: relative;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  place-items: center;
+  border: 0;
+  background: transparent;
+  color: var(--ink);
+}
+
+.search-symbol {
+  display: block;
+  position: relative;
+  width: 17px;
+  height: 17px;
+  border: 2px solid currentColor;
+  border-radius: 50%;
+}
+
+.search-symbol::after {
+  position: absolute;
+  right: -6px;
+  bottom: -4px;
+  width: 8px;
+  height: 2px;
+  background: currentColor;
+  content: "";
+  transform: rotate(45deg);
+  transform-origin: left center;
+}
+
+.official-symbol {
+  display: none;
+}
+
+.portal-overview {
+  padding: 34px 0 38px;
+  border-bottom: 1px solid var(--line);
+  background: white;
+}
+
+.portal-banner {
+  display: grid;
+  position: relative;
+  min-height: 238px;
+  padding: 34px 38px;
+  align-items: center;
+  overflow: hidden;
+  border-radius: 8px;
+  background: #244f53;
+  color: white;
+}
+
+.portal-banner::after {
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+  background: rgba(17, 47, 51, .67);
+  content: "";
+}
+
+.portal-banner img {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  inset: 0;
+  object-fit: cover;
+  object-position: center 56%;
+}
+
+.portal-banner > div {
+  position: relative;
+  z-index: 2;
+  max-width: 590px;
+}
+
+.portal-banner > div > span {
+  display: block;
+  font-size: 13px;
+  font-weight: 750;
+}
+
+.portal-banner h2 {
+  max-width: 560px;
+  margin: 8px 0 10px;
+  font-size: 29px;
+  line-height: 1.35;
+  word-break: keep-all;
+}
+
+.portal-banner p {
+  max-width: 540px;
+  margin: 0;
+  color: rgba(255, 255, 255, .88);
+  font-size: 14px;
+}
+
+.portal-banner a {
+  display: inline-grid;
+  min-height: 44px;
+  margin-top: 20px;
+  padding: 0 17px;
+  place-items: center;
+  border: 1px solid rgba(255, 255, 255, .72);
+  border-radius: 4px;
+  background: white;
+  color: var(--blue-dark);
+  font-size: 14px;
+  font-weight: 800;
+  text-decoration: none;
+}
+
+.shortcut-heading {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  margin-top: 28px;
+  gap: 20px;
+}
+
+.shortcut-heading h2 {
+  margin: 0;
+  font-size: 25px;
+}
+
+.shortcut-heading p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.shortcut-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin-top: 14px;
+  gap: 10px;
+}
+
+.shortcut-grid a {
+  display: flex;
+  min-width: 0;
+  min-height: 94px;
+  padding: 17px 18px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: white;
+  text-decoration: none;
+}
+
+.shortcut-grid a:hover,
+.shortcut-grid a:focus-visible {
+  border-color: var(--blue);
+  background: #f7faf9;
+}
+
+.shortcut-grid a > span:first-child {
+  display: grid;
+  min-width: 0;
+}
+
+.shortcut-grid small {
+  margin-bottom: 2px;
+  color: var(--blue-dark);
+  font-size: 12px;
+  font-weight: 750;
+}
+
+.shortcut-grid strong {
+  font-size: 16px;
+  line-height: 1.4;
+  word-break: keep-all;
+}
+
+.shortcut-icon {
+  display: grid;
+  width: 42px;
+  height: 42px;
+  flex: 0 0 42px;
+  place-items: center;
+  color: var(--blue-dark);
+  font-size: 24px;
+  font-weight: 500;
+}
+
+#housingSearchForm {
+  scroll-margin-top: 86px;
+}
+
+@media (max-width: 760px) {
+  .site-header,
+  .site-header-inner {
+    min-height: 72px;
+  }
+
+  .site-header-inner {
+    grid-template-columns: auto 1fr auto;
+  }
+
+  .site-header-inner.subpage-header {
+    grid-template-columns: 1fr auto;
+  }
+
+  .header-tools {
+    gap: 1px;
+  }
+
+  .header-tools .official-header-link {
+    display: grid;
+    width: 44px;
+    min-height: 44px;
+    padding: 0;
+    border: 0;
+    place-items: center;
+  }
+
+  .official-label {
+    display: none;
+  }
+
+  .official-symbol {
+    display: block;
+    font-size: 24px;
+    line-height: 1;
+  }
+
+  .header-search-button,
+  .menu-button {
+    width: 44px;
+    height: 44px;
+  }
+
+  .portal-overview {
+    padding: 20px 0 28px;
+  }
+
+  .portal-banner {
+    min-height: 218px;
+    padding: 24px 22px;
+  }
+
+  .portal-banner::after {
+    background: rgba(17, 47, 51, .7);
+  }
+
+  .portal-banner h2 {
+    margin-top: 7px;
+    font-size: 23px;
+  }
+
+  .portal-banner p {
+    max-width: 300px;
+    font-size: 13px;
+  }
+
+  .portal-banner a {
+    min-height: 42px;
+    margin-top: 15px;
+  }
+
+  .shortcut-heading {
+    display: block;
+    margin-top: 25px;
+  }
+
+  .shortcut-heading h2 {
+    font-size: 22px;
+  }
+
+  .shortcut-heading p {
+    margin-top: 3px;
+  }
+
+  .shortcut-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+  }
+
+  .shortcut-grid a {
+    min-height: 98px;
+    padding: 14px;
+    gap: 6px;
+  }
+
+  .shortcut-grid strong {
+    font-size: 14px;
+  }
+
+  .shortcut-icon {
+    width: 30px;
+    height: 36px;
+    flex-basis: 30px;
+    font-size: 21px;
+  }
+
+  #housingSearchForm {
+    scroll-margin-top: 78px;
+  }
+}
+
+@media (max-width: 390px) {
+  .brand {
+    gap: 9px;
+  }
+
+  .brand strong {
+    font-size: 16px;
+  }
+
+  .portal-banner {
+    min-height: 224px;
+  }
+
+  .shortcut-grid a {
+    align-items: flex-start;
+  }
+
+  .shortcut-icon {
+    margin-top: 10px;
+  }
+}
