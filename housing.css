@@ -898,8 +898,10 @@ img {
 }
 
 .policy-read-more {
+  display: inline-flex;
+  align-items: center;
   width: max-content;
-  min-height: 40px;
+  min-height: 44px;
   margin-top: auto;
   color: var(--blue-dark);
   font-size: 13px;
@@ -951,7 +953,9 @@ img {
 }
 
 .policy-news-source a {
-  min-height: 40px;
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
   color: var(--blue-dark);
   font-weight: 800;
 }
