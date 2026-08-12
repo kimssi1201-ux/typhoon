@@ -1,7 +1,9 @@
 const FILTER_STORAGE_KEY = "mustview-private-rental-filters-v1";
 const CACHE_STORAGE_KEY = "mustview-private-rental-cache-v1";
+const COMPETITION_CACHE_KEY = "mustview-private-rental-competition-v1";
 const FRESH_CACHE_MS = 10 * 60 * 1000;
 const FALLBACK_CACHE_MS = 24 * 60 * 60 * 1000;
+const COMPETITION_CACHE_MS = 10 * 60 * 1000;
 const PAGE_SIZE = 12;
 const APPLYHOME_HOME = "https://www.applyhome.co.kr/ai/aia/selectSubscrptCalenderView.do";
 
@@ -156,6 +158,176 @@ function addFact(list, label, value) {
   list.append(row);
 }
 
+function competitionCacheId(notice) {
+  return `${notice.typeCode}:${notice.houseManageNumber}:${notice.announcementNumber}`;
+}
+
+function cachedCompetition(notice) {
+  const cache = readStorage(COMPETITION_CACHE_KEY);
+  if (!cache || typeof cache !== "object" || Array.isArray(cache)) return null;
+  const entry = cache[competitionCacheId(notice)];
+  if (!entry || !entry.payload || !Number.isFinite(entry.savedAt)) return null;
+  return Date.now() - entry.savedAt <= COMPETITION_CACHE_MS ? entry.payload : null;
+}
+
+function storeCompetition(notice, payload) {
+  const stored = readStorage(COMPETITION_CACHE_KEY);
+  const cache = stored && typeof stored === "object" && !Array.isArray(stored) ? stored : {};
+  cache[competitionCacheId(notice)] = { payload, savedAt: Date.now() };
+  const limited = Object.fromEntries(
+    Object.entries(cache)
+      .sort(([, a], [, b]) => Number(b?.savedAt || 0) - Number(a?.savedAt || 0))
+      .slice(0, 30)
+  );
+  writeStorage(COMPETITION_CACHE_KEY, limited);
+}
+
+function countText(value, suffix) {
+  return Number.isInteger(value) && value >= 0
+    ? `${value.toLocaleString("ko-KR")}${suffix}`
+    : "공식 자료 확인";
+}
+
+function addCompetitionStat(list, label, value) {
+  const row = createElement("div");
+  row.append(createElement("dt", "", label), createElement("dd", "", value));
+  list.append(row);
+}
+
+function renderCompetition(panel, payload) {
+  panel.replaceChildren();
+  const rows = Array.isArray(payload.rows) ? payload.rows : [];
+  if (!rows.length) {
+    const empty = createElement("div", "private-rental-competition-empty");
+    empty.append(
+      createElement("strong", "", "아직 공개된 경쟁률이 없습니다."),
+      createElement("p", "", "접수 전이거나 청약홈에 경쟁률 자료가 등록되지 않은 공고입니다.")
+    );
+    panel.append(empty);
+    panel.dataset.loaded = "true";
+    return;
+  }
+
+  const heading = createElement("div", "private-rental-competition-heading");
+  heading.append(
+    createElement("strong", "", `주택형별 접수 현황 ${rows.length}개`),
+    createElement("small", "", `자료 기준 ${formatDateTime(payload.fetchedAt)}`)
+  );
+  const list = createElement("div", "private-rental-competition-list");
+  rows.forEach((row) => {
+    const item = createElement("article", "private-rental-competition-row");
+    const rowHeading = createElement("div", "private-rental-competition-row-heading");
+    rowHeading.append(
+      createElement("strong", "", row.houseType || "주택형 확인"),
+      createElement("span", "", row.category || "전체")
+    );
+    const stats = createElement("dl");
+    addCompetitionStat(stats, payload.query?.type === "public-support" ? "배정" : "공급", countText(row.allocatedCount, "세대"));
+    addCompetitionStat(stats, "접수", Number.isInteger(row.applicationCount)
+      ? countText(row.applicationCount, "건")
+      : (row.applicationCountText || "집계 전"));
+    addCompetitionStat(stats, "공식 경쟁률", row.competitionRate && row.competitionRate !== "-" ? row.competitionRate : "해당 없음");
+    item.append(rowHeading, stats);
+    list.append(item);
+  });
+  const note = createElement("p", "private-rental-competition-note", "접수건수와 경쟁률은 은행 집계 상황에 따라 변경될 수 있으므로 청약홈 최종 자료를 확인하세요.");
+  panel.append(heading, list, note);
+  panel.dataset.loaded = "true";
+}
+
+function renderCompetitionError(panel, notice, button, message) {
+  panel.replaceChildren();
+  const error = createElement("div", "private-rental-competition-empty is-error");
+  error.append(
+    createElement("strong", "", "경쟁률을 불러오지 못했습니다."),
+    createElement("p", "", message || "공식 자료 연결이 원활하지 않습니다.")
+  );
+  const retry = createElement("button", "private-rental-competition-retry", "다시 시도");
+  retry.type = "button";
+  retry.addEventListener("click", () => loadCompetition(notice, button, panel, true));
+  error.append(retry);
+  panel.append(error);
+}
+
+async function loadCompetition(notice, button, panel, force = false) {
+  if (panel.dataset.loading === "true") return;
+  const cached = !force ? cachedCompetition(notice) : null;
+  if (cached) {
+    renderCompetition(panel, cached);
+    button.textContent = "경쟁률 닫기";
+    return;
+  }
+
+  panel.dataset.loading = "true";
+  button.disabled = true;
+  button.setAttribute("aria-busy", "true");
+  button.textContent = "경쟁률 불러오는 중";
+  const loading = createElement("div", "private-rental-competition-loading", "청약홈 접수 현황을 확인하고 있습니다.");
+  panel.replaceChildren(loading);
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 12000);
+  const url = new URL("/api/private-rental-competition", location.origin);
+  url.searchParams.set("type", notice.typeCode);
+  url.searchParams.set("houseManageNumber", notice.houseManageNumber);
+  url.searchParams.set("announcementNumber", notice.announcementNumber);
+
+  try {
+    const response = await fetch(url, {
+      headers: { accept: "application/json" },
+      cache: force ? "no-store" : "default",
+      signal: controller.signal
+    });
+    let payload = {};
+    try {
+      payload = await response.json();
+    } catch {
+      payload = {};
+    }
+    if (!response.ok || payload.ok !== true) throw new Error(payload.message || "공식 경쟁률 자료를 불러오지 못했습니다.");
+    storeCompetition(notice, payload);
+    renderCompetition(panel, payload);
+    button.textContent = "경쟁률 닫기";
+  } catch (error) {
+    const message = error.name === "AbortError" ? "조회 시간이 길어지고 있습니다. 잠시 후 다시 시도해 주세요." : error.message;
+    renderCompetitionError(panel, notice, button, message);
+    button.textContent = "경쟁률 다시 보기";
+  } finally {
+    clearTimeout(timeout);
+    panel.dataset.loading = "false";
+    button.disabled = false;
+    button.removeAttribute("aria-busy");
+  }
+}
+
+function competitionSection(notice) {
+  const houseManageNumber = String(notice.houseManageNumber || "");
+  const announcementNumber = String(notice.announcementNumber || "");
+  if (!/^\d{6,20}$/.test(houseManageNumber) || !/^\d{6,20}$/.test(announcementNumber)) return null;
+  const section = createElement("div", "private-rental-competition");
+  const panelId = `competition-${notice.id.replace(/[^a-zA-Z0-9_-]/g, "-")}`;
+  const button = createElement("button", "private-rental-competition-toggle", "경쟁률·접수 현황 보기");
+  button.type = "button";
+  button.setAttribute("aria-expanded", "false");
+  button.setAttribute("aria-controls", panelId);
+  button.setAttribute("aria-label", `${notice.title} 경쟁률과 접수 현황 보기`);
+  const panel = createElement("div", "private-rental-competition-panel");
+  panel.id = panelId;
+  panel.hidden = true;
+  button.addEventListener("click", () => {
+    const opening = panel.hidden;
+    panel.hidden = !opening;
+    button.setAttribute("aria-expanded", String(opening));
+    if (!opening) {
+      button.textContent = "경쟁률·접수 현황 보기";
+      return;
+    }
+    if (panel.dataset.loaded === "true") button.textContent = "경쟁률 닫기";
+    else loadCompetition(notice, button, panel);
+  });
+  section.append(button, panel);
+  return section;
+}
+
 function renderCard(notice) {
   const card = createElement("article", "private-rental-card");
   const meta = createElement("div", "private-rental-meta");
@@ -182,7 +354,10 @@ function renderCard(notice) {
   link.rel = "noopener noreferrer";
   link.setAttribute("aria-label", `${notice.title || "민간임대"} 청약홈 공식 공고 보기`);
   footer.append(link);
-  card.append(meta, title, address, facts, footer);
+  card.append(meta, title, address, facts);
+  const competition = competitionSection(notice);
+  if (competition) card.append(competition);
+  card.append(footer);
   return card;
 }
 

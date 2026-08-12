@@ -131,11 +131,12 @@ test("public housing pages have production metadata, ads ownership, and healthy 
   assert.doesNotMatch(notFound, /adsbygoogle|google-adsense-account/);
 });
 
-test("the private rental page wires both ApplyHome sources, filters, caching, and official links", async () => {
-  const [html, client, server, css] = await Promise.all([
+test("the private rental page wires notices, competition, filters, caching, and official links", async () => {
+  const [html, client, server, competitionServer, css] = await Promise.all([
     readProjectFile("private-rental.html"),
     readProjectFile("private-rental.js"),
     readProjectFile("functions/api/private-rental-notices.js"),
+    readProjectFile("functions/api/private-rental-competition.js"),
     readProjectFile("housing.css")
   ]);
 
@@ -149,8 +150,12 @@ test("the private rental page wires both ApplyHome sources, filters, caching, an
   assertHealthyKorean(html, "private-rental.html");
   assert.match(html, /민간임대와 공공지원 민간임대/);
   assert.match(html, /publicDataPk=15098547/);
+  assert.match(html, /publicDataPk=15098905/);
   assert.match(html, /공공임대 공고와 구분됩니다/);
   assert.match(client, /\/api\/private-rental-notices/);
+  assert.match(client, /\/api\/private-rental-competition/);
+  assert.match(client, /경쟁률·접수 현황 보기/);
+  assert.match(client, /COMPETITION_CACHE_KEY/);
   assert.match(client, /localStorage/);
   assert.match(client, /AbortController/);
   assert.match(client, /textContent/);
@@ -160,7 +165,12 @@ test("the private rental page wires both ApplyHome sources, filters, caching, an
   assert.match(server, /APPLYHOME_API_KEY/);
   assert.match(server, /partial/);
   assert.doesNotMatch(server, /["'][a-f0-9]{64}["']/i, "a real public-data key is not committed");
+  assert.match(competitionServer, /getUrbtyOfctlLttotPblancCmpet/);
+  assert.match(competitionServer, /getPblPvtRentLttotPblancCmpet/);
+  assert.match(competitionServer, /APPLYHOME_COMPETITION_API_KEY/);
+  assert.doesNotMatch(competitionServer, /["'][a-f0-9]{64}["']/i, "a real competition key is not committed");
   assert.match(css, /\.private-rental-grid/);
+  assert.match(css, /\.private-rental-competition-toggle/);
   assert.match(css, /\.private-rental-message\.is-warning/);
   assert.match(css, /min-height:\s*44px/);
 });
@@ -286,6 +296,7 @@ test("sources, about, and privacy explain authority, limits, caching, and local 
 
   assert.match(sources, /data\.go\.kr\/data\/15108420/);
   assert.match(sources, /publicDataPk=15098547/);
+  assert.match(sources, /publicDataPk=15098905/);
   assert.match(sources, /applyhome\.co\.kr/);
   assert.match(sources, /data\.go\.kr\/data\/15058530/);
   assert.match(sources, /data\.go\.kr\/data\/15110581/);
@@ -315,6 +326,7 @@ test("sources, about, and privacy explain authority, limits, caching, and local 
   assert.match(privacy, /Google AdSense/);
   assert.match(privacy, /사이트 데이터 삭제/);
   assert.match(privacy, /민간임대·임대단지·시설·명절 주차장 검색조건/);
+  assert.match(privacy, /최대 10분 이내의 청약 경쟁률 자료/);
 });
 
 test("sitemap indexes only current housing pages and legacy travel routes redirect", async () => {
@@ -343,6 +355,7 @@ test("sitemap indexes only current housing pages and legacy travel routes redire
   assert.match(pkg.scripts.check, /housing-notices\.js/);
   assert.match(pkg.scripts.check, /myhome-notices\.js/);
   assert.match(pkg.scripts.check, /private-rental-notices\.js/);
+  assert.match(pkg.scripts.check, /private-rental-competition\.js/);
   assert.match(pkg.scripts.check, /functions\/api\/housing-complexes\.js/);
   assert.match(pkg.scripts.check, /functions\/api\/welfare-services\.js/);
   assert.match(pkg.scripts.check, /policy-news\.js/);

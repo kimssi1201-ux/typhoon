@@ -3323,6 +3323,153 @@ img {
   overflow-wrap: anywhere;
 }
 
+.private-rental-competition {
+  margin-top: 16px;
+}
+
+.private-rental-competition-toggle {
+  width: 100%;
+  min-height: 46px;
+  border: 1px solid #b9d7e9;
+  border-radius: 6px;
+  background: var(--blue-soft);
+  color: var(--blue-dark);
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.private-rental-competition-toggle:hover {
+  border-color: var(--blue);
+}
+
+.private-rental-competition-toggle[aria-expanded="true"] {
+  border-color: var(--blue);
+  background: white;
+}
+
+.private-rental-competition-panel {
+  margin-top: 8px;
+  border-top: 2px solid var(--blue-dark);
+  border-bottom: 1px solid var(--line);
+}
+
+.private-rental-competition-panel[hidden] {
+  display: none;
+}
+
+.private-rental-competition-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 13px 0;
+  gap: 12px;
+}
+
+.private-rental-competition-heading strong {
+  font-size: 13px;
+}
+
+.private-rental-competition-heading small {
+  color: var(--muted);
+  font-size: 10px;
+  text-align: right;
+}
+
+.private-rental-competition-list {
+  border-top: 1px solid var(--soft-line);
+}
+
+.private-rental-competition-row {
+  padding: 13px 0;
+  border-bottom: 1px solid var(--soft-line);
+}
+
+.private-rental-competition-row-heading {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.private-rental-competition-row-heading strong {
+  font-size: 14px;
+}
+
+.private-rental-competition-row-heading span {
+  color: var(--green);
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.private-rental-competition-row dl {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin: 10px 0 0;
+}
+
+.private-rental-competition-row dl > div {
+  min-width: 0;
+  padding-right: 8px;
+}
+
+.private-rental-competition-row dl > div + div {
+  padding-left: 8px;
+  border-left: 1px solid var(--soft-line);
+}
+
+.private-rental-competition-row dt {
+  color: var(--muted);
+  font-size: 10px;
+  font-weight: 800;
+}
+
+.private-rental-competition-row dd {
+  margin: 2px 0 0;
+  font-size: 13px;
+  font-weight: 800;
+  overflow-wrap: anywhere;
+}
+
+.private-rental-competition-note {
+  margin: 0;
+  padding: 12px 0;
+  color: var(--muted);
+  font-size: 11px;
+}
+
+.private-rental-competition-loading,
+.private-rental-competition-empty {
+  padding: 22px 10px;
+  color: var(--muted);
+  font-size: 12px;
+  text-align: center;
+}
+
+.private-rental-competition-empty strong {
+  display: block;
+  color: var(--ink);
+  font-size: 13px;
+}
+
+.private-rental-competition-empty p {
+  margin: 5px 0 0;
+}
+
+.private-rental-competition-empty.is-error {
+  background: var(--orange-soft);
+}
+
+.private-rental-competition-retry {
+  min-height: 44px;
+  margin-top: 12px;
+  padding: 0 14px;
+  border: 1px solid var(--blue);
+  border-radius: 6px;
+  background: white;
+  color: var(--blue-dark);
+  font-size: 12px;
+  font-weight: 800;
+}
+
 .private-rental-card-footer {
   display: flex;
   align-items: center;
@@ -3497,6 +3644,11 @@ img {
   text-decoration: none;
 }
 
+.private-rental-source-links {
+  display: flex;
+  gap: 8px;
+}
+
 @media (max-width: 1050px) {
   .private-rental-search-form {
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -3586,6 +3738,14 @@ img {
 
   .private-rental-source-note a {
     width: 100%;
+  }
+
+  .private-rental-source-links {
+    width: 100%;
+  }
+
+  .private-rental-source-links a {
+    flex: 1;
   }
 }
 
