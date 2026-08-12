@@ -35,6 +35,6 @@ npm.cmd run build
 git diff --check
 ```
 
-API 키는 소스나 테스트에 직접 기록하지 않습니다. LH 공고 서비스는 `LH_API_KEY`, 정책브리핑 정책뉴스는 `POLICY_NEWS_API_KEY`를 우선 사용합니다. 공공데이터 공용키가 설정된 경우 `DATA_GO_KR_API_KEY` 또는 기존 호환 키를 서버에서만 대체키로 사용할 수 있습니다. 로컬에서는 `.dev.vars.example`을 참고하고, 배포 환경에서는 기존 Cloudflare Pages Secret을 유지합니다.
+API 키는 소스나 테스트에 직접 기록하지 않습니다. LH 공고 서비스는 `LH_API_KEY`, 정부24 주거지원은 `GOV24_API_KEY`, 정책브리핑 정책뉴스는 `POLICY_NEWS_API_KEY`를 우선 사용합니다. 공공데이터 공용키가 설정된 경우 `DATA_GO_KR_API_KEY` 또는 기존 호환 키를 서버에서만 대체키로 사용할 수 있습니다. 로컬에서는 `.dev.vars.example`을 참고하고, 배포 환경에서는 기존 Cloudflare Pages Secret을 유지합니다.
 
-공개 화면을 수정할 때 `index.html`, `housing.css`, `housing-dashboard.js`, `policy-news.js`, `housing-guide.html`, `sources.html`, `about.html`, `privacy.html`, `contact.html`의 한글 UTF-8과 접근성 속성을 보존합니다. 기존 여행·기상 파일은 롤백 자료이므로 별도 요청 없이 삭제하지 않습니다.
+공개 화면을 수정할 때 `index.html`, `housing.css`, `housing-dashboard.js`, `housing-support.js`, `policy-news.js`, `housing-guide.html`, `sources.html`, `about.html`, `privacy.html`, `contact.html`의 한글 UTF-8과 접근성 속성을 보존합니다. 기존 여행·기상 파일은 롤백 자료이므로 별도 요청 없이 삭제하지 않습니다.
