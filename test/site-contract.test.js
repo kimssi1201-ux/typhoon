@@ -106,8 +106,11 @@ test("the housing home wires search, filters, results, favorites, menu, and offi
     assert.match(supportClient, new RegExp('"' + topic + '"'));
   }
   assert.match(html, /data-support-jump="youth"/);
+  assert.match(html, /class="benefit-category-bar"/);
+  assert.match(html, /data-support-jump="care"/);
   assert.match(supportClient, /\/api\/housing-support/);
   assert.match(supportClient, /\/api\/welfare-services/);
+  assert.match(supportClient, /searchParams\.get\("category"\)/);
   assert.match(supportClient, /localStorage/);
   assert.match(supportClient, /AbortController/);
   assert.match(supportClient, /support-detail-button/);
@@ -129,6 +132,7 @@ test("the housing home wires search, filters, results, favorites, menu, and offi
   assert.match(client, /scrollIntoView/);
   assert.match(css, /\.brand-mark\s*\{[\s\S]*?width:\s*5px/);
   assert.match(css, /@media \(max-width: 760px\)/);
+  assert.match(css, /\.benefit-category-bar/);
   assert.doesNotMatch(html, /MustView Travel|여행 저널|해수욕장|태풍/);
 });
 test("public housing pages have production metadata, ads ownership, and healthy Korean text", async () => {
@@ -154,6 +158,7 @@ test("public housing pages have production metadata, ads ownership, and healthy 
     assert.ok(html.includes(publisherId), path + " uses the configured publisher");
     assert.match(html, /href=["']index\.html["']/, path + " links back home");
     assert.match(html, /housing\.css/, path + " uses the housing design system");
+    assert.match(html, /class=["']benefit-category-bar["']/, path + " exposes support categories");
     assert.doesNotMatch(html, /<small>MustView Housing<\/small>/, path + " has no template-style English brand subtitle");
     for (const match of html.matchAll(/class=["']eyebrow["']>([^<]+)</g)) {
       assert.match(match[1], /[가-힣0-9]/, path + " uses a Korean information label");
@@ -165,6 +170,28 @@ test("public housing pages have production metadata, ads ownership, and healthy 
   assert.match(notFound, /noindex, nofollow/);
   assert.match(notFound, /지원금 찾기/);
   assert.doesNotMatch(notFound, /adsbygoogle|google-adsense-account/);
+});
+
+test("article pages put a linked table of contents before the first body section", async () => {
+  const articlePages = ["housing-guide.html", "sources.html", "about.html", "privacy.html", "contact.html"];
+
+  for (const path of articlePages) {
+    const html = await readProjectFile(path);
+    const introStart = html.indexOf('<header class="article-intro"');
+    const introEnd = html.indexOf("</header>", introStart);
+    const tocStart = html.indexOf('<nav class="article-toc"', introEnd);
+    const firstSection = html.indexOf('<section class="article-section"', introEnd);
+
+    assert.ok(introStart >= 0, path + " has an article intro");
+    assert.ok(tocStart > introEnd, path + " places the table of contents after the article intro");
+    assert.ok(tocStart < firstSection, path + " places the table of contents before article content");
+    assert.match(html, /aria-label="이 글의 목차"/, path + " labels the table of contents");
+    assert.match(html, /<a href="#[^"]+">/, path + " links each table of contents item");
+  }
+
+  const navigation = await readProjectFile("article-navigation.js");
+  assert.match(navigation, /\.article-main \.article-section/);
+  assert.match(navigation, /section\.id = targetId/);
 });
 
 test("the private rental page wires notices, competition, filters, caching, and official links", async () => {

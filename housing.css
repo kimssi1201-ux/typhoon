@@ -2845,6 +2845,105 @@ img {
   }
 }
 
+/* Persistent support categories keep the portal taxonomy available on every page. */
+.benefit-category-bar {
+  position: sticky;
+  top: 76px;
+  z-index: 44;
+  border-bottom: 1px solid #dbe6ef;
+  background: rgba(255, 255, 255, 0.98);
+  box-shadow: 0 2px 8px rgba(26, 58, 81, 0.06);
+}
+
+.benefit-category-bar-inner {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  width: min(calc(100% - 40px), var(--max-width));
+  min-height: 48px;
+  margin: 0 auto;
+}
+
+.benefit-category-label {
+  flex: 0 0 auto;
+  margin-right: 8px;
+  color: #1e73be;
+  font-size: 0.77rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  white-space: nowrap;
+}
+
+.benefit-category-bar a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 32px;
+  padding: 0 12px;
+  border-radius: 999px;
+  color: #335269;
+  font-size: 0.83rem;
+  font-weight: 700;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: background 160ms ease, color 160ms ease;
+}
+
+.benefit-category-bar a:hover,
+.benefit-category-bar a:focus-visible {
+  background: #e8f3fc;
+  color: #1264a5;
+  outline: none;
+}
+
+.article-toc {
+  margin-top: 22px;
+}
+
+.article-section {
+  scroll-margin-top: 142px;
+}
+
+@media (max-width: 760px) {
+  html {
+    scroll-padding-top: 124px;
+  }
+
+  .benefit-category-bar {
+    top: 68px;
+  }
+
+  .benefit-category-bar-inner {
+    width: 100%;
+    min-height: 44px;
+    padding: 0 12px;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .benefit-category-bar-inner::-webkit-scrollbar {
+    display: none;
+  }
+
+  .benefit-category-label {
+    margin-right: 4px;
+    font-size: 0.72rem;
+  }
+
+  .benefit-category-bar a {
+    min-height: 30px;
+    padding: 0 10px;
+    font-size: 0.79rem;
+  }
+
+  .article-toc {
+    margin-top: 16px;
+  }
+
+  .article-section {
+    scroll-margin-top: 124px;
+  }
+}
+
 /* Support-fund editorial home */
 .portal-banner {
   isolation: isolate;

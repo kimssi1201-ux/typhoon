@@ -404,5 +404,6 @@ document.querySelectorAll("[data-support-jump]").forEach((link) => {
   });
 });
 
-loadSupport();
+const initialTopic = new URL(window.location.href).searchParams.get("category");
+loadSupport(TOPICS.has(initialTopic) ? initialTopic : "youth");
 })();
