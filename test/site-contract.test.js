@@ -90,12 +90,16 @@ test("the home is a five-post GeneratePress-style support blog archive", async (
 
   assert.doesNotMatch(html, /<img\b|post-card-thumbnail/, "the text-first archive has no visible thumbnails");
 
-  assert.match(css, /--gp-accent:\s*#1f6048/);
-  assert.match(css, /grid-template-columns:\s*minmax\(0, 800px\) 260px/);
-  assert.match(css, /font-size:\s*17px/);
-  assert.match(css, /max-width:\s*700px/);
-  assert.match(css, /@media \(max-width: 1100px\)[\s\S]*?\.site-grid\s*\{[\s\S]*?display:\s*block/);
-  assert.match(css, /@media \(max-width: 820px\)/);
+  assert.match(css, /--gp-bg:\s*#f2f2f2/);
+  assert.match(css, /--gp-accent:\s*#3372dc/);
+  assert.match(css, /--gp-heading-accent:\s*#ff5b00/);
+  assert.match(css, /grid-template-columns:\s*minmax\(0, 780px\) 290px/);
+  assert.match(css, /\.article-content\s*\{[\s\S]*?font-size:\s*18px;[\s\S]*?line-height:\s*1\.75/);
+  assert.match(css, /body\.blog-page\.single-post\s*\{[\s\S]*?padding:\s*0/);
+  assert.match(css, /\.content-area\.single-post\s*\{[\s\S]*?border-radius:\s*11px/);
+  assert.match(css, /\.article-content h2::before[\s\S]*?var\(--gp-heading-accent\)/);
+  assert.match(css, /@media \(max-width: 960px\)[\s\S]*?\.site-grid\s*\{[\s\S]*?display:\s*block/);
+  assert.match(css, /@media \(max-width: 767px\)/);
   assert.match(css, /\.table-of-contents/);
 });
 
@@ -118,6 +122,7 @@ test("each support post has complete metadata, a single H1, and a valid body len
     }
 
     assert.match(html, /<details class="table-of-contents" open>/, post.file + " has a collapsible mobile table of contents");
+    assert.match(html, /<nav class="breadcrumbs" aria-label="현재 위치">/, post.file + " has a blog breadcrumb");
     assert.match(html, /data-toc-list/, post.file + " has a generated table of contents target");
     assert.match(html, /data-post-content/, post.file + " exposes headings for the generated table of contents");
     assert.match(html, /class="key-facts"/, post.file + " has a key facts box");
