@@ -5132,3 +5132,769 @@ body {
     margin-top: 10px;
   }
 }
+
+/* GeneratePress-inspired static theme refresh */
+:root {
+  --gp-accent: #1e73be;
+  --gp-accent-dark: #155d9c;
+  --gp-heading: #222222;
+  --gp-copy: #3f3f3f;
+  --gp-subtle: #6b6b6b;
+  --gp-border: #dedede;
+  --gp-surface: #ffffff;
+  --gp-canvas: #f7f7f7;
+  --gp-shadow: 0 1px 2px rgba(0, 0, 0, .045);
+  --max-width: 1160px;
+  --ink: var(--gp-heading);
+  --muted: var(--gp-subtle);
+  --line: var(--gp-border);
+  --canvas: var(--gp-canvas);
+  --blue: var(--gp-accent);
+  --blue-dark: var(--gp-accent-dark);
+  --blue-soft: #eef6fd;
+}
+
+html {
+  scroll-padding-top: 78px;
+}
+
+body {
+  background: var(--gp-canvas);
+  color: var(--gp-copy);
+  font-family: "Pretendard Variable", Pretendard, "Noto Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+  font-size: 16px;
+  line-height: 1.72;
+}
+
+.content-width,
+.site-header-inner {
+  width: min(calc(100% - 40px), var(--max-width));
+}
+
+.site-header {
+  min-height: 76px;
+  border-bottom: 1px solid var(--gp-border);
+  background: rgba(255, 255, 255, .985);
+  box-shadow: var(--gp-shadow);
+}
+
+.site-header-inner {
+  min-height: 76px;
+  gap: 36px;
+}
+
+.brand {
+  gap: 11px;
+}
+
+.brand-mark {
+  position: relative;
+  width: 34px;
+  height: 34px;
+  overflow: hidden;
+  border-radius: 0;
+  background: var(--gp-accent);
+  color: transparent;
+}
+
+.brand-mark::before,
+.brand-mark::after {
+  position: absolute;
+  bottom: 0;
+  background: #ffffff;
+  content: "";
+}
+
+.brand-mark::before {
+  left: 8px;
+  width: 5px;
+  height: 19px;
+}
+
+.brand-mark::after {
+  right: 8px;
+  width: 5px;
+  height: 25px;
+}
+
+.brand strong {
+  color: var(--gp-heading);
+  font-size: 19px;
+  font-weight: 750;
+  letter-spacing: -.035em;
+}
+
+.brand small {
+  color: #777777;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: .01em;
+}
+
+.desktop-nav {
+  height: 76px;
+  gap: 0;
+}
+
+.desktop-nav a {
+  padding: 0 14px;
+  color: #333333;
+  font-size: 14px;
+  font-weight: 650;
+}
+
+.desktop-nav a:hover,
+.desktop-nav a.is-active {
+  color: var(--gp-accent);
+}
+
+.desktop-nav a.is-active::after {
+  height: 3px;
+  background: var(--gp-accent);
+}
+
+.official-header-link,
+.sub-home-link {
+  min-height: 40px;
+  padding: 0 13px;
+  border: 1px solid var(--gp-accent);
+  border-radius: 2px;
+  background: var(--gp-accent);
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.official-header-link:hover,
+.sub-home-link:hover {
+  border-color: var(--gp-accent-dark);
+  background: var(--gp-accent-dark);
+  color: #ffffff;
+}
+
+.header-search-button,
+.menu-button {
+  border-radius: 2px;
+}
+
+.portal-overview {
+  padding: 38px 0 34px;
+  border-bottom: 0;
+  background: var(--gp-canvas);
+}
+
+.portal-banner {
+  min-height: 286px;
+  padding: 46px 52px;
+  border: 1px solid #173e62;
+  border-radius: 0;
+  background: #173e62;
+  box-shadow: 0 10px 28px rgba(20, 49, 78, .14);
+}
+
+.portal-banner::after {
+  background: linear-gradient(90deg, rgba(16, 49, 79, .96) 0%, rgba(18, 58, 92, .86) 52%, rgba(19, 55, 84, .36) 100%);
+}
+
+.portal-banner h2 {
+  max-width: 610px;
+  margin: 8px 0 12px;
+  font-size: clamp(29px, 3.1vw, 41px);
+  font-weight: 750;
+  line-height: 1.28;
+  letter-spacing: -.045em;
+}
+
+.portal-banner > div > span {
+  color: #b8daf6;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.portal-banner p {
+  max-width: 570px;
+  font-size: 15px;
+}
+
+.portal-banner a {
+  min-height: 43px;
+  margin-top: 24px;
+  padding: 0 19px;
+  border: 1px solid #ffffff;
+  border-radius: 2px;
+  background: #ffffff;
+  color: #173e62;
+  font-weight: 700;
+}
+
+.portal-banner a:hover {
+  background: #e8f4ff;
+}
+
+.shortcut-heading {
+  margin-top: 35px;
+}
+
+.shortcut-heading h2,
+.section-heading h1,
+.notice-toolbar h2,
+.support-heading h2,
+.policy-news-heading h2,
+.guide-layout h2,
+.facility-results-heading h2,
+.private-rental-results-heading h2 {
+  color: var(--gp-heading);
+  font-weight: 750;
+  letter-spacing: -.04em;
+}
+
+.shortcut-heading h2 {
+  font-size: 25px;
+}
+
+.shortcut-grid {
+  gap: 16px;
+  margin-top: 18px;
+}
+
+.shortcut-grid a {
+  min-height: 108px;
+  padding: 20px;
+  border: 1px solid var(--gp-border);
+  border-radius: 0;
+  background: var(--gp-surface);
+  box-shadow: var(--gp-shadow);
+  transition: border-color .18s ease, box-shadow .18s ease, transform .18s ease;
+}
+
+.shortcut-grid a:hover,
+.shortcut-grid a:focus-visible {
+  border-color: var(--gp-accent);
+  background: var(--gp-surface);
+  box-shadow: 0 6px 18px rgba(30, 115, 190, .13);
+  transform: translateY(-2px);
+}
+
+.shortcut-grid small {
+  color: var(--gp-accent);
+  font-weight: 700;
+}
+
+.shortcut-grid strong {
+  color: var(--gp-heading);
+  font-size: 16px;
+}
+
+.shortcut-icon {
+  width: 38px;
+  height: 38px;
+  flex-basis: 38px;
+  border: 1px solid #d5e7f8;
+  border-radius: 50%;
+  background: #f3f9fe;
+  color: var(--gp-accent);
+  font-size: 20px;
+}
+
+.search-section,
+.notice-section,
+.housing-support-section,
+.policy-news-section {
+  padding-top: 50px;
+  padding-bottom: 50px;
+  border: 0;
+}
+
+.search-section,
+.housing-support-section {
+  background: var(--gp-surface);
+}
+
+.notice-section {
+  background: var(--gp-canvas);
+}
+
+.policy-news-section {
+  background: #edf4fa;
+}
+
+.eyebrow {
+  padding-left: 0;
+  color: var(--gp-accent);
+  font-size: 12px;
+  font-weight: 750;
+  letter-spacing: .02em;
+}
+
+.eyebrow::before {
+  display: none;
+}
+
+.section-heading h1 {
+  margin-top: 5px;
+  font-size: clamp(31px, 3.2vw, 42px);
+}
+
+.section-heading p,
+.facility-page-intro > div > p,
+.article-intro > div > p {
+  color: #595959;
+}
+
+.source-badge {
+  border: 1px solid #cae1f5;
+  border-radius: 2px;
+  background: #f3f9fe;
+  color: #28628f;
+}
+
+.search-form,
+.facility-search-form,
+.private-rental-search-form {
+  padding: 26px;
+  border: 1px solid var(--gp-border);
+  border-top: 3px solid var(--gp-accent);
+  border-radius: 0;
+  background: var(--gp-surface);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, .04);
+}
+
+.field label {
+  color: #333333;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.field input,
+.field select {
+  min-height: 46px;
+  border-color: #cfcfcf;
+  border-radius: 2px;
+  background: #ffffff;
+  color: #303030;
+}
+
+.field input:focus,
+.field select:focus {
+  border-color: var(--gp-accent);
+  box-shadow: 0 0 0 3px rgba(30, 115, 190, .12);
+}
+
+.search-submit,
+.facility-search-submit,
+.private-rental-search-submit {
+  min-height: 46px;
+  border-radius: 2px;
+  background: var(--gp-accent);
+  font-weight: 700;
+}
+
+.search-submit:hover,
+.facility-search-submit:hover,
+.private-rental-search-submit:hover {
+  background: var(--gp-accent-dark);
+}
+
+.quick-row {
+  margin-top: 18px;
+  padding: 15px 0 0;
+  border-top: 1px solid #ebebeb;
+}
+
+.quick-filter,
+.quick-keyword,
+.support-filters button {
+  border-color: #d7d7d7;
+  border-radius: 2px;
+  background: #ffffff;
+  color: #4a4a4a;
+  font-weight: 650;
+}
+
+.quick-filter.is-active,
+.support-filters button.is-active {
+  border-color: var(--gp-accent);
+  background: var(--gp-accent);
+}
+
+.summary-strip {
+  border: 1px solid var(--gp-border);
+  border-top: 3px solid var(--gp-heading);
+  border-radius: 0;
+  background: var(--gp-surface);
+  box-shadow: var(--gp-shadow);
+}
+
+.summary-strip > div {
+  min-height: 88px;
+}
+
+.summary-strip strong,
+.notice-toolbar h2 strong,
+.facility-results-heading h2 strong,
+.private-rental-results-heading h2 strong {
+  color: var(--gp-accent);
+}
+
+.notice-layout {
+  gap: 26px;
+}
+
+.notice-card,
+.skeleton-card {
+  border: 1px solid var(--gp-border);
+  border-left: 0;
+  border-radius: 0;
+  background: var(--gp-surface);
+  box-shadow: var(--gp-shadow);
+}
+
+.notice-card:hover {
+  border-color: #a5c9e8;
+  box-shadow: 0 5px 16px rgba(0, 0, 0, .07);
+}
+
+.saved-panel {
+  border: 1px solid var(--gp-border);
+  border-top: 3px solid var(--gp-heading);
+  border-radius: 0;
+  background: var(--gp-surface);
+  box-shadow: var(--gp-shadow);
+}
+
+.badge,
+.support-type,
+.policy-topic,
+.facility-status,
+.parking-type,
+.private-rental-status,
+.private-rental-type,
+.complex-type {
+  border-radius: 999px;
+}
+
+.official-link,
+.load-more,
+.state-actions button,
+.state-actions a,
+.support-detail-button,
+.official-notice a,
+.source-list a,
+.contact-box > a,
+.article-action > a,
+.facility-source-note a,
+.private-rental-card-footer a,
+.complex-map-link,
+.facility-load-more,
+.private-rental-load-more {
+  border-radius: 2px;
+}
+
+.support-card,
+.policy-news-card,
+.facility-result-card,
+.parking-result-card,
+.private-rental-card,
+.complex-result-card,
+.support-skeleton,
+.policy-skeleton,
+.facility-skeleton,
+.parking-skeleton,
+.private-rental-skeleton,
+.complex-skeleton {
+  border: 1px solid var(--gp-border);
+  border-top: 3px solid #b7d5ee;
+  border-radius: 0;
+  background: var(--gp-surface);
+  box-shadow: var(--gp-shadow);
+}
+
+.support-card:hover,
+.policy-news-card:hover,
+.facility-result-card:hover,
+.parking-result-card:hover,
+.private-rental-card:hover,
+.complex-result-card:hover {
+  border-color: #a5c9e8;
+}
+
+.home-service-links,
+.private-rental-guide,
+.facility-guidance {
+  border-top-color: var(--gp-accent);
+}
+
+.guide-layout img {
+  border-radius: 0;
+}
+
+.facility-page-main,
+.article-main {
+  width: min(calc(100% - 40px), 1120px);
+  padding-top: 48px;
+  padding-bottom: 58px;
+}
+
+.facility-page-intro,
+.article-intro {
+  padding: 42px;
+  border: 1px solid var(--gp-border);
+  border-top: 4px solid var(--gp-accent);
+  background: var(--gp-surface);
+  box-shadow: var(--gp-shadow);
+}
+
+.facility-page-intro h1,
+.article-intro h1 {
+  color: var(--gp-heading);
+  font-weight: 750;
+  letter-spacing: -.045em;
+}
+
+.article-aside,
+.facility-page-intro aside {
+  border-left: 3px solid var(--gp-accent);
+  border-radius: 0;
+  background: #f3f9fe;
+}
+
+.article-toc {
+  border: 1px solid var(--gp-border);
+  border-radius: 0;
+  background: var(--gp-surface);
+  box-shadow: var(--gp-shadow);
+}
+
+.article-toc a {
+  color: #3c5c77;
+}
+
+.article-toc a:hover {
+  color: var(--gp-accent);
+}
+
+.article-section {
+  margin-top: 24px;
+  padding: 34px 38px;
+  border: 1px solid var(--gp-border);
+  border-radius: 0;
+  background: var(--gp-surface);
+  box-shadow: var(--gp-shadow);
+}
+
+.article-section h2 {
+  color: var(--gp-heading);
+  font-weight: 750;
+  letter-spacing: -.035em;
+}
+
+.article-section a {
+  color: var(--gp-accent);
+}
+
+.info-grid article,
+.definition-list article,
+.mistake-grid article,
+.source-list article {
+  border-color: var(--gp-border);
+  border-radius: 0;
+  background: #fafafa;
+}
+
+.caution-box,
+.contact-box,
+.article-action,
+.facility-source-note,
+.private-rental-source-note {
+  border-radius: 0;
+  box-shadow: none;
+}
+
+.site-footer {
+  border-top: 4px solid var(--gp-accent);
+  background: #202020;
+}
+
+.footer-grid {
+  padding-top: 42px;
+  padding-bottom: 36px;
+}
+
+.footer-brand {
+  font-size: 21px;
+}
+
+.site-footer nav a:hover,
+.site-footer a:hover {
+  color: #8dcaff;
+}
+
+.bottom-nav {
+  border-top-color: #d8d8d8;
+  background: rgba(255, 255, 255, .98);
+  box-shadow: 0 -2px 12px rgba(0, 0, 0, .06);
+}
+
+.bottom-nav a.is-active {
+  color: var(--gp-accent);
+}
+
+.portal-banner,
+.search-section .section-heading,
+.facility-page-intro,
+.article-intro {
+  animation: gp-enter .46s ease both;
+}
+
+@keyframes gp-enter {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 1050px) {
+  .site-header-inner {
+    gap: 18px;
+  }
+
+  .desktop-nav a {
+    padding: 0 9px;
+  }
+}
+
+@media (max-width: 760px) {
+  html {
+    scroll-padding-top: 70px;
+  }
+
+  .content-width,
+  .site-header-inner,
+  .facility-page-main,
+  .article-main {
+    width: min(calc(100% - 24px), var(--max-width));
+  }
+
+  .site-header,
+  .site-header-inner {
+    min-height: 68px;
+  }
+
+  .brand-mark {
+    width: 30px;
+    height: 30px;
+  }
+
+  .brand-mark::before {
+    left: 7px;
+    height: 16px;
+  }
+
+  .brand-mark::after {
+    right: 7px;
+    height: 21px;
+  }
+
+  .brand strong {
+    font-size: 17px;
+  }
+
+  .portal-overview {
+    padding: 20px 0 28px;
+  }
+
+  .portal-banner {
+    min-height: 250px;
+    padding: 30px 24px;
+  }
+
+  .portal-banner::after {
+    background: linear-gradient(90deg, rgba(16, 49, 79, .95), rgba(18, 58, 92, .66));
+  }
+
+  .portal-banner h2 {
+    font-size: 27px;
+  }
+
+  .portal-banner p {
+    max-width: 325px;
+    font-size: 13px;
+  }
+
+  .shortcut-heading {
+    margin-top: 28px;
+  }
+
+  .shortcut-grid {
+    gap: 10px;
+  }
+
+  .shortcut-grid a {
+    min-height: 102px;
+    padding: 15px;
+  }
+
+  .shortcut-icon {
+    width: 32px;
+    height: 32px;
+    flex-basis: 32px;
+  }
+
+  .search-section,
+  .notice-section,
+  .housing-support-section,
+  .policy-news-section {
+    padding-top: 34px;
+    padding-bottom: 34px;
+  }
+
+  .search-form,
+  .facility-search-form,
+  .private-rental-search-form {
+    margin-right: 0;
+    margin-left: 0;
+    padding: 18px;
+  }
+
+  .summary-strip > div {
+    min-height: 76px;
+  }
+
+  .facility-page-main,
+  .article-main {
+    padding-top: 28px;
+    padding-bottom: 34px;
+  }
+
+  .facility-page-intro,
+  .article-intro {
+    padding: 27px 22px;
+  }
+
+  .article-section {
+    margin-top: 16px;
+    padding: 26px 22px;
+  }
+
+  .article-toc {
+    padding: 20px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .portal-banner,
+  .search-section .section-heading,
+  .facility-page-intro,
+  .article-intro,
+  .shortcut-grid a {
+    animation: none;
+    transition: none;
+    transform: none;
+  }
+}

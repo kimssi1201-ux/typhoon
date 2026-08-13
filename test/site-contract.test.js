@@ -114,6 +114,10 @@ test("the housing home wires search, filters, results, favorites, menu, and offi
   assert.match(css, /\.bottom-nav/);
   assert.match(css, /Editorial public-information design/);
   assert.match(css, /Mobile information-portal home/);
+  assert.match(css, /GeneratePress-inspired static theme refresh/);
+  assert.match(css, /--gp-accent:\s*#1e73be/);
+  assert.match(css, /\.portal-banner\s*\{[\s\S]*?min-height:\s*286px/);
+  assert.match(css, /@media \(prefers-reduced-motion: reduce\)[\s\S]*?\.portal-banner/);
   assert.match(html, /class="shortcut-grid"/);
   assert.match(client, /setupHeaderSearch/);
   assert.match(client, /scrollIntoView/);
