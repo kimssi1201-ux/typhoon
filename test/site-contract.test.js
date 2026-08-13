@@ -68,7 +68,7 @@ function articleHeadings(html) {
   }));
 }
 
-test("the home is a five-post GeneratePress-style support blog archive", async () => {
+test("the home is a five-post mobile-friendly support blog archive", async () => {
   const [html, css] = await Promise.all([readProjectFile("index.html"), readProjectFile("blog.css")]);
 
   assert.equal((html.match(/<article class="post-card"/g) || []).length, 5, "the archive has exactly five posts");
@@ -79,6 +79,8 @@ test("the home is a five-post GeneratePress-style support blog archive", async (
   assert.match(html, /class="site-grid"/);
   assert.match(html, /class="widget-area"/);
   assert.match(html, /class="main-navigation"/);
+  assert.match(html, /class="header-actions"/);
+  assert.match(html, /class="header-menu-panel"/);
   assert.match(html, /google-adsense-account/);
   assert.ok(html.includes(publisherId));
   assert.match(html, /<link rel="canonical" href="https:\/\/mustview\.co\.kr\/"/);
@@ -88,18 +90,26 @@ test("the home is a five-post GeneratePress-style support blog archive", async (
     assert.match(html, new RegExp(`href="${post.file}"`), post.file + " is linked from the archive");
   }
 
-  assert.doesNotMatch(html, /<img\b|post-card-thumbnail/, "the text-first archive has no visible thumbnails");
+  assert.equal((html.match(/<img\b/g) || []).length, 5, "the archive has one thumbnail per post");
+  assert.equal((html.match(/class="post-card-thumbnail"/g) || []).length, 5, "the archive uses five horizontal thumbnail cards");
+  for (const post of posts) {
+    assert.match(html, new RegExp(`src="assets/${post.image.replace(".", "\\.")}"[^>]+alt="[^"]+"`), post.image + " is rendered with alternative text");
+  }
 
   assert.match(css, /--gp-bg:\s*#f2f2f2/);
   assert.match(css, /--gp-accent:\s*#3372dc/);
   assert.match(css, /--gp-heading-accent:\s*#ff5b00/);
   assert.match(css, /grid-template-columns:\s*minmax\(0, 780px\) 290px/);
+  assert.match(css, /\.post-card-body\s*\{[\s\S]*?grid-template-columns:\s*150px minmax\(0, 1fr\)/);
   assert.match(css, /\.article-content\s*\{[\s\S]*?font-size:\s*18px;[\s\S]*?line-height:\s*1\.75/);
   assert.match(css, /body\.blog-page\.single-post\s*\{[\s\S]*?padding:\s*0/);
   assert.match(css, /\.content-area\.single-post\s*\{[\s\S]*?border-radius:\s*11px/);
   assert.match(css, /\.article-content h2::before[\s\S]*?var\(--gp-heading-accent\)/);
   assert.match(css, /@media \(max-width: 960px\)[\s\S]*?\.site-grid\s*\{[\s\S]*?display:\s*block/);
   assert.match(css, /@media \(max-width: 767px\)/);
+  assert.match(css, /@media \(max-width: 767px\)[\s\S]*?\.header-actions\s*\{\s*display:\s*flex/);
+  assert.match(css, /@media \(max-width: 767px\)[\s\S]*?\.main-navigation\s*\{\s*display:\s*none/);
+  assert.match(css, /@media \(max-width: 767px\)[\s\S]*?grid-template-columns:\s*104px minmax\(0, 1fr\)/);
   assert.match(css, /\.table-of-contents/);
 });
 
@@ -123,6 +133,7 @@ test("each support post has complete metadata, a single H1, and a valid body len
 
     assert.match(html, /<details class="table-of-contents" open>/, post.file + " has a collapsible mobile table of contents");
     assert.match(html, /<nav class="breadcrumbs" aria-label="현재 위치">/, post.file + " has a blog breadcrumb");
+    assert.match(html, /class="header-actions"/, post.file + " has the compact mobile header controls");
     assert.match(html, /data-toc-list/, post.file + " has a generated table of contents target");
     assert.match(html, /data-post-content/, post.file + " exposes headings for the generated table of contents");
     assert.match(html, /class="key-facts"/, post.file + " has a key facts box");
