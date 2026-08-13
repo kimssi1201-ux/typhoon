@@ -86,11 +86,15 @@ test("the home is a five-post GeneratePress-style support blog archive", async (
 
   for (const post of posts) {
     assert.match(html, new RegExp(`href="${post.file}"`), post.file + " is linked from the archive");
-    assert.match(html, new RegExp(`assets/${post.image.replace(".", "\\.")}`), post.image + " is displayed on the archive");
   }
 
-  assert.match(css, /--gp-accent:\s*#23634d/);
-  assert.match(css, /grid-template-columns:\s*minmax\(0, 1fr\) 300px/);
+  assert.doesNotMatch(html, /<img\b|post-card-thumbnail/, "the text-first archive has no visible thumbnails");
+
+  assert.match(css, /--gp-accent:\s*#1f6048/);
+  assert.match(css, /grid-template-columns:\s*minmax\(0, 800px\) 260px/);
+  assert.match(css, /font-size:\s*17px/);
+  assert.match(css, /max-width:\s*700px/);
+  assert.match(css, /@media \(max-width: 1100px\)[\s\S]*?\.site-grid\s*\{[\s\S]*?display:\s*block/);
   assert.match(css, /@media \(max-width: 820px\)/);
   assert.match(css, /\.table-of-contents/);
 });
@@ -125,6 +129,7 @@ test("each support post has complete metadata, a single H1, and a valid body len
     assert.match(html, /"@type":"Article"|"@type": "Article"/);
     assert.match(html, /google-adsense-account/);
     assert.ok(html.includes(publisherId));
+    assert.doesNotMatch(html, /<img\b|featured-image/, post.file + " has no visible thumbnail or hero image");
     assert.equal((html.match(/class="[^"]*\brelated-posts\b[^"]*"/g) || []).length, 1, post.file + " has related internal posts");
     assert.ok((html.match(/href="[a-z-]+\.html"/g) || []).length >= 5, post.file + " includes internal navigation");
   }
@@ -139,12 +144,13 @@ test("the table of contents script gives every article heading a stable unique a
   assert.match(script, /toc-subitem/);
 });
 
-test("five original WebP representative images are present and referenced", async () => {
+test("five original WebP social images remain available without appearing in the article body", async () => {
   for (const post of posts) {
     const [image, html] = await Promise.all([readProjectBuffer("assets/" + post.image), readProjectFile(post.file)]);
     assert.equal(image.subarray(0, 4).toString("ascii"), "RIFF", post.image + " has WebP RIFF bytes");
     assert.equal(image.subarray(8, 12).toString("ascii"), "WEBP", post.image + " has WebP bytes");
-    assert.match(html, new RegExp(`<img src="assets/${post.image.replace(".", "\\.")}"[^>]+alt="[^"]+"`), post.file + " sets descriptive image alt text");
+    assert.match(html, new RegExp(`<meta property="og:image" content="https://mustview\\.co\\.kr/assets/${post.image.replace(".", "\\.")}"`), post.file + " keeps a social sharing image");
+    assert.doesNotMatch(html, /<img\b/, post.file + " does not render the social image in the article");
   }
 });
 
