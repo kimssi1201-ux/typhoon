@@ -3,13 +3,16 @@ const GOV24_SERVICE_HOME = "https://www.gov.kr/portal/rcvfvrSvc/main";
 const DATASET_HOME = "https://www.data.go.kr/data/15113968/openapi.do";
 
 const TOPICS = {
-  housing: { keyword: "주거", label: "주거지원" },
-  rental: { keyword: "임대주택", label: "임대주택" },
-  monthly: { keyword: "월세", label: "월세지원" },
-  jeonse: { keyword: "전세", label: "전세지원" }
+  youth: { keyword: "청년", label: "청년 지원", pattern: /청년|청소년|대학생|자립/ },
+  family: { keyword: "출산", label: "출산·양육 지원", pattern: /출산|양육|아동|부모|임신|난임/ },
+  work: { keyword: "취업", label: "취업·창업 지원", pattern: /취업|창업|고용|직업훈련|일자리|구직/ },
+  housing: { keyword: "주거", label: "주거 지원", pattern: /주거|주택|임대|월세|전세|보증금|집수리|주거급여/ },
+  care: { keyword: "돌봄", label: "돌봄 지원", pattern: /돌봄|요양|장애|보육|간병/ },
+  // Legacy topic keys remain available for existing cached links and callers.
+  rental: { keyword: "임대주택", label: "임대주택", pattern: /임대주택|임대|주택/ },
+  monthly: { keyword: "월세", label: "월세지원", pattern: /월세|주거급여|임차/ },
+  jeonse: { keyword: "전세", label: "전세지원", pattern: /전세|보증금|주택/ }
 };
-
-const HOUSING_PATTERN = /주거|주택|임대|월세|전세|보증금|집수리|주거급여/;
 const AUTHORIZATION_ERROR = /service[_\s-]*key|인증키|활용신청|unauthori[sz]ed|access[_\s-]*denied/i;
 
 function json(data, status = 200) {
@@ -91,7 +94,7 @@ function updatedDate(value) {
   };
 }
 
-function normalizeService(row, keyword) {
+function normalizeService(row, topic) {
   const id = cleanText(row?.서비스ID);
   const name = cleanText(row?.서비스명);
   if (!id || !name) return null;
@@ -113,13 +116,13 @@ function normalizeService(row, keyword) {
     updatedDate: updated.date,
     updatedAt: updated.dateTime,
     url: officialUrl(row?.상세조회URL),
-    priority: (name.includes(keyword) ? 4 : 0) + (HOUSING_PATTERN.test(searchable) ? 2 : 0)
+    priority: (name.includes(topic.keyword) ? 4 : 0) + (topic.pattern.test(searchable) ? 2 : 0)
   };
 }
 
-function normalizeServices(rows, keyword) {
+function normalizeServices(rows, topic) {
   return (Array.isArray(rows) ? rows : [])
-    .map((row) => normalizeService(row, keyword))
+    .map((row) => normalizeService(row, topic))
     .filter(Boolean)
     .sort((a, b) => b.priority - a.priority || String(b.updatedAt).localeCompare(String(a.updatedAt)))
     .map(({ priority, ...item }) => item);
@@ -146,10 +149,10 @@ export async function onRequestGet({ request, env }) {
   }
 
   const requestUrl = new URL(request.url);
-  const topicCode = requestUrl.searchParams.get("topic") || "housing";
+  const topicCode = requestUrl.searchParams.get("topic") || "youth";
   const topic = TOPICS[topicCode];
   const limit = integerParam(requestUrl.searchParams.get("limit"), 4, 1, 8);
-  if (!topic) return json({ ok: false, message: "주거지원 분류를 확인해 주세요." }, 400);
+  if (!topic) return json({ ok: false, message: "지원금 분류를 확인해 주세요." }, 400);
   if (limit === null) return json({ ok: false, message: "표시할 지원 서비스 수를 확인해 주세요." }, 400);
 
   const upstreamUrl = new URL(GOV24_SERVICE_ENDPOINT);
@@ -190,7 +193,7 @@ export async function onRequestGet({ request, env }) {
       }, 503);
     }
 
-    const allItems = normalizeServices(payload.data, topic.keyword);
+    const allItems = normalizeServices(payload.data, topic);
     return json({
       ok: true,
       configured: true,

@@ -100,6 +100,26 @@ test("welfare service list maps official XML and protects links", async () => {
   assert.equal(calls[0].url.searchParams.get("searchWrd"), "주거");
 });
 
+test("welfare services accept the public support-fund topics", async () => {
+  const expected = new Map([
+    ["youth", "청년"],
+    ["family", "출산"],
+    ["work", "취업"],
+    ["housing", "주거"],
+    ["care", "돌봄"]
+  ]);
+
+  for (const [topic, keyword] of expected) {
+    const { fetchMock, calls } = captureFetch(async () => xmlResponse(listXml));
+    const response = await withFetchMock(fetchMock, () => onRequestGet({
+      request: makeRequest(`/api/welfare-services?topic=${topic}`),
+      env: { WELFARE_API_KEY: "test-key" }
+    }));
+    assert.equal(response.status, 200);
+    assert.equal(calls[0].url.searchParams.get("searchWrd"), keyword);
+  }
+});
+
 test("welfare service detail maps repeated official fields", async () => {
   const { fetchMock, calls } = captureFetch(async () => xmlResponse(detailXml));
   const response = await withFetchMock(fetchMock, () => onRequestGet({

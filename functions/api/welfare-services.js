@@ -5,13 +5,16 @@ const DATASET_HOME = "https://www.data.go.kr/data/15090532/openapi.do";
 const BOKJIRO_HOME = "https://www.bokjiro.go.kr/ssis-tbu/index.do";
 
 const TOPICS = {
-  housing: { keyword: "주거", label: "주거지원" },
-  rental: { keyword: "임대주택", label: "임대주택" },
-  monthly: { keyword: "월세", label: "월세지원" },
-  jeonse: { keyword: "전세", label: "전세지원" }
+  youth: { keyword: "청년", label: "청년 지원", pattern: /청년|청소년|대학생|자립/ },
+  family: { keyword: "출산", label: "출산·양육 지원", pattern: /출산|양육|아동|부모|임신|난임/ },
+  work: { keyword: "취업", label: "취업·창업 지원", pattern: /취업|창업|고용|직업훈련|일자리|구직/ },
+  housing: { keyword: "주거", label: "주거 지원", pattern: /주거|주택|임대|월세|전세|보증금|집수리|주거급여/ },
+  care: { keyword: "돌봄", label: "돌봄 지원", pattern: /돌봄|요양|장애|보육|간병/ },
+  // Legacy topic keys remain available for existing cached links and callers.
+  rental: { keyword: "임대주택", label: "임대주택", pattern: /임대주택|임대|주택/ },
+  monthly: { keyword: "월세", label: "월세지원", pattern: /월세|주거급여|임차/ },
+  jeonse: { keyword: "전세", label: "전세지원", pattern: /전세|보증금|주택/ }
 };
-
-const HOUSING_PATTERN = /주거|주택|임대|월세|전세|보증금|집수리|주거급여/;
 const AUTHORIZATION_ERROR = /service[_\s-]*(?:key|access)|not registered|permission denied|expired|인증|승인|활용신청/i;
 
 function json(data, status = 200, cacheSeconds = 21600) {
@@ -168,7 +171,7 @@ function normalizeList(rows, topic) {
       const priority = (row.name.includes(topic.keyword) ? 6 : 0)
         + (row.interests.includes(topic.keyword) ? 4 : 0)
         + (row.summary.includes(topic.keyword) ? 3 : 0)
-        + (HOUSING_PATTERN.test(searchable) ? 2 : 0);
+        + (topic.pattern.test(searchable) ? 2 : 0);
       return {
         id: row.id,
         name: row.name,
@@ -321,10 +324,10 @@ export async function onRequestGet({ request, env }) {
     }
   }
 
-  const topicCode = requestUrl.searchParams.get("topic") || "housing";
+  const topicCode = requestUrl.searchParams.get("topic") || "youth";
   const topic = TOPICS[topicCode];
   const limit = integerParam(requestUrl.searchParams.get("limit"), 4, 1, 8);
-  if (!topic) return json({ ok: false, message: "주거지원 분류를 확인해 주세요." }, 400);
+  if (!topic) return json({ ok: false, message: "지원금 분류를 확인해 주세요." }, 400);
   if (limit === null) return json({ ok: false, message: "표시할 복지서비스 수를 확인해 주세요." }, 400);
 
   const upstreamUrl = new URL(LIST_ENDPOINT);

@@ -106,7 +106,11 @@ test("housing support maps official data, sorts current services, and protects o
 
 test("housing support maps every public topic and can reuse an encrypted shared key", async () => {
   const expected = new Map([
+    ["youth", "청년"],
+    ["family", "출산"],
+    ["work", "취업"],
     ["housing", "주거"],
+    ["care", "돌봄"],
     ["rental", "임대주택"],
     ["monthly", "월세"],
     ["jeonse", "전세"]

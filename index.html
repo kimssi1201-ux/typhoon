@@ -5,13 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#ffffff" />
     <meta name="google-adsense-account" content="ca-pub-5751319666030430" />
-    <title>전국 임대주택 공고 찾기 | 임대주택 한눈에</title>
-    <meta name="description" content="전국 공공임대주택 입주자 모집공고를 지역, 접수상태, 임대유형과 검색어로 빠르게 찾고 마감일과 공급기관의 공식 공고문을 확인하세요." />
+    <title>지원금 한눈에 | 정부 지원금·복지서비스 찾기</title>
+    <meta name="description" content="청년, 출산·양육, 취업·창업, 주거, 돌봄 분야의 정부 지원금과 복지서비스를 공식 안내 기준으로 확인하세요." />
     <link rel="canonical" href="https://mustview.co.kr/" />
     <meta property="og:type" content="website" />
-    <meta property="og:site_name" content="임대주택 한눈에" />
-    <meta property="og:title" content="전국 임대주택 공고 찾기" />
-    <meta property="og:description" content="지역과 접수상태를 고르면 현재 확인할 임대주택 공고가 바로 보입니다." />
+    <meta property="og:site_name" content="지원금 한눈에" />
+    <meta property="og:title" content="지원금 한눈에 | 정부 지원금·복지서비스 찾기" />
+    <meta property="og:description" content="청년, 출산·양육, 취업·창업, 주거, 돌봄 지원 정보를 공식 안내 기준으로 확인하세요." />
     <meta property="og:url" content="https://mustview.co.kr/" />
     <meta property="og:image" content="https://mustview.co.kr/assets/housing-neighborhood.webp" />
     <meta name="twitter:card" content="summary_large_image" />
@@ -21,11 +21,11 @@
       {
         "@context": "https://schema.org",
         "@type": "WebSite",
-        "name": "임대주택 한눈에",
-        "alternateName": "MustView Housing",
+        "name": "지원금 한눈에",
+        "alternateName": "MustView Benefits",
         "url": "https://mustview.co.kr/",
         "inLanguage": "ko-KR",
-        "description": "전국 임대주택 입주자 모집공고를 지역과 접수상태로 찾는 정보 서비스",
+        "description": "정부 지원금과 복지서비스, 주거 지원 공고를 공식 자료 중심으로 찾는 정보 서비스",
         "potentialAction": {
           "@type": "SearchAction",
           "target": "https://mustview.co.kr/?query={search_term_string}",
@@ -39,20 +39,20 @@
 
     <header class="site-header">
       <div class="site-header-inner">
-        <a class="brand" href="index.html" aria-label="임대주택 한눈에 홈">
+        <a class="brand" href="index.html" aria-label="지원금 한눈에 홈">
           <span class="brand-mark" aria-hidden="true">H</span>
-          <span><strong>임대주택 한눈에</strong><small>공공임대 정보서비스</small></span>
+          <span><strong>지원금 한눈에</strong><small>정부 지원금 정보서비스</small></span>
         </a>
         <nav class="desktop-nav" aria-label="주요 메뉴">
-          <a class="is-active" href="index.html">공고 찾기</a>
-          <a href="private-rental.html">민간임대</a>
-          <a href="housing-complexes.html">단지 찾기</a>
+          <a class="is-active" href="index.html">지원금 찾기</a>
+          <a href="#housingSupport">분야별 지원</a>
+          <a href="#notices">주거 지원</a>
           <a href="housing-guide.html">신청 가이드</a>
           <a href="sources.html">자료 출처</a>
         </nav>
         <div class="header-tools">
-          <a class="official-header-link" href="https://www.myhome.go.kr/hws/portal/sch/selectRsdtRcritNtcView.do" target="_blank" rel="noopener noreferrer" aria-label="마이홈 공식 공고 확인"><span class="official-label">공식 공고</span><span class="official-symbol" aria-hidden="true">↗</span></a>
-          <button class="header-search-button" id="headerSearch" type="button" aria-label="공고 검색으로 이동" aria-controls="housingSearchForm"><span class="search-symbol" aria-hidden="true"></span></button>
+          <a class="official-header-link" href="https://www.gov.kr/portal/main" target="_blank" rel="noopener noreferrer" aria-label="정부24 공식 지원금 확인"><span class="official-label">정부24</span><span class="official-symbol" aria-hidden="true">↗</span></a>
+          <button class="header-search-button" id="headerSearch" type="button" aria-label="주거 지원 공고 검색으로 이동" aria-controls="housingSearchForm"><span class="search-symbol" aria-hidden="true"></span></button>
           <button class="menu-button" id="menuOpen" type="button" aria-label="전체 메뉴 열기" aria-controls="siteMenu" aria-expanded="false">☰</button>
         </div>
       </div>
@@ -65,11 +65,12 @@
           <button id="menuClose" type="button" aria-label="전체 메뉴 닫기">×</button>
         </div>
         <nav aria-label="전체 메뉴">
-          <a href="index.html">전국 공고 찾기</a>
-          <a href="private-rental.html">민간임대 청약 공고</a>
-          <a href="#savedNotices">관심 공고</a>
-          <a href="housing-complexes.html">공공임대주택 단지 찾기</a>
-          <a href="housing-guide.html">임대주택 신청 가이드</a>
+          <a href="#housingSupport">정부 지원금 찾기</a>
+          <a href="#notices">주거 지원 공고</a>
+          <a href="private-rental.html">민간임대 청약</a>
+          <a href="#savedNotices">관심 주거 공고</a>
+          <a href="housing-complexes.html">공공임대 단지 찾기</a>
+          <a href="housing-guide.html">주거 지원 신청 가이드</a>
           <a href="family-facilities.html">한부모가족 주거시설</a>
           <a href="long-term-care.html">장기요양기관 찾기</a>
           <a href="holiday-parking.html">명절 무료 주차장</a>
@@ -86,25 +87,25 @@
         <div class="content-width">
           <div class="portal-banner">
             <div>
-              <span>공식 자료로 확인하는 임대정보</span>
-              <h2>내게 필요한 주택 공고를 한곳에서 확인하세요</h2>
-              <p>지역별 모집공고와 접수 기간을 살펴보고 공급기관의 원문까지 바로 이동할 수 있습니다.</p>
-              <a href="#housingSearchForm">공고 찾기</a>
+              <span>정부24·복지로 공식 안내 기준</span>
+              <h2>받을 수 있는 지원금,<br />조건부터 한눈에 확인하세요</h2>
+              <p>청년, 출산·양육, 취업·창업, 주거, 돌봄 분야의 공공 지원 정보를 모아 공식 신청 안내로 연결합니다.</p>
+              <a href="#housingSupport">지원금 찾기</a>
             </div>
-            <img src="assets/housing-neighborhood.webp" width="1600" height="838" alt="공원과 대중교통이 연결된 공동주택 단지" />
+            <div class="benefit-hero-art" aria-hidden="true"><span>01</span><span>02</span><span>03</span></div>
           </div>
 
           <div class="shortcut-heading">
-            <h2 id="shortcutTitle">자주 찾는 메뉴</h2>
-            <p>필요한 정보를 바로 선택하세요.</p>
+            <h2 id="shortcutTitle">어떤 지원이 필요한가요?</h2>
+            <p>분야를 고르면 공식 복지서비스를 바로 확인할 수 있습니다.</p>
           </div>
           <nav class="shortcut-grid" aria-label="자주 찾는 메뉴">
-            <a href="#housingSearchForm"><span><small>공공임대</small><strong>전국 공고 찾기</strong></span><span class="shortcut-icon" aria-hidden="true">⌕</span></a>
-            <a href="private-rental.html"><span><small>청약홈</small><strong>민간임대 청약 찾기</strong></span><span class="shortcut-icon" aria-hidden="true">▤</span></a>
-            <a href="housing-complexes.html"><span><small>단지정보</small><strong>지역별 임대단지 찾기</strong></span><span class="shortcut-icon" aria-hidden="true">▦</span></a>
-            <a href="#housingSupport"><span><small>생활지원</small><strong>내게 맞는 주거지원</strong></span><span class="shortcut-icon" aria-hidden="true">⌂</span></a>
-            <a href="long-term-care.html"><span><small>돌봄정보</small><strong>지역별 장기요양기관 찾기</strong></span><span class="shortcut-icon" aria-hidden="true">＋</span></a>
-            <a href="housing-guide.html"><span><small>신청안내</small><strong>임대주택 신청 가이드</strong></span><span class="shortcut-icon" aria-hidden="true">✓</span></a>
+            <a href="#housingSupport" data-support-jump="youth"><span><small>청년</small><strong>청년 지원금</strong></span><span class="shortcut-icon" aria-hidden="true">Y</span></a>
+            <a href="#housingSupport" data-support-jump="family"><span><small>출산·양육</small><strong>가족 지원금</strong></span><span class="shortcut-icon" aria-hidden="true">F</span></a>
+            <a href="#housingSupport" data-support-jump="work"><span><small>취업·창업</small><strong>일자리 지원</strong></span><span class="shortcut-icon" aria-hidden="true">W</span></a>
+            <a href="#housingSupport" data-support-jump="housing"><span><small>주거</small><strong>주거 지원금</strong></span><span class="shortcut-icon" aria-hidden="true">H</span></a>
+            <a href="#housingSupport" data-support-jump="care"><span><small>돌봄</small><strong>돌봄 지원</strong></span><span class="shortcut-icon" aria-hidden="true">C</span></a>
+            <a href="https://www.gov.kr/portal/main" target="_blank" rel="noopener noreferrer"><span><small>정부24</small><strong>전체 혜택 보기</strong></span><span class="shortcut-icon" aria-hidden="true">↗</span></a>
           </nav>
         </div>
       </section>
@@ -113,16 +114,16 @@
         <div class="content-width">
           <div class="section-heading search-heading">
             <div>
-              <span class="eyebrow">전국 입주자 모집공고</span>
-              <h1 id="searchTitle">내 지역 임대주택 공고 찾기</h1>
-              <p>지역과 접수 상태를 선택하면 확인할 공고만 모아 보여드립니다.</p>
+              <span class="eyebrow">주거 지원</span>
+              <h1 id="searchTitle">주거 지원 공고 찾기</h1>
+              <p>지원금과 별도로 확인해야 하는 공공임대·주거복지 공고를 지역과 접수 상태로 찾아보세요.</p>
             </div>
             <a class="source-badge" href="sources.html"><span aria-hidden="true"></span>국토교통부·공급기관 자료</a>
           </div>
 
           <form class="search-form" id="housingSearchForm">
             <div class="field field-keyword">
-              <label for="housingKeyword">공고명 검색</label>
+              <label for="housingKeyword">주거 지원 공고명 검색</label>
               <input id="housingKeyword" name="query" type="search" maxlength="50" autocomplete="off" placeholder="예: 서울 행복주택, 청년, 예비입주자" />
             </div>
             <div class="field">
@@ -173,7 +174,7 @@
                 <option value="730">최근 2년</option>
               </select>
             </div>
-            <button class="search-submit" type="submit">공고 검색</button>
+            <button class="search-submit" type="submit">주거 공고 검색</button>
           </form>
 
           <div class="quick-row" aria-label="빠른 검색">
@@ -196,7 +197,7 @@
           <div class="notice-toolbar">
             <div>
               <span class="eyebrow">조회 결과</span>
-              <h2 id="noticeTitle">임대주택 공고</h2>
+              <h2 id="noticeTitle">공공임대·주거 지원 공고</h2>
             </div>
             <div class="sync-state" id="housingSyncState" aria-live="polite">공식 자료를 확인하고 있습니다.</div>
           </div>
@@ -217,10 +218,10 @@
 
             <aside class="saved-panel" id="savedNotices" aria-labelledby="savedTitle">
               <div class="saved-head">
-                <div><span class="eyebrow">관심 목록</span><h2 id="savedTitle">관심 공고</h2></div>
+                <div><span class="eyebrow">관심 목록</span><h2 id="savedTitle">관심 주거 공고</h2></div>
                 <span id="savedCount">0</span>
               </div>
-              <p>별표를 누른 공고는 이 기기의 브라우저에 저장됩니다.</p>
+              <p>별표를 누른 주거 공고는 이 기기의 브라우저에 저장됩니다.</p>
               <div class="saved-list" id="savedList">
                 <div class="saved-empty">아직 저장한 공고가 없습니다.</div>
               </div>
@@ -233,22 +234,23 @@
         <div class="content-width">
           <div class="support-heading">
             <div>
-              <span class="eyebrow">생활 지원</span>
-              <h2 id="housingSupportTitle">내게 맞는 주거지원 찾기</h2>
-              <p>복지로에 등록된 주거비·임대주택·월세·전세 지원대상과 신청방법을 확인하세요.</p>
+              <span class="eyebrow">정부 지원금·복지서비스</span>
+              <h2 id="housingSupportTitle">내게 맞는 지원금 찾기</h2>
+              <p>청년, 출산·양육, 취업·창업, 주거, 돌봄 분야의 지원대상과 신청방법을 공식 안내로 확인하세요.</p>
             </div>
-            <div class="sync-state" id="housingSupportSync" aria-live="polite">주거지원 서비스를 확인하고 있습니다.</div>
+            <div class="sync-state" id="housingSupportSync" aria-live="polite">공식 지원금·복지서비스를 확인하고 있습니다.</div>
           </div>
-          <div class="support-filters" id="housingSupportFilters" role="group" aria-label="주거지원 분류">
-            <button class="is-active" type="button" data-support-topic="housing" aria-pressed="true">주거지원</button>
-            <button type="button" data-support-topic="rental" aria-pressed="false">임대주택</button>
-            <button type="button" data-support-topic="monthly" aria-pressed="false">월세</button>
-            <button type="button" data-support-topic="jeonse" aria-pressed="false">전세</button>
+          <div class="support-filters" id="housingSupportFilters" role="group" aria-label="지원금 분야">
+            <button class="is-active" type="button" data-support-topic="youth" aria-pressed="true">청년</button>
+            <button type="button" data-support-topic="family" aria-pressed="false">출산·양육</button>
+            <button type="button" data-support-topic="work" aria-pressed="false">취업·창업</button>
+            <button type="button" data-support-topic="housing" aria-pressed="false">주거</button>
+            <button type="button" data-support-topic="care" aria-pressed="false">돌봄</button>
           </div>
           <div class="support-state" id="housingSupportState" aria-live="polite"></div>
-          <div class="support-grid" id="housingSupportList" aria-label="중앙부처 주거 복지서비스"></div>
+          <div class="support-grid" id="housingSupportList" aria-label="중앙부처 지원금·복지서비스"></div>
           <div class="support-source">
-            <span>자료: 한국사회보장정보원 중앙부처복지서비스 · 실제 지원 자격은 복지로 공식 내용에서 확인</span>
+            <span>자료: 한국사회보장정보원 중앙부처복지서비스 · 실제 지원 자격과 신청 조건은 복지로·정부24 공식 내용에서 확인</span>
             <a href="https://www.data.go.kr/data/15090532/openapi.do" target="_blank" rel="noopener noreferrer">공식 자료 설명</a>
           </div>
         </div>
@@ -281,13 +283,13 @@
           </figure>
           <div>
             <span class="eyebrow">신청 전 확인</span>
-            <h2 id="applicationTitle">공고를 찾았다면 세 가지만 먼저 확인하세요</h2>
+            <h2 id="applicationTitle">지원금을 찾았다면 세 가지만 먼저 확인하세요</h2>
             <ol class="application-steps">
-              <li><span>1</span><div><strong>모집 대상</strong><p>청년, 신혼부부, 고령자, 일반 무주택세대 등 본인이 해당하는 공급 대상을 확인합니다.</p></div></li>
-              <li><span>2</span><div><strong>기준일과 자격</strong><p>공고일 기준 무주택, 소득, 자산, 거주지역 조건을 공식 공고문에서 확인합니다.</p></div></li>
-              <li><span>3</span><div><strong>접수일과 서류</strong><p>온라인·현장 접수 방식과 제출서류, 서류발급 인정기간을 일정표에 표시합니다.</p></div></li>
+              <li><span>1</span><div><strong>지원 대상</strong><p>나이, 가구 구성, 소득, 거주지와 상황 등 각 서비스가 정한 대상 기준을 확인합니다.</p></div></li>
+              <li><span>2</span><div><strong>기준일과 조건</strong><p>지원별 기준일, 중복 수혜 가능 여부와 소득·재산 조건은 공식 상세 안내를 우선합니다.</p></div></li>
+              <li><span>3</span><div><strong>신청 방법과 서류</strong><p>온라인·방문 신청 경로, 접수 기간과 필요한 서류를 신청 전 다시 확인합니다.</p></div></li>
             </ol>
-            <a class="text-link" href="housing-guide.html">임대주택 신청 가이드 보기</a>
+            <a class="text-link" href="housing-guide.html">주거 지원 신청 가이드 보기</a>
           </div>
         </div>
       </section>
@@ -295,7 +297,7 @@
       <section class="housing-types" aria-labelledby="typesTitle">
         <div class="content-width">
           <div class="section-heading compact">
-            <div><span class="eyebrow">임대 유형</span><h2 id="typesTitle">공고명에 자주 나오는 임대 유형</h2></div>
+            <div><span class="eyebrow">주거 지원 제도</span><h2 id="typesTitle">주거 지원에서 자주 확인하는 유형</h2></div>
             <p>유형 이름만으로 신청 가능 여부를 단정할 수 없습니다.</p>
           </div>
           <div class="type-grid">
@@ -309,30 +311,30 @@
 
       <aside class="official-notice">
         <div class="content-width">
-          <strong>중요 안내</strong>
-          <p>이 사이트는 공고를 찾기 쉽게 정리하는 민간 정보 서비스입니다. 신청 자격, 모집 일정과 제출서류는 반드시 마이홈과 각 공급기관의 최신 공식 공고문을 기준으로 판단하세요.</p>
-          <a href="https://apply.lh.or.kr/lhapply/apply/sc/list.do" target="_blank" rel="noopener noreferrer">공식 공고 확인</a>
+          <strong>지원금 확인 원칙</strong>
+          <p>이 사이트는 지원금과 주거 공고를 찾기 쉽게 정리하는 민간 정보 서비스입니다. 지원 가능 여부, 지급액, 일정과 제출서류는 반드시 정부24, 복지로와 각 기관의 최신 공식 안내를 기준으로 판단하세요.</p>
+          <a href="https://www.gov.kr/portal/main" target="_blank" rel="noopener noreferrer">정부24에서 확인</a>
         </div>
       </aside>
     </main>
 
     <nav class="bottom-nav" aria-label="모바일 주요 메뉴">
       <a class="is-active" href="index.html"><span aria-hidden="true">⌂</span><strong>홈</strong></a>
-      <a href="#notices"><span aria-hidden="true">≡</span><strong>공공</strong></a>
-      <a href="private-rental.html"><span aria-hidden="true">▤</span><strong>민간</strong></a>
+      <a href="#housingSupport"><span aria-hidden="true">+</span><strong>지원금</strong></a>
+      <a href="#notices"><span aria-hidden="true">⌂</span><strong>주거</strong></a>
       <a href="housing-guide.html"><span aria-hidden="true">?</span><strong>가이드</strong></a>
     </nav>
 
     <footer class="site-footer">
       <div class="content-width footer-grid">
-        <div><a class="footer-brand" href="index.html">임대주택 한눈에</a><p>전국 임대주택 공고를 더 빠르고 명확하게 확인하는 정보 서비스입니다.</p></div>
-        <nav aria-label="하단 메뉴"><a href="private-rental.html">민간임대</a><a href="housing-complexes.html">단지 찾기</a><a href="housing-guide.html">신청 가이드</a><a href="sources.html">자료 출처</a><a href="about.html">사이트 소개</a><a href="contact.html">문의</a><a href="privacy.html">개인정보처리방침</a></nav>
-        <small>공고 데이터: 국토교통부 마이홈·각 공급기관 · 최종 신청 판단은 공식 공고문을 우선하세요.</small>
+        <div><a class="footer-brand" href="index.html">지원금 한눈에</a><p>정부 지원금과 생활 복지정보를 공식 안내 기준으로 정리하는 정보 서비스입니다.</p></div>
+        <nav aria-label="하단 메뉴"><a href="#housingSupport">지원금 찾기</a><a href="#notices">주거 지원</a><a href="housing-guide.html">신청 가이드</a><a href="sources.html">자료 출처</a><a href="about.html">사이트 소개</a><a href="contact.html">문의</a><a href="privacy.html">개인정보처리방침</a></nav>
+        <small>자료: 정부24·복지로·국토교통부·각 공급기관 · 최종 신청 판단은 최신 공식 안내를 우선하세요.</small>
       </div>
     </footer>
 
     <script src="housing-dashboard.js?v=20260812-region2" defer></script>
-    <script src="housing-support.js?v=20260812-support2" defer></script>
+    <script src="housing-support.js?v=20260814-benefits1" defer></script>
     <script src="policy-news.js?v=20260812-policy1" defer></script>
   </body>
 </html>

@@ -61,15 +61,16 @@ test("the housing home wires search, filters, results, favorites, menu, and offi
   }
 
   assertHealthyKorean(html, "index.html");
-  assert.match(html, /임대주택 한눈에/);
-  assert.match(html, /공공임대 정보서비스/);
+  assert.match(html, /지원금 한눈에/);
+  assert.match(html, /정부 지원금 정보서비스/);
+  assert.match(html, /정부 지원금·복지서비스/);
   assert.doesNotMatch(
     visibleText(html),
     /LATEST NOTICES|SAVED|GOVERNMENT SUPPORT|POLICY BRIEFING|BEFORE YOU APPLY|HOUSING TYPES/,
     "decorative English section labels are not shown to users"
   );
   assert.match(html, /assets\/housing-neighborhood\.webp/);
-  assert.match(html, /myhome\.go\.kr/);
+  assert.match(html, /gov\.kr\/portal\/main/);
   assert.match(html, /국토교통부·공급기관 자료/);
   assert.match(client, /\/api\/myhome-notices/);
   assert.match(client, /\/api\/housing-notices/);
@@ -94,12 +95,17 @@ test("the housing home wires search, filters, results, favorites, menu, and offi
   assert.match(html, /holiday-parking\.html/);
   assert.match(html, /명절 무료 주차장/);
   assert.match(html, /long-term-care\.html/);
-  assert.match(html, /지역별 장기요양기관 찾기/);
+  assert.match(html, /장기요양기관 찾기/);
   assert.match(html, /housing-complexes\.html/);
-  assert.match(html, /지역별 임대단지 찾기/);
+  assert.match(html, /공공임대 단지 찾기/);
   assert.match(html, /private-rental\.html/);
-  assert.match(html, /민간임대 청약 찾기/);
-  assert.equal((html.match(/data-support-topic=/g) || []).length, 4);
+  assert.match(html, /민간임대 청약/);
+  assert.equal((html.match(/data-support-topic=/g) || []).length, 5);
+  for (const topic of ["youth", "family", "work", "housing", "care"]) {
+    assert.match(html, new RegExp('data-support-topic=["\\\']' + topic + '["\\\']'));
+    assert.match(supportClient, new RegExp('"' + topic + '"'));
+  }
+  assert.match(html, /data-support-jump="youth"/);
   assert.match(supportClient, /\/api\/housing-support/);
   assert.match(supportClient, /\/api\/welfare-services/);
   assert.match(supportClient, /localStorage/);
@@ -157,7 +163,7 @@ test("public housing pages have production metadata, ads ownership, and healthy 
 
   const notFound = await readProjectFile("404.html");
   assert.match(notFound, /noindex, nofollow/);
-  assert.match(notFound, /임대주택 한눈에/);
+  assert.match(notFound, /지원금 찾기/);
   assert.doesNotMatch(notFound, /adsbygoogle|google-adsense-account/);
 });
 

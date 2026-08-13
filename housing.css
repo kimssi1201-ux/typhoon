@@ -2845,6 +2845,146 @@ img {
   }
 }
 
+/* Support-fund editorial home */
+.portal-banner {
+  isolation: isolate;
+  overflow: hidden;
+  border-color: #164c7e;
+  background:
+    radial-gradient(circle at 82% 25%, rgba(116, 204, 255, .48) 0 6%, transparent 6.4%),
+    radial-gradient(circle at 76% 72%, rgba(255, 207, 91, .9) 0 4.2%, transparent 4.6%),
+    linear-gradient(125deg, #082f52 0%, #125f9f 58%, #287ebd 100%);
+}
+
+.portal-banner::after {
+  display: none;
+}
+
+.portal-banner > div:first-child {
+  position: relative;
+  z-index: 2;
+}
+
+.benefit-hero-art {
+  position: absolute;
+  z-index: 1;
+  top: 50%;
+  right: 8%;
+  display: grid;
+  width: 262px;
+  height: 190px;
+  grid-template-columns: repeat(3, 1fr);
+  align-items: end;
+  gap: 11px;
+  padding: 22px;
+  border: 1px solid rgba(255, 255, 255, .37);
+  background: rgba(255, 255, 255, .1);
+  box-shadow: 16px 18px 0 rgba(5, 38, 68, .16);
+  transform: translateY(-50%) rotate(-4deg);
+}
+
+.benefit-hero-art::before {
+  position: absolute;
+  top: 22px;
+  left: 22px;
+  width: 80px;
+  height: 10px;
+  border-radius: 99px;
+  background: rgba(255, 255, 255, .74);
+  content: "";
+}
+
+.benefit-hero-art::after {
+  position: absolute;
+  top: 45px;
+  left: 22px;
+  width: 130px;
+  height: 7px;
+  border-radius: 99px;
+  background: rgba(214, 240, 255, .56);
+  content: "";
+}
+
+.benefit-hero-art span {
+  display: grid;
+  height: 64px;
+  place-items: center;
+  border-radius: 50%;
+  background: #ffffff;
+  color: #1767a7;
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.benefit-hero-art span:nth-child(2) {
+  height: 92px;
+  background: #ffd66e;
+  color: #684900;
+}
+
+.benefit-hero-art span:nth-child(3) {
+  height: 118px;
+  background: #94dcce;
+  color: #155c57;
+}
+
+.support-filters {
+  gap: 9px;
+}
+
+.support-filters button {
+  min-height: 39px;
+  padding-inline: 15px;
+}
+
+.support-card {
+  min-height: 100%;
+}
+
+@media (max-width: 760px) {
+  .benefit-hero-art {
+    top: auto;
+    right: 22px;
+    bottom: -77px;
+    width: 166px;
+    height: 122px;
+    gap: 7px;
+    padding: 14px;
+    transform: rotate(-4deg);
+  }
+
+  .benefit-hero-art::before {
+    top: 13px;
+    left: 14px;
+    width: 50px;
+    height: 6px;
+  }
+
+  .benefit-hero-art::after {
+    top: 28px;
+    left: 14px;
+    width: 80px;
+    height: 5px;
+  }
+
+  .benefit-hero-art span {
+    height: 41px;
+    font-size: 10px;
+  }
+
+  .benefit-hero-art span:nth-child(2) {
+    height: 57px;
+  }
+
+  .benefit-hero-art span:nth-child(3) {
+    height: 71px;
+  }
+
+  .portal-banner > div:first-child {
+    max-width: 100%;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .care-detail-spinner::before {
     animation: none;

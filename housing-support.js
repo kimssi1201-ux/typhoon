@@ -1,14 +1,14 @@
 (() => {
 const PRIMARY_API_PATH = "/api/welfare-services";
 const FALLBACK_API_PATH = "/api/housing-support";
-const CACHE_PREFIX = "mustview:housing:support:v2:";
+const CACHE_PREFIX = "mustview:benefits:support:v1:";
 const DETAIL_CACHE_PREFIX = "mustview:housing:welfare-detail:v1:";
 const BOKJIRO_HOME = "https://www.bokjiro.go.kr/ssis-tbu/index.do";
 const GOV24_HOME = "https://www.gov.kr/portal/rcvfvrSvc/main";
 const CACHE_FRESH_MS = 30 * 60 * 1000;
 const CACHE_FALLBACK_MS = 24 * 60 * 60 * 1000;
 const DETAIL_CACHE_MS = 24 * 60 * 60 * 1000;
-const TOPICS = new Set(["housing", "rental", "monthly", "jeonse"]);
+const TOPICS = new Set(["youth", "family", "work", "housing", "care"]);
 
 const elements = {
   filters: document.querySelector("#housingSupportFilters"),
@@ -17,7 +17,7 @@ const elements = {
   sync: document.querySelector("#housingSupportSync")
 };
 
-let currentTopic = "housing";
+let currentTopic = "youth";
 let requestController = null;
 
 function cacheKey(topic) {
@@ -99,7 +99,7 @@ function renderSkeleton() {
     );
     elements.list.append(card);
   }
-  elements.sync.textContent = "주거 복지서비스를 확인하고 있습니다.";
+  elements.sync.textContent = "공식 지원금·복지서비스를 확인하고 있습니다.";
 }
 
 function renderMessage(title, message, officialUrl = BOKJIRO_HOME) {
@@ -253,7 +253,7 @@ function supportCard(item) {
   );
 
   const title = document.createElement("h3");
-  const titleLink = createElement("a", "", item.name || "주거 복지서비스");
+  const titleLink = createElement("a", "", item.name || "지원금·복지서비스");
   titleLink.href = safeOfficialUrl(item.url, item.sourceMode === "fallback" ? GOV24_HOME : BOKJIRO_HOME);
   titleLink.target = "_blank";
   titleLink.rel = "noopener noreferrer";
@@ -315,7 +315,7 @@ function renderSupport(data, fromCache = false) {
   if (!items.length) {
     renderMessage(
       "현재 표시할 지원 서비스가 없습니다.",
-      "선택한 분류의 주거 복지서비스가 조회되지 않았습니다. 공식 사이트에서 전체 서비스를 확인해 주세요.",
+      "선택한 분류의 지원금·복지서비스가 조회되지 않았습니다. 공식 사이트에서 전체 서비스를 확인해 주세요.",
       data.officialUrl
     );
     elements.sync.textContent = "검색 결과 없음";
@@ -323,7 +323,7 @@ function renderSupport(data, fromCache = false) {
   }
 
   items.forEach((item) => elements.list.append(supportCard({ ...item, sourceMode: data.sourceMode })));
-  const topic = data.summary?.topic || "주거지원";
+  const topic = data.summary?.topic || "지원금";
   const source = data.sourceMode === "fallback" ? "정부24 대체 자료" : "복지로";
   elements.sync.textContent = `${fromCache ? "저장된 자료" : source} · ${topic} ${data.summary?.total ?? items.length}건 · ${formatFetchedAt(data.fetchedAt)}`;
 }
@@ -344,14 +344,14 @@ async function requestSupport(path, topic, signal) {
   const response = await fetch(url, { headers: { accept: "application/json" }, signal });
   const data = await response.json().catch(() => null);
   if (!response.ok || !data?.ok) {
-    throw Object.assign(new Error(data?.message || "주거 복지서비스를 불러오지 못했습니다."), {
+    throw Object.assign(new Error(data?.message || "지원금·복지서비스를 불러오지 못했습니다."), {
       officialUrl: data?.officialUrl
     });
   }
   return data;
 }
 
-async function loadSupport(topic = "housing", force = false) {
+async function loadSupport(topic = "youth", force = false) {
   if (!elements.list || !elements.state || !elements.sync || !TOPICS.has(topic)) return;
   setActiveTopic(topic);
   const fresh = force ? null : readCache(cacheKey(topic), CACHE_FRESH_MS);
@@ -385,7 +385,7 @@ async function loadSupport(topic = "housing", force = false) {
       return;
     }
     elements.sync.textContent = "주거 복지서비스 연결을 확인해 주세요.";
-    renderMessage("주거 복지서비스를 불러오지 못했습니다.", error.message, error.officialUrl);
+    renderMessage("지원금·복지서비스를 불러오지 못했습니다.", error.message, error.officialUrl);
   } finally {
     if (requestController === controller) requestController = null;
   }
@@ -395,6 +395,13 @@ elements.filters?.addEventListener("click", (event) => {
   const button = event.target.closest("[data-support-topic]");
   if (!button || !TOPICS.has(button.dataset.supportTopic) || button.dataset.supportTopic === currentTopic) return;
   loadSupport(button.dataset.supportTopic);
+});
+
+document.querySelectorAll("[data-support-jump]").forEach((link) => {
+  link.addEventListener("click", () => {
+    const topic = link.dataset.supportJump;
+    if (TOPICS.has(topic) && topic !== currentTopic) loadSupport(topic);
+  });
 });
 
 loadSupport();
