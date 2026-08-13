@@ -1,10 +1,47 @@
 import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 import test from "node:test";
-import { HOUSING_REGIONS } from "../housing-region-codes.js";
 
 const readProjectFile = (path) => readFile(new URL("../" + path, import.meta.url), "utf8");
+const readProjectBuffer = (path) => readFile(new URL("../" + path, import.meta.url));
 const publisherId = "ca-pub-5751319666030430";
+const posts = [
+  {
+    file: "national-employment-support.html",
+    slug: "national-employment-support",
+    image: "benefit-employment-support.webp",
+    title: "국민취업지원제도 I유형: 구직촉진수당과 신청 방법",
+    source: "work24.go.kr"
+  },
+  {
+    file: "national-tomorrow-learning-card.html",
+    slug: "national-tomorrow-learning-card",
+    image: "benefit-learning-card.webp",
+    title: "국민내일배움카드: 훈련비 300만 원부터 확인할 점",
+    source: "work24.go.kr"
+  },
+  {
+    file: "parent-benefit.html",
+    slug: "parent-benefit",
+    image: "benefit-parent.webp",
+    title: "부모급여: 0세·1세 지원 대상과 신청 시기",
+    source: "bokjiro.go.kr"
+  },
+  {
+    file: "first-meeting-voucher.html",
+    slug: "first-meeting-voucher",
+    image: "benefit-first-meeting.webp",
+    title: "첫만남이용권: 출생아 바우처 금액과 사용 전 확인 사항",
+    source: "mohw.go.kr"
+  },
+  {
+    file: "child-allowance.html",
+    slug: "child-allowance",
+    image: "benefit-child-allowance.webp",
+    title: "아동수당: 만 9세 미만 확대 기준과 신청 방법",
+    source: "mohw.go.kr"
+  }
+];
 
 function visibleText(html) {
   return html
@@ -16,495 +53,131 @@ function visibleText(html) {
     .trim();
 }
 
-function assertHealthyKorean(html, path) {
-  const questionMarks = (html.match(/\?/g) || []).length;
-  const suspicious = (html.match(/[援紐諛蹂筌癲繹袁]/g) || []).length;
-
-  assert.ok(questionMarks <= 20, path + " has unusual replacement question marks");
-  assert.ok(suspicious <= 2, path + " contains likely Korean mojibake");
-  assert.doesNotMatch(html, /�/, path + " contains replacement characters");
-  assert.match(html, /<title>[^<]*[가-힣][^<]*<\/title>/, path + " has a closed Korean title");
-  assert.match(html, /<h1\b[^>]*>[\s\S]*?[가-힣][\s\S]*?<\/h1>/, path + " has a closed Korean h1");
+function articleBodyText(html) {
+  const match = html.match(/<section class="article-content" data-post-content data-counted-content>([\s\S]*?)<\/section>/);
+  assert.ok(match, "article content marker is present");
+  return visibleText(match[1].replace(/<details class="table-of-contents"[\s\S]*?<\/details>/, ""));
 }
 
-test("the housing home wires search, filters, results, favorites, menu, and official links", async () => {
-  const [html, client, supportClient, server, css] = await Promise.all([
-    readProjectFile("index.html"),
-    readProjectFile("housing-dashboard.js"),
-    readProjectFile("housing-support.js"),
-    readProjectFile("functions/api/myhome-notices.js"),
-    readProjectFile("housing.css")
-  ]);
+function articleHeadings(html) {
+  const match = html.match(/<section class="article-content" data-post-content data-counted-content>([\s\S]*?)<\/section>/);
+  assert.ok(match, "article content marker is present");
+  return [...match[1].matchAll(/<(h[23])\b[^>]*>([\s\S]*?)<\/\1>/gi)].map((heading) => ({
+    level: Number(heading[1].slice(1)),
+    text: visibleText(heading[2])
+  }));
+}
 
-  for (const id of [
-    "housingSearchForm",
-    "housingKeyword",
-    "housingRegion",
-    "housingStatus",
-    "housingType",
-    "housingDays",
-    "noticeState",
-    "noticeList",
-    "noticeLoadMore",
-    "savedNotices",
-    "savedList",
-    "siteMenu",
-    "headerSearch",
-    "shortcutTitle",
-    "housingSupport",
-    "housingSupportFilters",
-    "housingSupportList",
-    "policyNews",
-    "policyNewsList"
-  ]) {
-    assert.match(html, new RegExp("id=[\"']" + id + "[\"']"), id + " is present on home");
+test("the home is a five-post GeneratePress-style support blog archive", async () => {
+  const [html, css] = await Promise.all([readProjectFile("index.html"), readProjectFile("blog.css")]);
+
+  assert.equal((html.match(/<article class="post-card"/g) || []).length, 5, "the archive has exactly five posts");
+  assert.match(html, /data-post-count="5"/);
+  assert.match(html, /<h1 id="archive-title">지원금<\/h1>/);
+  assert.match(html, /<h2 class="widget-title">카테고리<\/h2>/);
+  assert.equal((html.match(/>지원금 <span>5<\/span><\/a>/g) || []).length, 1, "there is one visible category");
+  assert.match(html, /class="site-grid"/);
+  assert.match(html, /class="widget-area"/);
+  assert.match(html, /class="main-navigation"/);
+  assert.match(html, /google-adsense-account/);
+  assert.ok(html.includes(publisherId));
+  assert.match(html, /<link rel="canonical" href="https:\/\/mustview\.co\.kr\/"/);
+  assert.doesNotMatch(html, /housing-dashboard\.js|housing-support\.js|portal-overview/, "the public home no longer renders a portal dashboard");
+
+  for (const post of posts) {
+    assert.match(html, new RegExp(`href="${post.file}"`), post.file + " is linked from the archive");
+    assert.match(html, new RegExp(`assets/${post.image.replace(".", "\\.")}`), post.image + " is displayed on the archive");
   }
 
-  assertHealthyKorean(html, "index.html");
-  assert.match(html, /지원금 한눈에/);
-  assert.match(html, /정부 지원금 정보서비스/);
-  assert.match(html, /정부 지원금·복지서비스/);
-  assert.doesNotMatch(
-    visibleText(html),
-    /LATEST NOTICES|SAVED|GOVERNMENT SUPPORT|POLICY BRIEFING|BEFORE YOU APPLY|HOUSING TYPES/,
-    "decorative English section labels are not shown to users"
-  );
-  assert.match(html, /assets\/housing-neighborhood\.webp/);
-  assert.match(html, /gov\.kr\/portal\/main/);
-  assert.match(html, /국토교통부·공급기관 자료/);
-  assert.match(client, /\/api\/myhome-notices/);
-  assert.match(client, /\/api\/housing-notices/);
-  assert.match(client, /sourceMode = "fallback"/);
-  assert.match(client, /requestBestNoticeData/);
-  assert.match(client, /Promise\.allSettled/);
-  assert.match(client, /noticeResultTotal\(lhData\) > noticeResultTotal\(myhomeData\)/);
-  assert.match(client, /mustview:housing:notices:v4:/);
-  assert.match(html, /option value="12">전남광주통합특별시 \(광주·전남\)<\/option>/);
-  assert.doesNotMatch(html, /option value="(?:29|46)">/);
-  assert.match(server, /apis\.data\.go\.kr\/1613000\/HWSPR02\/rsdtRcritNtcList/);
-  assert.match(server, /MYHOME_NOTICE_API_KEY/);
-  assert.doesNotMatch(server, /["'][a-f0-9]{64}["']/i, "a real public-data key is not committed");
-  assert.match(client, /localStorage/);
-  assert.match(client, /AbortController/);
-  assert.match(client, /CACHE_FALLBACK_MS/);
-  assert.match(client, /FAVORITES_KEY/);
-  assert.match(client, /textContent/);
-  assert.match(html, /policy-news\.js/);
-  assert.match(html, /housing-support\.js/);
-  assert.match(html, /data\.go\.kr\/data\/15090532/);
-  assert.match(html, /holiday-parking\.html/);
-  assert.match(html, /명절 무료 주차장/);
-  assert.match(html, /long-term-care\.html/);
-  assert.match(html, /장기요양기관 찾기/);
-  assert.match(html, /housing-complexes\.html/);
-  assert.match(html, /공공임대 단지 찾기/);
-  assert.match(html, /private-rental\.html/);
-  assert.match(html, /민간임대 청약/);
-  assert.equal((html.match(/data-support-topic=/g) || []).length, 5);
-  for (const topic of ["youth", "family", "work", "housing", "care"]) {
-    assert.match(html, new RegExp('data-support-topic=["\\\']' + topic + '["\\\']'));
-    assert.match(supportClient, new RegExp('"' + topic + '"'));
-  }
-  assert.match(html, /data-support-jump="youth"/);
-  assert.match(html, /class="benefit-category-bar"/);
-  assert.match(html, /data-support-jump="care"/);
-  assert.match(supportClient, /\/api\/housing-support/);
-  assert.match(supportClient, /\/api\/welfare-services/);
-  assert.match(supportClient, /searchParams\.get\("category"\)/);
-  assert.match(supportClient, /localStorage/);
-  assert.match(supportClient, /AbortController/);
-  assert.match(supportClient, /support-detail-button/);
-  assert.match(supportClient, /지원대상·신청방법/);
-  assert.match(supportClient, /textContent/);
-  assert.doesNotMatch(supportClient, /innerHTML\s*=/, "external support fields are not injected as HTML");
-  assert.match(html, /korea\.kr\/news\/policyNewsList\.do/);
-  assert.doesNotMatch(client, /innerHTML\s*=\s*notice\./, "external notice fields are not injected as HTML");
-  assert.match(css, /min-height:\s*48px/);
-  assert.match(css, /\.bottom-nav/);
-  assert.match(css, /Editorial public-information design/);
-  assert.match(css, /Mobile information-portal home/);
-  assert.match(css, /GeneratePress-inspired static theme refresh/);
-  assert.match(css, /--gp-accent:\s*#1e73be/);
-  assert.match(css, /\.portal-banner\s*\{[\s\S]*?min-height:\s*286px/);
-  assert.match(css, /@media \(prefers-reduced-motion: reduce\)[\s\S]*?\.portal-banner/);
-  assert.match(html, /class="shortcut-grid"/);
-  assert.match(html, /class="blog-home"/);
-  assert.match(html, /class="blog-feature-post"/);
-  assert.match(html, /class="blog-sidebar"/);
-  assert.match(html, /class="blog-category-list"/);
-  assert.match(html, /class="wp-classic-home"/);
-  assert.match(html, /class="wp-post-list"/);
-  assert.match(html, /class="wp-classic-sidebar"/);
-  assert.match(html, /id="blogSearchForm"/);
-  assert.match(html, /class="wp-category-list"/);
-  assert.match(client, /setupHeaderSearch/);
-  assert.match(client, /setupBlogSearch/);
-  assert.match(client, /scrollIntoView/);
-  assert.match(css, /\.brand-mark\s*\{[\s\S]*?width:\s*5px/);
-  assert.match(css, /@media \(max-width: 760px\)/);
-  assert.match(css, /\.benefit-category-bar/);
-  assert.match(css, /WordPress-style editorial front page and article sidebar/);
-  assert.match(css, /\.blog-home-layout/);
-  assert.match(css, /\.article-main > \.article-toc/);
-  assert.match(css, /Classic WordPress-style blog archive/);
-  assert.match(css, /\.wp-classic-layout/);
-  assert.match(css, /\.wp-entry/);
-  assert.doesNotMatch(html, /MustView Travel|여행 저널|해수욕장|태풍/);
+  assert.match(css, /--gp-accent:\s*#23634d/);
+  assert.match(css, /grid-template-columns:\s*minmax\(0, 1fr\) 300px/);
+  assert.match(css, /@media \(max-width: 820px\)/);
+  assert.match(css, /\.table-of-contents/);
 });
-test("public housing pages have production metadata, ads ownership, and healthy Korean text", async () => {
-  const pages = [
-    "index.html",
-    "private-rental.html",
-    "housing-complexes.html",
-    "housing-guide.html",
-    "family-facilities.html",
-    "long-term-care.html",
-    "holiday-parking.html",
-    "sources.html",
-    "about.html",
-    "privacy.html",
-    "contact.html"
-  ];
 
-  for (const path of pages) {
-    const html = await readProjectFile(path);
-    assertHealthyKorean(html, path);
-    assert.match(html, /rel=["']canonical["']/, path + " has a canonical link");
-    assert.match(html, /google-adsense-account/, path + " has the AdSense ownership meta tag");
-    assert.ok(html.includes(publisherId), path + " uses the configured publisher");
-    assert.match(html, /href=["']index\.html["']/, path + " links back home");
-    assert.match(html, /housing\.css/, path + " uses the housing design system");
-    assert.match(html, /class=["']benefit-category-bar["']/, path + " exposes support categories");
-    assert.doesNotMatch(html, /<small>MustView Housing<\/small>/, path + " has no template-style English brand subtitle");
-    for (const match of html.matchAll(/class=["']eyebrow["']>([^<]+)</g)) {
-      assert.match(match[1], /[가-힣0-9]/, path + " uses a Korean information label");
+test("each support post has complete metadata, a single H1, and a valid body length", async () => {
+  for (const post of posts) {
+    const html = await readProjectFile(post.file);
+    const text = articleBodyText(html);
+    const headings = articleHeadings(html);
+
+    assert.equal((html.match(/<h1\b/gi) || []).length, 1, post.file + " has exactly one H1");
+    assert.match(html, new RegExp(`<h1>${post.title}<\\/h1>`), post.file + " has the expected H1");
+    assert.ok(text.length >= 1700 && text.length <= 1900, post.file + " body is within 1,700-1,900 characters: " + text.length);
+    assert.ok(headings.length >= 9, post.file + " has the required H2 and H3 structure");
+    assert.equal(headings[0].level, 2, post.file + " begins body headings at H2");
+    for (let index = 1; index < headings.length; index += 1) {
+      assert.ok(headings[index].level <= headings[index - 1].level + 1, post.file + " does not skip heading levels");
     }
-    assert.doesNotMatch(html, /MustView Travel|KOREA TRAVEL JOURNAL|여행 저널|해수욕장|태풍/, path + " has no retired topic branding");
+    for (const required of ["지원 대상", "지원 금액 및 혜택", "신청 기간", "신청 방법", "필요 서류", "신청 시 주의사항", "자주 묻는 질문", "공식 신청처 및 문의처"]) {
+      assert.ok(headings.some((heading) => heading.text === required), post.file + " includes " + required);
+    }
+
+    assert.match(html, /<details class="table-of-contents" open>/, post.file + " has a collapsible mobile table of contents");
+    assert.match(html, /data-toc-list/, post.file + " has a generated table of contents target");
+    assert.match(html, /data-post-content/, post.file + " exposes headings for the generated table of contents");
+    assert.match(html, /class="key-facts"/, post.file + " has a key facts box");
+    assert.match(html, /최종 확인일 2026년 8월 14일/, post.file + " exposes its verification date");
+    assert.match(html, /class="official-sources"/, post.file + " has a source list");
+    assert.match(html, new RegExp(post.source.replace(".", "\\.")), post.file + " cites its official source");
+    assert.match(html, /rel="canonical"/);
+    assert.match(html, /property="og:type" content="article"/);
+    assert.match(html, /"@type":"Article"|"@type": "Article"/);
+    assert.match(html, /google-adsense-account/);
+    assert.ok(html.includes(publisherId));
+    assert.equal((html.match(/class="[^"]*\brelated-posts\b[^"]*"/g) || []).length, 1, post.file + " has related internal posts");
+    assert.ok((html.match(/href="[a-z-]+\.html"/g) || []).length >= 5, post.file + " includes internal navigation");
   }
-
-  const notFound = await readProjectFile("404.html");
-  assert.match(notFound, /noindex, nofollow/);
-  assert.match(notFound, /지원금 찾기/);
-  assert.doesNotMatch(notFound, /adsbygoogle|google-adsense-account/);
 });
 
-test("article pages put a linked table of contents before the first body section", async () => {
-  const articlePages = ["housing-guide.html", "sources.html", "about.html", "privacy.html", "contact.html"];
+test("the table of contents script gives every article heading a stable unique anchor", async () => {
+  const script = await readProjectFile("blog.js");
+  assert.match(script, /querySelectorAll\("h2, h3"\)/);
+  assert.match(script, /heading\.id = id/);
+  assert.match(script, /reserved\.has\(id\)/);
+  assert.match(script, /link\.href = `#\$\{id\}`/);
+  assert.match(script, /toc-subitem/);
+});
 
-  for (const path of articlePages) {
-    const html = await readProjectFile(path);
-    const introStart = html.indexOf('<header class="article-intro"');
-    const introEnd = html.indexOf("</header>", introStart);
-    const tocStart = html.indexOf('<nav class="article-toc"', introEnd);
-    const firstSection = html.indexOf('<section class="article-section"', introEnd);
-
-    assert.ok(introStart >= 0, path + " has an article intro");
-    assert.ok(tocStart > introEnd, path + " places the table of contents after the article intro");
-    assert.ok(tocStart < firstSection, path + " places the table of contents before article content");
-    assert.match(html, /aria-label="이 글의 목차"/, path + " labels the table of contents");
-    assert.match(html, /<a href="#[^"]+">/, path + " links each table of contents item");
+test("five original WebP representative images are present and referenced", async () => {
+  for (const post of posts) {
+    const [image, html] = await Promise.all([readProjectBuffer("assets/" + post.image), readProjectFile(post.file)]);
+    assert.equal(image.subarray(0, 4).toString("ascii"), "RIFF", post.image + " has WebP RIFF bytes");
+    assert.equal(image.subarray(8, 12).toString("ascii"), "WEBP", post.image + " has WebP bytes");
+    assert.match(html, new RegExp(`<img src="assets/${post.image.replace(".", "\\.")}"[^>]+alt="[^"]+"`), post.file + " sets descriptive image alt text");
   }
-
-  const navigation = await readProjectFile("article-navigation.js");
-  assert.match(navigation, /\.article-main \.article-section/);
-  assert.match(navigation, /section\.id = targetId/);
 });
 
-test("the private rental page wires notices, competition, filters, caching, and official links", async () => {
-  const [html, client, server, competitionServer, css] = await Promise.all([
-    readProjectFile("private-rental.html"),
-    readProjectFile("private-rental.js"),
-    readProjectFile("functions/api/private-rental-notices.js"),
-    readProjectFile("functions/api/private-rental-competition.js"),
-    readProjectFile("housing.css")
-  ]);
-
-  for (const id of [
-    "privateRentalSearchForm", "privateRentalRegion", "privateRentalType", "privateRentalStatus",
-    "privateRentalQuery", "privateRentalState", "privateRentalList", "privateRentalLoadMore",
-    "privateRentalArea", "privateRentalTotal", "privateRentalSync"
-  ]) {
-    assert.match(html, new RegExp("id=[\"']" + id + "[\"']"), id + " is present on private rental page");
-  }
-  assertHealthyKorean(html, "private-rental.html");
-  assert.match(html, /민간임대와 공공지원 민간임대/);
-  assert.match(html, /publicDataPk=15098547/);
-  assert.match(html, /publicDataPk=15098905/);
-  assert.match(html, /공공임대 공고와 구분됩니다/);
-  assert.match(client, /\/api\/private-rental-notices/);
-  assert.match(client, /\/api\/private-rental-competition/);
-  assert.match(client, /경쟁률·접수 현황 보기/);
-  assert.match(client, /COMPETITION_CACHE_KEY/);
-  assert.match(client, /localStorage/);
-  assert.match(client, /AbortController/);
-  assert.match(client, /textContent/);
-  assert.doesNotMatch(client, /innerHTML\s*=/, "external private rental fields are not injected as HTML");
-  assert.match(server, /getUrbtyOfctlLttotPblancDetail/);
-  assert.match(server, /getPblPvtRentLttotPblancDetail/);
-  assert.match(server, /APPLYHOME_API_KEY/);
-  assert.match(server, /partial/);
-  assert.doesNotMatch(server, /["'][a-f0-9]{64}["']/i, "a real public-data key is not committed");
-  assert.match(competitionServer, /getUrbtyOfctlLttotPblancCmpet/);
-  assert.match(competitionServer, /getPblPvtRentLttotPblancCmpet/);
-  assert.match(competitionServer, /APPLYHOME_COMPETITION_API_KEY/);
-  assert.doesNotMatch(competitionServer, /["'][a-f0-9]{64}["']/i, "a real competition key is not committed");
-  assert.match(css, /\.private-rental-grid/);
-  assert.match(css, /\.private-rental-competition-toggle/);
-  assert.match(css, /\.private-rental-message\.is-warning/);
-  assert.match(css, /min-height:\s*44px/);
-});
-
-test("the application guide is substantial and FAQ structured data matches visible questions", async () => {
-  const html = await readProjectFile("housing-guide.html");
-  const text = visibleText(html);
-  const headings = html.match(/<h2\b/gi) || [];
-  const jsonLdBlocks = [...html.matchAll(/<script\s+type=["']application\/ld\+json["'][^>]*>([\s\S]*?)<\/script>/gi)];
-
-  assert.ok(text.length >= 4500, "housing guide has substantial original content");
-  assert.ok(headings.length >= 7, "housing guide has a useful article structure");
-  assert.match(html, /공고일/);
-  assert.match(html, /무주택/);
-  assert.match(html, /소득/);
-  assert.match(html, /자산/);
-  assert.match(html, /제출서류/);
-  assert.match(html, /예비입주자/);
-  assert.equal((html.match(/<details>/g) || []).length, 4);
-  assert.equal(jsonLdBlocks.length, 1);
-  const faq = JSON.parse(jsonLdBlocks[0][1]);
-  assert.equal(faq["@type"], "FAQPage");
-  assert.equal(faq.mainEntity.length, 4);
-  faq.mainEntity.forEach((item) => assert.ok(html.includes(item.name)));
-});
-
-test("the family facilities page wires official search, pagination, safe phone links, and guidance", async () => {
-  const [html, client, css] = await Promise.all([
-    readProjectFile("family-facilities.html"),
-    readProjectFile("family-facilities.js"),
-    readProjectFile("housing.css")
-  ]);
-
-  for (const id of ["facilitySearchForm", "facilityRegion", "facilityQuery", "facilityState", "facilityList", "facilityLoadMore"]) {
-    assert.match(html, new RegExp("id=[\"']" + id + "[\"']"), id + " is present on facilities page");
-  }
-  assertHealthyKorean(html, "family-facilities.html");
-  assert.equal((html.match(/<option\b/g) || []).length, 18);
-  assert.match(html, /data\.go\.kr\/data\/15109768/);
-  assert.match(html, /입소 가능 여부는 시설·지자체 확인|입소 가능 인원/);
-  assert.match(client, /\/api\/single-parent-facilities/);
-  assert.match(client, /localStorage/);
-  assert.match(client, /AbortController/);
-  assert.match(client, /textContent/);
-  assert.match(client, /\^tel:/);
-  assert.doesNotMatch(client, /innerHTML\s*=/, "external facility fields are not injected as HTML");
-  assert.match(css, /\.facility-result-grid/);
-  assert.match(css, /\.facility-details/);
-  assert.match(css, /min-height:\s*44px/);
-});
-
-test("the long-term care page wires official regional search, lazy facility details, caching, and guidance", async () => {
-  const [html, client, server, detailServer, css] = await Promise.all([
-    readProjectFile("long-term-care.html"),
-    readProjectFile("long-term-care.js"),
-    readProjectFile("functions/api/long-term-care.js"),
-    readProjectFile("functions/api/long-term-care-detail.js"),
-    readProjectFile("housing.css")
-  ]);
-
-  for (const id of [
-    "careSearchForm", "careRegion", "careDistrict", "careQuery", "careState",
-    "careList", "careLoadMore", "careArea", "careTotal", "careSync"
-  ]) {
-    assert.match(html, new RegExp("id=[\"']" + id + "[\"']"), id + " is present on long-term care page");
-  }
-  assertHealthyKorean(html, "long-term-care.html");
-  assert.match(html, /data\.go\.kr\/data\/15058856/);
-  assert.match(html, /기관별 연락처와 시설 현황까지 확인/);
-  assert.match(client, /\/api\/long-term-care/);
-  assert.match(client, /\/api\/long-term-care-detail/);
-  assert.match(client, /시설 상세정보 보기/);
-  assert.match(client, /실시간 입소 가능 인원을 뜻하지 않습니다/);
-  assert.match(client, /housing-region-codes\.js/);
-  assert.match(client, /localStorage/);
-  assert.match(client, /AbortController/);
-  assert.match(client, /textContent/);
-  assert.doesNotMatch(client, /innerHTML\s*=/, "external long-term care fields are not injected as HTML");
-  assert.match(server, /B550928\/searchLtcInsttService02\/getLtcInsttSeachList02/);
-  assert.match(server, /LONG_TERM_CARE_API_KEY/);
-  assert.match(server, /longtermcare\.or\.kr/);
-  assert.doesNotMatch(server, /["'][a-f0-9]{64}["']/i, "a real public-data key is not committed");
-  assert.match(detailServer, /B550928\/getLtcInsttDetailInfoService02/);
-  assert.match(detailServer, /getGeneralSttusDetailInfoItem02/);
-  assert.match(detailServer, /getStaffSttusDetailInfoItem02/);
-  assert.match(detailServer, /getAceptncNmprDetailInfoItem02/);
-  assert.match(detailServer, /getInsttEtcDetailInfoItem02/);
-  assert.doesNotMatch(detailServer, /["'][a-f0-9]{64}["']/i, "a real detail key is not committed");
-  assert.match(css, /\.care-search-form/);
-  assert.match(css, /\.care-official-link/);
-  assert.match(css, /\.care-live-detail/);
-  assert.match(css, /min-height:\s*44px/);
-});
-
-test("the holiday parking page wires official filters, pending state, maps, and pagination", async () => {
-  const [html, client, css] = await Promise.all([
-    readProjectFile("holiday-parking.html"),
-    readProjectFile("holiday-parking.js"),
-    readProjectFile("housing.css")
-  ]);
-
-  for (const id of [
-    "parkingSearchForm", "parkingYear", "parkingHoliday", "parkingRegion", "parkingQuery",
-    "parkingState", "parkingList", "parkingLoadMore"
-  ]) {
-    assert.match(html, new RegExp("id=[\"']" + id + "[\"']"), id + " is present on parking page");
-  }
-  assertHealthyKorean(html, "holiday-parking.html");
-  assert.match(html, /eshare\.go\.kr\/OpenApi\/Info\/detail\.do\?svcNo=21/);
-  assert.match(html, /실시간 빈자리|당일 개방/);
-  assert.match(client, /\/api\/holiday-parking/);
-  assert.match(client, /localStorage/);
-  assert.match(client, /AbortController/);
-  assert.match(client, /textContent/);
-  assert.match(client, /openstreetmap\.org/);
-  assert.match(client, /authorization/);
-  assert.doesNotMatch(client, /innerHTML\s*=/, "external parking fields are not injected as HTML");
-  assert.match(css, /\.parking-result-grid/);
-  assert.match(css, /\.parking-message\.is-pending/);
-  assert.match(css, /min-height:\s*44px/);
-});
-
-test("the housing complexes page wires official region codes, grouped results, and approval states", async () => {
-  const [html, client, server, css] = await Promise.all([
-    readProjectFile("housing-complexes.html"),
-    readProjectFile("housing-complexes.js"),
-    readProjectFile("functions/api/housing-complexes.js"),
-    readProjectFile("housing.css")
-  ]);
-
-  for (const id of [
-    "complexSearchForm", "complexRegion", "complexDistrict", "complexState",
-    "complexList", "complexLoadMore", "complexArea", "complexTotal"
-  ]) {
-    assert.match(html, new RegExp("id=[\"']" + id + "[\"']"), id + " is present on complexes page");
-  }
-  assertHealthyKorean(html, "housing-complexes.html");
-  assert.match(html, /data\.go\.kr\/data\/15110581/);
-  assert.match(html, /단지정보와 모집공고는 다릅니다/);
-  assert.match(client, /\/api\/housing-complexes/);
-  assert.match(client, /housing-region-codes\.js/);
-  assert.match(client, /localStorage/);
-  assert.match(client, /AbortController/);
-  assert.match(client, /textContent/);
-  assert.match(client, /encodeURIComponent/);
-  assert.match(client, /map\.naver\.com/);
-  assert.doesNotMatch(client, /innerHTML\s*=/, "external complex fields are not injected as HTML");
-  assert.match(server, /LH_COMPLEX_API_KEY/);
-  assert.match(server, /apis\.data\.go\.kr\/1613000\/HWSPR04/);
-  assert.match(server, /authorization/);
-  assert.doesNotMatch(server, /["'][a-f0-9]{64}["']/i, "a real public-data key is not committed");
-  assert.equal(HOUSING_REGIONS.length, 16);
-  assert.equal(HOUSING_REGIONS.reduce((total, region) => total + region.districts.length, 0), 284);
-  assert.equal(HOUSING_REGIONS.find((region) => region.code === "11").districts.find((district) => district.code === "140").name, "중구");
-  assert.match(css, /\.complex-result-grid/);
-  assert.match(css, /\.complex-message\.is-pending/);
-  assert.match(css, /min-height:\s*44px/);
-});
-
-test("sources, about, and privacy explain authority, limits, caching, and local storage", async () => {
-  const [sources, about, privacy] = await Promise.all([
-    readProjectFile("sources.html"),
-    readProjectFile("about.html"),
-    readProjectFile("privacy.html")
-  ]);
-
-  assert.match(sources, /data\.go\.kr\/data\/15108420/);
-  assert.match(sources, /publicDataPk=15098547/);
-  assert.match(sources, /publicDataPk=15098905/);
-  assert.match(sources, /applyhome\.co\.kr/);
-  assert.match(sources, /data\.go\.kr\/data\/15058530/);
-  assert.match(sources, /data\.go\.kr\/data\/15110581/);
-  assert.match(sources, /data\.go\.kr\/data\/15090532/);
-  assert.match(sources, /data\.go\.kr\/data\/15095335/);
-  assert.match(sources, /data\.go\.kr\/data\/15113968/);
-  assert.match(sources, /data\.go\.kr\/data\/15109768/);
-  assert.match(sources, /data\.go\.kr\/data\/15059029/);
-  assert.match(sources, /data\.go\.kr\/data\/15058856/);
-  assert.match(sources, /국민건강보험공단 장기요양기관 정보/);
-  assert.match(sources, /eshare\.go\.kr\/OpenApi\/Info\/detail\.do\?svcNo=21/);
-  assert.match(sources, /apply\.lh\.or\.kr/);
-  assert.match(sources, /bokjiro\.go\.kr/);
-  assert.match(sources, /korea\.kr\/news\/policyNewsList\.do/);
-  assert.match(sources, /최근 3일/);
-  assert.match(sources, /기사 사진과 기사 본문 전체는 사이트에 복제하지 않습니다/);
-  assert.match(sources, /약 10분/);
-  assert.match(sources, /마지막 정상 자료/);
-  assert.match(sources, /자체 계산/);
-
-  assert.match(about, /독립 정보 서비스/);
-  assert.match(about, /공식 사이트가 아닙니다/);
-  assert.match(about, /신청 가능 여부를 판정하지 않습니다/);
-  assert.match(about, /명절 무료 주차장/);
-  assert.match(about, /단지정보/);
-  assert.match(about, /민간임대 청약/);
-
-  assert.match(privacy, /localStorage/);
-  assert.match(privacy, /주민등록번호/);
-  assert.match(privacy, /Google AdSense/);
-  assert.match(privacy, /사이트 데이터 삭제/);
-  assert.match(privacy, /민간임대·임대단지·복지시설·장기요양기관·명절 주차장 검색조건/);
-  assert.match(privacy, /최대 10분 이내의 청약 경쟁률 자료/);
-});
-
-test("sitemap indexes only current housing pages and legacy travel routes redirect", async () => {
-  const [sitemap, redirects, robots, packageJson] = await Promise.all([
+test("the sitemap indexes the blog archive and only its five posts", async () => {
+  const [sitemap, redirects, robots] = await Promise.all([
     readProjectFile("sitemap.xml"),
     readProjectFile("_redirects"),
-    readProjectFile("robots.txt"),
-    readProjectFile("package.json")
+    readProjectFile("robots.txt")
   ]);
-
   const indexed = [...sitemap.matchAll(/<loc>https:\/\/mustview\.co\.kr\/?([^<]*)<\/loc>/g)].map((match) => match[1]);
-  assert.deepEqual(indexed, ["", "private-rental", "housing-complexes", "housing-guide", "family-facilities", "long-term-care", "holiday-parking", "sources", "about", "privacy", "contact"]);
-  assert.doesNotMatch(sitemap, /travel|beach|typhoon|destinations/);
+
+  assert.deepEqual(indexed, ["", ...posts.map((post) => post.slug)]);
+  assert.match(robots, /Sitemap:\s*https:\/\/mustview\.co\.kr\/sitemap\.xml/);
   assert.match(redirects, /\/destinations \/ 301/);
   assert.match(redirects, /\/travel-guide \/housing-guide 301/);
-  assert.match(redirects, /\/beach \/ 301/);
-  assert.match(redirects, /\/busan-coast \/ 301/);
-  assert.match(robots, /Sitemap:\s*https:\/\/mustview\.co\.kr\/sitemap\.xml/);
-
-  const pkg = JSON.parse(packageJson);
-  assert.equal(pkg.name, "mustview-housing");
-  assert.match(pkg.scripts.check, /housing-dashboard\.js/);
-  assert.match(pkg.scripts.check, /private-rental\.js/);
-  assert.match(pkg.scripts.check, /housing-complexes\.js/);
-  assert.match(pkg.scripts.check, /housing-region-codes\.js/);
-  assert.match(pkg.scripts.check, /housing-notices\.js/);
-  assert.match(pkg.scripts.check, /myhome-notices\.js/);
-  assert.match(pkg.scripts.check, /private-rental-notices\.js/);
-  assert.match(pkg.scripts.check, /private-rental-competition\.js/);
-  assert.match(pkg.scripts.check, /functions\/api\/housing-complexes\.js/);
-  assert.match(pkg.scripts.check, /functions\/api\/welfare-services\.js/);
-  assert.match(pkg.scripts.check, /policy-news\.js/);
-  assert.match(pkg.scripts.check, /housing-support\.js/);
-  assert.match(pkg.scripts.check, /family-facilities\.js/);
-  assert.match(pkg.scripts.check, /long-term-care\.js/);
-  assert.match(pkg.scripts.check, /functions\/api\/long-term-care\.js/);
-  assert.match(pkg.scripts.check, /functions\/api\/long-term-care-detail\.js/);
-  assert.match(pkg.scripts.check, /holiday-parking\.js/);
-  assert.match(pkg.scripts.check, /functions\/api\/holiday-parking\.js/);
 });
 
-test("Cloudflare deployment validates before publishing and AdSense ownership remains correct", async () => {
-  const [workflow, ads, headers] = await Promise.all([
+test("deployment settings, ads ownership, and existing API configuration remain in place", async () => {
+  const [workflow, ads, wrangler, housingApi, welfareApi] = await Promise.all([
     readProjectFile(".github/workflows/deploy-cloudflare-pages.yml"),
     readProjectFile("ads.txt"),
-    readProjectFile("_headers")
+    readProjectFile("wrangler.toml"),
+    readProjectFile("functions/api/housing-complexes.js"),
+    readProjectFile("functions/api/welfare-services.js")
   ]);
 
   assert.match(workflow, /npm run check/);
   assert.match(workflow, /npm run test/);
   assert.match(workflow, /npm run build/);
-  assert.match(workflow, /cloudflare\/wrangler-action/);
-  assert.match(ads, /google\.com,\s*pub-5751319666030430,\s*DIRECT,\s*f08c47fec0942fa0/);
-  assert.match(headers, /X-Content-Type-Options:\s*nosniff/i);
-  assert.match(headers, /Cache-Control:\s*no-store/i);
+  assert.match(ads, /google\.com,\s*pub-5751319666030430,\s*DIRECT/);
+  assert.match(wrangler, /pages_build_output_dir/);
+  assert.match(housingApi, /LH_COMPLEX_API_KEY/);
+  assert.match(welfareApi, /WELFARE_API_KEY/);
+  assert.doesNotMatch(housingApi, /["'][a-f0-9]{64}["']/i, "a public API key is not committed");
+  assert.doesNotMatch(welfareApi, /["'][a-f0-9]{64}["']/i, "a public API key is not committed");
 });

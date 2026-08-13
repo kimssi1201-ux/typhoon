@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#1d473d"/><stop offset="1" stop-color="#0d2924"/></linearGradient></defs>
+  <rect width="1200" height="630" fill="url(#g)"/>
+  <rect x="70" y="72" width="1060" height="486" rx="8" fill="none" stroke="#83b19b" stroke-opacity=".46"/>
+  <path d="M808 92h268v268H808z" fill="#d6ae63" fill-opacity=".88"/><path d="M844 128h196v196H844z" fill="#12382f"/><circle cx="942" cy="226" r="59" fill="none" stroke="#e9d7ae" stroke-width="2"/><path d="M942 167v118M883 226h118" stroke="#e9d7ae" stroke-width="2"/>
+  <text x="118" y="151" fill="#d6e9de" font-family="Malgun Gothic, sans-serif" font-size="21" font-weight="700" letter-spacing="3">MUSTVIEW · SUPPORT NOTES</text>
+  <text x="118" y="286" fill="#fff" font-family="Malgun Gothic, sans-serif" font-size="67" font-weight="700" letter-spacing="-3">국민취업지원제도</text>
+  <text x="118" y="364" fill="#d6ae63" font-family="Malgun Gothic, sans-serif" font-size="42" font-weight="700">I유형 신청 가이드</text>
+  <path d="M118 421h450" stroke="#83b19b" stroke-width="2"/><text x="118" y="465" fill="#d6e9de" font-family="Malgun Gothic, sans-serif" font-size="25">구직촉진수당 · 지원대상 · 신청순서</text>
+</svg>
