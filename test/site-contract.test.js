@@ -128,11 +128,18 @@ test("the housing home wires search, filters, results, favorites, menu, and offi
   assert.match(css, /\.portal-banner\s*\{[\s\S]*?min-height:\s*286px/);
   assert.match(css, /@media \(prefers-reduced-motion: reduce\)[\s\S]*?\.portal-banner/);
   assert.match(html, /class="shortcut-grid"/);
+  assert.match(html, /class="blog-home"/);
+  assert.match(html, /class="blog-feature-post"/);
+  assert.match(html, /class="blog-sidebar"/);
+  assert.match(html, /class="blog-category-list"/);
   assert.match(client, /setupHeaderSearch/);
   assert.match(client, /scrollIntoView/);
   assert.match(css, /\.brand-mark\s*\{[\s\S]*?width:\s*5px/);
   assert.match(css, /@media \(max-width: 760px\)/);
   assert.match(css, /\.benefit-category-bar/);
+  assert.match(css, /WordPress-style editorial front page and article sidebar/);
+  assert.match(css, /\.blog-home-layout/);
+  assert.match(css, /\.article-main > \.article-toc/);
   assert.doesNotMatch(html, /MustView Travel|여행 저널|해수욕장|태풍/);
 });
 test("public housing pages have production metadata, ads ownership, and healthy Korean text", async () => {
