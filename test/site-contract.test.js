@@ -82,7 +82,8 @@ test("the home is a five-post mobile-friendly support blog archive", async () =>
   assert.match(html, /<h1 id="archive-title">지원금<\/h1>/);
   assert.match(html, /<h2 class="widget-title">카테고리<\/h2>/);
   assert.match(html, /class="widget category-widget"/);
-  assert.equal((html.match(/>지원금 <span>글 5개<\/span><\/a>/g) || []).length, 1, "there is one visible category with a readable post count");
+  assert.match(html, /<li><a href="#support-category">지원금<\/a><\/li>/, "the category widget shows only the category name");
+  assert.doesNotMatch(html, /글 5개/, "the archive does not show a redundant post-count phrase");
   assert.match(html, /class="site-grid"/);
   assert.match(html, /class="widget-area"/);
   assert.match(html, /class="main-navigation"/);
@@ -90,7 +91,7 @@ test("the home is a five-post mobile-friendly support blog archive", async () =>
   assert.match(html, /class="header-menu-panel"/);
   assert.match(html, /href="contact\.html">문의<\/a>/);
   assert.match(html, /href="privacy\.html">개인정보처리방침<\/a>/);
-  assert.match(html, /blog\.css\?v=20260814-gpblog11/);
+  assert.match(html, /blog\.css\?v=20260814-gpblog12/);
   assert.match(html, /google-adsense-account/);
   assert.ok(html.includes(publisherId));
   assert.match(html, /<link rel="canonical" href="https:\/\/mustview\.co\.kr\/"/);
@@ -119,6 +120,7 @@ test("the home is a five-post mobile-friendly support blog archive", async () =>
   assert.match(css, /@media \(max-width: 960px\)[\s\S]*?\.home \.category-widget\s*\{[\s\S]*?order:\s*1/);
   assert.match(css, /\.home \.category-widget \.widget-title\s*\{\s*display:\s*none/);
   assert.match(css, /\.home \.widget-area \.widget:not\(\.category-widget\)\s*\{\s*display:\s*none/);
+  assert.doesNotMatch(css, /\.home \.category-widget li span/, "the removed post-count label has no leftover styles");
   assert.match(css, /@media \(max-width: 767px\)/);
   assert.match(css, /@media \(max-width: 767px\)[\s\S]*?\.header-actions\s*\{\s*display:\s*flex/);
   assert.match(css, /@media \(max-width: 767px\)[\s\S]*?\.main-navigation\s*\{\s*display:\s*none/);
@@ -162,7 +164,7 @@ test("each support post has complete metadata, a single H1, and a valid body len
     assert.match(html, /"@type":"Article"|"@type": "Article"/);
     assert.match(html, /google-adsense-account/);
     assert.ok(html.includes(publisherId));
-    assert.match(html, /blog\.css\?v=20260814-gpblog11/);
+    assert.match(html, /blog\.css\?v=20260814-gpblog12/);
     assert.match(html, /href="contact\.html">문의<\/a>/, post.file + " links to the contact page");
     assert.match(html, /href="privacy\.html">개인정보처리방침<\/a>/, post.file + " links to the privacy policy");
     assert.equal((html.match(/<img\b/g) || []).length, 1, post.file + " has exactly one contextual body image");
@@ -188,7 +190,7 @@ test("trust pages are substantial and consistent for AdSense review", async () =
     assert.match(html, /google-adsense-account/);
     assert.ok(html.includes(publisherId));
     assert.match(html, /pagead2\.googlesyndication\.com\/pagead\/js\/adsbygoogle\.js/);
-    assert.match(html, /blog\.css\?v=20260814-gpblog11/);
+    assert.match(html, /blog\.css\?v=20260814-gpblog12/);
     assert.match(html, /MustView 지원금/);
     assert.match(html, /href="sources\.html">자료 기준<\/a>/);
     assert.match(html, /href="about\.html">블로그 소개<\/a>/);

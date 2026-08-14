@@ -893,12 +893,6 @@ img { display: block; max-width: 100%; height: auto; }
     font-weight: 750;
   }
 
-  .home .category-widget li span {
-    color: #737a7c;
-    font-size: 0.78rem;
-    font-weight: 650;
-  }
-
   .home .widget-area .widget:not(.category-widget) { display: none; }
 
   .information-page .article-sidebar { display: none; }
