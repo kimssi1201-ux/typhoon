@@ -864,16 +864,10 @@ img { display: block; max-width: 100%; height: auto; }
     width: 100%;
     margin: 0 0 7px;
     padding: 11px 18px;
-    gap: 16px;
+    gap: 0;
   }
 
-  .home .category-widget .widget-title {
-    flex: 0 0 auto;
-    margin: 0;
-    padding-right: 16px;
-    border-right: 1px solid var(--gp-line);
-    font-size: 0.86rem;
-  }
+  .home .category-widget .widget-title { display: none; }
 
   .home .category-widget ul {
     flex: 1;
@@ -887,7 +881,14 @@ img { display: block; max-width: 100%; height: auto; }
     min-height: 36px;
     padding: 5px 0;
     color: var(--gp-accent-dark);
+    font-size: 1rem;
     font-weight: 750;
+  }
+
+  .home .category-widget li span {
+    color: #737a7c;
+    font-size: 0.78rem;
+    font-weight: 650;
   }
 
   .home .widget-area .widget:not(.category-widget) { display: none; }

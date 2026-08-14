@@ -76,7 +76,7 @@ test("the home is a five-post mobile-friendly support blog archive", async () =>
   assert.match(html, /<h1 id="archive-title">지원금<\/h1>/);
   assert.match(html, /<h2 class="widget-title">카테고리<\/h2>/);
   assert.match(html, /class="widget category-widget"/);
-  assert.equal((html.match(/>지원금 <span>5<\/span><\/a>/g) || []).length, 1, "there is one visible category");
+  assert.equal((html.match(/>지원금 <span>글 5개<\/span><\/a>/g) || []).length, 1, "there is one visible category with a readable post count");
   assert.match(html, /class="site-grid"/);
   assert.match(html, /class="widget-area"/);
   assert.match(html, /class="main-navigation"/);
@@ -108,6 +108,7 @@ test("the home is a five-post mobile-friendly support blog archive", async () =>
   assert.match(css, /@media \(max-width: 960px\)[\s\S]*?\.site-grid\s*\{[\s\S]*?display:\s*block/);
   assert.match(css, /@media \(max-width: 960px\)[\s\S]*?\.home \.site-grid\s*\{[\s\S]*?display:\s*flex[\s\S]*?flex-direction:\s*column/);
   assert.match(css, /@media \(max-width: 960px\)[\s\S]*?\.home \.category-widget\s*\{[\s\S]*?order:\s*1/);
+  assert.match(css, /\.home \.category-widget \.widget-title\s*\{\s*display:\s*none/);
   assert.match(css, /\.home \.widget-area \.widget:not\(\.category-widget\)\s*\{\s*display:\s*none/);
   assert.match(css, /@media \(max-width: 767px\)/);
   assert.match(css, /@media \(max-width: 767px\)[\s\S]*?\.header-actions\s*\{\s*display:\s*flex/);
