@@ -135,7 +135,8 @@ test("each support post has complete metadata, a single H1, and a valid body len
       assert.ok(headings.some((heading) => heading.text === required), post.file + " includes " + required);
     }
 
-    assert.match(html, /<details class="table-of-contents" open>/, post.file + " has a collapsible mobile table of contents");
+    assert.match(html, /<details class="table-of-contents">/, post.file + " has a collapsible table of contents");
+    assert.doesNotMatch(html, /<details class="table-of-contents" open>/, post.file + " keeps the table of contents collapsed by default");
     assert.match(html, /<nav class="breadcrumbs" aria-label="현재 위치">/, post.file + " has a blog breadcrumb");
     assert.match(html, /class="header-actions"/, post.file + " has the compact mobile header controls");
     assert.match(html, /data-toc-list/, post.file + " has a generated table of contents target");
@@ -164,6 +165,8 @@ test("the table of contents script gives every article heading a stable unique a
   assert.match(script, /reserved\.has\(id\)/);
   assert.match(script, /link\.href = `#\$\{id\}`/);
   assert.match(script, /toc-subitem/);
+  assert.match(script, /matchMedia\("\(min-width: 768px\)"\)/);
+  assert.match(script, /tableOfContents\.open = true/);
 });
 
 test("five generated WebP illustrations are optimized, shared, and rendered once in their articles", async () => {

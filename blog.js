@@ -4,6 +4,11 @@
 
   if (!content || !list) return;
 
+  const tableOfContents = list.closest(".table-of-contents");
+  if (tableOfContents && window.matchMedia("(min-width: 768px)").matches) {
+    tableOfContents.open = true;
+  }
+
   const reserved = new Set();
   const slugify = (value, fallback) => {
     const normalized = value
