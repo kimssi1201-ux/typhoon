@@ -682,6 +682,14 @@ img { display: block; max-width: 100%; height: auto; }
 
 .article-content li + li { margin-top: 7px; }
 
+.article-content a {
+  color: var(--gp-accent-dark);
+  text-decoration-color: #a9bfdc;
+  text-underline-offset: 3px;
+}
+
+.article-content a:hover { text-decoration-color: currentColor; }
+
 .lead {
   color: #222;
   font-size: 18px;
@@ -892,6 +900,8 @@ img { display: block; max-width: 100%; height: auto; }
   }
 
   .home .widget-area .widget:not(.category-widget) { display: none; }
+
+  .information-page .article-sidebar { display: none; }
 }
 
 @media (max-width: 767px) {

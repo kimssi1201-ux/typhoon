@@ -42,6 +42,12 @@ const posts = [
     source: "mohw.go.kr"
   }
 ];
+const trustPages = [
+  { file: "sources.html", slug: "sources", schema: "CollectionPage" },
+  { file: "about.html", slug: "about", schema: "AboutPage" },
+  { file: "contact.html", slug: "contact", schema: "ContactPage" },
+  { file: "privacy.html", slug: "privacy", schema: "WebPage" }
+];
 
 function visibleText(html) {
   return html
@@ -82,6 +88,9 @@ test("the home is a five-post mobile-friendly support blog archive", async () =>
   assert.match(html, /class="main-navigation"/);
   assert.match(html, /class="header-actions"/);
   assert.match(html, /class="header-menu-panel"/);
+  assert.match(html, /href="contact\.html">문의<\/a>/);
+  assert.match(html, /href="privacy\.html">개인정보처리방침<\/a>/);
+  assert.match(html, /blog\.css\?v=20260814-gpblog9/);
   assert.match(html, /google-adsense-account/);
   assert.ok(html.includes(publisherId));
   assert.match(html, /<link rel="canonical" href="https:\/\/mustview\.co\.kr\/"/);
@@ -150,12 +159,54 @@ test("each support post has complete metadata, a single H1, and a valid body len
     assert.match(html, /"@type":"Article"|"@type": "Article"/);
     assert.match(html, /google-adsense-account/);
     assert.ok(html.includes(publisherId));
+    assert.match(html, /blog\.css\?v=20260814-gpblog9/);
+    assert.match(html, /href="contact\.html">문의<\/a>/, post.file + " links to the contact page");
+    assert.match(html, /href="privacy\.html">개인정보처리방침<\/a>/, post.file + " links to the privacy policy");
     assert.equal((html.match(/<img\b/g) || []).length, 1, post.file + " has exactly one contextual body image");
     assert.match(html, new RegExp(`<h2>지원 대상<\/h2>\\s*<figure class="article-visual"><img src="assets/${post.image.replace(".", "\\.")}" width="1200" height="800"[^>]+alt="[^"]+"`), post.file + " places its contextual image below the first H2");
     assert.doesNotMatch(html, /featured-image/, post.file + " has no separate hero image");
     assert.equal((html.match(/class="[^"]*\brelated-posts\b[^"]*"/g) || []).length, 1, post.file + " has related internal posts");
     assert.ok((html.match(/href="[a-z-]+\.html"/g) || []).length >= 5, post.file + " includes internal navigation");
   }
+});
+
+test("trust pages are substantial and consistent for AdSense review", async () => {
+  const pages = await Promise.all(trustPages.map((page) => readProjectFile(page.file)));
+
+  pages.forEach((html, index) => {
+    const page = trustPages[index];
+    const content = html.match(/<section class="article-content information-content">([\s\S]*?)<\/section>/);
+    assert.ok(content, page.file + " has a substantial information section");
+    assert.ok(visibleText(content[1]).length >= 500, page.file + " provides meaningful publisher content");
+    assert.equal((html.match(/<h1\b/g) || []).length, 1, page.file + " has one H1");
+    assert.match(html, new RegExp(`<link rel="canonical" href="https://mustview\\.co\\.kr/${page.slug}"`));
+    assert.match(html, new RegExp(`"@type":"${page.schema}"`));
+    assert.match(html, /name="description" content="[^"]+"/);
+    assert.match(html, /google-adsense-account/);
+    assert.ok(html.includes(publisherId));
+    assert.match(html, /pagead2\.googlesyndication\.com\/pagead\/js\/adsbygoogle\.js/);
+    assert.match(html, /blog\.css\?v=20260814-gpblog9/);
+    assert.match(html, /MustView 지원금/);
+    assert.match(html, /href="sources\.html">자료 기준<\/a>/);
+    assert.match(html, /href="about\.html">블로그 소개<\/a>/);
+    assert.match(html, /href="contact\.html">문의<\/a>/);
+    assert.match(html, /href="privacy\.html">개인정보처리방침<\/a>/);
+    assert.doesNotMatch(html, /housing\.css|benefit-category-bar|housingSupport/, page.file + " has no legacy dashboard presentation");
+  });
+
+  const [sources, about, contact, privacy] = pages;
+  assert.match(about, /작성과 검수 원칙/);
+  assert.match(about, /광고와 편집의 독립성/);
+  assert.match(about, /현재 공개한 게시글은 정확히 5개/);
+  assert.match(sources, /work24\.go\.kr/);
+  assert.match(sources, /bokjiro\.go\.kr/);
+  assert.match(sources, /mohw\.go\.kr/);
+  assert.match(contact, /github\.com\/kimssi1201-ux\/typhoon\/issues/);
+  assert.match(contact, /개인정보와 신청 서류 작성 금지/);
+  assert.match(privacy, /Google을 포함한 제3자 광고 사업자/);
+  assert.match(privacy, /이전 MustView 방문 또는 다른 웹사이트 방문 기록/);
+  assert.match(privacy, /https:\/\/adssettings\.google\.com\//);
+  assert.match(privacy, /https:\/\/policies\.google\.com\/technologies\/partner-sites\?hl=ko/);
 });
 
 test("the table of contents script gives every article heading a stable unique anchor", async () => {
@@ -180,7 +231,7 @@ test("five generated WebP illustrations are optimized, shared, and rendered once
   }
 });
 
-test("the sitemap indexes the blog archive and only its five posts", async () => {
+test("the sitemap indexes the archive, five posts, and four trust pages", async () => {
   const [sitemap, redirects, robots] = await Promise.all([
     readProjectFile("sitemap.xml"),
     readProjectFile("_redirects"),
@@ -188,10 +239,13 @@ test("the sitemap indexes the blog archive and only its five posts", async () =>
   ]);
   const indexed = [...sitemap.matchAll(/<loc>https:\/\/mustview\.co\.kr\/?([^<]*)<\/loc>/g)].map((match) => match[1]);
 
-  assert.deepEqual(indexed, ["", ...posts.map((post) => post.slug)]);
+  assert.deepEqual(indexed, ["", ...posts.map((post) => post.slug), ...trustPages.map((page) => page.slug)]);
   assert.match(robots, /Sitemap:\s*https:\/\/mustview\.co\.kr\/sitemap\.xml/);
+  assert.match(robots, /Allow:\s*\/ads\.txt/);
   assert.match(redirects, /\/destinations \/ 301/);
-  assert.match(redirects, /\/travel-guide \/housing-guide 301/);
+  assert.match(redirects, /\/travel-guide \/ 301/);
+  assert.match(redirects, /\/housing-guide \/ 301/);
+  assert.match(redirects, /\/private-rental \/ 301/);
 });
 
 test("deployment settings, ads ownership, and existing API configuration remain in place", async () => {

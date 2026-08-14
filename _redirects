@@ -1,4 +1,4 @@
-# Current public pages are served directly. Legacy travel and weather pages redirect to the housing service.
+# Current support-blog pages are served directly. Legacy travel, weather, and dashboard pages redirect to the blog home.
 /adsense-readiness /about 301
 /adsense-readiness.html /about 301
 /andong-hahoe-byeongsan / 301
@@ -31,6 +31,8 @@
 /data-sources.html /sources 301
 /destinations / 301
 /destinations.html / 301
+/family-facilities / 301
+/family-facilities.html / 301
 /ganghwa-goryeogungji-jeondungsa-dongmak / 301
 /ganghwa-goryeogungji-jeondungsa-dongmak.html / 301
 /ganghwa-gyodongdo-daeryong-hwagaejeongwon / 301
@@ -55,6 +57,12 @@
 /gwangju-acc-yangnim-mudeungsan.html / 301
 /gyeongju-night-walk / 301
 /gyeongju-night-walk.html / 301
+/holiday-parking / 301
+/holiday-parking.html / 301
+/housing-complexes / 301
+/housing-complexes.html / 301
+/housing-guide / 301
+/housing-guide.html / 301
 /hadong-hwagae-ssanggyesa-choinam-palsari / 301
 /hadong-hwagae-ssanggyesa-choinam-palsari.html / 301
 /haenam-ttangkkeut-daeheungsa / 301
@@ -81,6 +89,8 @@
 /miryang-yeongnamnu-wiyangji.html / 301
 /mokpo-modern-history-yudal / 301
 /mokpo-modern-history-yudal.html / 301
+/long-term-care / 301
+/long-term-care.html / 301
 /mungyeong-saejae-omija-railbike-oncheon / 301
 /mungyeong-saejae-omija-railbike-oncheon.html / 301
 /namhae-german-darangyi / 301
@@ -91,10 +101,12 @@
 /pocheon-hantangang-sanjeonghosu.html / 301
 /pohang-homigot-guryongpo / 301
 /pohang-homigot-guryongpo.html / 301
+/private-rental / 301
+/private-rental.html / 301
 /pyeongchang-odaesan-woljeongsa-sangwonsa / 301
 /pyeongchang-odaesan-woljeongsa-sangwonsa.html / 301
-/readiness-guide /housing-guide 301
-/readiness-guide.html /housing-guide 301
+/readiness-guide / 301
+/readiness-guide.html / 301
 /samcheok-chogok-jangho-hwanseon / 301
 /samcheok-chogok-jangho-hwanseon.html / 301
 /seocheon-janghang-skywalk-ecology / 301
@@ -117,10 +129,10 @@
 /taebaek-hwangji-coalmuseum-yongyeon.html / 301
 /tongyeong-dongpirang-cablecar / 301
 /tongyeong-dongpirang-cablecar.html / 301
-/travel-guide /housing-guide 301
-/travel-guide.html /housing-guide 301
-/typhoon-guide /housing-guide 301
-/typhoon-guide.html /housing-guide 301
+/travel-guide / 301
+/travel-guide.html / 301
+/typhoon-guide / 301
+/typhoon-guide.html / 301
 /uljin-wangpicheon-mangyang-jeukbyeon / 301
 /uljin-wangpicheon-mangyang-jeukbyeon.html / 301
 /ulsan-taehwagang-daewangam / 301
