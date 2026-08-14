@@ -9,35 +9,35 @@ const posts = [
   {
     file: "national-employment-support.html",
     slug: "national-employment-support",
-    image: "benefit-employment-support.webp",
+    image: "benefit-employment-inline.webp",
     title: "국민취업지원제도 I유형: 구직촉진수당과 신청 방법",
     source: "work24.go.kr"
   },
   {
     file: "national-tomorrow-learning-card.html",
     slug: "national-tomorrow-learning-card",
-    image: "benefit-learning-card.webp",
+    image: "benefit-learning-inline.webp",
     title: "국민내일배움카드: 훈련비 300만 원부터 확인할 점",
     source: "work24.go.kr"
   },
   {
     file: "parent-benefit.html",
     slug: "parent-benefit",
-    image: "benefit-parent.webp",
+    image: "benefit-parent-inline.webp",
     title: "부모급여: 0세·1세 지원 대상과 신청 시기",
     source: "bokjiro.go.kr"
   },
   {
     file: "first-meeting-voucher.html",
     slug: "first-meeting-voucher",
-    image: "benefit-first-meeting.webp",
+    image: "benefit-first-meeting-inline.webp",
     title: "첫만남이용권: 출생아 바우처 금액과 사용 전 확인 사항",
     source: "mohw.go.kr"
   },
   {
     file: "child-allowance.html",
     slug: "child-allowance",
-    image: "benefit-child-allowance.webp",
+    image: "benefit-child-allowance-inline.webp",
     title: "아동수당: 만 9세 미만 확대 기준과 신청 방법",
     source: "mohw.go.kr"
   }
@@ -90,17 +90,16 @@ test("the home is a five-post mobile-friendly support blog archive", async () =>
     assert.match(html, new RegExp(`href="${post.file}"`), post.file + " is linked from the archive");
   }
 
-  assert.equal((html.match(/<img\b/g) || []).length, 5, "the archive has one thumbnail per post");
-  assert.equal((html.match(/class="post-card-thumbnail"/g) || []).length, 5, "the archive uses five horizontal thumbnail cards");
-  for (const post of posts) {
-    assert.match(html, new RegExp(`src="assets/${post.image.replace(".", "\\.")}"[^>]+alt="[^"]+"`), post.image + " is rendered with alternative text");
-  }
+  assert.doesNotMatch(html, /<img\b/, "the archive thumbnails are deterministic text tiles, not raster images");
+  assert.equal((html.match(/class="post-card-thumbnail tile-[^"]+"/g) || []).length, 5, "the archive uses five simple text thumbnail tiles");
+  assert.equal((html.match(/<span>지원금<\/span><strong>/g) || []).length, 5, "every thumbnail shows the single category and topic text");
 
   assert.match(css, /--gp-bg:\s*#f2f2f2/);
   assert.match(css, /--gp-accent:\s*#3372dc/);
   assert.match(css, /--gp-heading-accent:\s*#ff5b00/);
   assert.match(css, /grid-template-columns:\s*minmax\(0, 780px\) 290px/);
   assert.match(css, /\.post-card-body\s*\{[\s\S]*?grid-template-columns:\s*150px minmax\(0, 1fr\)/);
+  assert.match(css, /\.post-card-thumbnail\s*\{[\s\S]*?--tile-bg:[\s\S]*?background:\s*var\(--tile-bg\)/);
   assert.match(css, /\.article-content\s*\{[\s\S]*?font-size:\s*18px;[\s\S]*?line-height:\s*1\.75/);
   assert.match(css, /body\.blog-page\.single-post\s*\{[\s\S]*?padding:\s*0/);
   assert.match(css, /\.content-area\.single-post\s*\{[\s\S]*?border-radius:\s*11px/);
@@ -145,7 +144,9 @@ test("each support post has complete metadata, a single H1, and a valid body len
     assert.match(html, /"@type":"Article"|"@type": "Article"/);
     assert.match(html, /google-adsense-account/);
     assert.ok(html.includes(publisherId));
-    assert.doesNotMatch(html, /<img\b|featured-image/, post.file + " has no visible thumbnail or hero image");
+    assert.equal((html.match(/<img\b/g) || []).length, 1, post.file + " has exactly one contextual body image");
+    assert.match(html, new RegExp(`<h2>지원 대상<\/h2>\\s*<figure class="article-visual"><img src="assets/${post.image.replace(".", "\\.")}" width="1200" height="800"[^>]+alt="[^"]+"`), post.file + " places its contextual image below the first H2");
+    assert.doesNotMatch(html, /featured-image/, post.file + " has no separate hero image");
     assert.equal((html.match(/class="[^"]*\brelated-posts\b[^"]*"/g) || []).length, 1, post.file + " has related internal posts");
     assert.ok((html.match(/href="[a-z-]+\.html"/g) || []).length >= 5, post.file + " includes internal navigation");
   }
@@ -160,13 +161,14 @@ test("the table of contents script gives every article heading a stable unique a
   assert.match(script, /toc-subitem/);
 });
 
-test("five original WebP social images remain available without appearing in the article body", async () => {
+test("five generated WebP illustrations are optimized, shared, and rendered once in their articles", async () => {
   for (const post of posts) {
     const [image, html] = await Promise.all([readProjectBuffer("assets/" + post.image), readProjectFile(post.file)]);
     assert.equal(image.subarray(0, 4).toString("ascii"), "RIFF", post.image + " has WebP RIFF bytes");
     assert.equal(image.subarray(8, 12).toString("ascii"), "WEBP", post.image + " has WebP bytes");
+    assert.ok(image.length < 200_000, post.image + " is optimized for web delivery");
     assert.match(html, new RegExp(`<meta property="og:image" content="https://mustview\\.co\\.kr/assets/${post.image.replace(".", "\\.")}"`), post.file + " keeps a social sharing image");
-    assert.doesNotMatch(html, /<img\b/, post.file + " does not render the social image in the article");
+    assert.match(html, new RegExp(`src="assets/${post.image.replace(".", "\\.")}"`), post.file + " renders the illustration in the article");
   }
 });
 
