@@ -90,7 +90,7 @@ test("the home is a five-post mobile-friendly support blog archive", async () =>
   assert.match(html, /class="header-menu-panel"/);
   assert.match(html, /href="contact\.html">문의<\/a>/);
   assert.match(html, /href="privacy\.html">개인정보처리방침<\/a>/);
-  assert.match(html, /blog\.css\?v=20260814-gpblog9/);
+  assert.match(html, /blog\.css\?v=20260814-gpblog10/);
   assert.match(html, /google-adsense-account/);
   assert.ok(html.includes(publisherId));
   assert.match(html, /<link rel="canonical" href="https:\/\/mustview\.co\.kr\/"/);
@@ -124,6 +124,7 @@ test("the home is a five-post mobile-friendly support blog archive", async () =>
   assert.match(css, /@media \(max-width: 767px\)[\s\S]*?\.main-navigation\s*\{\s*display:\s*none/);
   assert.match(css, /@media \(max-width: 767px\)[\s\S]*?grid-template-columns:\s*104px minmax\(0, 1fr\)/);
   assert.match(css, /\.table-of-contents/);
+  assert.match(css, /\.reader-persona\s*\{[\s\S]*?border-left:\s*3px solid #d49a45;[\s\S]*?background:\s*#fbf7ef/);
 });
 
 test("each support post has complete metadata, a single H1, and a valid body length", async () => {
@@ -146,6 +147,11 @@ test("each support post has complete metadata, a single H1, and a valid body len
 
     assert.match(html, /<details class="table-of-contents">/, post.file + " has a collapsible table of contents");
     assert.doesNotMatch(html, /<details class="table-of-contents" open>/, post.file + " keeps the table of contents collapsed by default");
+    assert.equal((html.match(/class="reader-persona"/g) || []).length, 1, post.file + " has one reader persona note");
+    assert.match(html, /class="reader-persona" aria-label="이 글의 독자 관점"/, post.file + " labels the persona as a reader perspective");
+    assert.match(html, /40대 중반 남성 가장의 확인 포인트/, post.file + " uses the requested reader persona");
+    assert.match(html, /실제 수급 경험이 아닌 가상의 독자 상황/, post.file + " discloses that the persona is fictional");
+    assert.match(html, /<p class="lead">[\s\S]*?<\/p>\s*<aside class="reader-persona"[\s\S]*?<\/aside>\s*<details class="table-of-contents">/, post.file + " places the persona after the introduction and before the table of contents");
     assert.match(html, /<nav class="breadcrumbs" aria-label="현재 위치">/, post.file + " has a blog breadcrumb");
     assert.match(html, /class="header-actions"/, post.file + " has the compact mobile header controls");
     assert.match(html, /data-toc-list/, post.file + " has a generated table of contents target");
@@ -159,7 +165,7 @@ test("each support post has complete metadata, a single H1, and a valid body len
     assert.match(html, /"@type":"Article"|"@type": "Article"/);
     assert.match(html, /google-adsense-account/);
     assert.ok(html.includes(publisherId));
-    assert.match(html, /blog\.css\?v=20260814-gpblog9/);
+    assert.match(html, /blog\.css\?v=20260814-gpblog10/);
     assert.match(html, /href="contact\.html">문의<\/a>/, post.file + " links to the contact page");
     assert.match(html, /href="privacy\.html">개인정보처리방침<\/a>/, post.file + " links to the privacy policy");
     assert.equal((html.match(/<img\b/g) || []).length, 1, post.file + " has exactly one contextual body image");
@@ -185,7 +191,7 @@ test("trust pages are substantial and consistent for AdSense review", async () =
     assert.match(html, /google-adsense-account/);
     assert.ok(html.includes(publisherId));
     assert.match(html, /pagead2\.googlesyndication\.com\/pagead\/js\/adsbygoogle\.js/);
-    assert.match(html, /blog\.css\?v=20260814-gpblog9/);
+    assert.match(html, /blog\.css\?v=20260814-gpblog10/);
     assert.match(html, /MustView 지원금/);
     assert.match(html, /href="sources\.html">자료 기준<\/a>/);
     assert.match(html, /href="about\.html">블로그 소개<\/a>/);
@@ -196,6 +202,7 @@ test("trust pages are substantial and consistent for AdSense review", async () =
 
   const [sources, about, contact, privacy] = pages;
   assert.match(about, /작성과 검수 원칙/);
+  assert.match(about, /가상의 독자 상황/);
   assert.match(about, /광고와 편집의 독립성/);
   assert.match(about, /현재 공개한 게시글은 정확히 5개/);
   assert.match(sources, /work24\.go\.kr/);
