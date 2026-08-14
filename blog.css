@@ -696,30 +696,6 @@ img { display: block; max-width: 100%; height: auto; }
   line-height: 1.8;
 }
 
-.reader-persona {
-  margin: 22px 0 24px;
-  padding: 17px 19px;
-  border-left: 3px solid #d49a45;
-  border-radius: 5px;
-  background: #fbf7ef;
-}
-
-.reader-persona strong {
-  display: block;
-  margin-bottom: 5px;
-  color: #654a21;
-  font-family: var(--gp-sans);
-  font-size: 0.9rem;
-  letter-spacing: -0.03em;
-}
-
-.reader-persona p {
-  margin: 0;
-  color: #4d4a43;
-  font-size: 0.93rem;
-  line-height: 1.68;
-}
-
 .table-of-contents {
   margin: 29px 0 34px;
   border: 1px solid #cccccc;
@@ -972,7 +948,6 @@ img { display: block; max-width: 100%; height: auto; }
   .content-area.single-post { padding: 26px 22px 35px; border-radius: 9px; }
   .article-visual { margin: 17px 0 25px; border-radius: 8px; }
   .article-content { margin-top: 29px; font-size: 17.5px; line-height: 1.76; }
-  .reader-persona { margin: 18px 0 20px; padding: 14px 15px; }
   .table-of-contents { margin: 21px 0 27px; }
   .table-of-contents summary { padding: 13px 16px; font-size: 0.98rem; }
   .article-content h2 { margin-top: 43px; font-size: 1.4rem; }
