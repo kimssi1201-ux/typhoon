@@ -122,6 +122,17 @@ test("the home is a seven-post mobile-friendly support blog archive", async () =
   assert.match(html, /<link rel="canonical" href="https:\/\/mustview\.co\.kr\/"/);
   assert.doesNotMatch(html, /housing-dashboard\.js|housing-support\.js|portal-overview/, "the public home no longer renders a portal dashboard");
   assert.match(html, /href="energy-voucher\.html"/, "the new energy voucher article is linked from the home archive");
+  assert.doesNotMatch(visibleText(html), /\?{3,}/, "the home does not expose corrupted Korean text");
+
+  for (const recentTitle of [
+    "에너지바우처 2026 신청 방법",
+    "문화누리카드 2026 신청 방법",
+    "국민취업지원제도 I유형 신청 방법",
+    "국민내일배움카드 발급 안내",
+    "부모급여 신청 시기"
+  ]) {
+    assert.ok(html.includes(recentTitle), recentTitle + " is readable in the recent-post widget");
+  }
 
   for (const post of posts) {
     assert.match(html, new RegExp(`href="${post.file}"`), post.file + " is linked from the archive");
