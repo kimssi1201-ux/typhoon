@@ -241,7 +241,7 @@ test("trust pages are substantial and consistent for AdSense review", async () =
     assert.ok(html.includes(publisherId));
     assert.match(html, /pagead2\.googlesyndication\.com\/pagead\/js\/adsbygoogle\.js/);
     assert.match(html, /blog\.css\?v=20260814-gpblog12/);
-    assert.match(html, /MustView 지원금/);
+    assert.match(html, /복지모음집/);
     assert.match(html, /href="sources\.html">자료 기준<\/a>/);
     assert.match(html, /href="about\.html">블로그 소개<\/a>/);
     assert.match(html, /href="contact\.html">문의<\/a>/);
