@@ -418,6 +418,7 @@ img { display: block; max-width: 100%; height: auto; }
 .tile-parent { --tile-accent: #b65c32; --tile-bg: #fff0e7; }
 .tile-first-meeting { --tile-accent: #826425; --tile-bg: #f8f2e5; }
 .tile-child { --tile-accent: #286f81; --tile-bg: #edf6f8; }
+.tile-culture { --tile-accent: #1f6f7a; --tile-bg: #e7f5f6; }
 
 .article-visual {
   overflow: hidden;

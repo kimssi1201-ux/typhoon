@@ -7,6 +7,13 @@ const readProjectBuffer = (path) => readFile(new URL("../" + path, import.meta.u
 const publisherId = "ca-pub-5751319666030430";
 const posts = [
   {
+    file: "culture-nuri-card.html",
+    slug: "culture-nuri-card",
+    image: "benefit-culture-inline.webp",
+    title: "\uBB38\uD654\uB204\uB9AC\uCE74\uB4DC 2026: 15\uB9CC \uC6D0 \uC9C0\uC6D0 \uB300\uC0C1, \uBC1C\uAE09 \uAE30\uAC04, \uC0AC\uC6A9\uCC98",
+    source: "mnuri.kr"
+  },
+  {
     file: "national-employment-support.html",
     slug: "national-employment-support",
     image: "benefit-employment-inline.webp",
@@ -74,11 +81,11 @@ function articleHeadings(html) {
   }));
 }
 
-test("the home is a five-post mobile-friendly support blog archive", async () => {
+test("the home is a six-post mobile-friendly support blog archive", async () => {
   const [html, css] = await Promise.all([readProjectFile("index.html"), readProjectFile("blog.css")]);
 
-  assert.equal((html.match(/<article class="post-card"/g) || []).length, 5, "the archive has exactly five posts");
-  assert.match(html, /data-post-count="5"/);
+  assert.equal((html.match(/<article class="post-card"/g) || []).length, 6, "the archive has exactly six posts");
+  assert.match(html, /data-post-count="6"/);
   assert.match(html, /<h1 id="archive-title">지원금<\/h1>/);
   assert.match(html, /<h2 class="widget-title">카테고리<\/h2>/);
   assert.match(html, /class="widget category-widget"/);
@@ -102,8 +109,8 @@ test("the home is a five-post mobile-friendly support blog archive", async () =>
   }
 
   assert.doesNotMatch(html, /<img\b/, "the archive thumbnails are deterministic text tiles, not raster images");
-  assert.equal((html.match(/class="post-card-thumbnail tile-[^"]+"/g) || []).length, 5, "the archive uses five simple text thumbnail tiles");
-  assert.equal((html.match(/<span>지원금<\/span><strong>/g) || []).length, 5, "every thumbnail shows the single category and topic text");
+  assert.equal((html.match(/class="post-card-thumbnail tile-[^"]+"/g) || []).length, 6, "the archive uses six simple text thumbnail tiles");
+  assert.equal((html.match(/<span>지원금<\/span><strong>/g) || []).length, 6, "every thumbnail shows the single category and topic text");
 
   assert.match(css, /--gp-bg:\s*#f2f2f2/);
   assert.match(css, /--gp-accent:\s*#3372dc/);
@@ -203,7 +210,7 @@ test("trust pages are substantial and consistent for AdSense review", async () =
   assert.match(about, /작성과 검수 원칙/);
   assert.doesNotMatch(about, /40대 중반 남성 가장/);
   assert.match(about, /광고와 편집의 독립성/);
-  assert.match(about, /현재 공개한 게시글은 정확히 5개/);
+  assert.match(about, /현재 공개한 게시글은 정확히 6개/);
   assert.match(sources, /work24\.go\.kr/);
   assert.match(sources, /bokjiro\.go\.kr/);
   assert.match(sources, /mohw\.go\.kr/);
@@ -226,7 +233,7 @@ test("the table of contents script gives every article heading a stable unique a
   assert.match(script, /tableOfContents\.open = true/);
 });
 
-test("five generated WebP illustrations are optimized, shared, and rendered once in their articles", async () => {
+test("six generated WebP illustrations are optimized, shared, and rendered once in their articles", async () => {
   for (const post of posts) {
     const [image, html] = await Promise.all([readProjectBuffer("assets/" + post.image), readProjectFile(post.file)]);
     assert.equal(image.subarray(0, 4).toString("ascii"), "RIFF", post.image + " has WebP RIFF bytes");
@@ -237,7 +244,7 @@ test("five generated WebP illustrations are optimized, shared, and rendered once
   }
 });
 
-test("the sitemap indexes the archive, five posts, and four trust pages", async () => {
+test("the sitemap indexes the archive, six posts, and four trust pages", async () => {
   const [sitemap, redirects, robots] = await Promise.all([
     readProjectFile("sitemap.xml"),
     readProjectFile("_redirects"),
