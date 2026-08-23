@@ -28,12 +28,30 @@ const MAP_CAPTURE = `<script id="leaflet-map-capture">
 })();
 </script>`;
 const GLOBAL_TRACKER = '<script id="global-cyclone-tracker-loader" src="/global-cyclone-tracker.js?v=20260719-popup-info1" defer></script>';
+const SUPPORT_ARCHIVE_PATHS = new Set(["/지원금", "/지원금.html"]);
+
+function safeDecodePathname(pathname) {
+  try {
+    return decodeURI(pathname);
+  } catch {
+    return pathname;
+  }
+}
 
 function canonicalTag(requestUrl) {
   const url = new URL(requestUrl);
-  const pathname = url.pathname.endsWith(".html") ? (url.pathname.slice(0, -5) || "/") : url.pathname;
+  const decodedPathname = safeDecodePathname(url.pathname);
+  const pathname = decodedPathname.endsWith(".html") ? (decodedPathname.slice(0, -5) || "/") : decodedPathname;
   const canonicalPath = pathname === "/index" ? "/" : pathname;
   return `<link rel="canonical" href="${CANONICAL_ORIGIN}${canonicalPath}">`;
+}
+
+function supportArchiveRequest(request) {
+  const url = new URL(request.url);
+  if (!SUPPORT_ARCHIVE_PATHS.has(safeDecodePathname(url.pathname))) return null;
+  url.pathname = "/support/index.html";
+  url.search = "";
+  return new Request(url, request);
 }
 
 function insertBefore(html, needle, value) {
@@ -41,7 +59,10 @@ function insertBefore(html, needle, value) {
 }
 
 export async function onRequest(context) {
-  const response = await context.next();
+  const archiveRequest = supportArchiveRequest(context.request);
+  const response = archiveRequest && context.env?.ASSETS
+    ? await context.env.ASSETS.fetch(archiveRequest)
+    : await context.next();
   const contentType = response.headers.get("content-type") || "";
   if (!contentType.includes("text/html")) return response;
   if (response.status >= 400) return response;

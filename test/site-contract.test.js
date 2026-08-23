@@ -214,8 +214,8 @@ test("the support archive lives at /지원금 and contains all eight categorized
   assert.match(html, /<h1 id="archive-title">지원금<\/h1>/);
   assert.match(html, /class="category-filter"/);
   assert.match(html, /class="widget category-widget"/);
-  assert.match(redirects, /\/%EC%A7%80%EC%9B%90%EA%B8%88 \/support\/index\.html 200/);
-  assert.match(redirects, /\/지원금 \/support\/index\.html 200/);
+  assert.doesNotMatch(redirects, /\/%EC%A7%80%EC%9B%90%EA%B8%88 \/support/);
+  assert.doesNotMatch(redirects, /\/지원금 \/support/);
   assert.doesNotMatch(html, /<nav class="breadcrumbs"/, "the support archive has no breadcrumb trail");
 
   for (const category of categories) {

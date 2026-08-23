@@ -19,6 +19,31 @@ test("HTML middleware preserves the response and injects canonical, AdSense, and
   assert.match(body, /id="global-cyclone-tracker-loader"/);
 });
 
+test("HTML middleware serves the support archive without redirecting the Korean path", async () => {
+  let fetchedPath = "";
+  const html = '<!doctype html><html><head><link rel="canonical" href="https://mustview.co.kr/support"></head><body><main data-post-count="8">지원금</main></body></html>';
+  const response = await onRequest({
+    request: makeRequest("/%EC%A7%80%EC%9B%90%EA%B8%88"),
+    env: {
+      ASSETS: {
+        fetch: async (request) => {
+          fetchedPath = new URL(request.url).pathname;
+          return new Response(html, { status: 200, headers: { "content-type": "text/html; charset=utf-8" } });
+        }
+      }
+    },
+    next: async () => {
+      throw new Error("support archive should be served from ASSETS");
+    }
+  });
+  const body = await response.text();
+
+  assert.equal(response.status, 200);
+  assert.equal(fetchedPath, "/support/index.html");
+  assert.match(body, /canonical" href="https:\/\/mustview\.co\.kr\/지원금/);
+  assert.match(body, /data-post-count="8"/);
+});
+
 test("HTML middleware does not rewrite non-HTML responses", async () => {
   const original = new Response(JSON.stringify({ ok: true }), { status: 200, headers: { "content-type": "application/json" } });
   const response = await onRequest({ request: makeRequest("/api/health"), next: async () => original });
