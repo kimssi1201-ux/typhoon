@@ -33,7 +33,7 @@ const LEGACY_SUPPORT_ARCHIVE_PATHS = new Set(["/support", "/support/", "/support
 const SUPPORT_ARCHIVE_REPLACE = `<script id="support-archive-path-normalizer">
 (() => {
   if (!["/support", "/support/", "/support.html"].includes(location.pathname)) return;
-  history.replaceState(null, "", "/지원금" + location.search + location.hash);
+  history.replaceState(null, "", "/지원금" + location.hash);
 })();
 </script>`;
 
