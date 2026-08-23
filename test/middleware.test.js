@@ -45,6 +45,18 @@ test("HTML middleware serves the support archive without redirecting the Korean 
   assert.match(body, /data-post-count="8"/);
 });
 
+test("HTML middleware redirects legacy support archive URLs to the Korean path", async () => {
+  for (const path of ["/support", "/support/", "/support.html"]) {
+    const response = await onRequest({
+      request: makeRequest(path),
+      next: async () => new Response("legacy support route should redirect")
+    });
+
+    assert.equal(response.status, 301);
+    assert.equal(response.headers.get("location"), "https://mustview.co.kr/%EC%A7%80%EC%9B%90%EA%B8%88");
+  }
+});
+
 test("HTML middleware does not rewrite non-HTML responses", async () => {
   const original = new Response(JSON.stringify({ ok: true }), { status: 200, headers: { "content-type": "application/json" } });
   const response = await onRequest({ request: makeRequest("/api/health"), next: async () => original });

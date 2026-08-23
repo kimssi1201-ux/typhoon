@@ -29,6 +29,7 @@ const MAP_CAPTURE = `<script id="leaflet-map-capture">
 </script>`;
 const GLOBAL_TRACKER = '<script id="global-cyclone-tracker-loader" src="/global-cyclone-tracker.js?v=20260719-popup-info1" defer></script>';
 const SUPPORT_ARCHIVE_PATHS = new Set(["/지원금", "/지원금.html"]);
+const LEGACY_SUPPORT_ARCHIVE_PATHS = new Set(["/support", "/support/", "/support.html"]);
 
 function safeDecodePathname(pathname) {
   try {
@@ -54,11 +55,22 @@ function supportArchiveRequest(request) {
   return new Request(url, request);
 }
 
+function supportArchiveRedirect(request) {
+  const url = new URL(request.url);
+  if (!LEGACY_SUPPORT_ARCHIVE_PATHS.has(safeDecodePathname(url.pathname))) return null;
+  const target = new URL("/%EC%A7%80%EC%9B%90%EA%B8%88", CANONICAL_ORIGIN);
+  target.search = url.search;
+  return Response.redirect(target, 301);
+}
+
 function insertBefore(html, needle, value) {
   return html.includes(needle) ? html.replace(needle, `${value}\n${needle}`) : html;
 }
 
 export async function onRequest(context) {
+  const archiveRedirect = supportArchiveRedirect(context.request);
+  if (archiveRedirect) return archiveRedirect;
+
   const archiveRequest = supportArchiveRequest(context.request);
   let response;
   if (archiveRequest && context.env?.ASSETS) {
