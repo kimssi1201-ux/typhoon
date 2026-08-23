@@ -45,15 +45,32 @@ test("HTML middleware serves the support archive without redirecting the Korean 
   assert.match(body, /data-post-count="8"/);
 });
 
-test("HTML middleware redirects legacy support archive URLs to the Korean path", async () => {
+test("HTML middleware serves legacy support URLs and normalizes them client-side", async () => {
   for (const path of ["/support", "/support/", "/support.html"]) {
+    let fetchedPath = "";
+    const html = '<!doctype html><html><head><link rel="canonical" href="https://mustview.co.kr/support"></head><body><main data-post-count="8">지원금</main></body></html>';
     const response = await onRequest({
       request: makeRequest(path),
-      next: async () => new Response("legacy support route should redirect")
+      env: {
+        ASSETS: {
+          fetch: async (request) => {
+            fetchedPath = new URL(request.url).pathname;
+            return new Response(html, { status: 200, headers: { "content-type": "application/octet-stream" } });
+          }
+        }
+      },
+      next: async () => {
+        throw new Error("legacy support archive should be served from ASSETS");
+      }
     });
+    const body = await response.text();
 
-    assert.equal(response.status, 301);
-    assert.equal(response.headers.get("location"), "https://mustview.co.kr/%EC%A7%80%EC%9B%90%EA%B8%88");
+    assert.equal(response.status, 200);
+    assert.equal(fetchedPath, "/support-archive.page");
+    assert.match(response.headers.get("content-type") || "", /text\/html/);
+    assert.match(body, /canonical" href="https:\/\/mustview\.co\.kr\/지원금/);
+    assert.match(body, /id="support-archive-path-normalizer"/);
+    assert.match(body, /history\.replaceState/);
   }
 });
 

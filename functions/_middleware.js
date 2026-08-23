@@ -30,6 +30,12 @@ const MAP_CAPTURE = `<script id="leaflet-map-capture">
 const GLOBAL_TRACKER = '<script id="global-cyclone-tracker-loader" src="/global-cyclone-tracker.js?v=20260719-popup-info1" defer></script>';
 const SUPPORT_ARCHIVE_PATHS = new Set(["/지원금", "/지원금.html"]);
 const LEGACY_SUPPORT_ARCHIVE_PATHS = new Set(["/support", "/support/", "/support.html"]);
+const SUPPORT_ARCHIVE_REPLACE = `<script id="support-archive-path-normalizer">
+(() => {
+  if (!["/support", "/support/", "/support.html"].includes(location.pathname)) return;
+  history.replaceState(null, "", "/지원금" + location.search + location.hash);
+})();
+</script>`;
 
 function safeDecodePathname(pathname) {
   try {
@@ -42,6 +48,9 @@ function safeDecodePathname(pathname) {
 function canonicalTag(requestUrl) {
   const url = new URL(requestUrl);
   const decodedPathname = safeDecodePathname(url.pathname);
+  if (LEGACY_SUPPORT_ARCHIVE_PATHS.has(decodedPathname)) {
+    return `<link rel="canonical" href="${CANONICAL_ORIGIN}/지원금">`;
+  }
   const pathname = decodedPathname.endsWith(".html") ? (decodedPathname.slice(0, -5) || "/") : decodedPathname;
   const canonicalPath = pathname === "/index" ? "/" : pathname;
   return `<link rel="canonical" href="${CANONICAL_ORIGIN}${canonicalPath}">`;
@@ -49,18 +58,11 @@ function canonicalTag(requestUrl) {
 
 function supportArchiveRequest(request) {
   const url = new URL(request.url);
-  if (!SUPPORT_ARCHIVE_PATHS.has(safeDecodePathname(url.pathname))) return null;
+  const decodedPathname = safeDecodePathname(url.pathname);
+  if (!SUPPORT_ARCHIVE_PATHS.has(decodedPathname) && !LEGACY_SUPPORT_ARCHIVE_PATHS.has(decodedPathname)) return null;
   url.pathname = "/support-archive.page";
   url.search = "";
   return new Request(url, request);
-}
-
-function supportArchiveRedirect(request) {
-  const url = new URL(request.url);
-  if (!LEGACY_SUPPORT_ARCHIVE_PATHS.has(safeDecodePathname(url.pathname))) return null;
-  const target = new URL("/%EC%A7%80%EC%9B%90%EA%B8%88", CANONICAL_ORIGIN);
-  target.search = url.search;
-  return Response.redirect(target, 301);
 }
 
 function insertBefore(html, needle, value) {
@@ -68,9 +70,8 @@ function insertBefore(html, needle, value) {
 }
 
 export async function onRequest(context) {
-  const archiveRedirect = supportArchiveRedirect(context.request);
-  if (archiveRedirect) return archiveRedirect;
-
+  const requestUrl = new URL(context.request.url);
+  const legacySupportArchive = LEGACY_SUPPORT_ARCHIVE_PATHS.has(safeDecodePathname(requestUrl.pathname));
   const archiveRequest = supportArchiveRequest(context.request);
   let response;
   if (archiveRequest && context.env?.ASSETS) {
@@ -100,6 +101,7 @@ export async function onRequest(context) {
   }
   if (!html.includes('name="google-adsense-account"')) html = insertBefore(html, "</head>", `  ${ADSENSE_META}`);
   if (!html.includes("pagead2.googlesyndication.com/pagead/js/adsbygoogle.js")) html = insertBefore(html, "</head>", `  ${ADSENSE_SNIPPET}`);
+  if (legacySupportArchive && !html.includes('id="support-archive-path-normalizer"')) html = insertBefore(html, "</body>", `  ${SUPPORT_ARCHIVE_REPLACE}`);
   if (html.includes('id="liveMap"') && !html.includes('id="leaflet-map-capture"')) {
     html = /<script src="app\.js(?:\?[^"]*)?"><\/script>/.test(html)
       ? html.replace(/<script src="app\.js(?:\?[^"]*)?"><\/script>/, `${MAP_CAPTURE}\n    $&`)
