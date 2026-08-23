@@ -27,17 +27,38 @@
   };
 
   const headings = [...content.querySelectorAll("h2, h3")];
+  let currentTopItem = null;
+  let currentSublist = null;
+
   headings.forEach((heading, index) => {
     const id = heading.id || slugify(heading.textContent, `section-${index + 1}`);
     heading.id = id;
 
     const item = document.createElement("li");
-    if (heading.tagName === "H3") item.className = "toc-subitem";
-
     const link = document.createElement("a");
     link.href = `#${id}`;
     link.textContent = heading.textContent;
     item.append(link);
-    list.append(item);
+
+    if (heading.tagName === "H2") {
+      item.className = "toc-item";
+      list.append(item);
+      currentTopItem = item;
+      currentSublist = null;
+      return;
+    }
+
+    item.className = "toc-subitem";
+    if (!currentTopItem) {
+      list.append(item);
+      return;
+    }
+
+    if (!currentSublist) {
+      currentSublist = document.createElement("ol");
+      currentSublist.className = "toc-sublist";
+      currentTopItem.append(currentSublist);
+    }
+    currentSublist.append(item);
   });
 })();

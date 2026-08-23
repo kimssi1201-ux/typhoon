@@ -11,6 +11,8 @@ const posts = [
     slug: "work-child-tax-credit",
     image: "benefit-employment-inline.webp",
     title: "근로·자녀장려금 2026: 기한 후 신청, 반기 신청 기간과 지급액",
+    category: "세금·환급",
+    categoryId: "category-tax-refund",
     source: "nts.go.kr"
   },
   {
@@ -18,6 +20,8 @@ const posts = [
     slug: "energy-voucher",
     image: "benefit-energy-voucher-inline.webp",
     title: "에너지바우처 2026: 지원대상, 신청기간, 요금차감과 국민행복카드",
+    category: "생활·에너지",
+    categoryId: "category-life-energy",
     source: "energyv.or.kr"
   },
   {
@@ -25,6 +29,8 @@ const posts = [
     slug: "culture-nuri-card",
     image: "benefit-culture-inline.webp",
     title: "문화누리카드 2026: 15만 원 지원 대상, 발급 기간, 사용처",
+    category: "생활·에너지",
+    categoryId: "category-life-energy",
     source: "mnuri.kr"
   },
   {
@@ -32,6 +38,8 @@ const posts = [
     slug: "national-employment-support",
     image: "benefit-employment-inline.webp",
     title: "국민취업지원제도 I유형: 구직촉진수당과 신청 방법",
+    category: "고용·취업",
+    categoryId: "category-employment",
     source: "work24.go.kr"
   },
   {
@@ -39,6 +47,8 @@ const posts = [
     slug: "national-tomorrow-learning-card",
     image: "benefit-learning-inline.webp",
     title: "국민내일배움카드: 훈련비 300만 원부터 확인할 점",
+    category: "고용·취업",
+    categoryId: "category-employment",
     source: "work24.go.kr"
   },
   {
@@ -46,6 +56,8 @@ const posts = [
     slug: "parent-benefit",
     image: "benefit-parent-inline.webp",
     title: "부모급여: 0세·1세 지원 대상과 신청 시기",
+    category: "육아·출산",
+    categoryId: "category-childbirth",
     source: "bokjiro.go.kr"
   },
   {
@@ -53,6 +65,8 @@ const posts = [
     slug: "first-meeting-voucher",
     image: "benefit-first-meeting-inline.webp",
     title: "첫만남이용권: 출생아 바우처 금액과 사용 전 확인 사항",
+    category: "육아·출산",
+    categoryId: "category-childbirth",
     source: "mohw.go.kr"
   },
   {
@@ -60,6 +74,8 @@ const posts = [
     slug: "child-allowance",
     image: "benefit-child-allowance-inline.webp",
     title: "아동수당: 만 9세 미만 확대 기준과 신청 방법",
+    category: "육아·출산",
+    categoryId: "category-childbirth",
     source: "mohw.go.kr"
   }
 ];
@@ -68,6 +84,13 @@ const trustPages = [
   { file: "about.html", slug: "about", schema: "AboutPage" },
   { file: "contact.html", slug: "contact", schema: "ContactPage" },
   { file: "privacy.html", slug: "privacy", schema: "WebPage" }
+];
+const supportArchive = { file: "지원금.html", slug: "%EC%A7%80%EC%9B%90%EA%B8%88" };
+const categories = [
+  { id: "category-childbirth", label: "육아·출산", count: 3 },
+  { id: "category-employment", label: "고용·취업", count: 2 },
+  { id: "category-life-energy", label: "생활·에너지", count: 2 },
+  { id: "category-tax-refund", label: "세금·환급", count: 1 }
 ];
 
 function visibleText(html) {
@@ -95,6 +118,13 @@ function articleHeadings(html) {
   }));
 }
 
+function structuredSchemas(html) {
+  const match = html.match(/<script type="application\/ld\+json">\s*([\s\S]*?)\s*<\/script>/);
+  assert.ok(match, "JSON-LD script is present");
+  const schema = JSON.parse(match[1]);
+  return schema["@graph"] || [schema];
+}
+
 const requiredFragments = [
   "지원 대상",
   "지원 금액",
@@ -106,18 +136,22 @@ const requiredFragments = [
   "공식 신청처와 문의처"
 ];
 
-test("the home is an eight-post mobile-friendly support blog archive", async () => {
+test("the home is a support landing with four categories and six latest posts", async () => {
   const [html, css] = await Promise.all([readProjectFile("index.html"), readProjectFile("blog.css")]);
 
-  assert.equal((html.match(/<article class="post-card"/g) || []).length, 8, "the archive has exactly eight posts");
+  assert.equal((html.match(/<article class="post-card"/g) || []).length, 6, "the home shows exactly six latest posts");
   assert.match(html, /data-post-count="8"/);
-  assert.match(html, /<h1 id="archive-title">지원금<\/h1>/);
-  assert.match(html, /<h2 class="widget-title">카테고리<\/h2>/);
-  assert.match(html, /class="widget category-widget"/);
-  assert.match(html, /<li><a href="#support-category">지원금<\/a><\/li>/, "the category widget shows only the category name");
-  assert.doesNotMatch(html, /지원금 8개/, "the archive does not show a redundant post-count phrase");
-  assert.match(html, /class="site-grid"/);
-  assert.match(html, /class="widget-area"/);
+  assert.match(html, /class="home-landing"/);
+  assert.match(html, /<h1 id="home-title">복지모음집<\/h1>/);
+  assert.match(html, /class="home-category-grid"/);
+  assert.equal((html.match(/class="home-category-card"/g) || []).length, 4, "the home has four category entry cards");
+  assert.match(html, /href="\/지원금">전체 지원금 글 보기<\/a>/);
+  assert.doesNotMatch(html, /<nav class="breadcrumbs"/, "the home has no breadcrumb");
+  assert.doesNotMatch(html, /카테고리 · 지원금/, "the home is no longer the support archive");
+  for (const category of categories) {
+    assert.match(html, new RegExp(`href="/지원금#${category.id}"`), "the home links to " + category.label);
+    assert.match(html, new RegExp(category.label), "the home exposes " + category.label);
+  }
   assert.match(html, /class="main-navigation"/);
   assert.match(html, /class="header-actions"/);
   assert.match(html, /class="header-menu-panel"/);
@@ -128,50 +162,75 @@ test("the home is an eight-post mobile-friendly support blog archive", async () 
   assert.ok(html.includes(publisherId));
   assert.match(html, /<link rel="canonical" href="https:\/\/mustview\.co\.kr\/"/);
   assert.doesNotMatch(html, /housing-dashboard\.js|housing-support\.js|portal-overview/, "the public home no longer renders a portal dashboard");
-  assert.match(html, /href="work-child-tax-credit\.html"/, "the newest earned-income and child tax credit article is linked from the home archive");
-  assert.match(html, /href="energy-voucher\.html"/, "the energy voucher article is linked from the home archive");
   assert.doesNotMatch(visibleText(html), /\?{3,}/, "the home does not expose corrupted Korean text");
 
-  for (const recentTitle of [
-    "근로·자녀장려금 2026 신청 방법",
-    "에너지바우처 2026 신청 방법",
-    "문화누리카드 2026 신청 방법",
-    "국민취업지원제도 I유형 신청 방법",
-    "국민내일배움카드 발급 안내"
-  ]) {
-    assert.ok(html.includes(recentTitle), recentTitle + " is readable in the recent-post widget");
+  for (const post of posts.slice(0, 6)) {
+    assert.match(html, new RegExp(`href="${post.file}"`), post.file + " is linked from the home latest section");
+    assert.match(html, new RegExp(`data-post="${post.slug}"[^>]+data-category="${post.categoryId}"`), post.file + " keeps category metadata on the home");
+  }
+  for (const post of posts.slice(6)) {
+    assert.doesNotMatch(html, new RegExp(`href="${post.file}"`), post.file + " is not linked as a latest card on the home");
   }
 
-  for (const post of posts) {
-    assert.match(html, new RegExp(`href="${post.file}"`), post.file + " is linked from the archive");
-  }
-
-  assert.doesNotMatch(html, /<img\b/, "the archive thumbnails are deterministic text tiles, not raster images");
-  assert.equal((html.match(/class="post-card-thumbnail tile-[^"]+"/g) || []).length, 6, "the archive uses six simple text thumbnail tiles");
-  assert.equal((html.match(/<span>지원금<\/span><strong>/g) || []).length, 8, "every thumbnail shows the single category and topic text");
+  assert.doesNotMatch(html, /<img\b/, "the home thumbnails are deterministic text tiles, not raster images");
 
   assert.match(css, /--gp-bg:\s*#f2f2f2/);
   assert.match(css, /--gp-accent:\s*#3372dc/);
   assert.match(css, /--gp-heading-accent:\s*#ff5b00/);
-  assert.match(css, /grid-template-columns:\s*minmax\(0, 780px\) 290px/);
-  assert.match(css, /\.post-card-body\s*\{[\s\S]*?grid-template-columns:\s*150px minmax\(0, 1fr\)/);
+  assert.match(css, /\.skip-link\s*\{[\s\S]*?left:\s*-9999px;[\s\S]*?width:\s*1px;[\s\S]*?height:\s*1px;[\s\S]*?overflow:\s*hidden/);
+  assert.match(css, /\.skip-link:focus\s*\{[\s\S]*?position:\s*fixed;[\s\S]*?left:\s*16px;[\s\S]*?top:\s*16px;[\s\S]*?background:\s*#1d4ed8/);
+  assert.match(css, /width:\s*min\(1140px, calc\(100% - 24px\)\)/);
+  assert.match(css, /grid-template-columns:\s*minmax\(0, 828px\) 272px/);
+  assert.match(css, /gap:\s*40px/);
+  assert.match(css, /\.article-content\s*\{[\s\S]*?max-width:\s*760px/);
+  assert.match(css, /\.post-card-body\s*\{[\s\S]*?grid-template-columns:\s*118px minmax\(0, 1fr\)/);
+  assert.match(css, /\.post-card-content\s*\{\s*padding:\s*19px 22px 20px/);
   assert.match(css, /\.post-card-thumbnail\s*\{[\s\S]*?--tile-bg:[\s\S]*?background:\s*var\(--tile-bg\)/);
+  assert.match(css, /\.post-card \.entry-summary\s*\{[\s\S]*?-webkit-line-clamp:\s*2/);
+  assert.doesNotMatch(css, /\.post-card-thumbnail::after/, "archive text tiles do not render a misleading empty circle");
   assert.match(css, /\.article-content\s*\{[\s\S]*?font-size:\s*18px;[\s\S]*?line-height:\s*1\.75/);
   assert.match(css, /body\.blog-page\.single-post\s*\{[\s\S]*?padding:\s*0/);
   assert.match(css, /\.content-area\.single-post\s*\{[\s\S]*?border-radius:\s*11px/);
   assert.match(css, /\.article-content h2::before[\s\S]*?var\(--gp-heading-accent\)/);
-  assert.match(css, /@media \(max-width: 960px\)[\s\S]*?\.site-grid\s*\{[\s\S]*?display:\s*block/);
-  assert.match(css, /@media \(max-width: 960px\)[\s\S]*?\.home \.site-grid\s*\{[\s\S]*?display:\s*flex[\s\S]*?flex-direction:\s*column/);
-  assert.match(css, /@media \(max-width: 960px\)[\s\S]*?\.home \.category-widget\s*\{[\s\S]*?order:\s*1/);
-  assert.match(css, /\.home \.category-widget \.widget-title\s*\{\s*display:\s*none/);
-  assert.match(css, /\.home \.widget-area \.widget:not\(\.category-widget\)\s*\{\s*display:\s*none/);
-  assert.doesNotMatch(css, /\.home \.category-widget li span/, "the removed post-count label has no leftover styles");
+  assert.match(css, /\.home-landing\s*\{[\s\S]*?width:\s*min\(1140px, calc\(100% - 24px\)\)/);
+  assert.match(css, /\.home-category-grid\s*\{[\s\S]*?grid-template-columns:\s*repeat\(4, minmax\(0, 1fr\)\)/);
+  assert.match(css, /@media \(max-width: 1024px\)[\s\S]*?\.site-grid\s*\{[\s\S]*?display:\s*block/);
+  assert.match(css, /@media \(max-width: 1024px\)[\s\S]*?\.home-category-grid\s*\{[\s\S]*?grid-template-columns:\s*repeat\(2, minmax\(0, 1fr\)\)/);
   assert.match(css, /@media \(max-width: 767px\)/);
   assert.match(css, /@media \(max-width: 767px\)[\s\S]*?\.header-actions\s*\{\s*display:\s*flex/);
   assert.match(css, /@media \(max-width: 767px\)[\s\S]*?\.main-navigation\s*\{\s*display:\s*none/);
-  assert.match(css, /@media \(max-width: 767px\)[\s\S]*?grid-template-columns:\s*104px minmax\(0, 1fr\)/);
+  assert.match(css, /@media \(max-width: 767px\)[\s\S]*?grid-template-columns:\s*92px minmax\(0, 1fr\)/);
   assert.match(css, /\.table-of-contents/);
   assert.doesNotMatch(css, /\.reader-persona/, "the removed reader persona has no leftover styles");
+});
+
+test("the support archive lives at /지원금 and contains all eight categorized posts", async () => {
+  const [html, redirects] = await Promise.all([readProjectFile(supportArchive.file), readProjectFile("_redirects")]);
+
+  assert.equal((html.match(/<article class="post-card"/g) || []).length, 8, "the support archive has exactly eight posts");
+  assert.match(html, /data-post-count="8"/);
+  assert.match(html, /<link rel="canonical" href="https:\/\/mustview\.co\.kr\/지원금"/);
+  assert.match(html, /"@type": "CollectionPage"/);
+  assert.match(html, /<h1 id="archive-title">지원금<\/h1>/);
+  assert.match(html, /class="category-filter"/);
+  assert.match(html, /class="widget category-widget"/);
+  assert.match(redirects, /\/지원금 \/지원금\.html 200/);
+  assert.doesNotMatch(html, /<nav class="breadcrumbs"/, "the support archive has no breadcrumb trail");
+
+  for (const category of categories) {
+    assert.match(html, new RegExp(`href="#${category.id}"`), "the support archive links to " + category.label);
+    assert.match(html, new RegExp(`${category.label} <span>${category.count}</span>`), "the support archive shows the " + category.label + " count");
+  }
+
+  for (const post of posts) {
+    assert.match(html, new RegExp(`href="${post.file}"`), post.file + " is linked from the support archive");
+    assert.match(html, new RegExp(`data-post="${post.slug}"[^>]+data-category="${post.categoryId}"`), post.file + " is tagged with its category");
+    assert.match(html, new RegExp(`<a class="category-chip" href="#${post.categoryId}">${post.category}</a>`), post.file + " uses its archive category chip");
+  }
+
+  assert.doesNotMatch(html, /<img\b/, "the support archive thumbnails are deterministic text tiles, not raster images");
+  assert.equal((html.match(/class="post-card-thumbnail tile-[^"]+"/g) || []).length, 6, "the support archive uses six simple text thumbnail tiles");
+  assert.equal((html.match(/<span>지원금<\/span><strong>/g) || []).length, 0, "support archive thumbnails no longer show the old single category");
 });
 
 test("each support post has complete metadata, a single H1, and a valid body length", async () => {
@@ -179,6 +238,10 @@ test("each support post has complete metadata, a single H1, and a valid body len
     const html = await readProjectFile(post.file);
     const text = articleBodyText(html);
     const headings = articleHeadings(html);
+    const schemas = structuredSchemas(html);
+    const articleSchema = schemas.find((schema) => schema["@type"] === "Article");
+    const breadcrumbSchema = schemas.find((schema) => schema["@type"] === "BreadcrumbList");
+    const faqSchema = schemas.find((schema) => schema["@type"] === "FAQPage");
 
     assert.equal((html.match(/<h1\b/gi) || []).length, 1, post.file + " has exactly one H1");
     assert.match(html, new RegExp(`<h1>${post.title}<\\/h1>`), post.file + " has the expected H1");
@@ -200,16 +263,35 @@ test("each support post has complete metadata, a single H1, and a valid body len
     assert.doesNotMatch(html, /reader-persona|40대 중반 성인의 확인 사례/, post.file + " does not render the removed reader persona");
     assert.match(html, /<p class="lead">[\s\S]*?<\/p>\s*<details class="table-of-contents">/, post.file + " places the table of contents directly after the introduction");
     assert.match(html, /<nav class="breadcrumbs" aria-label="현재 위치">/, post.file + " has a blog breadcrumb");
+    assert.match(html, new RegExp(`<a class="category-chip" href="/지원금#${post.categoryId}">${post.category}<\\/a>`), post.file + " exposes its detailed category chip");
     assert.match(html, /class="header-actions"/, post.file + " has the compact mobile header controls");
     assert.match(html, /data-toc-list/, post.file + " has a generated table of contents target");
     assert.match(html, /data-post-content/, post.file + " exposes headings for the generated table of contents");
     assert.match(html, /class="key-facts"/, post.file + " has a key facts box");
     assert.match(html, /최종 확인 2026\. 8\. (15|23)\./, post.file + " exposes its verification date");
+    assert.doesNotMatch(html, /<span>2026(?:\.|년) 8(?:\.|월) (?:15|23)(?:\.|일)<\/span>\s*<span>·<\/span>\s*<span>최종 확인/, post.file + " does not duplicate identical publish and verification dates");
     assert.match(html, /class="official-sources"/, post.file + " has a source list");
     assert.match(html, new RegExp(post.source.replace(".", "\\.")), post.file + " cites its official source");
     assert.match(html, /rel="canonical"/);
     assert.match(html, /property="og:type" content="article"/);
     assert.match(html, /"@type":\s*"Article"/);
+    assert.equal(articleSchema.headline, post.title, post.file + " exposes Article headline");
+    assert.match(articleSchema.datePublished, /^2026-08-\d{2}$/, post.file + " exposes Article datePublished");
+    assert.match(articleSchema.dateModified, /^2026-08-\d{2}$/, post.file + " exposes Article dateModified");
+    assert.deepEqual(articleSchema.author, { "@type": "Organization", name: "복지모음집" }, post.file + " exposes Article author");
+    assert.deepEqual(articleSchema.publisher, { "@type": "Organization", name: "복지모음집" }, post.file + " exposes Article publisher");
+    assert.deepEqual(
+      breadcrumbSchema.itemListElement.map((item) => item.name),
+      ["홈", "지원금", post.title],
+      post.file + " exposes Home > support > article breadcrumbs"
+    );
+    assert.ok(faqSchema.mainEntity.length >= 2, post.file + " exposes FAQPage questions");
+    for (const question of faqSchema.mainEntity) {
+      assert.equal(question["@type"], "Question", post.file + " FAQ item is a Question");
+      assert.ok(question.name.length > 6, post.file + " FAQ question has text");
+      assert.equal(question.acceptedAnswer["@type"], "Answer", post.file + " FAQ answer is an Answer");
+      assert.ok(question.acceptedAnswer.text.length > 20, post.file + " FAQ answer has text");
+    }
     assert.match(html, /google-adsense-account/);
     assert.ok(html.includes(publisherId));
     assert.match(html, /blog\.css\?v=20260814-gpblog12/);
@@ -280,6 +362,9 @@ test("the table of contents script gives every article heading a stable unique a
   assert.match(script, /heading\.id = id/);
   assert.match(script, /reserved\.has\(id\)/);
   assert.match(script, /link\.href = `#\$\{id\}`/);
+  assert.match(script, /currentSublist = document\.createElement\("ol"\)/);
+  assert.match(script, /currentSublist\.className = "toc-sublist"/);
+  assert.match(script, /currentTopItem\.append\(currentSublist\)/);
   assert.match(script, /toc-subitem/);
   assert.match(script, /matchMedia\("\(min-width: 768px\)"\)/);
   assert.match(script, /tableOfContents\.open = true/);
@@ -296,7 +381,20 @@ test("support post WebP illustrations are optimized, shared, and rendered once i
   }
 });
 
-test("the sitemap indexes the archive, eight posts, and four trust pages", async () => {
+test("HTML images keep non-empty alt text and the build warns about omissions", async () => {
+  const packageJson = await readProjectFile("package.json");
+  assert.match(packageJson, /node scripts\/check-image-alt\.js/, "the build runs the image alt warning check");
+
+  const htmlFiles = ["index.html", supportArchive.file, ...posts.map((post) => post.file), ...trustPages.map((page) => page.file)];
+  for (const file of htmlFiles) {
+    const html = await readProjectFile(file);
+    for (const match of html.matchAll(/<img\b[^>]*>/gi)) {
+      assert.match(match[0], /\salt=(["'])\S[\s\S]*?\1/, file + " has non-empty alt text for " + match[0]);
+    }
+  }
+});
+
+test("the sitemap indexes the home, support archive, eight posts, and four trust pages", async () => {
   const [sitemap, redirects, robots] = await Promise.all([
     readProjectFile("sitemap.xml"),
     readProjectFile("_redirects"),
@@ -304,7 +402,7 @@ test("the sitemap indexes the archive, eight posts, and four trust pages", async
   ]);
   const indexed = [...sitemap.matchAll(/<loc>https:\/\/mustview\.co\.kr\/?([^<]*)<\/loc>/g)].map((match) => match[1]);
 
-  assert.deepEqual(indexed, ["", ...posts.map((post) => post.slug), ...trustPages.map((page) => page.slug)]);
+  assert.deepEqual(indexed, ["", supportArchive.slug, ...posts.map((post) => post.slug), ...trustPages.map((page) => page.slug)]);
   assert.match(robots, /Sitemap:\s*https:\/\/mustview\.co\.kr\/sitemap\.xml/);
   assert.match(robots, /Allow:\s*\/ads\.txt/);
   assert.match(redirects, /\/destinations \/ 301/);
