@@ -1,8 +1,8 @@
 # Current support-blog pages are served directly. Legacy travel, weather, and dashboard pages redirect to the blog home.
-/%EC%A7%80%EC%9B%90%EA%B8%88 /support.html 200
-/%EC%A7%80%EC%9B%90%EA%B8%88.html /support.html 200
-/지원금 /support.html 200
-/지원금.html /support.html 200
+/%EC%A7%80%EC%9B%90%EA%B8%88 /support/index.html 200
+/%EC%A7%80%EC%9B%90%EA%B8%88.html /support/index.html 200
+/지원금 /support/index.html 200
+/지원금.html /support/index.html 200
 /adsense-readiness /about 301
 /adsense-readiness.html /about 301
 /andong-hahoe-byeongsan / 301
