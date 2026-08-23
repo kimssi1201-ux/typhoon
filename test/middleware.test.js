@@ -28,7 +28,7 @@ test("HTML middleware serves the support archive without redirecting the Korean 
       ASSETS: {
         fetch: async (request) => {
           fetchedPath = new URL(request.url).pathname;
-          return new Response(html, { status: 200, headers: { "content-type": "text/html; charset=utf-8" } });
+          return new Response(html, { status: 200, headers: { "content-type": "application/octet-stream" } });
         }
       }
     },
@@ -39,7 +39,8 @@ test("HTML middleware serves the support archive without redirecting the Korean 
   const body = await response.text();
 
   assert.equal(response.status, 200);
-  assert.equal(fetchedPath, "/support/index.html");
+  assert.equal(fetchedPath, "/support-archive.page");
+  assert.match(response.headers.get("content-type") || "", /text\/html/);
   assert.match(body, /canonical" href="https:\/\/mustview\.co\.kr\/지원금/);
   assert.match(body, /data-post-count="8"/);
 });

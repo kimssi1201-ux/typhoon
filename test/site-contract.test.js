@@ -85,7 +85,7 @@ const trustPages = [
   { file: "contact.html", slug: "contact", schema: "ContactPage" },
   { file: "privacy.html", slug: "privacy", schema: "WebPage" }
 ];
-const supportArchive = { file: "support/index.html", slug: "%EC%A7%80%EC%9B%90%EA%B8%88" };
+const supportArchive = { file: "support-archive.page", slug: "%EC%A7%80%EC%9B%90%EA%B8%88" };
 const categories = [
   { id: "category-childbirth", label: "육아·출산", count: 3 },
   { id: "category-employment", label: "고용·취업", count: 2 },

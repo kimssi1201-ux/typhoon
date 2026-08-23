@@ -49,7 +49,7 @@ function canonicalTag(requestUrl) {
 function supportArchiveRequest(request) {
   const url = new URL(request.url);
   if (!SUPPORT_ARCHIVE_PATHS.has(safeDecodePathname(url.pathname))) return null;
-  url.pathname = "/support/index.html";
+  url.pathname = "/support-archive.page";
   url.search = "";
   return new Request(url, request);
 }
@@ -60,9 +60,20 @@ function insertBefore(html, needle, value) {
 
 export async function onRequest(context) {
   const archiveRequest = supportArchiveRequest(context.request);
-  const response = archiveRequest && context.env?.ASSETS
-    ? await context.env.ASSETS.fetch(archiveRequest)
-    : await context.next();
+  let response;
+  if (archiveRequest && context.env?.ASSETS) {
+    const assetResponse = await context.env.ASSETS.fetch(archiveRequest);
+    const headers = new Headers(assetResponse.headers);
+    headers.set("content-type", "text/html; charset=utf-8");
+    headers.delete("content-length");
+    response = new Response(assetResponse.body, {
+      status: assetResponse.status,
+      statusText: assetResponse.statusText,
+      headers,
+    });
+  } else {
+    response = await context.next();
+  }
   const contentType = response.headers.get("content-type") || "";
   if (!contentType.includes("text/html")) return response;
   if (response.status >= 400) return response;
