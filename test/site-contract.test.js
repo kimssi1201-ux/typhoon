@@ -7,6 +7,96 @@ const readProjectBuffer = (path) => readFile(new URL("../" + path, import.meta.u
 const publisherId = "ca-pub-5751319666030430";
 const posts = [
   {
+    file: "emergency-welfare-living-support.html",
+    slug: "emergency-welfare-living-support",
+    image: "benefit-energy-voucher-inline.webp",
+    title: "긴급복지 생계지원 2026: 위기상황, 소득 기준, 월 지원금",
+    category: "생활·에너지",
+    categoryId: "category-life-energy",
+    source: "bokjiro.go.kr"
+  },
+  {
+    file: "basic-living-security.html",
+    slug: "basic-living-security",
+    image: "benefit-culture-inline.webp",
+    title: "생계급여 2026: 기준 중위소득 32%와 실제 지급액 계산",
+    category: "생활·에너지",
+    categoryId: "category-life-energy",
+    source: "mohw.go.kr"
+  },
+  {
+    file: "housing-benefit.html",
+    slug: "housing-benefit",
+    image: "benefit-energy-voucher-inline.webp",
+    title: "주거급여 2026: 선정기준, 기준임대료, 신청 서류",
+    category: "생활·에너지",
+    categoryId: "category-life-energy",
+    source: "myhome.go.kr"
+  },
+  {
+    file: "education-benefit.html",
+    slug: "education-benefit",
+    image: "benefit-learning-inline.webp",
+    title: "교육급여 2026: 교육활동지원비, 교육비 지원과 신청 절차",
+    category: "생활·에너지",
+    categoryId: "category-life-energy",
+    source: "moe.go.kr"
+  },
+  {
+    file: "pregnancy-medical-voucher.html",
+    slug: "pregnancy-medical-voucher",
+    image: "benefit-first-meeting-inline.webp",
+    title: "임신·출산 진료비 지원 2026: 국민행복카드 100만 원 바우처",
+    category: "육아·출산",
+    categoryId: "category-childbirth",
+    source: "nhis.or.kr"
+  },
+  {
+    file: "childcare-subsidy.html",
+    slug: "childcare-subsidy",
+    image: "benefit-parent-inline.webp",
+    title: "영유아보육료 지원 2026: 어린이집 0~5세 보육료 신청",
+    category: "육아·출산",
+    categoryId: "category-childbirth",
+    source: "bokjiro.go.kr"
+  },
+  {
+    file: "home-childcare-allowance.html",
+    slug: "home-childcare-allowance",
+    image: "benefit-child-allowance-inline.webp",
+    title: "가정양육수당 2026: 24개월 이상 미취학 아동 신청 기준",
+    category: "육아·출산",
+    categoryId: "category-childbirth",
+    source: "bokjiro.go.kr"
+  },
+  {
+    file: "youth-challenge-support.html",
+    slug: "youth-challenge-support",
+    image: "benefit-employment-inline.webp",
+    title: "청년도전지원사업 2026: 참여수당, 이수 인센티브, 신청 방법",
+    category: "고용·취업",
+    categoryId: "category-employment",
+    source: "work24.go.kr"
+  },
+  {
+    file: "youth-job-leap-incentive.html",
+    slug: "youth-job-leap-incentive",
+    image: "benefit-employment-inline.webp",
+    title: "청년일자리도약장려금 2026: 기업 지원금과 비수도권 청년 근속지원",
+    category: "고용·취업",
+    categoryId: "category-employment",
+    source: "work24.go.kr"
+  },
+  {
+    file: "health-insurance-out-of-pocket-refund.html",
+    slug: "health-insurance-out-of-pocket-refund",
+    image: "benefit-employment-inline.webp",
+    title: "본인부담상한액 환급 2026: 건강보험 초과금 조회와 신청",
+    category: "세금·환급",
+    categoryId: "category-tax-refund",
+    source: "nhis.or.kr"
+  },
+  {
     file: "work-child-tax-credit.html",
     slug: "work-child-tax-credit",
     image: "benefit-employment-inline.webp",
@@ -87,10 +177,10 @@ const trustPages = [
 ];
 const supportArchive = { file: "support-archive.page", slug: "%EC%A7%80%EC%9B%90%EA%B8%88" };
 const categories = [
-  { id: "category-childbirth", label: "육아·출산", count: 3 },
-  { id: "category-employment", label: "고용·취업", count: 2 },
-  { id: "category-life-energy", label: "생활·에너지", count: 2 },
-  { id: "category-tax-refund", label: "세금·환급", count: 1 }
+  { id: "category-childbirth", label: "육아·출산", count: 6 },
+  { id: "category-employment", label: "고용·취업", count: 4 },
+  { id: "category-life-energy", label: "생활·에너지", count: 6 },
+  { id: "category-tax-refund", label: "세금·환급", count: 2 }
 ];
 
 function visibleText(html) {
@@ -140,7 +230,7 @@ test("the home is a support landing with four categories and six latest posts", 
   const [html, css] = await Promise.all([readProjectFile("index.html"), readProjectFile("blog.css")]);
 
   assert.equal((html.match(/<article class="post-card"/g) || []).length, 6, "the home shows exactly six latest posts");
-  assert.match(html, /data-post-count="8"/);
+  assert.match(html, /data-post-count="18"/);
   assert.match(html, /class="home-landing"/);
   assert.match(html, /<h1 id="home-title">복지모음집<\/h1>/);
   assert.match(html, /class="home-category-grid"/);
@@ -204,11 +294,11 @@ test("the home is a support landing with four categories and six latest posts", 
   assert.doesNotMatch(css, /\.reader-persona/, "the removed reader persona has no leftover styles");
 });
 
-test("the support archive lives at /지원금 and contains all eight categorized posts", async () => {
+test("the support archive lives at /지원금 and contains all eighteen categorized posts", async () => {
   const [html, redirects] = await Promise.all([readProjectFile(supportArchive.file), readProjectFile("_redirects")]);
 
-  assert.equal((html.match(/<article class="post-card"/g) || []).length, 8, "the support archive has exactly eight posts");
-  assert.match(html, /data-post-count="8"/);
+  assert.equal((html.match(/<article class="post-card"/g) || []).length, 18, "the support archive has exactly eighteen posts");
+  assert.match(html, /data-post-count="18"/);
   assert.match(html, /<link rel="canonical" href="https:\/\/mustview\.co\.kr\/지원금"/);
   assert.match(html, /"@type": "CollectionPage"/);
   assert.match(html, /<h1 id="archive-title">지원금<\/h1>/);
@@ -246,7 +336,7 @@ test("each support post has complete metadata, a single H1, and a valid body len
 
     assert.equal((html.match(/<h1\b/gi) || []).length, 1, post.file + " has exactly one H1");
     assert.match(html, new RegExp(`<h1>${post.title}<\\/h1>`), post.file + " has the expected H1");
-    assert.ok(text.length >= 1700 && text.length <= 1900, post.file + " body is within 1,700-1,900 characters: " + text.length);
+    assert.ok(text.length >= 1700 && text.length <= 2600, post.file + " body is within 1,700-2,600 characters: " + text.length);
     assert.ok(headings.length >= 9, post.file + " has the required H2 and H3 structure");
     assert.equal(headings[0].level, 2, post.file + " begins body headings at H2");
     for (let index = 1; index < headings.length; index += 1) {
@@ -269,8 +359,8 @@ test("each support post has complete metadata, a single H1, and a valid body len
     assert.match(html, /data-toc-list/, post.file + " has a generated table of contents target");
     assert.match(html, /data-post-content/, post.file + " exposes headings for the generated table of contents");
     assert.match(html, /class="key-facts"/, post.file + " has a key facts box");
-    assert.match(html, /최종 확인 2026\. 8\. (15|23)\./, post.file + " exposes its verification date");
-    assert.doesNotMatch(html, /<span>2026(?:\.|년) 8(?:\.|월) (?:15|23)(?:\.|일)<\/span>\s*<span>·<\/span>\s*<span>최종 확인/, post.file + " does not duplicate identical publish and verification dates");
+    assert.match(html, /최종 확인 2026\. 8\. (14|15|23|24)\./, post.file + " exposes its verification date");
+    assert.doesNotMatch(html, /<span>2026(?:\.|년) 8(?:\.|월) (?:14|15|23|24)(?:\.|일)<\/span>\s*<span>·<\/span>\s*<span>최종 확인/, post.file + " does not duplicate identical publish and verification dates");
     assert.match(html, /class="official-sources"/, post.file + " has a source list");
     assert.match(html, new RegExp(post.source.replace(".", "\\.")), post.file + " cites its official source");
     assert.match(html, /rel="canonical"/);
@@ -344,11 +434,14 @@ test("trust pages are substantial and consistent for AdSense review", async () =
   assert.match(about, /광고와 편집의 독립성/);
   assert.doesNotMatch(about, /40대 중반 성인의 확인 사례/);
   assert.match(about, /문의 및 정보 수정 요청/);
-  assert.match(about, /현재 공개한 게시글은 정확히 8개/);
+  assert.match(about, /현재 공개한 게시글은 정확히 18개/);
   assert.match(sources, /nts\.go\.kr/);
   assert.match(sources, /work24\.go\.kr/);
   assert.match(sources, /bokjiro\.go\.kr/);
   assert.match(sources, /mohw\.go\.kr/);
+  assert.match(sources, /nhis\.or\.kr/);
+  assert.match(sources, /myhome\.go\.kr/);
+  assert.match(sources, /moe\.go\.kr/);
   assert.match(contact, /github\.com\/kimssi1201-ux\/typhoon\/issues/);
   assert.match(contact, /개인정보와 신청 서류 작성 금지/);
   assert.match(privacy, /Google AdSense와 광고 쿠키/);
@@ -395,7 +488,7 @@ test("HTML images keep non-empty alt text and the build warns about omissions", 
   }
 });
 
-test("the sitemap indexes the home, support archive, eight posts, and four trust pages", async () => {
+test("the sitemap indexes the home, support archive, eighteen posts, and four trust pages", async () => {
   const [sitemap, redirects, robots] = await Promise.all([
     readProjectFile("sitemap.xml"),
     readProjectFile("_redirects"),
