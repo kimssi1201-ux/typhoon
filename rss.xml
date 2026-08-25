@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>복지모음집</title>
+    <link>https://mustview.co.kr/</link>
+    <atom:link href="https://mustview.co.kr/rss.xml" rel="self" type="application/rss+xml" />
+    <description>정부와 공공기관의 공식 자료를 바탕으로 지원금 신청 정보를 정리합니다.</description>
+    <language>ko-KR</language>
+    <lastBuildDate>Tue, 25 Aug 2026 00:00:00 +0900</lastBuildDate>
+    <ttl>60</ttl>
+    <item>
+      <title>긴급복지 생계지원 2026: 위기상황, 소득 기준, 월 지원금</title>
+      <link>https://mustview.co.kr/emergency-welfare-living-support</link>
+      <guid isPermaLink="true">https://mustview.co.kr/emergency-welfare-living-support</guid>
+      <pubDate>Mon, 24 Aug 2026 00:00:00 +0900</pubDate>
+      <category>생활·에너지</category>
+      <description>실직, 질병, 화재 등 갑작스러운 위기상황에서 확인할 생계비 지원 기준을 정리했습니다.</description>
+    </item>
+    <item>
+      <title>생계급여 2026: 기준 중위소득 32%와 실제 지급액 계산</title>
+      <link>https://mustview.co.kr/basic-living-security</link>
+      <guid isPermaLink="true">https://mustview.co.kr/basic-living-security</guid>
+      <pubDate>Mon, 24 Aug 2026 00:00:00 +0900</pubDate>
+      <category>생활·에너지</category>
+      <description>기초생활보장 생계급여가 어떤 기준으로 선정되고 실제 급여가 어떻게 계산되는지 확인합니다.</description>
+    </item>
+    <item>
+      <title>주거급여 2026: 선정기준, 기준임대료, 신청 서류</title>
+      <link>https://mustview.co.kr/housing-benefit</link>
+      <guid isPermaLink="true">https://mustview.co.kr/housing-benefit</guid>
+      <pubDate>Mon, 24 Aug 2026 00:00:00 +0900</pubDate>
+      <category>생활·에너지</category>
+      <description>임차가구와 자가가구가 확인해야 할 주거급여 선정기준, 기준임대료, 수선유지급여 기준을 정리했습니다.</description>
+    </item>
+    <item>
+      <title>교육급여 2026: 교육활동지원비, 교육비 지원과 신청 절차</title>
+      <link>https://mustview.co.kr/education-benefit</link>
+      <guid isPermaLink="true">https://mustview.co.kr/education-benefit</guid>
+      <pubDate>Mon, 24 Aug 2026 00:00:00 +0900</pubDate>
+      <category>생활·에너지</category>
+      <description>교육급여와 교육비 지원의 차이, 교육활동지원비와 신청 절차를 공식 안내 기준으로 정리했습니다.</description>
+    </item>
+    <item>
+      <title>임신·출산 진료비 지원 2026: 국민행복카드 100만 원 바우처</title>
+      <link>https://mustview.co.kr/pregnancy-medical-voucher</link>
+      <guid isPermaLink="true">https://mustview.co.kr/pregnancy-medical-voucher</guid>
+      <pubDate>Mon, 24 Aug 2026 00:00:00 +0900</pubDate>
+      <category>육아·출산</category>
+      <description>임신·출산 진료비 바우처의 지원 금액, 국민행복카드 사용처, 신청 절차를 확인합니다.</description>
+    </item>
+    <item>
+      <title>영유아보육료 지원 2026: 어린이집 0~5세 보육료 신청</title>
+      <link>https://mustview.co.kr/childcare-subsidy</link>
+      <guid isPermaLink="true">https://mustview.co.kr/childcare-subsidy</guid>
+      <pubDate>Mon, 24 Aug 2026 00:00:00 +0900</pubDate>
+      <category>육아·출산</category>
+      <description>어린이집 이용 전 확인해야 할 보육료 지원 대상, 신청 시점, 아이행복카드 사용 기준을 정리했습니다.</description>
+    </item>
+    <item>
+      <title>가정양육수당 2026: 24개월 이상 미취학 아동 신청 기준</title>
+      <link>https://mustview.co.kr/home-childcare-allowance</link>
+      <guid isPermaLink="true">https://mustview.co.kr/home-childcare-allowance</guid>
+      <pubDate>Mon, 24 Aug 2026 00:00:00 +0900</pubDate>
+      <category>육아·출산</category>
+      <description>어린이집과 유치원을 이용하지 않는 아동의 가정양육수당 신청 기준과 지급 방식을 정리했습니다.</description>
+    </item>
+    <item>
+      <title>청년도전지원사업 2026: 참여수당, 이수 인센티브, 신청 방법</title>
+      <link>https://mustview.co.kr/youth-challenge-support</link>
+      <guid isPermaLink="true">https://mustview.co.kr/youth-challenge-support</guid>
+      <pubDate>Mon, 24 Aug 2026 00:00:00 +0900</pubDate>
+      <category>고용·취업</category>
+      <description>구직 단념 청년이 확인해야 할 청년도전지원사업 참여수당, 이수 인센티브, 신청 경로를 정리했습니다.</description>
+    </item>
+    <item>
+      <title>청년일자리도약장려금 2026: 기업 지원금과 비수도권 청년 근속지원</title>
+      <link>https://mustview.co.kr/youth-job-leap-incentive</link>
+      <guid isPermaLink="true">https://mustview.co.kr/youth-job-leap-incentive</guid>
+      <pubDate>Mon, 24 Aug 2026 00:00:00 +0900</pubDate>
+      <category>고용·취업</category>
+      <description>기업과 청년이 각각 확인해야 할 청년일자리도약장려금 지원 구조와 신청 전 점검 사항을 정리했습니다.</description>
+    </item>
+    <item>
+      <title>본인부담상한액 환급 2026: 건강보험 초과금 조회와 신청</title>
+      <link>https://mustview.co.kr/health-insurance-out-of-pocket-refund</link>
+      <guid isPermaLink="true">https://mustview.co.kr/health-insurance-out-of-pocket-refund</guid>
+      <pubDate>Mon, 24 Aug 2026 00:00:00 +0900</pubDate>
+      <category>세금·환급</category>
+      <description>건강보험 본인부담상한액 초과금 환급 대상, 조회 방법, 신청 시 주의사항을 정리했습니다.</description>
+    </item>
+    <item>
+      <title>근로·자녀장려금 2026: 기한 후 신청, 반기 신청 기간과 지급액</title>
+      <link>https://mustview.co.kr/work-child-tax-credit</link>
+      <guid isPermaLink="true">https://mustview.co.kr/work-child-tax-credit</guid>
+      <pubDate>Sun, 23 Aug 2026 00:00:00 +0900</pubDate>
+      <category>세금·환급</category>
+      <description>정기 신청을 놓쳤을 때 남은 기한 후 신청과 9월 반기 신청 일정을 중심으로 확인해야 할 기준을 정리했습니다.</description>
+    </item>
+    <item>
+      <title>에너지바우처 2026: 지원대상, 신청기간, 요금차감과 국민행복카드</title>
+      <link>https://mustview.co.kr/energy-voucher</link>
+      <guid isPermaLink="true">https://mustview.co.kr/energy-voucher</guid>
+      <pubDate>Sat, 15 Aug 2026 00:00:00 +0900</pubDate>
+      <category>생활·에너지</category>
+      <description>에너지바우처의 지원 대상, 신청 기간, 요금차감과 국민행복카드 사용 방식을 공식 안내 기준으로 정리했습니다.</description>
+    </item>
+    <item>
+      <title>문화누리카드 2026: 15만 원 지원 대상, 발급 기간, 사용처</title>
+      <link>https://mustview.co.kr/culture-nuri-card</link>
+      <guid isPermaLink="true">https://mustview.co.kr/culture-nuri-card</guid>
+      <pubDate>Sat, 15 Aug 2026 00:00:00 +0900</pubDate>
+      <category>생활·에너지</category>
+      <description>문화누리카드 지원 금액, 발급 기간, 사용처와 자동재충전 확인 방법을 정리했습니다.</description>
+    </item>
+    <item>
+      <title>국민취업지원제도 I유형: 구직촉진수당과 신청 방법</title>
+      <link>https://mustview.co.kr/national-employment-support</link>
+      <guid isPermaLink="true">https://mustview.co.kr/national-employment-support</guid>
+      <pubDate>Fri, 14 Aug 2026 00:00:00 +0900</pubDate>
+      <category>고용·취업</category>
+      <description>국민취업지원제도 I유형의 구직촉진수당, 참여 요건, 신청 전 확인할 기준을 정리했습니다.</description>
+    </item>
+    <item>
+      <title>국민내일배움카드: 훈련비 300만 원부터 확인할 점</title>
+      <link>https://mustview.co.kr/national-tomorrow-learning-card</link>
+      <guid isPermaLink="true">https://mustview.co.kr/national-tomorrow-learning-card</guid>
+      <pubDate>Fri, 14 Aug 2026 00:00:00 +0900</pubDate>
+      <category>고용·취업</category>
+      <description>국민내일배움카드 지원 대상, 훈련비 한도, HRD-Net 신청 전 확인할 점을 정리했습니다.</description>
+    </item>
+    <item>
+      <title>부모급여: 0세·1세 지원 대상과 신청 시기</title>
+      <link>https://mustview.co.kr/parent-benefit</link>
+      <guid isPermaLink="true">https://mustview.co.kr/parent-benefit</guid>
+      <pubDate>Fri, 14 Aug 2026 00:00:00 +0900</pubDate>
+      <category>육아·출산</category>
+      <description>부모급여의 지원 대상, 지급액, 신청 시기와 보육료 전환 시 확인할 점을 정리했습니다.</description>
+    </item>
+    <item>
+      <title>첫만남이용권: 출생아 바우처 금액과 사용 전 확인 사항</title>
+      <link>https://mustview.co.kr/first-meeting-voucher</link>
+      <guid isPermaLink="true">https://mustview.co.kr/first-meeting-voucher</guid>
+      <pubDate>Fri, 14 Aug 2026 00:00:00 +0900</pubDate>
+      <category>육아·출산</category>
+      <description>첫만남이용권 지원 금액, 사용 기한, 바우처 사용 전 확인해야 할 사항을 정리했습니다.</description>
+    </item>
+    <item>
+      <title>아동수당: 만 9세 미만 확대 기준과 신청 방법</title>
+      <link>https://mustview.co.kr/child-allowance</link>
+      <guid isPermaLink="true">https://mustview.co.kr/child-allowance</guid>
+      <pubDate>Fri, 14 Aug 2026 00:00:00 +0900</pubDate>
+      <category>육아·출산</category>
+      <description>아동수당의 연령 기준, 지급액, 신청 방법과 전입·출생신고 후 확인할 점을 정리했습니다.</description>
+    </item>
+  </channel>
+</rss>

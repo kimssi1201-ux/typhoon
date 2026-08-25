@@ -518,6 +518,25 @@ test("the sitemap indexes the home, support archive, eighteen posts, and four tr
   assert.match(redirects, /\/private-rental \/ 301/);
 });
 
+test("the RSS feed is available for search engine submission", async () => {
+  const [home, rss] = await Promise.all([readProjectFile("index.html"), readProjectFile("rss.xml")]);
+  const itemCount = (rss.match(/<item>/g) || []).length;
+
+  assert.match(home, /<link rel="alternate" type="application\/rss\+xml" title="복지모음집 RSS" href="https:\/\/mustview\.co\.kr\/rss\.xml" \/>/);
+  assert.match(rss, /^<\?xml version="1\.0" encoding="UTF-8"\?>/);
+  assert.match(rss, /<rss version="2\.0" xmlns:atom="http:\/\/www\.w3\.org\/2005\/Atom">/);
+  assert.match(rss, /<atom:link href="https:\/\/mustview\.co\.kr\/rss\.xml" rel="self" type="application\/rss\+xml" \/>/);
+  assert.match(rss, /<title>복지모음집<\/title>/);
+  assert.match(rss, /<link>https:\/\/mustview\.co\.kr\/<\/link>/);
+  assert.equal(itemCount, posts.length, "the RSS feed exposes every support article");
+  for (const post of posts) {
+    assert.match(rss, new RegExp(`<title>${post.title.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}<\\/title>`), post.file + " has an RSS title");
+    assert.match(rss, new RegExp(`<link>https://mustview\\.co\\.kr/${post.slug}<\\/link>`), post.file + " has an RSS link");
+    assert.match(rss, new RegExp(`<guid isPermaLink="true">https://mustview\\.co\\.kr/${post.slug}<\\/guid>`), post.file + " has an RSS guid");
+    assert.match(rss, new RegExp(`<category>${post.category}<\\/category>`), post.file + " has an RSS category");
+  }
+});
+
 test("deployment settings, ads ownership, and existing API configuration remain in place", async () => {
   const [workflow, ads, wrangler, housingApi, welfareApi] = await Promise.all([
     readProjectFile(".github/workflows/deploy-cloudflare-pages.yml"),
