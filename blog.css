@@ -1091,6 +1091,96 @@ img { display: block; max-width: 100%; height: auto; }
 .official-sources ul { margin: 8px 0 0; padding-left: 1.1em; }
 .official-sources a { color: var(--gp-accent-dark); }
 
+.affiliate-widget {
+  max-width: 760px;
+  margin: 34px 0 0;
+  padding: 22px;
+  border: 1px solid #dbe4f0;
+  border-radius: 12px;
+  background: #f8fafc;
+}
+
+.affiliate-widget[hidden] {
+  display: none !important;
+}
+
+.affiliate-eyebrow {
+  margin: 0 0 5px;
+  color: #667085;
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.affiliate-widget h2 {
+  margin: 0;
+  color: #202734;
+  font-size: 1.18rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1.35;
+}
+
+.affiliate-disclosure {
+  margin: 8px 0 15px;
+  color: #5f6b7a;
+  font-size: 0.82rem;
+  line-height: 1.6;
+}
+
+.affiliate-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.affiliate-product {
+  display: grid;
+  align-content: start;
+  min-width: 0;
+  min-height: 100%;
+  padding: 12px;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  background: #fff;
+  color: #1f2937;
+  text-decoration: none;
+}
+
+.affiliate-product:hover {
+  border-color: #b8c8dc;
+  box-shadow: 0 8px 18px rgba(31, 41, 55, 0.08);
+}
+
+.affiliate-product img {
+  width: 100%;
+  aspect-ratio: 1;
+  margin-bottom: 10px;
+  border-radius: 8px;
+  background: #eef2f7;
+  object-fit: cover;
+}
+
+.affiliate-product strong {
+  display: -webkit-box;
+  overflow: hidden;
+  color: #111827;
+  font-size: 0.86rem;
+  font-weight: 750;
+  line-height: 1.45;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.affiliate-product-meta {
+  display: block;
+  margin-top: 7px;
+  color: #1d4ed8;
+  font-size: 0.8rem;
+  font-weight: 800;
+}
+
 .post-navigation {
   display: flex;
   justify-content: space-between;
@@ -1169,6 +1259,7 @@ img { display: block; max-width: 100%; height: auto; }
   .lead { font-size: 17.5px; }
   .key-facts { padding: 21px 19px; }
   .key-facts dl { grid-template-columns: 92px minmax(0, 1fr); gap: 8px 10px; }
+  .affiliate-grid { grid-template-columns: 1fr; }
   .post-navigation { flex-direction: column; }
   .post-navigation a:last-child { text-align: left; }
 }

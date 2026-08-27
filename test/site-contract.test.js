@@ -585,9 +585,33 @@ test("trust pages are substantial and consistent for AdSense review", async () =
   assert.match(contact, /github\.com\/kimssi1201-ux\/typhoon\/issues/);
   assert.match(contact, /개인정보와 신청 서류 작성 금지/);
   assert.match(privacy, /Google AdSense와 광고 쿠키/);
+  assert.match(privacy, /쿠팡 파트너스와 제휴 링크/);
+  assert.match(privacy, /Cloudflare Pages Function을 거쳐 쿠팡 파트너스 API/);
   assert.match(privacy, /이전 MustView 방문 또는 다른 웹사이트 방문 기록/);
   assert.match(privacy, /https:\/\/adssettings\.google\.com\//);
   assert.match(privacy, /https:\/\/policies\.google\.com\/technologies\/partner-sites\?hl=ko/);
+});
+
+test("the K-pass article can load a disclosed Coupang Partners widget", async () => {
+  const [html, script, css, packageJson] = await Promise.all([
+    readProjectFile("k-pass-transport-refund.html"),
+    readProjectFile("coupang-partners.js"),
+    readProjectFile("blog.css"),
+    readProjectFile("package.json")
+  ]);
+
+  assert.match(html, /<aside class="affiliate-widget" data-coupang-partners data-keyword="교통카드 지갑" data-title="대중교통 이용 준비물" hidden><\/aside>/);
+  assert.match(html, /<script src="coupang-partners\.js\?v=20260827-coupang1" defer><\/script>/);
+  assert.match(script, /\/api\/coupang-partners/);
+  assert.match(script, /X-Requested-With/);
+  assert.match(script, /MustViewAffiliateWidget/);
+  assert.match(script, /nofollow sponsored noopener noreferrer/);
+  assert.match(script, /쿠팡 파트너스 링크/);
+  assert.match(css, /\.affiliate-widget\s*\{[\s\S]*?max-width:\s*760px/);
+  assert.match(css, /\.affiliate-grid\s*\{[\s\S]*?grid-template-columns:\s*repeat\(3, minmax\(0, 1fr\)\)/);
+  assert.match(css, /\.affiliate-product img\s*\{[\s\S]*?aspect-ratio:\s*1/);
+  assert.match(packageJson, /node --check functions\/api\/coupang-partners\.js/);
+  assert.match(packageJson, /node --check coupang-partners\.js/);
 });
 
 test("the table of contents script gives every article heading a stable unique anchor", async () => {
@@ -665,12 +689,13 @@ test("the RSS feed is available for search engine submission", async () => {
 });
 
 test("deployment settings, ads ownership, and existing API configuration remain in place", async () => {
-  const [workflow, ads, wrangler, housingApi, welfareApi] = await Promise.all([
+  const [workflow, ads, wrangler, housingApi, welfareApi, coupangApi] = await Promise.all([
     readProjectFile(".github/workflows/deploy-cloudflare-pages.yml"),
     readProjectFile("ads.txt"),
     readProjectFile("wrangler.toml"),
     readProjectFile("functions/api/housing-complexes.js"),
-    readProjectFile("functions/api/welfare-services.js")
+    readProjectFile("functions/api/welfare-services.js"),
+    readProjectFile("functions/api/coupang-partners.js")
   ]);
 
   assert.match(workflow, /npm run check/);
@@ -680,6 +705,10 @@ test("deployment settings, ads ownership, and existing API configuration remain 
   assert.match(wrangler, /pages_build_output_dir/);
   assert.match(housingApi, /LH_COMPLEX_API_KEY/);
   assert.match(welfareApi, /WELFARE_API_KEY/);
+  assert.match(coupangApi, /COUPANG_PARTNERS_ACCESS_KEY/);
+  assert.match(coupangApi, /COUPANG_PARTNERS_SECRET_KEY/);
+  assert.match(coupangApi, /COUPANG_PARTNERS_SUB_ID/);
   assert.doesNotMatch(housingApi, /["'][a-f0-9]{64}["']/i, "a public API key is not committed");
   assert.doesNotMatch(welfareApi, /["'][a-f0-9]{64}["']/i, "a public API key is not committed");
+  assert.doesNotMatch(coupangApi, /["'][a-f0-9]{64}["']/i, "a public API key is not committed");
 });
