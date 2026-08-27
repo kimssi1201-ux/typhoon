@@ -301,11 +301,6 @@ img { display: block; max-width: 100%; height: auto; }
   margin: 0;
 }
 
-.home-hero {
-  padding: 56px 0;
-}
-
-.home-hero > p:first-child,
 .home-section-header p {
   margin: 0 0 4px;
   font-size: 13px;
@@ -315,41 +310,12 @@ img { display: block; max-width: 100%; height: auto; }
   text-transform: uppercase;
 }
 
-.home-hero h1 {
-  font-size: 40px;
-  font-weight: 700;
-  margin: 8px 0 0;
-  color: #222;
-  letter-spacing: 0;
-  line-height: 1.2;
-}
-
-.home-intro {
-  font-size: 16px;
-  max-width: 640px;
-  margin: 14px 0 0;
-  color: #4b5563;
-  line-height: 1.75;
-}
-
-.home-primary-link {
-  display: inline-block;
-  padding: 12px 22px;
-  background: #1d4ed8;
-  color: #fff;
-  border-radius: 8px;
-  margin-top: 22px;
-  font-size: 0.95rem;
-  font-weight: 700;
-  text-decoration: none;
-}
-
-.home-primary-link:hover {
-  background: #1741af;
-}
-
 .home-section {
   margin-top: 0;
+}
+
+.home-landing > .home-section:first-of-type .home-section-header {
+  margin-top: 26px;
 }
 
 .home-section-header {
@@ -1275,7 +1241,6 @@ img { display: block; max-width: 100%; height: auto; }
   .footer-widgets-inner,
   .site-info-inner { width: min(100% - 10px, 680px); }
   .site-title { font-size: 1.45rem; }
-  .home-hero h1 { font-size: 2rem; }
   .archive-title h1 { font-size: 2rem; }
   .entry-header h1 { font-size: 1.8rem; }
   .post-card-content { padding: 17px 15px; }

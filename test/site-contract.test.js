@@ -409,10 +409,10 @@ test("the home is a support landing with four categories and six latest posts", 
   assert.equal((html.match(/<article class="post-card"/g) || []).length, 6, "the home shows exactly six latest posts");
   assert.match(html, /data-post-count="32"/);
   assert.match(html, /class="content-area home-landing"/);
-  assert.match(html, /<h1 id="home-title">복지모음집<\/h1>/);
+  assert.match(html, /<h1 class="screen-reader-text" id="home-title">복지모음집 지원금 안내<\/h1>/);
+  assert.doesNotMatch(html, /class="home-hero"|home-primary-link|home-intro|공식 자료 기반 지원금 안내|전체 지원금 글 보기/, "the visible home hero is removed");
   assert.match(html, /class="category-grid"/);
   assert.equal((html.match(/class="category-card"/g) || []).length, 4, "the home has four category entry cards");
-  assert.match(html, /href="\/지원금">전체 지원금 글 보기<\/a>/);
   assert.doesNotMatch(html, /<nav class="breadcrumbs"/, "the home has no breadcrumb");
   assert.doesNotMatch(html, /카테고리 · 지원금/, "the home is no longer the support archive");
   for (const category of categories) {
@@ -424,7 +424,7 @@ test("the home is a support landing with four categories and six latest posts", 
   assert.match(html, /class="header-menu-panel"/);
   assert.match(html, /href="contact\.html">문의<\/a>/);
   assert.match(html, /href="privacy\.html">개인정보처리방침<\/a>/);
-  assert.match(html, /blog\.css\?v=20260827-search1/);
+  assert.match(html, /blog\.css\?v=20260828-home1/);
   assert.match(html, /google-adsense-account/);
   assert.ok(html.includes(publisherId));
   assert.match(html, /<link rel="canonical" href="https:\/\/mustview\.co\.kr\/"/);
@@ -460,11 +460,8 @@ test("the home is a support landing with four categories and six latest posts", 
   assert.match(css, /\.content-area\.single-post\s*\{[\s\S]*?border-radius:\s*11px/);
   assert.match(css, /\.article-content h2::before[\s\S]*?var\(--gp-heading-accent\)/);
   assert.match(css, /\.blog-page\.home \.site-grid\s*\{[\s\S]*?max-width:\s*1140px;[\s\S]*?margin:\s*0 auto;[\s\S]*?padding:\s*0 20px/);
-  assert.match(css, /\.home-hero\s*\{[\s\S]*?padding:\s*56px 0/);
-  assert.match(css, /\.home-hero > p:first-child,[\s\S]*?font-size:\s*13px;[\s\S]*?letter-spacing:\s*0\.04em;[\s\S]*?color:\s*#6b7280/);
-  assert.match(css, /\.home-hero h1\s*\{[\s\S]*?font-size:\s*40px;[\s\S]*?font-weight:\s*700;[\s\S]*?margin:\s*8px 0 0/);
-  assert.match(css, /\.home-intro\s*\{[\s\S]*?font-size:\s*16px;[\s\S]*?max-width:\s*640px/);
-  assert.match(css, /\.home-primary-link\s*\{[\s\S]*?display:\s*inline-block;[\s\S]*?padding:\s*12px 22px;[\s\S]*?background:\s*#1d4ed8;[\s\S]*?border-radius:\s*8px/);
+  assert.doesNotMatch(css, /\.home-hero|\.home-intro|\.home-primary-link/, "the removed home hero has no leftover styles");
+  assert.match(css, /\.home-landing > \.home-section:first-of-type \.home-section-header\s*\{[\s\S]*?margin-top:\s*26px/);
   assert.match(css, /\.category-grid\s*\{[\s\S]*?display:\s*grid;[\s\S]*?grid-template-columns:\s*repeat\(4, 1fr\);[\s\S]*?gap:\s*16px/);
   assert.match(css, /\.category-card\s*\{[\s\S]*?background:\s*#fff;[\s\S]*?border:\s*1px solid #e5e7eb;[\s\S]*?border-radius:\s*12px;[\s\S]*?padding:\s*20px/);
   assert.match(css, /\.category-card h3\s*\{[\s\S]*?font-size:\s*17px;[\s\S]*?font-weight:\s*700/);
