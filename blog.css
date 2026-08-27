@@ -517,6 +517,78 @@ img { display: block; max-width: 100%; height: auto; }
   font-size: 0.74rem;
 }
 
+.support-search {
+  margin-top: 18px;
+  padding: 15px;
+  border: 1px solid #dce5f2;
+  border-radius: 10px;
+  background: #f8fbff;
+}
+
+.support-search label {
+  display: block;
+  margin: 0 0 8px;
+  color: #283240;
+  font-size: 0.88rem;
+  font-weight: 800;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+.support-search-row {
+  display: flex;
+  align-items: stretch;
+  gap: 8px;
+}
+
+.support-search input {
+  flex: 1 1 auto;
+  min-width: 0;
+  min-height: 43px;
+  padding: 10px 12px;
+  border: 1px solid #cfd9e8;
+  border-radius: 8px;
+  background: #fff;
+  color: #1f2937;
+  font: inherit;
+  font-size: 16px;
+}
+
+.support-search input:focus {
+  border-color: #3372dc;
+  outline: 3px solid rgba(51, 114, 220, 0.16);
+  outline-offset: 0;
+}
+
+.support-search-clear {
+  min-height: 43px;
+  padding: 0 14px;
+  border: 1px solid #cfd9e8;
+  border-radius: 8px;
+  background: #fff;
+  color: #344054;
+  font-size: 0.88rem;
+  font-weight: 750;
+  cursor: pointer;
+}
+
+.support-search-clear:hover {
+  border-color: #aebbd0;
+  color: #1d4ed8;
+}
+
+.support-search-count {
+  margin: 9px 0 0;
+  color: #667085;
+  font-size: 0.82rem;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+.post-card[hidden] {
+  display: none !important;
+}
+
 .post-card,
 .content-area.single-post {
   background: var(--gp-paper);
@@ -1074,6 +1146,7 @@ img { display: block; max-width: 100%; height: auto; }
   .main-navigation a { padding: 13px 11px 10px; font-size: 0.86rem; }
   .site-main { padding: 7px 0 45px; }
   .category-card { padding: 16px; }
+  .support-search { padding: 13px; }
   .post-card { border-radius: 9px; }
   .post-card-content { padding: 18px 18px; }
   .post-card-body { grid-template-columns: 92px minmax(0, 1fr); gap: 13px; margin-top: 12px; }
@@ -1115,6 +1188,8 @@ img { display: block; max-width: 100%; height: auto; }
   .archive-title h1 { font-size: 2rem; }
   .entry-header h1 { font-size: 1.8rem; }
   .post-card-content { padding: 17px 15px; }
+  .support-search-row { flex-direction: column; }
+  .support-search-clear { width: 100%; }
   .post-card-body { grid-template-columns: 84px minmax(0, 1fr); gap: 12px; }
   .post-card-thumbnail { width: 84px; height: 84px; padding: 9px; }
   .post-card-thumbnail span { margin-bottom: 10px; }

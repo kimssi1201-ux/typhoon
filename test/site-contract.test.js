@@ -353,7 +353,7 @@ test("the home is a support landing with four categories and six latest posts", 
   assert.match(html, /class="header-menu-panel"/);
   assert.match(html, /href="contact\.html">문의<\/a>/);
   assert.match(html, /href="privacy\.html">개인정보처리방침<\/a>/);
-  assert.match(html, /blog\.css\?v=20260824-homefix1/);
+  assert.match(html, /blog\.css\?v=20260827-search1/);
   assert.match(html, /google-adsense-account/);
   assert.ok(html.includes(publisherId));
   assert.match(html, /<link rel="canonical" href="https:\/\/mustview\.co\.kr\/"/);
@@ -414,13 +414,24 @@ test("the home is a support landing with four categories and six latest posts", 
 });
 
 test("the support archive lives at /지원금 and contains all categorized posts", async () => {
-  const [html, redirects] = await Promise.all([readProjectFile(supportArchive.file), readProjectFile("_redirects")]);
+  const [html, redirects, searchScript] = await Promise.all([
+    readProjectFile(supportArchive.file),
+    readProjectFile("_redirects"),
+    readProjectFile("support-search.js")
+  ]);
 
   assert.equal((html.match(/<article class="post-card"/g) || []).length, posts.length, "the support archive has every categorized post");
   assert.match(html, /data-post-count="28"/);
   assert.match(html, /<link rel="canonical" href="https:\/\/mustview\.co\.kr\/지원금"/);
   assert.match(html, /"@type": "CollectionPage"/);
   assert.match(html, /<h1 id="archive-title">지원금<\/h1>/);
+  assert.match(html, /<form class="support-search" id="support-search" role="search"/);
+  assert.match(html, /data-support-search-input/);
+  assert.match(html, /data-support-search-status/);
+  assert.match(html, /<script src="support-search\.js" defer><\/script>/);
+  assert.match(searchScript, /querySelectorAll\("\.post-card\[data-post\]"\)/);
+  assert.match(searchScript, /toLocaleLowerCase\("ko-KR"\)/);
+  assert.match(searchScript, /card\.hidden = !matches/);
   assert.match(html, /class="category-filter"/);
   assert.match(html, /class="widget category-widget"/);
   assert.doesNotMatch(redirects, /\/%EC%A7%80%EC%9B%90%EA%B8%88 \/support/);
@@ -504,7 +515,7 @@ test("each support post has complete metadata, a single H1, and a valid body len
     }
     assert.match(html, /google-adsense-account/);
     assert.ok(html.includes(publisherId));
-    assert.match(html, /blog\.css\?v=20260824-homefix1/);
+    assert.match(html, /blog\.css\?v=20260827-search1/);
     assert.match(html, /href="contact\.html">문의<\/a>/, post.file + " links to the contact page");
     assert.match(html, /href="privacy\.html">개인정보처리방침<\/a>/, post.file + " links to the privacy policy");
     assert.equal((html.match(/<img\b/g) || []).length, 1, post.file + " has exactly one contextual body image");
@@ -540,7 +551,7 @@ test("trust pages are substantial and consistent for AdSense review", async () =
     assert.match(html, /google-adsense-account/);
     assert.ok(html.includes(publisherId));
     assert.match(html, /pagead2\.googlesyndication\.com\/pagead\/js\/adsbygoogle\.js/);
-    assert.match(html, /blog\.css\?v=20260824-homefix1/);
+    assert.match(html, /blog\.css\?v=20260827-search1/);
     assert.match(html, /복지모음집/);
     assert.match(html, /href="sources\.html">자료 기준<\/a>/);
     assert.match(html, /href="about\.html">블로그 소개<\/a>/);
