@@ -6,8 +6,32 @@
     <atom:link href="https://mustview.co.kr/rss.xml" rel="self" type="application/rss+xml" />
     <description>정부와 공공기관의 공식 자료를 바탕으로 지원금 신청 정보를 정리합니다.</description>
     <language>ko-KR</language>
-    <lastBuildDate>Thu, 27 Aug 2026 00:00:00 +0900</lastBuildDate>
+    <lastBuildDate>Fri, 28 Aug 2026 00:00:00 +0900</lastBuildDate>
     <ttl>60</ttl>
+    <item>
+      <title>모두의 카드 2026: 일반형·플러스형, 자동 환급 방식 정리</title>
+      <link>https://mustview.co.kr/modui-card-kpass-benefit</link>
+      <guid isPermaLink="true">https://mustview.co.kr/modui-card-kpass-benefit</guid>
+      <pubDate>Fri, 28 Aug 2026 00:00:00 +0900</pubDate>
+      <category>생활·에너지</category>
+      <description>2026년 모두의 카드의 기본형·일반형·플러스형 구조, 기준금액 초과분 환급과 자동 적용 방식을 정리했습니다.</description>
+    </item>
+    <item>
+      <title>K-패스 환급 계산 2026: 월 15회, 60회, 환급률 확인</title>
+      <link>https://mustview.co.kr/k-pass-refund-calculator</link>
+      <guid isPermaLink="true">https://mustview.co.kr/k-pass-refund-calculator</guid>
+      <pubDate>Fri, 28 Aug 2026 00:00:00 +0900</pubDate>
+      <category>생활·에너지</category>
+      <description>K-패스 월 15회 기준, 하루 2회·월 60회 한도, 일반·청년·다자녀·저소득층 환급률과 계산 방식을 정리했습니다.</description>
+    </item>
+    <item>
+      <title>K-패스 카드 등록 2026: 앱 회원가입, 카드번호 인증, 실적 확인</title>
+      <link>https://mustview.co.kr/k-pass-card-registration</link>
+      <guid isPermaLink="true">https://mustview.co.kr/k-pass-card-registration</guid>
+      <pubDate>Fri, 28 Aug 2026 00:00:00 +0900</pubDate>
+      <category>생활·에너지</category>
+      <description>카드 발급 후 K-패스 앱이나 홈페이지에서 회원가입, 카드번호 등록, 주소지 검증을 마치는 순서를 정리했습니다.</description>
+    </item>
     <item>
       <title>K-패스 2026: 대중교통비 환급률, 모두의 카드, 신청 방법</title>
       <link>https://mustview.co.kr/k-pass-transport-refund</link>

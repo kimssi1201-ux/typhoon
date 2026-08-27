@@ -7,6 +7,33 @@ const readProjectBuffer = (path) => readFile(new URL("../" + path, import.meta.u
 const publisherId = "ca-pub-5751319666030430";
 const posts = [
   {
+    "file": "modui-card-kpass-benefit.html",
+    "slug": "modui-card-kpass-benefit",
+    "image": "benefit-energy-voucher-inline.webp",
+    "title": "모두의 카드 2026: 일반형·플러스형, 자동 환급 방식 정리",
+    "category": "생활·에너지",
+    "categoryId": "category-life-energy",
+    "source": "korea.kr"
+  },
+  {
+    "file": "k-pass-refund-calculator.html",
+    "slug": "k-pass-refund-calculator",
+    "image": "benefit-energy-voucher-inline.webp",
+    "title": "K-패스 환급 계산 2026: 월 15회, 60회, 환급률 확인",
+    "category": "생활·에너지",
+    "categoryId": "category-life-energy",
+    "source": "korea-pass.kr"
+  },
+  {
+    "file": "k-pass-card-registration.html",
+    "slug": "k-pass-card-registration",
+    "image": "benefit-energy-voucher-inline.webp",
+    "title": "K-패스 카드 등록 2026: 앱 회원가입, 카드번호 인증, 실적 확인",
+    "category": "생활·에너지",
+    "categoryId": "category-life-energy",
+    "source": "korea-pass.kr"
+  },
+  {
     "file": "k-pass-transport-refund.html",
     "slug": "k-pass-transport-refund",
     "image": "benefit-energy-voucher-inline.webp",
@@ -289,7 +316,7 @@ const categories = [
   {
     "id": "category-life-energy",
     "label": "생활·에너지",
-    "count": 11
+    "count": 14
   },
   {
     "id": "category-tax-refund",
@@ -345,7 +372,7 @@ test("the home is a support landing with four categories and six latest posts", 
   const [html, css] = await Promise.all([readProjectFile("index.html"), readProjectFile("blog.css")]);
 
   assert.equal((html.match(/<article class="post-card"/g) || []).length, 6, "the home shows exactly six latest posts");
-  assert.match(html, /data-post-count="29"/);
+  assert.match(html, /data-post-count="32"/);
   assert.match(html, /class="content-area home-landing"/);
   assert.match(html, /<h1 id="home-title">복지모음집<\/h1>/);
   assert.match(html, /class="category-grid"/);
@@ -430,7 +457,7 @@ test("the support archive lives at /지원금 and contains all categorized posts
   ]);
 
   assert.equal((html.match(/<article class="post-card"/g) || []).length, posts.length, "the support archive has every categorized post");
-  assert.match(html, /data-post-count="29"/);
+  assert.match(html, /data-post-count="32"/);
   assert.match(html, /<link rel="canonical" href="https:\/\/mustview\.co\.kr\/지원금"/);
   assert.match(html, /"@type": "CollectionPage"/);
   assert.match(html, /<h1 id="archive-title">지원금<\/h1>/);
@@ -498,7 +525,7 @@ test("each support post has complete metadata, a single H1, and a valid body len
     assert.match(html, /data-toc-list/, post.file + " has a generated table of contents target");
     assert.match(html, /data-post-content/, post.file + " exposes headings for the generated table of contents");
     assert.match(html, /class="key-facts"/, post.file + " has a key facts box");
-    assert.match(html, /최종 확인 2026\. 8\. (14|15|23|24|27)\./, post.file + " exposes its verification date");
+    assert.match(html, /최종 확인 2026\. 8\. (14|15|23|24|27|28)\./, post.file + " exposes its verification date");
     assert.doesNotMatch(html, /<span>2026(?:\.|년) 8(?:\.|월) (?:14|15|23|24)(?:\.|일)<\/span>\s*<span>·<\/span>\s*<span>최종 확인/, post.file + " does not duplicate identical publish and verification dates");
     assert.match(html, /class="official-sources"/, post.file + " has a source list");
     assert.match(html, new RegExp(post.source.replace(".", "\\.")), post.file + " cites its official source");
@@ -573,7 +600,7 @@ test("trust pages are substantial and consistent for AdSense review", async () =
   assert.match(about, /광고와 편집의 독립성/);
   assert.doesNotMatch(about, /40대 중반 성인의 확인 사례/);
   assert.match(about, /문의 및 정보 수정 요청/);
-  assert.match(about, /현재 공개한 게시글은 정확히 29개/);
+  assert.match(about, /현재 공개한 게시글은 정확히 32개/);
   assert.match(sources, /nts\.go\.kr/);
   assert.match(sources, /work24\.go\.kr/);
   assert.match(sources, /bokjiro\.go\.kr/);
