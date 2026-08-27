@@ -324,6 +324,41 @@ const categories = [
     "count": 2
   }
 ];
+const affiliateKeywords = {
+  "modui-card-kpass-benefit.html": "교통카드 목걸이",
+  "k-pass-refund-calculator.html": "교통카드 케이스",
+  "k-pass-card-registration.html": "교통카드 지갑",
+  "k-pass-transport-refund.html": "교통카드 지갑",
+  "youth-monthly-rent-support.html": "원룸 생활용품",
+  "child-care-service-support.html": "어린이집 준비물",
+  "basic-pension.html": "어르신 생활용품",
+  "youth-tomorrow-savings-account.html": "가계부 다이어리",
+  "postpartum-care-voucher.html": "산후조리 용품",
+  "infant-diaper-formula-voucher.html": "아기 기저귀",
+  "disability-pension.html": "미끄럼방지 매트",
+  "senior-jobs-social-activity.html": "편한 작업화",
+  "hope-savings-account.html": "가계부",
+  "sanitary-products-voucher.html": "생리대",
+  "emergency-welfare-living-support.html": "비상식량",
+  "basic-living-security.html": "생활용품 세트",
+  "housing-benefit.html": "이사 박스",
+  "education-benefit.html": "학용품 세트",
+  "pregnancy-medical-voucher.html": "임산부 바디필로우",
+  "childcare-subsidy.html": "어린이집 낮잠이불",
+  "home-childcare-allowance.html": "유아 학습 장난감",
+  "youth-challenge-support.html": "취업 자기계발 도서",
+  "youth-job-leap-incentive.html": "면접 정장",
+  "health-insurance-out-of-pocket-refund.html": "서류 정리 파일",
+  "work-child-tax-credit.html": "서류 정리 파일",
+  "energy-voucher.html": "절전 멀티탭",
+  "culture-nuri-card.html": "여행용 파우치",
+  "national-employment-support.html": "취업 면접 준비물",
+  "national-tomorrow-learning-card.html": "온라인 강의 노트",
+  "parent-benefit.html": "신생아 용품",
+  "first-meeting-voucher.html": "신생아 선물세트",
+  "child-allowance.html": "아동 도서"
+};
+const escapeRegExp = (value) => value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 
 function visibleText(html) {
   return html
@@ -619,16 +654,28 @@ test("trust pages are substantial and consistent for AdSense review", async () =
   assert.match(privacy, /https:\/\/policies\.google\.com\/technologies\/partner-sites\?hl=ko/);
 });
 
-test("the K-pass article can load a disclosed Coupang Partners widget", async () => {
-  const [html, script, css, packageJson] = await Promise.all([
-    readProjectFile("k-pass-transport-refund.html"),
+test("each support article can load a disclosed keyword-matched Coupang Partners widget", async () => {
+  const [articlePages, script, css, packageJson] = await Promise.all([
+    Promise.all(posts.map((post) => readProjectFile(post.file))),
     readProjectFile("coupang-partners.js"),
     readProjectFile("blog.css"),
     readProjectFile("package.json")
   ]);
 
-  assert.match(html, /<aside class="affiliate-widget" data-coupang-partners data-keyword="교통카드 지갑" data-title="대중교통 이용 준비물" hidden><\/aside>/);
-  assert.match(html, /<script src="coupang-partners\.js\?v=20260827-coupang1" defer><\/script>/);
+  posts.forEach((post, index) => {
+    const html = articlePages[index];
+    const keyword = affiliateKeywords[post.file];
+    assert.ok(keyword, post.file + " has a keyword-matched Coupang search term");
+    assert.match(
+      html,
+      new RegExp(`<aside class="affiliate-widget" data-coupang-partners data-keyword="${escapeRegExp(keyword)}" data-title="[^"]+" hidden><\\/aside>`),
+      post.file + " has a disclosed affiliate widget"
+    );
+    assert.equal((html.match(/data-coupang-partners/g) || []).length, 1, post.file + " has one affiliate widget");
+    assert.match(html, /<script src="coupang-partners\.js\?v=20260827-coupang1" defer><\/script>/, post.file + " loads the affiliate script");
+    assert.match(html, /<footer class="official-sources">[\s\S]*?<aside class="affiliate-widget"[\s\S]*?<nav class="post-navigation"/, post.file + " separates sources, affiliate links, and article navigation");
+  });
+
   assert.match(script, /\/api\/coupang-partners/);
   assert.match(script, /X-Requested-With/);
   assert.match(script, /MustViewAffiliateWidget/);
@@ -708,7 +755,7 @@ test("the RSS feed is available for search engine submission", async () => {
   assert.match(rss, /<link>https:\/\/mustview\.co\.kr\/<\/link>/);
   assert.equal(itemCount, posts.length, "the RSS feed exposes every support article");
   for (const post of posts) {
-    assert.match(rss, new RegExp(`<title>${post.title.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}<\\/title>`), post.file + " has an RSS title");
+    assert.match(rss, new RegExp(`<title>${escapeRegExp(post.title)}<\\/title>`), post.file + " has an RSS title");
     assert.match(rss, new RegExp(`<link>https://mustview\\.co\\.kr/${post.slug}<\\/link>`), post.file + " has an RSS link");
     assert.match(rss, new RegExp(`<guid isPermaLink="true">https://mustview\\.co\\.kr/${post.slug}<\\/guid>`), post.file + " has an RSS guid");
     assert.match(rss, new RegExp(`<category>${post.category}<\\/category>`), post.file + " has an RSS category");
