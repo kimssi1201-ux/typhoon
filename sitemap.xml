@@ -1,7 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://mustview.co.kr/</loc><lastmod>2026-08-24</lastmod><changefreq>daily</changefreq><priority>1.0</priority></url>
-  <url><loc>https://mustview.co.kr/%EC%A7%80%EC%9B%90%EA%B8%88</loc><lastmod>2026-08-24</lastmod><changefreq>daily</changefreq><priority>0.9</priority></url>
+  <url><loc>https://mustview.co.kr/</loc><lastmod>2026-08-27</lastmod><changefreq>daily</changefreq><priority>1.0</priority></url>
+  <url><loc>https://mustview.co.kr/%EC%A7%80%EC%9B%90%EA%B8%88</loc><lastmod>2026-08-27</lastmod><changefreq>daily</changefreq><priority>0.9</priority></url>
+  <url><loc>https://mustview.co.kr/youth-monthly-rent-support</loc><lastmod>2026-08-27</lastmod><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://mustview.co.kr/child-care-service-support</loc><lastmod>2026-08-27</lastmod><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://mustview.co.kr/basic-pension</loc><lastmod>2026-08-27</lastmod><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://mustview.co.kr/youth-tomorrow-savings-account</loc><lastmod>2026-08-27</lastmod><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://mustview.co.kr/postpartum-care-voucher</loc><lastmod>2026-08-27</lastmod><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://mustview.co.kr/infant-diaper-formula-voucher</loc><lastmod>2026-08-27</lastmod><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://mustview.co.kr/disability-pension</loc><lastmod>2026-08-27</lastmod><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://mustview.co.kr/senior-jobs-social-activity</loc><lastmod>2026-08-27</lastmod><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://mustview.co.kr/hope-savings-account</loc><lastmod>2026-08-27</lastmod><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://mustview.co.kr/sanitary-products-voucher</loc><lastmod>2026-08-27</lastmod><changefreq>monthly</changefreq><priority>0.9</priority></url>
   <url><loc>https://mustview.co.kr/emergency-welfare-living-support</loc><lastmod>2026-08-24</lastmod><changefreq>monthly</changefreq><priority>0.9</priority></url>
   <url><loc>https://mustview.co.kr/basic-living-security</loc><lastmod>2026-08-24</lastmod><changefreq>monthly</changefreq><priority>0.9</priority></url>
   <url><loc>https://mustview.co.kr/housing-benefit</loc><lastmod>2026-08-24</lastmod><changefreq>monthly</changefreq><priority>0.9</priority></url>
@@ -20,8 +30,8 @@
   <url><loc>https://mustview.co.kr/parent-benefit</loc><lastmod>2026-08-14</lastmod><changefreq>monthly</changefreq><priority>0.9</priority></url>
   <url><loc>https://mustview.co.kr/first-meeting-voucher</loc><lastmod>2026-08-14</lastmod><changefreq>monthly</changefreq><priority>0.9</priority></url>
   <url><loc>https://mustview.co.kr/child-allowance</loc><lastmod>2026-08-14</lastmod><changefreq>monthly</changefreq><priority>0.9</priority></url>
-  <url><loc>https://mustview.co.kr/sources</loc><lastmod>2026-08-24</lastmod><changefreq>monthly</changefreq><priority>0.5</priority></url>
-  <url><loc>https://mustview.co.kr/about</loc><lastmod>2026-08-24</lastmod><changefreq>monthly</changefreq><priority>0.5</priority></url>
+  <url><loc>https://mustview.co.kr/sources</loc><lastmod>2026-08-27</lastmod><changefreq>monthly</changefreq><priority>0.5</priority></url>
+  <url><loc>https://mustview.co.kr/about</loc><lastmod>2026-08-27</lastmod><changefreq>monthly</changefreq><priority>0.5</priority></url>
   <url><loc>https://mustview.co.kr/contact</loc><lastmod>2026-08-14</lastmod><changefreq>monthly</changefreq><priority>0.4</priority></url>
   <url><loc>https://mustview.co.kr/privacy</loc><lastmod>2026-08-14</lastmod><changefreq>monthly</changefreq><priority>0.4</priority></url>
 </urlset>

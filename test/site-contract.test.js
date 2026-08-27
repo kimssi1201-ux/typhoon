@@ -7,166 +7,256 @@ const readProjectBuffer = (path) => readFile(new URL("../" + path, import.meta.u
 const publisherId = "ca-pub-5751319666030430";
 const posts = [
   {
-    file: "emergency-welfare-living-support.html",
-    slug: "emergency-welfare-living-support",
-    image: "benefit-energy-voucher-inline.webp",
-    title: "긴급복지 생계지원 2026: 위기상황, 소득 기준, 월 지원금",
-    category: "생활·에너지",
-    categoryId: "category-life-energy",
-    source: "bokjiro.go.kr"
+    "file": "youth-monthly-rent-support.html",
+    "slug": "youth-monthly-rent-support",
+    "image": "benefit-energy-voucher-inline.webp",
+    "title": "청년월세 지원사업 2026: 월 20만 원, 신청기간, 소득 기준",
+    "category": "생활·에너지",
+    "categoryId": "category-life-energy",
+    "source": "bokjiro.go.kr"
   },
   {
-    file: "basic-living-security.html",
-    slug: "basic-living-security",
-    image: "benefit-culture-inline.webp",
-    title: "생계급여 2026: 기준 중위소득 32%와 실제 지급액 계산",
-    category: "생활·에너지",
-    categoryId: "category-life-energy",
-    source: "mohw.go.kr"
+    "file": "child-care-service-support.html",
+    "slug": "child-care-service-support",
+    "image": "benefit-parent-inline.webp",
+    "title": "아이돌봄서비스 정부지원 2026: 소득재판정, 지원시간, 신청 방법",
+    "category": "육아·출산",
+    "categoryId": "category-childbirth",
+    "source": "bokjiro.go.kr"
   },
   {
-    file: "housing-benefit.html",
-    slug: "housing-benefit",
-    image: "benefit-energy-voucher-inline.webp",
-    title: "주거급여 2026: 선정기준, 기준임대료, 신청 서류",
-    category: "생활·에너지",
-    categoryId: "category-life-energy",
-    source: "myhome.go.kr"
+    "file": "basic-pension.html",
+    "slug": "basic-pension",
+    "image": "benefit-culture-inline.webp",
+    "title": "기초연금 2026: 만 65세 신청 기준, 선정기준액, 문의처",
+    "category": "생활·에너지",
+    "categoryId": "category-life-energy",
+    "source": "bokjiro.go.kr"
   },
   {
-    file: "education-benefit.html",
-    slug: "education-benefit",
-    image: "benefit-learning-inline.webp",
-    title: "교육급여 2026: 교육활동지원비, 교육비 지원과 신청 절차",
-    category: "생활·에너지",
-    categoryId: "category-life-energy",
-    source: "moe.go.kr"
+    "file": "youth-tomorrow-savings-account.html",
+    "slug": "youth-tomorrow-savings-account",
+    "image": "benefit-learning-inline.webp",
+    "title": "청년내일저축계좌 2026: 모집기간, 소득 기준, 제출서류",
+    "category": "고용·취업",
+    "categoryId": "category-employment",
+    "source": "bokjiro.go.kr"
   },
   {
-    file: "pregnancy-medical-voucher.html",
-    slug: "pregnancy-medical-voucher",
-    image: "benefit-first-meeting-inline.webp",
-    title: "임신·출산 진료비 지원 2026: 국민행복카드 100만 원 바우처",
-    category: "육아·출산",
-    categoryId: "category-childbirth",
-    source: "nhis.or.kr"
+    "file": "postpartum-care-voucher.html",
+    "slug": "postpartum-care-voucher",
+    "image": "benefit-first-meeting-inline.webp",
+    "title": "산모·신생아 건강관리 지원 2026: 산후도우미 바우처 신청",
+    "category": "육아·출산",
+    "categoryId": "category-childbirth",
+    "source": "bokjiro.go.kr"
   },
   {
-    file: "childcare-subsidy.html",
-    slug: "childcare-subsidy",
-    image: "benefit-parent-inline.webp",
-    title: "영유아보육료 지원 2026: 어린이집 0~5세 보육료 신청",
-    category: "육아·출산",
-    categoryId: "category-childbirth",
-    source: "bokjiro.go.kr"
+    "file": "infant-diaper-formula-voucher.html",
+    "slug": "infant-diaper-formula-voucher",
+    "image": "benefit-child-allowance-inline.webp",
+    "title": "기저귀·조제분유 지원 2026: 영아 가구 바우처 대상과 신청",
+    "category": "육아·출산",
+    "categoryId": "category-childbirth",
+    "source": "bokjiro.go.kr"
   },
   {
-    file: "home-childcare-allowance.html",
-    slug: "home-childcare-allowance",
-    image: "benefit-child-allowance-inline.webp",
-    title: "가정양육수당 2026: 24개월 이상 미취학 아동 신청 기준",
-    category: "육아·출산",
-    categoryId: "category-childbirth",
-    source: "bokjiro.go.kr"
+    "file": "disability-pension.html",
+    "slug": "disability-pension",
+    "image": "benefit-culture-inline.webp",
+    "title": "장애인연금 2026: 중증장애인 대상, 소득인정액, 신청 방법",
+    "category": "생활·에너지",
+    "categoryId": "category-life-energy",
+    "source": "bokjiro.go.kr"
   },
   {
-    file: "youth-challenge-support.html",
-    slug: "youth-challenge-support",
-    image: "benefit-employment-inline.webp",
-    title: "청년도전지원사업 2026: 참여수당, 이수 인센티브, 신청 방법",
-    category: "고용·취업",
-    categoryId: "category-employment",
-    source: "work24.go.kr"
+    "file": "senior-jobs-social-activity.html",
+    "slug": "senior-jobs-social-activity",
+    "image": "benefit-employment-inline.webp",
+    "title": "노인일자리 및 사회활동 지원사업 2026: 참여 대상과 신청 방법",
+    "category": "고용·취업",
+    "categoryId": "category-employment",
+    "source": "bokjiro.go.kr"
   },
   {
-    file: "youth-job-leap-incentive.html",
-    slug: "youth-job-leap-incentive",
-    image: "benefit-employment-inline.webp",
-    title: "청년일자리도약장려금 2026: 기업 지원금과 비수도권 청년 근속지원",
-    category: "고용·취업",
-    categoryId: "category-employment",
-    source: "work24.go.kr"
+    "file": "hope-savings-account.html",
+    "slug": "hope-savings-account",
+    "image": "benefit-learning-inline.webp",
+    "title": "희망저축계좌 2026: I·II 유형 대상과 근로소득 기준",
+    "category": "고용·취업",
+    "categoryId": "category-employment",
+    "source": "bokjiro.go.kr"
   },
   {
-    file: "health-insurance-out-of-pocket-refund.html",
-    slug: "health-insurance-out-of-pocket-refund",
-    image: "benefit-employment-inline.webp",
-    title: "본인부담상한액 환급 2026: 건강보험 초과금 조회와 신청",
-    category: "세금·환급",
-    categoryId: "category-tax-refund",
-    source: "nhis.or.kr"
+    "file": "sanitary-products-voucher.html",
+    "slug": "sanitary-products-voucher",
+    "image": "benefit-culture-inline.webp",
+    "title": "여성청소년 생리용품 바우처 2026: 만 9~24세 지원과 사용처",
+    "category": "생활·에너지",
+    "categoryId": "category-life-energy",
+    "source": "bokjiro.go.kr"
   },
   {
-    file: "work-child-tax-credit.html",
-    slug: "work-child-tax-credit",
-    image: "benefit-employment-inline.webp",
-    title: "근로·자녀장려금 2026: 기한 후 신청, 반기 신청 기간과 지급액",
-    category: "세금·환급",
-    categoryId: "category-tax-refund",
-    source: "nts.go.kr"
+    "file": "emergency-welfare-living-support.html",
+    "slug": "emergency-welfare-living-support",
+    "image": "benefit-energy-voucher-inline.webp",
+    "title": "긴급복지 생계지원 2026: 위기상황, 소득 기준, 월 지원금",
+    "category": "생활·에너지",
+    "categoryId": "category-life-energy",
+    "source": "bokjiro.go.kr"
   },
   {
-    file: "energy-voucher.html",
-    slug: "energy-voucher",
-    image: "benefit-energy-voucher-inline.webp",
-    title: "에너지바우처 2026: 지원대상, 신청기간, 요금차감과 국민행복카드",
-    category: "생활·에너지",
-    categoryId: "category-life-energy",
-    source: "energyv.or.kr"
+    "file": "basic-living-security.html",
+    "slug": "basic-living-security",
+    "image": "benefit-culture-inline.webp",
+    "title": "생계급여 2026: 기준 중위소득 32%와 실제 지급액 계산",
+    "category": "생활·에너지",
+    "categoryId": "category-life-energy",
+    "source": "mohw.go.kr"
   },
   {
-    file: "culture-nuri-card.html",
-    slug: "culture-nuri-card",
-    image: "benefit-culture-inline.webp",
-    title: "문화누리카드 2026: 15만 원 지원 대상, 발급 기간, 사용처",
-    category: "생활·에너지",
-    categoryId: "category-life-energy",
-    source: "mnuri.kr"
+    "file": "housing-benefit.html",
+    "slug": "housing-benefit",
+    "image": "benefit-energy-voucher-inline.webp",
+    "title": "주거급여 2026: 선정기준, 기준임대료, 신청 서류",
+    "category": "생활·에너지",
+    "categoryId": "category-life-energy",
+    "source": "myhome.go.kr"
   },
   {
-    file: "national-employment-support.html",
-    slug: "national-employment-support",
-    image: "benefit-employment-inline.webp",
-    title: "국민취업지원제도 I유형: 구직촉진수당과 신청 방법",
-    category: "고용·취업",
-    categoryId: "category-employment",
-    source: "work24.go.kr"
+    "file": "education-benefit.html",
+    "slug": "education-benefit",
+    "image": "benefit-learning-inline.webp",
+    "title": "교육급여 2026: 교육활동지원비, 교육비 지원과 신청 절차",
+    "category": "생활·에너지",
+    "categoryId": "category-life-energy",
+    "source": "moe.go.kr"
   },
   {
-    file: "national-tomorrow-learning-card.html",
-    slug: "national-tomorrow-learning-card",
-    image: "benefit-learning-inline.webp",
-    title: "국민내일배움카드: 훈련비 300만 원부터 확인할 점",
-    category: "고용·취업",
-    categoryId: "category-employment",
-    source: "work24.go.kr"
+    "file": "pregnancy-medical-voucher.html",
+    "slug": "pregnancy-medical-voucher",
+    "image": "benefit-first-meeting-inline.webp",
+    "title": "임신·출산 진료비 지원 2026: 국민행복카드 100만 원 바우처",
+    "category": "육아·출산",
+    "categoryId": "category-childbirth",
+    "source": "nhis.or.kr"
   },
   {
-    file: "parent-benefit.html",
-    slug: "parent-benefit",
-    image: "benefit-parent-inline.webp",
-    title: "부모급여: 0세·1세 지원 대상과 신청 시기",
-    category: "육아·출산",
-    categoryId: "category-childbirth",
-    source: "bokjiro.go.kr"
+    "file": "childcare-subsidy.html",
+    "slug": "childcare-subsidy",
+    "image": "benefit-parent-inline.webp",
+    "title": "영유아보육료 지원 2026: 어린이집 0~5세 보육료 신청",
+    "category": "육아·출산",
+    "categoryId": "category-childbirth",
+    "source": "bokjiro.go.kr"
   },
   {
-    file: "first-meeting-voucher.html",
-    slug: "first-meeting-voucher",
-    image: "benefit-first-meeting-inline.webp",
-    title: "첫만남이용권: 출생아 바우처 금액과 사용 전 확인 사항",
-    category: "육아·출산",
-    categoryId: "category-childbirth",
-    source: "mohw.go.kr"
+    "file": "home-childcare-allowance.html",
+    "slug": "home-childcare-allowance",
+    "image": "benefit-child-allowance-inline.webp",
+    "title": "가정양육수당 2026: 24개월 이상 미취학 아동 신청 기준",
+    "category": "육아·출산",
+    "categoryId": "category-childbirth",
+    "source": "bokjiro.go.kr"
   },
   {
-    file: "child-allowance.html",
-    slug: "child-allowance",
-    image: "benefit-child-allowance-inline.webp",
-    title: "아동수당: 만 9세 미만 확대 기준과 신청 방법",
-    category: "육아·출산",
-    categoryId: "category-childbirth",
-    source: "mohw.go.kr"
+    "file": "youth-challenge-support.html",
+    "slug": "youth-challenge-support",
+    "image": "benefit-employment-inline.webp",
+    "title": "청년도전지원사업 2026: 참여수당, 이수 인센티브, 신청 방법",
+    "category": "고용·취업",
+    "categoryId": "category-employment",
+    "source": "work24.go.kr"
+  },
+  {
+    "file": "youth-job-leap-incentive.html",
+    "slug": "youth-job-leap-incentive",
+    "image": "benefit-employment-inline.webp",
+    "title": "청년일자리도약장려금 2026: 기업 지원금과 비수도권 청년 근속지원",
+    "category": "고용·취업",
+    "categoryId": "category-employment",
+    "source": "work24.go.kr"
+  },
+  {
+    "file": "health-insurance-out-of-pocket-refund.html",
+    "slug": "health-insurance-out-of-pocket-refund",
+    "image": "benefit-employment-inline.webp",
+    "title": "본인부담상한액 환급 2026: 건강보험 초과금 조회와 신청",
+    "category": "세금·환급",
+    "categoryId": "category-tax-refund",
+    "source": "nhis.or.kr"
+  },
+  {
+    "file": "work-child-tax-credit.html",
+    "slug": "work-child-tax-credit",
+    "image": "benefit-employment-inline.webp",
+    "title": "근로·자녀장려금 2026: 기한 후 신청, 반기 신청 기간과 지급액",
+    "category": "세금·환급",
+    "categoryId": "category-tax-refund",
+    "source": "nts.go.kr"
+  },
+  {
+    "file": "energy-voucher.html",
+    "slug": "energy-voucher",
+    "image": "benefit-energy-voucher-inline.webp",
+    "title": "에너지바우처 2026: 지원대상, 신청기간, 요금차감과 국민행복카드",
+    "category": "생활·에너지",
+    "categoryId": "category-life-energy",
+    "source": "energyv.or.kr"
+  },
+  {
+    "file": "culture-nuri-card.html",
+    "slug": "culture-nuri-card",
+    "image": "benefit-culture-inline.webp",
+    "title": "문화누리카드 2026: 15만 원 지원 대상, 발급 기간, 사용처",
+    "category": "생활·에너지",
+    "categoryId": "category-life-energy",
+    "source": "mnuri.kr"
+  },
+  {
+    "file": "national-employment-support.html",
+    "slug": "national-employment-support",
+    "image": "benefit-employment-inline.webp",
+    "title": "국민취업지원제도 I유형: 구직촉진수당과 신청 방법",
+    "category": "고용·취업",
+    "categoryId": "category-employment",
+    "source": "work24.go.kr"
+  },
+  {
+    "file": "national-tomorrow-learning-card.html",
+    "slug": "national-tomorrow-learning-card",
+    "image": "benefit-learning-inline.webp",
+    "title": "국민내일배움카드: 훈련비 300만 원부터 확인할 점",
+    "category": "고용·취업",
+    "categoryId": "category-employment",
+    "source": "work24.go.kr"
+  },
+  {
+    "file": "parent-benefit.html",
+    "slug": "parent-benefit",
+    "image": "benefit-parent-inline.webp",
+    "title": "부모급여: 0세·1세 지원 대상과 신청 시기",
+    "category": "육아·출산",
+    "categoryId": "category-childbirth",
+    "source": "bokjiro.go.kr"
+  },
+  {
+    "file": "first-meeting-voucher.html",
+    "slug": "first-meeting-voucher",
+    "image": "benefit-first-meeting-inline.webp",
+    "title": "첫만남이용권: 출생아 바우처 금액과 사용 전 확인 사항",
+    "category": "육아·출산",
+    "categoryId": "category-childbirth",
+    "source": "mohw.go.kr"
+  },
+  {
+    "file": "child-allowance.html",
+    "slug": "child-allowance",
+    "image": "benefit-child-allowance-inline.webp",
+    "title": "아동수당: 만 9세 미만 확대 기준과 신청 방법",
+    "category": "육아·출산",
+    "categoryId": "category-childbirth",
+    "source": "mohw.go.kr"
   }
 ];
 const trustPages = [
@@ -177,10 +267,26 @@ const trustPages = [
 ];
 const supportArchive = { file: "support-archive.page", slug: "%EC%A7%80%EC%9B%90%EA%B8%88" };
 const categories = [
-  { id: "category-childbirth", label: "육아·출산", count: 6 },
-  { id: "category-employment", label: "고용·취업", count: 4 },
-  { id: "category-life-energy", label: "생활·에너지", count: 6 },
-  { id: "category-tax-refund", label: "세금·환급", count: 2 }
+  {
+    "id": "category-childbirth",
+    "label": "육아·출산",
+    "count": 9
+  },
+  {
+    "id": "category-employment",
+    "label": "고용·취업",
+    "count": 7
+  },
+  {
+    "id": "category-life-energy",
+    "label": "생활·에너지",
+    "count": 10
+  },
+  {
+    "id": "category-tax-refund",
+    "label": "세금·환급",
+    "count": 2
+  }
 ];
 
 function visibleText(html) {
@@ -230,7 +336,7 @@ test("the home is a support landing with four categories and six latest posts", 
   const [html, css] = await Promise.all([readProjectFile("index.html"), readProjectFile("blog.css")]);
 
   assert.equal((html.match(/<article class="post-card"/g) || []).length, 6, "the home shows exactly six latest posts");
-  assert.match(html, /data-post-count="18"/);
+  assert.match(html, /data-post-count="28"/);
   assert.match(html, /class="content-area home-landing"/);
   assert.match(html, /<h1 id="home-title">복지모음집<\/h1>/);
   assert.match(html, /class="category-grid"/);
@@ -307,11 +413,11 @@ test("the home is a support landing with four categories and six latest posts", 
   assert.doesNotMatch(css, /\.reader-persona/, "the removed reader persona has no leftover styles");
 });
 
-test("the support archive lives at /지원금 and contains all eighteen categorized posts", async () => {
+test("the support archive lives at /지원금 and contains all categorized posts", async () => {
   const [html, redirects] = await Promise.all([readProjectFile(supportArchive.file), readProjectFile("_redirects")]);
 
-  assert.equal((html.match(/<article class="post-card"/g) || []).length, 18, "the support archive has exactly eighteen posts");
-  assert.match(html, /data-post-count="18"/);
+  assert.equal((html.match(/<article class="post-card"/g) || []).length, posts.length, "the support archive has every categorized post");
+  assert.match(html, /data-post-count="28"/);
   assert.match(html, /<link rel="canonical" href="https:\/\/mustview\.co\.kr\/지원금"/);
   assert.match(html, /"@type": "CollectionPage"/);
   assert.match(html, /<h1 id="archive-title">지원금<\/h1>/);
@@ -333,7 +439,7 @@ test("the support archive lives at /지원금 and contains all eighteen categori
   }
 
   assert.doesNotMatch(html, /<img\b/, "the support archive thumbnails are deterministic text tiles, not raster images");
-  assert.equal((html.match(/class="post-card-thumbnail tile-[^"]+"/g) || []).length, 6, "the support archive uses six simple text thumbnail tiles");
+  assert.equal((html.match(/class="post-card-thumbnail"/g) || []).length, posts.length, "the support archive uses one deterministic text tile per post");
   assert.equal((html.match(/<span>지원금<\/span><strong>/g) || []).length, 0, "support archive thumbnails no longer show the old single category");
 });
 
@@ -372,7 +478,7 @@ test("each support post has complete metadata, a single H1, and a valid body len
     assert.match(html, /data-toc-list/, post.file + " has a generated table of contents target");
     assert.match(html, /data-post-content/, post.file + " exposes headings for the generated table of contents");
     assert.match(html, /class="key-facts"/, post.file + " has a key facts box");
-    assert.match(html, /최종 확인 2026\. 8\. (14|15|23|24)\./, post.file + " exposes its verification date");
+    assert.match(html, /최종 확인 2026\. 8\. (14|15|23|24|27)\./, post.file + " exposes its verification date");
     assert.doesNotMatch(html, /<span>2026(?:\.|년) 8(?:\.|월) (?:14|15|23|24)(?:\.|일)<\/span>\s*<span>·<\/span>\s*<span>최종 확인/, post.file + " does not duplicate identical publish and verification dates");
     assert.match(html, /class="official-sources"/, post.file + " has a source list");
     assert.match(html, new RegExp(post.source.replace(".", "\\.")), post.file + " cites its official source");
@@ -447,7 +553,7 @@ test("trust pages are substantial and consistent for AdSense review", async () =
   assert.match(about, /광고와 편집의 독립성/);
   assert.doesNotMatch(about, /40대 중반 성인의 확인 사례/);
   assert.match(about, /문의 및 정보 수정 요청/);
-  assert.match(about, /현재 공개한 게시글은 정확히 18개/);
+  assert.match(about, /현재 공개한 게시글은 정확히 28개/);
   assert.match(sources, /nts\.go\.kr/);
   assert.match(sources, /work24\.go\.kr/);
   assert.match(sources, /bokjiro\.go\.kr/);
@@ -501,7 +607,7 @@ test("HTML images keep non-empty alt text and the build warns about omissions", 
   }
 });
 
-test("the sitemap indexes the home, support archive, eighteen posts, and four trust pages", async () => {
+test("the sitemap indexes the home, support archive, all posts, and four trust pages", async () => {
   const [sitemap, redirects, robots] = await Promise.all([
     readProjectFile("sitemap.xml"),
     readProjectFile("_redirects"),

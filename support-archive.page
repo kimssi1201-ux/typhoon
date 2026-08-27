@@ -51,17 +51,137 @@
 
       <nav class="main-navigation" aria-label="주요 메뉴"><div class="inside-navigation"><ul><li><a href="index.html">홈</a></li><li><a href="/지원금" aria-current="page">지원금</a></li><li><a href="/지원금#category-childbirth">육아·출산</a></li><li><a href="/지원금#category-employment">고용·취업</a></li><li><a href="/지원금#category-life-energy">생활·에너지</a></li><li><a href="/지원금#category-tax-refund">세금·환급</a></li><li><a href="sources.html">자료 기준</a></li><li><a href="about.html">블로그 소개</a></li><li><a href="contact.html">문의</a></li></ul></div></nav>
 
-      <main class="site-main" id="main" data-post-count="18">
+      <main class="site-main" id="main" data-post-count="28">
         <div class="site-grid">
           <section class="content-area" aria-labelledby="archive-title">
             <header class="archive-title" id="support-category">
               <p>카테고리 · 지원금</p>
               <h1 id="archive-title">지원금</h1>
               <p class="archive-intro">신청 전에 꼭 알아야 할 조건과 서류를 읽기 쉽게 정리했습니다. 모든 글은 정부기관 또는 공공기관의 공식 페이지를 연결하며, 최종 확인일을 함께 표시합니다.</p>
-              <nav class="category-filter" aria-label="지원금 하위 카테고리"><ul><li><a href="#category-childbirth">육아·출산 <span>6</span></a></li><li><a href="#category-employment">고용·취업 <span>4</span></a></li><li><a href="#category-life-energy">생활·에너지 <span>6</span></a></li><li><a href="#category-tax-refund">세금·환급 <span>2</span></a></li></ul></nav>
+              <nav class="category-filter" aria-label="지원금 하위 카테고리"><ul><li><a href="#category-childbirth">육아·출산 <span>9</span></a></li><li><a href="#category-employment">고용·취업 <span>7</span></a></li><li><a href="#category-life-energy">생활·에너지 <span>10</span></a></li><li><a href="#category-tax-refund">세금·환급 <span>2</span></a></li></ul></nav>
             </header>
 
-            <article class="post-card" id="category-life-energy" data-post="emergency-welfare-living-support" data-category="category-life-energy">
+<article class="post-card" id="category-life-energy" data-post="youth-monthly-rent-support" data-category="category-life-energy">
+              <div class="post-card-inner">
+                <div class="post-card-content">
+                  <h2 class="entry-title"><a href="youth-monthly-rent-support.html">청년월세 지원사업 2026: 월 20만 원, 신청기간, 소득 기준</a></h2>
+                  <div class="post-card-body">
+                    <a class="post-card-thumbnail" href="youth-monthly-rent-support.html" tabindex="-1" style="--tile-accent:#1f6f7a;--tile-bg:#e7f5f6;"><span>생활·에너지</span><strong>청년<br />월세지원</strong></a>
+                    <div class="post-card-copy"><p class="entry-summary">월 최대 20만 원씩 최장 24개월 지원되는 청년월세의 2026년 신규 신청 기간과 소득·재산 기준을 확인합니다.</p><p class="entry-meta"><a class="category-chip" href="#category-life-energy">생활·에너지</a><span>·</span><span>2026. 8. 27.</span></p><a class="read-more" href="youth-monthly-rent-support.html">더보기</a></div>
+                  </div>
+                </div>
+              </div>
+            </article>
+
+<article class="post-card" id="category-childbirth" data-post="child-care-service-support" data-category="category-childbirth">
+              <div class="post-card-inner">
+                <div class="post-card-content">
+                  <h2 class="entry-title"><a href="child-care-service-support.html">아이돌봄서비스 정부지원 2026: 소득재판정, 지원시간, 신청 방법</a></h2>
+                  <div class="post-card-body">
+                    <a class="post-card-thumbnail" href="child-care-service-support.html" tabindex="-1" style="--tile-accent:#9d4f6d;--tile-bg:#fff0f6;"><span>육아·출산</span><strong>아이돌봄<br />서비스</strong></a>
+                    <div class="post-card-copy"><p class="entry-summary">양육공백 가정의 아이돌봄서비스 정부지원 기준, 2026년 소득재판정과 복지로 신청 경로를 정리했습니다.</p><p class="entry-meta"><a class="category-chip" href="#category-childbirth">육아·출산</a><span>·</span><span>2026. 8. 27.</span></p><a class="read-more" href="child-care-service-support.html">더보기</a></div>
+                  </div>
+                </div>
+              </div>
+            </article>
+
+<article class="post-card" data-post="basic-pension" data-category="category-life-energy">
+              <div class="post-card-inner">
+                <div class="post-card-content">
+                  <h2 class="entry-title"><a href="basic-pension.html">기초연금 2026: 만 65세 신청 기준, 선정기준액, 문의처</a></h2>
+                  <div class="post-card-body">
+                    <a class="post-card-thumbnail" href="basic-pension.html" tabindex="-1" style="--tile-accent:#47642f;--tile-bg:#eef6e7;"><span>생활·에너지</span><strong>기초<br />연금</strong></a>
+                    <div class="post-card-copy"><p class="entry-summary">만 65세 이상 어르신의 소득인정액 기준과 2026년 단독·부부가구 선정기준액, 신청 경로를 확인합니다.</p><p class="entry-meta"><a class="category-chip" href="#category-life-energy">생활·에너지</a><span>·</span><span>2026. 8. 27.</span></p><a class="read-more" href="basic-pension.html">더보기</a></div>
+                  </div>
+                </div>
+              </div>
+            </article>
+
+<article class="post-card" id="category-employment" data-post="youth-tomorrow-savings-account" data-category="category-employment">
+              <div class="post-card-inner">
+                <div class="post-card-content">
+                  <h2 class="entry-title"><a href="youth-tomorrow-savings-account.html">청년내일저축계좌 2026: 모집기간, 소득 기준, 제출서류</a></h2>
+                  <div class="post-card-body">
+                    <a class="post-card-thumbnail" href="youth-tomorrow-savings-account.html" tabindex="-1" style="--tile-accent:#5b4a9a;--tile-bg:#f1efff;"><span>고용·취업</span><strong>청년내일<br />저축계좌</strong></a>
+                    <div class="post-card-copy"><p class="entry-summary">근로·사업소득이 있는 청년의 자산형성을 돕는 청년내일저축계좌 2026년 모집기간과 소득 기준을 정리했습니다.</p><p class="entry-meta"><a class="category-chip" href="#category-employment">고용·취업</a><span>·</span><span>2026. 8. 27.</span></p><a class="read-more" href="youth-tomorrow-savings-account.html">더보기</a></div>
+                  </div>
+                </div>
+              </div>
+            </article>
+
+<article class="post-card" data-post="postpartum-care-voucher" data-category="category-childbirth">
+              <div class="post-card-inner">
+                <div class="post-card-content">
+                  <h2 class="entry-title"><a href="postpartum-care-voucher.html">산모·신생아 건강관리 지원 2026: 산후도우미 바우처 신청</a></h2>
+                  <div class="post-card-body">
+                    <a class="post-card-thumbnail" href="postpartum-care-voucher.html" tabindex="-1" style="--tile-accent:#b65c32;--tile-bg:#fff0e7;"><span>육아·출산</span><strong>산모신생아<br />건강관리</strong></a>
+                    <div class="post-card-copy"><p class="entry-summary">출산가정에 건강관리사를 파견하는 산모·신생아 건강관리 지원사업의 대상과 보건소 신청 기준을 정리했습니다.</p><p class="entry-meta"><a class="category-chip" href="#category-childbirth">육아·출산</a><span>·</span><span>2026. 8. 27.</span></p><a class="read-more" href="postpartum-care-voucher.html">더보기</a></div>
+                  </div>
+                </div>
+              </div>
+            </article>
+
+<article class="post-card" data-post="infant-diaper-formula-voucher" data-category="category-childbirth">
+              <div class="post-card-inner">
+                <div class="post-card-content">
+                  <h2 class="entry-title"><a href="infant-diaper-formula-voucher.html">기저귀·조제분유 지원 2026: 영아 가구 바우처 대상과 신청</a></h2>
+                  <div class="post-card-body">
+                    <a class="post-card-thumbnail" href="infant-diaper-formula-voucher.html" tabindex="-1" style="--tile-accent:#2d705c;--tile-bg:#edf6f2;"><span>육아·출산</span><strong>기저귀<br />조제분유</strong></a>
+                    <div class="post-card-copy"><p class="entry-summary">만 2세 미만 영아 가구의 기저귀와 조제분유 바우처 지원 대상, 금액, 신청 경로를 정리했습니다.</p><p class="entry-meta"><a class="category-chip" href="#category-childbirth">육아·출산</a><span>·</span><span>2026. 8. 27.</span></p><a class="read-more" href="infant-diaper-formula-voucher.html">더보기</a></div>
+                  </div>
+                </div>
+              </div>
+            </article>
+
+<article class="post-card" data-post="disability-pension" data-category="category-life-energy">
+              <div class="post-card-inner">
+                <div class="post-card-content">
+                  <h2 class="entry-title"><a href="disability-pension.html">장애인연금 2026: 중증장애인 대상, 소득인정액, 신청 방법</a></h2>
+                  <div class="post-card-body">
+                    <a class="post-card-thumbnail" href="disability-pension.html" tabindex="-1" style="--tile-accent:#5b4a9a;--tile-bg:#f1efff;"><span>생활·에너지</span><strong>장애인<br />연금</strong></a>
+                    <div class="post-card-copy"><p class="entry-summary">18세 이상 등록 중증장애인의 장애인연금 지원 대상과 소득인정액 확인, 신청 방법을 정리했습니다.</p><p class="entry-meta"><a class="category-chip" href="#category-life-energy">생활·에너지</a><span>·</span><span>2026. 8. 27.</span></p><a class="read-more" href="disability-pension.html">더보기</a></div>
+                  </div>
+                </div>
+              </div>
+            </article>
+
+<article class="post-card" data-post="senior-jobs-social-activity" data-category="category-employment">
+              <div class="post-card-inner">
+                <div class="post-card-content">
+                  <h2 class="entry-title"><a href="senior-jobs-social-activity.html">노인일자리 및 사회활동 지원사업 2026: 참여 대상과 신청 방법</a></h2>
+                  <div class="post-card-body">
+                    <a class="post-card-thumbnail" href="senior-jobs-social-activity.html" tabindex="-1" style="--tile-accent:#2d705c;--tile-bg:#edf6f2;"><span>고용·취업</span><strong>노인일자리<br />사회활동</strong></a>
+                    <div class="post-card-copy"><p class="entry-summary">65세 이상 어르신의 공익활동, 역량활용, 일부 60세 이상 참여 유형과 신청 전 확인 사항을 정리했습니다.</p><p class="entry-meta"><a class="category-chip" href="#category-employment">고용·취업</a><span>·</span><span>2026. 8. 27.</span></p><a class="read-more" href="senior-jobs-social-activity.html">더보기</a></div>
+                  </div>
+                </div>
+              </div>
+            </article>
+
+<article class="post-card" data-post="hope-savings-account" data-category="category-employment">
+              <div class="post-card-inner">
+                <div class="post-card-content">
+                  <h2 class="entry-title"><a href="hope-savings-account.html">희망저축계좌 2026: I·II 유형 대상과 근로소득 기준</a></h2>
+                  <div class="post-card-body">
+                    <a class="post-card-thumbnail" href="hope-savings-account.html" tabindex="-1" style="--tile-accent:#244a9a;--tile-bg:#eef3ff;"><span>고용·취업</span><strong>희망저축<br />계좌</strong></a>
+                    <div class="post-card-copy"><p class="entry-summary">일하는 수급·차상위 가구가 자활에 필요한 자산을 모으는 희망저축계좌 I·II 유형 기준을 정리했습니다.</p><p class="entry-meta"><a class="category-chip" href="#category-employment">고용·취업</a><span>·</span><span>2026. 8. 27.</span></p><a class="read-more" href="hope-savings-account.html">더보기</a></div>
+                  </div>
+                </div>
+              </div>
+            </article>
+
+<article class="post-card" data-post="sanitary-products-voucher" data-category="category-life-energy">
+              <div class="post-card-inner">
+                <div class="post-card-content">
+                  <h2 class="entry-title"><a href="sanitary-products-voucher.html">여성청소년 생리용품 바우처 2026: 만 9~24세 지원과 사용처</a></h2>
+                  <div class="post-card-body">
+                    <a class="post-card-thumbnail" href="sanitary-products-voucher.html" tabindex="-1" style="--tile-accent:#6c4a9a;--tile-bg:#f3efff;"><span>생활·에너지</span><strong>생리용품<br />바우처</strong></a>
+                    <div class="post-card-copy"><p class="entry-summary">저소득 여성청소년의 생리용품 바우처 지원 대상, 국민행복카드 사용 방식과 신청 방법을 정리했습니다.</p><p class="entry-meta"><a class="category-chip" href="#category-life-energy">생활·에너지</a><span>·</span><span>2026. 8. 27.</span></p><a class="read-more" href="sanitary-products-voucher.html">더보기</a></div>
+                  </div>
+                </div>
+              </div>
+            </article>
+
+<article class="post-card" data-post="emergency-welfare-living-support" data-category="category-life-energy">
               <div class="post-card-inner">
                 <div class="post-card-content">
                   <h2 class="entry-title"><a href="emergency-welfare-living-support.html">긴급복지 생계지원 2026: 위기상황, 소득 기준, 월 지원금</a></h2>
@@ -73,7 +193,7 @@
               </div>
             </article>
 
-            <article class="post-card" data-post="basic-living-security" data-category="category-life-energy">
+<article class="post-card" data-post="basic-living-security" data-category="category-life-energy">
               <div class="post-card-inner">
                 <div class="post-card-content">
                   <h2 class="entry-title"><a href="basic-living-security.html">생계급여 2026: 기준 중위소득 32%와 실제 지급액 계산</a></h2>
@@ -85,7 +205,7 @@
               </div>
             </article>
 
-            <article class="post-card" data-post="housing-benefit" data-category="category-life-energy">
+<article class="post-card" data-post="housing-benefit" data-category="category-life-energy">
               <div class="post-card-inner">
                 <div class="post-card-content">
                   <h2 class="entry-title"><a href="housing-benefit.html">주거급여 2026: 선정기준, 기준임대료, 신청 서류</a></h2>
@@ -97,7 +217,7 @@
               </div>
             </article>
 
-            <article class="post-card" data-post="education-benefit" data-category="category-life-energy">
+<article class="post-card" data-post="education-benefit" data-category="category-life-energy">
               <div class="post-card-inner">
                 <div class="post-card-content">
                   <h2 class="entry-title"><a href="education-benefit.html">교육급여 2026: 교육활동지원비, 교육비 지원과 신청 절차</a></h2>
@@ -109,7 +229,7 @@
               </div>
             </article>
 
-            <article class="post-card" id="category-childbirth" data-post="pregnancy-medical-voucher" data-category="category-childbirth">
+<article class="post-card" data-post="pregnancy-medical-voucher" data-category="category-childbirth">
               <div class="post-card-inner">
                 <div class="post-card-content">
                   <h2 class="entry-title"><a href="pregnancy-medical-voucher.html">임신·출산 진료비 지원 2026: 국민행복카드 100만 원 바우처</a></h2>
@@ -121,7 +241,7 @@
               </div>
             </article>
 
-            <article class="post-card" data-post="childcare-subsidy" data-category="category-childbirth">
+<article class="post-card" data-post="childcare-subsidy" data-category="category-childbirth">
               <div class="post-card-inner">
                 <div class="post-card-content">
                   <h2 class="entry-title"><a href="childcare-subsidy.html">영유아보육료 지원 2026: 어린이집 0~5세 보육료 신청</a></h2>
@@ -133,7 +253,7 @@
               </div>
             </article>
 
-            <article class="post-card" data-post="home-childcare-allowance" data-category="category-childbirth">
+<article class="post-card" data-post="home-childcare-allowance" data-category="category-childbirth">
               <div class="post-card-inner">
                 <div class="post-card-content">
                   <h2 class="entry-title"><a href="home-childcare-allowance.html">가정양육수당 2026: 24개월 이상 미취학 아동 신청 기준</a></h2>
@@ -145,7 +265,7 @@
               </div>
             </article>
 
-            <article class="post-card" id="category-employment" data-post="youth-challenge-support" data-category="category-employment">
+<article class="post-card" data-post="youth-challenge-support" data-category="category-employment">
               <div class="post-card-inner">
                 <div class="post-card-content">
                   <h2 class="entry-title"><a href="youth-challenge-support.html">청년도전지원사업 2026: 참여수당, 이수 인센티브, 신청 방법</a></h2>
@@ -157,7 +277,7 @@
               </div>
             </article>
 
-            <article class="post-card" data-post="youth-job-leap-incentive" data-category="category-employment">
+<article class="post-card" data-post="youth-job-leap-incentive" data-category="category-employment">
               <div class="post-card-inner">
                 <div class="post-card-content">
                   <h2 class="entry-title"><a href="youth-job-leap-incentive.html">청년일자리도약장려금 2026: 기업 지원금과 비수도권 청년 근속지원</a></h2>
@@ -169,7 +289,7 @@
               </div>
             </article>
 
-            <article class="post-card" id="category-tax-refund" data-post="health-insurance-out-of-pocket-refund" data-category="category-tax-refund">
+<article class="post-card" id="category-tax-refund" data-post="health-insurance-out-of-pocket-refund" data-category="category-tax-refund">
               <div class="post-card-inner">
                 <div class="post-card-content">
                   <h2 class="entry-title"><a href="health-insurance-out-of-pocket-refund.html">본인부담상한액 환급 2026: 건강보험 초과금 조회와 신청</a></h2>
@@ -181,7 +301,7 @@
               </div>
             </article>
 
-            <article class="post-card" data-post="work-child-tax-credit" data-category="category-tax-refund">
+<article class="post-card" data-post="work-child-tax-credit" data-category="category-tax-refund">
               <div class="post-card-inner">
                 <div class="post-card-content">
                   <h2 class="entry-title"><a href="work-child-tax-credit.html">근로·자녀장려금 2026: 기한 후 신청, 반기 신청 기간과 지급액</a></h2>
@@ -193,7 +313,7 @@
               </div>
             </article>
 
-            <article class="post-card" data-post="energy-voucher" data-category="category-life-energy">
+<article class="post-card" data-post="energy-voucher" data-category="category-life-energy">
               <div class="post-card-inner">
                 <div class="post-card-content">
                   <h2 class="entry-title"><a href="energy-voucher.html">에너지바우처 2026: 지원대상, 신청기간, 요금차감과 국민행복카드</a></h2>
@@ -205,72 +325,72 @@
               </div>
             </article>
 
-            <article class="post-card" data-post="culture-nuri-card" data-category="category-life-energy">
+<article class="post-card" data-post="culture-nuri-card" data-category="category-life-energy">
               <div class="post-card-inner">
                 <div class="post-card-content">
                   <h2 class="entry-title"><a href="culture-nuri-card.html">문화누리카드 2026: 15만 원 지원 대상, 발급 기간, 사용처</a></h2>
                   <div class="post-card-body">
-                    <a class="post-card-thumbnail tile-culture" href="culture-nuri-card.html" tabindex="-1"><span>생활·에너지</span><strong>문화누리<br />카드</strong></a>
+                    <a class="post-card-thumbnail" href="culture-nuri-card.html" tabindex="-1" style="--tile-accent:#6c4a9a;--tile-bg:#f3efff;"><span>생활·에너지</span><strong>문화누리<br />카드</strong></a>
                     <div class="post-card-copy"><p class="entry-summary">공연·전시·여행·체육 사용처와 2026 발급 기간을 공식 안내 기준으로 정리했습니다.</p><p class="entry-meta"><a class="category-chip" href="#category-life-energy">생활·에너지</a><span>·</span><span>2026. 8. 15.</span></p><a class="read-more" href="culture-nuri-card.html">더보기</a></div>
                   </div>
                 </div>
               </div>
             </article>
 
-            <article class="post-card" data-post="national-employment-support" data-category="category-employment">
+<article class="post-card" data-post="national-employment-support" data-category="category-employment">
               <div class="post-card-inner">
                 <div class="post-card-content">
                   <h2 class="entry-title"><a href="national-employment-support.html">국민취업지원제도 I유형: 구직촉진수당과 신청 방법</a></h2>
                   <div class="post-card-body">
-                    <a class="post-card-thumbnail tile-employment" href="national-employment-support.html" tabindex="-1"><span>고용·취업</span><strong>국민취업<br />지원제도</strong></a>
+                    <a class="post-card-thumbnail" href="national-employment-support.html" tabindex="-1" style="--tile-accent:#244a9a;--tile-bg:#eef3ff;"><span>고용·취업</span><strong>국민취업<br />지원제도</strong></a>
                     <div class="post-card-copy"><p class="entry-summary">소득·재산·취업경험 기준을 먼저 확인하고, 고용24 구직등록부터 신청서 제출까지 순서대로 살펴봅니다.</p><p class="entry-meta"><a class="category-chip" href="#category-employment">고용·취업</a><span>·</span><span>2026. 8. 14.</span></p><a class="read-more" href="national-employment-support.html">더보기</a></div>
                   </div>
                 </div>
               </div>
             </article>
 
-            <article class="post-card" data-post="national-tomorrow-learning-card" data-category="category-employment">
+<article class="post-card" data-post="national-tomorrow-learning-card" data-category="category-employment">
               <div class="post-card-inner">
                 <div class="post-card-content">
                   <h2 class="entry-title"><a href="national-tomorrow-learning-card.html">국민내일배움카드: 훈련비 300만 원부터 확인할 점</a></h2>
                   <div class="post-card-body">
-                    <a class="post-card-thumbnail tile-learning" href="national-tomorrow-learning-card.html" tabindex="-1"><span>고용·취업</span><strong>내일배움<br />카드</strong></a>
+                    <a class="post-card-thumbnail" href="national-tomorrow-learning-card.html" tabindex="-1" style="--tile-accent:#5b4a9a;--tile-bg:#f1efff;"><span>고용·취업</span><strong>내일배움<br />카드</strong></a>
                     <div class="post-card-copy"><p class="entry-summary">카드 발급 대상, 추가 지원 가능성, 훈련과정 선택과 본인부담금 확인 방법을 공식 안내 기준으로 정리했습니다.</p><p class="entry-meta"><a class="category-chip" href="#category-employment">고용·취업</a><span>·</span><span>2026. 8. 14.</span></p><a class="read-more" href="national-tomorrow-learning-card.html">더보기</a></div>
                   </div>
                 </div>
               </div>
             </article>
 
-            <article class="post-card" data-post="parent-benefit" data-category="category-childbirth">
+<article class="post-card" data-post="parent-benefit" data-category="category-childbirth">
               <div class="post-card-inner">
                 <div class="post-card-content">
                   <h2 class="entry-title"><a href="parent-benefit.html">부모급여: 0세·1세 지원 대상과 신청 시기</a></h2>
                   <div class="post-card-body">
-                    <a class="post-card-thumbnail tile-parent" href="parent-benefit.html" tabindex="-1"><span>육아·출산</span><strong>부모<br />급여</strong></a>
+                    <a class="post-card-thumbnail" href="parent-benefit.html" tabindex="-1" style="--tile-accent:#9d4f6d;--tile-bg:#fff0f6;"><span>육아·출산</span><strong>부모<br />급여</strong></a>
                     <div class="post-card-copy"><p class="entry-summary">출생 뒤 언제 신청해야 하는지, 어린이집 이용 시 무엇이 달라지는지, 온라인과 주민센터 신청을 함께 안내합니다.</p><p class="entry-meta"><a class="category-chip" href="#category-childbirth">육아·출산</a><span>·</span><span>2026. 8. 14.</span></p><a class="read-more" href="parent-benefit.html">더보기</a></div>
                   </div>
                 </div>
               </div>
             </article>
 
-            <article class="post-card" data-post="first-meeting-voucher" data-category="category-childbirth">
+<article class="post-card" data-post="first-meeting-voucher" data-category="category-childbirth">
               <div class="post-card-inner">
                 <div class="post-card-content">
                   <h2 class="entry-title"><a href="first-meeting-voucher.html">첫만남이용권: 출생아 바우처 금액과 사용 전 확인 사항</a></h2>
                   <div class="post-card-body">
-                    <a class="post-card-thumbnail tile-first-meeting" href="first-meeting-voucher.html" tabindex="-1"><span>육아·출산</span><strong>첫만남<br />이용권</strong></a>
+                    <a class="post-card-thumbnail" href="first-meeting-voucher.html" tabindex="-1" style="--tile-accent:#b65c32;--tile-bg:#fff0e7;"><span>육아·출산</span><strong>첫만남<br />이용권</strong></a>
                     <div class="post-card-copy"><p class="entry-summary">국민행복카드 포인트로 받는 출생 지원 바우처의 대상, 신청 경로, 사용기한과 제한 업종을 확인합니다.</p><p class="entry-meta"><a class="category-chip" href="#category-childbirth">육아·출산</a><span>·</span><span>2026. 8. 14.</span></p><a class="read-more" href="first-meeting-voucher.html">더보기</a></div>
                   </div>
                 </div>
               </div>
             </article>
 
-            <article class="post-card" data-post="child-allowance" data-category="category-childbirth">
+<article class="post-card" data-post="child-allowance" data-category="category-childbirth">
               <div class="post-card-inner">
                 <div class="post-card-content">
                   <h2 class="entry-title"><a href="child-allowance.html">아동수당: 만 9세 미만 확대 기준과 신청 방법</a></h2>
                   <div class="post-card-body">
-                    <a class="post-card-thumbnail tile-child" href="child-allowance.html" tabindex="-1"><span>육아·출산</span><strong>아동<br />수당</strong></a>
+                    <a class="post-card-thumbnail" href="child-allowance.html" tabindex="-1" style="--tile-accent:#2d705c;--tile-bg:#edf6f2;"><span>육아·출산</span><strong>아동<br />수당</strong></a>
                     <div class="post-card-copy"><p class="entry-summary">2026년 지급 연령 확대 내용을 기준으로 대상 아동, 신청 시점, 지급일과 주소지 주민센터 신청 방법을 정리합니다.</p><p class="entry-meta"><a class="category-chip" href="#category-childbirth">육아·출산</a><span>·</span><span>2026. 8. 14.</span></p><a class="read-more" href="child-allowance.html">더보기</a></div>
                   </div>
                 </div>
@@ -281,17 +401,17 @@
           <aside class="widget-area" aria-label="블로그 사이드바">
             <section class="widget category-widget">
               <h2 class="widget-title">카테고리</h2>
-              <ul><li><a href="#category-childbirth">육아·출산 <span>6</span></a></li><li><a href="#category-employment">고용·취업 <span>4</span></a></li><li><a href="#category-life-energy">생활·에너지 <span>6</span></a></li><li><a href="#category-tax-refund">세금·환급 <span>2</span></a></li></ul>
+              <ul><li><a href="#category-childbirth">육아·출산 <span>9</span></a></li><li><a href="#category-employment">고용·취업 <span>7</span></a></li><li><a href="#category-life-energy">생활·에너지 <span>10</span></a></li><li><a href="#category-tax-refund">세금·환급 <span>2</span></a></li></ul>
             </section>
 
             <section class="widget">
               <h2 class="widget-title">최근 글</h2>
               <ul class="recent-post-list">
-                <li><a href="emergency-welfare-living-support.html">긴급복지 생계지원 2026</a></li>
-                <li><a href="basic-living-security.html">생계급여 2026</a></li>
-                <li><a href="housing-benefit.html">주거급여 2026</a></li>
-                <li><a href="education-benefit.html">교육급여 2026</a></li>
-                <li><a href="pregnancy-medical-voucher.html">임신·출산 진료비 지원</a></li>
+                <li><a href="youth-monthly-rent-support.html">청년월세 지원사업 2026</a></li>
+                <li><a href="child-care-service-support.html">아이돌봄서비스 정부지원</a></li>
+                <li><a href="basic-pension.html">기초연금 2026</a></li>
+                <li><a href="youth-tomorrow-savings-account.html">청년내일저축계좌</a></li>
+                <li><a href="postpartum-care-voucher.html">산모·신생아 건강관리</a></li>
               </ul>
             </section>
 
