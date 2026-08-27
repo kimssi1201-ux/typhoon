@@ -51,25 +51,37 @@
 
       <nav class="main-navigation" aria-label="주요 메뉴"><div class="inside-navigation"><ul><li><a href="index.html">홈</a></li><li><a href="/지원금" aria-current="page">지원금</a></li><li><a href="/지원금#category-childbirth">육아·출산</a></li><li><a href="/지원금#category-employment">고용·취업</a></li><li><a href="/지원금#category-life-energy">생활·에너지</a></li><li><a href="/지원금#category-tax-refund">세금·환급</a></li><li><a href="sources.html">자료 기준</a></li><li><a href="about.html">블로그 소개</a></li><li><a href="contact.html">문의</a></li></ul></div></nav>
 
-      <main class="site-main" id="main" data-post-count="28">
+      <main class="site-main" id="main" data-post-count="29">
         <div class="site-grid">
           <section class="content-area" aria-labelledby="archive-title">
             <header class="archive-title" id="support-category">
               <p>카테고리 · 지원금</p>
               <h1 id="archive-title">지원금</h1>
               <p class="archive-intro">신청 전에 꼭 알아야 할 조건과 서류를 읽기 쉽게 정리했습니다. 모든 글은 정부기관 또는 공공기관의 공식 페이지를 연결하며, 최종 확인일을 함께 표시합니다.</p>
-              <nav class="category-filter" aria-label="지원금 하위 카테고리"><ul><li><a href="#category-childbirth">육아·출산 <span>9</span></a></li><li><a href="#category-employment">고용·취업 <span>7</span></a></li><li><a href="#category-life-energy">생활·에너지 <span>10</span></a></li><li><a href="#category-tax-refund">세금·환급 <span>2</span></a></li></ul></nav>
+              <nav class="category-filter" aria-label="지원금 하위 카테고리"><ul><li><a href="#category-childbirth">육아·출산 <span>9</span></a></li><li><a href="#category-employment">고용·취업 <span>7</span></a></li><li><a href="#category-life-energy">생활·에너지 <span>11</span></a></li><li><a href="#category-tax-refund">세금·환급 <span>2</span></a></li></ul></nav>
               <form class="support-search" id="support-search" role="search" aria-label="지원금 글 검색" data-support-search>
                 <label for="supportSearchInput">지원금 글 검색</label>
                 <div class="support-search-row">
                   <input id="supportSearchInput" name="q" type="search" maxlength="40" autocomplete="off" placeholder="예: 청년월세, 부모급여, 에너지바우처" data-support-search-input />
                   <button class="support-search-clear" type="button" data-support-search-clear hidden>지우기</button>
                 </div>
-                <p class="support-search-count" data-support-search-status aria-live="polite">전체 28개 글을 표시 중입니다.</p>
+                <p class="support-search-count" data-support-search-status aria-live="polite">전체 29개 글을 표시 중입니다.</p>
               </form>
             </header>
 
-<article class="post-card" id="category-life-energy" data-post="youth-monthly-rent-support" data-category="category-life-energy">
+<article class="post-card" id="category-life-energy" data-post="k-pass-transport-refund" data-category="category-life-energy">
+              <div class="post-card-inner">
+                <div class="post-card-content">
+                  <h2 class="entry-title"><a href="k-pass-transport-refund.html">K-패스 2026: 대중교통비 환급률, 모두의 카드, 신청 방법</a></h2>
+                  <div class="post-card-body">
+                    <a class="post-card-thumbnail" href="k-pass-transport-refund.html" tabindex="-1" style="--tile-accent:#1d4ed8;--tile-bg:#eef3ff;"><span>생활·에너지</span><strong>K패스<br />교통환급</strong></a>
+                    <div class="post-card-copy"><p class="entry-summary">월 15회 이상 대중교통을 이용하는 만 19세 이상 주민이 확인할 K패스 환급률과 모두의 카드 신청 순서를 정리했습니다.</p><p class="entry-meta"><a class="category-chip" href="#category-life-energy">생활·에너지</a><span>·</span><span>2026. 8. 27.</span></p><a class="read-more" href="k-pass-transport-refund.html">더보기</a></div>
+                  </div>
+                </div>
+              </div>
+            </article>
+
+<article class="post-card" data-post="youth-monthly-rent-support" data-category="category-life-energy">
               <div class="post-card-inner">
                 <div class="post-card-content">
                   <h2 class="entry-title"><a href="youth-monthly-rent-support.html">청년월세 지원사업 2026: 월 20만 원, 신청기간, 소득 기준</a></h2>
@@ -409,17 +421,17 @@
           <aside class="widget-area" aria-label="블로그 사이드바">
             <section class="widget category-widget">
               <h2 class="widget-title">카테고리</h2>
-              <ul><li><a href="#category-childbirth">육아·출산 <span>9</span></a></li><li><a href="#category-employment">고용·취업 <span>7</span></a></li><li><a href="#category-life-energy">생활·에너지 <span>10</span></a></li><li><a href="#category-tax-refund">세금·환급 <span>2</span></a></li></ul>
+              <ul><li><a href="#category-childbirth">육아·출산 <span>9</span></a></li><li><a href="#category-employment">고용·취업 <span>7</span></a></li><li><a href="#category-life-energy">생활·에너지 <span>11</span></a></li><li><a href="#category-tax-refund">세금·환급 <span>2</span></a></li></ul>
             </section>
 
             <section class="widget">
               <h2 class="widget-title">최근 글</h2>
               <ul class="recent-post-list">
+                <li><a href="k-pass-transport-refund.html">K-패스 2026</a></li>
                 <li><a href="youth-monthly-rent-support.html">청년월세 지원사업 2026</a></li>
                 <li><a href="child-care-service-support.html">아이돌봄서비스 정부지원</a></li>
                 <li><a href="basic-pension.html">기초연금 2026</a></li>
                 <li><a href="youth-tomorrow-savings-account.html">청년내일저축계좌</a></li>
-                <li><a href="postpartum-care-voucher.html">산모·신생아 건강관리</a></li>
               </ul>
             </section>
 
