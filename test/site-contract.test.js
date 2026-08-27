@@ -403,10 +403,10 @@ const requiredFragments = [
   "공식 신청처와 문의처"
 ];
 
-test("the home is a compact support landing with six latest posts", async () => {
+test("the home is a compact support landing with twelve latest posts", async () => {
   const [html, css] = await Promise.all([readProjectFile("index.html"), readProjectFile("blog.css")]);
 
-  assert.equal((html.match(/<article class="post-card"/g) || []).length, 6, "the home shows exactly six latest posts");
+  assert.equal((html.match(/<article class="post-card"/g) || []).length, 12, "the home shows exactly twelve latest posts");
   assert.match(html, /data-post-count="32"/);
   assert.match(html, /class="content-area home-landing"/);
   assert.match(html, /<h1 class="screen-reader-text" id="home-title">복지모음집 지원금 안내<\/h1>/);
@@ -423,18 +423,19 @@ test("the home is a compact support landing with six latest posts", async () => 
   assert.match(html, /class="header-menu-panel"/);
   assert.match(html, /href="contact\.html">문의<\/a>/);
   assert.match(html, /href="privacy\.html">개인정보처리방침<\/a>/);
-  assert.match(html, /blog\.css\?v=20260828-home2/);
+  assert.match(html, /최근 업데이트 12개/);
+  assert.match(html, /blog\.css\?v=20260828-home3/);
   assert.match(html, /google-adsense-account/);
   assert.ok(html.includes(publisherId));
   assert.match(html, /<link rel="canonical" href="https:\/\/mustview\.co\.kr\/"/);
   assert.doesNotMatch(html, /housing-dashboard\.js|housing-support\.js|portal-overview/, "the public home no longer renders a portal dashboard");
   assert.doesNotMatch(visibleText(html), /\?{3,}/, "the home does not expose corrupted Korean text");
 
-  for (const post of posts.slice(0, 6)) {
+  for (const post of posts.slice(0, 12)) {
     assert.match(html, new RegExp(`href="${post.file}"`), post.file + " is linked from the home latest section");
     assert.match(html, new RegExp(`data-post="${post.slug}"[^>]+data-category="${post.categoryId}"`), post.file + " keeps category metadata on the home");
   }
-  for (const post of posts.slice(6)) {
+  for (const post of posts.slice(12)) {
     assert.doesNotMatch(html, new RegExp(`href="${post.file}"`), post.file + " is not linked as a latest card on the home");
   }
 
@@ -462,10 +463,16 @@ test("the home is a compact support landing with six latest posts", async () => 
   assert.doesNotMatch(css, /\.home-hero|\.home-intro|\.home-primary-link/, "the removed home hero has no leftover styles");
   assert.match(css, /\.home-landing > \.home-section:first-of-type \.home-section-header\s*\{[\s\S]*?margin-top:\s*26px/);
   assert.doesNotMatch(css, /\.category-grid|\.category-card|\.category-count/, "the removed home category cards have no leftover styles");
+  assert.match(css, /\.home-latest\s*\{[\s\S]*?display:\s*grid;[\s\S]*?grid-template-columns:\s*repeat\(3, minmax\(0, 1fr\)\);[\s\S]*?gap:\s*14px/);
+  assert.match(css, /\.home-latest \.post-card-content\s*\{[\s\S]*?padding:\s*16px/);
+  assert.match(css, /\.home-latest \.post-card-body\s*\{[\s\S]*?grid-template-columns:\s*82px minmax\(0, 1fr\)/);
+  assert.match(css, /\.home-latest \.read-more\s*\{[\s\S]*?display:\s*none/);
   assert.match(css, /\.home-section-header\s*\{[\s\S]*?margin:\s*48px 0 20px/);
   assert.match(css, /\.home-section-header h2\s*\{[\s\S]*?font-size:\s*24px/);
-  assert.match(css, /\.home-latest \.post-card \+ \.post-card\s*\{[\s\S]*?margin-top:\s*16px/);
+  assert.match(css, /\.home-latest \.post-card \+ \.post-card\s*\{[\s\S]*?margin-top:\s*0/);
+  assert.match(css, /@media \(max-width: 1024px\)[\s\S]*?\.home-latest\s*\{[\s\S]*?grid-template-columns:\s*repeat\(2, minmax\(0, 1fr\)\)/);
   assert.match(css, /@media \(max-width: 767px\)/);
+  assert.match(css, /@media \(max-width: 767px\)[\s\S]*?\.home-latest\s*\{\s*grid-template-columns:\s*1fr/);
   assert.match(css, /@media \(max-width: 767px\)[\s\S]*?\.header-actions\s*\{\s*display:\s*flex/);
   assert.match(css, /@media \(max-width: 767px\)[\s\S]*?\.main-navigation\s*\{\s*display:\s*none/);
   assert.match(css, /@media \(max-width: 767px\)[\s\S]*?grid-template-columns:\s*92px minmax\(0, 1fr\)/);
