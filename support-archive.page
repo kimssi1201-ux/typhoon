@@ -15,7 +15,7 @@
     <meta property="og:url" content="https://mustview.co.kr/지원금" />
     <meta property="og:image" content="https://mustview.co.kr/assets/benefit-employment-inline.webp" />
     <meta name="twitter:card" content="summary_large_image" />
-    <link rel="stylesheet" href="/blog.css?v=20260828-mobilenav1" />
+    <link rel="stylesheet" href="/blog.css?v=20260828-archive1" />
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5751319666030430" crossorigin="anonymous"></script>
     <script type="application/ld+json">
       {
@@ -55,7 +55,6 @@
         <div class="site-grid">
           <section class="content-area" aria-labelledby="archive-title">
             <header class="archive-title" id="support-category">
-              <p>카테고리 · 지원금</p>
               <h1 id="archive-title">지원금</h1>
               <p class="archive-intro">신청 전에 꼭 알아야 할 조건과 서류를 읽기 쉽게 정리했습니다. 모든 글은 정부기관 또는 공공기관의 공식 페이지를 연결하며, 최종 확인일을 함께 표시합니다.</p>
               <nav class="category-filter" aria-label="지원금 하위 카테고리"><ul><li><a href="#category-childbirth">육아·출산 <span>9</span></a></li><li><a href="#category-employment">고용·취업 <span>7</span></a></li><li><a href="#category-life-energy">생활·에너지 <span>14</span></a></li><li><a href="#category-tax-refund">세금·환급 <span>2</span></a></li></ul></nav>

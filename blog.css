@@ -419,15 +419,6 @@ img { display: block; max-width: 100%; height: auto; }
   box-shadow: var(--gp-shadow);
 }
 
-.archive-title p {
-  margin: 0 0 7px;
-  color: var(--gp-accent);
-  font-size: 0.75rem;
-  font-weight: 800;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-}
-
 .archive-title h1,
 .entry-header h1,
 .entry-title {
