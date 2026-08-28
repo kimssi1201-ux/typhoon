@@ -688,14 +688,18 @@ test("each support article can load a disclosed keyword-matched Coupang Partners
       post.file + " places a keyword-matched affiliate widget after the support amount section"
     );
     assert.equal((html.match(/data-coupang-partners/g) || []).length, 2, post.file + " has one inline and one footer affiliate widget");
-    assert.match(html, /<script src="coupang-partners\.js\?v=20260828-coupang2" defer><\/script>/, post.file + " loads the affiliate script");
+    assert.match(html, /<script src="coupang-partners\.js\?v=20260828-coupang3" defer><\/script>/, post.file + " loads the affiliate script");
     assert.match(html, /<section class="article-content" data-post-content data-counted-content>[\s\S]*?<aside class="affiliate-widget affiliate-widget-inline"[\s\S]*?<\/section>/, post.file + " keeps the inline affiliate widget inside the article body");
     assert.match(html, /<footer class="official-sources">[\s\S]*?<aside class="affiliate-widget"[\s\S]*?<nav class="post-navigation"/, post.file + " separates sources, footer affiliate links, and article navigation");
   });
 
   assert.match(script, /\/api\/coupang-partners/);
   assert.match(script, /const requests = new Map\(\)/);
+  assert.match(script, /const renderedProductKeys = new Set\(\)/);
   assert.match(script, /requests\.has\(cacheKey\)/);
+  assert.match(script, /takeFreshProducts/);
+  assert.match(script, /renderedProductKeys\.has\(key\)/);
+  assert.match(script, /Math\.min\(10, group\.reduce/);
   assert.match(script, /X-Requested-With/);
   assert.match(script, /MustViewAffiliateWidget/);
   assert.match(script, /nofollow sponsored noopener noreferrer/);

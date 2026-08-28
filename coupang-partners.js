@@ -3,6 +3,37 @@
   if (widgets.length === 0) return;
 
   const requests = new Map();
+  const renderedProductKeys = new Set();
+
+  const widgetLimit = (widget) => {
+    const value = Number.parseInt(widget.dataset.limit || "3", 10);
+    return Number.isFinite(value) ? Math.min(Math.max(value, 1), 3) : 3;
+  };
+
+  const productKey = (product) => String(product.title || product.url || "").trim().toLowerCase().replace(/\s+/g, " ");
+
+  const uniqueProducts = (products) => {
+    const seen = new Set();
+    return products.filter((product) => {
+      if (!product.url || !product.title) return false;
+      const key = productKey(product);
+      if (!key || seen.has(key)) return false;
+      seen.add(key);
+      return true;
+    });
+  };
+
+  const takeFreshProducts = (products, limit) => {
+    const fresh = [];
+    for (const product of products) {
+      const key = productKey(product);
+      if (!key || renderedProductKeys.has(key)) continue;
+      renderedProductKeys.add(key);
+      fresh.push(product);
+      if (fresh.length >= limit) break;
+    }
+    return fresh;
+  };
 
   const formatPrice = (value) => {
     const number = Number(value);
@@ -44,8 +75,7 @@
     return link;
   };
 
-  const render = (widget, payload) => {
-    const products = Array.isArray(payload.products) ? payload.products.filter((product) => product.url && product.title) : [];
+  const render = (widget, products) => {
     if (products.length === 0) return;
 
     widget.replaceChildren();
@@ -55,7 +85,7 @@
     widget.append(element("p", "affiliate-disclosure", "이 영역에는 쿠팡 파트너스 링크가 포함될 수 있으며, 구매 시 일정액의 수수료를 받을 수 있습니다."));
 
     const grid = element("div", "affiliate-grid");
-    products.slice(0, 3).forEach((product) => grid.append(productCard(product)));
+    products.forEach((product) => grid.append(productCard(product)));
     widget.append(grid);
   };
 
@@ -84,17 +114,32 @@
     return request;
   };
 
-  const load = async (widget) => {
+  const groupedWidgets = new Map();
+  widgets.forEach((widget) => {
     const keyword = String(widget.dataset.keyword || "").trim();
     if (keyword.length < 2) return;
+    if (!groupedWidgets.has(keyword)) groupedWidgets.set(keyword, []);
+    groupedWidgets.get(keyword).push(widget);
+  });
 
-    const payload = await fetchProducts(keyword, widget.dataset.limit || "3");
-    if (payload) {
-      render(widget, payload);
-    } else {
+  const loadGroup = async (keyword, group) => {
+    const requestLimit = Math.min(10, group.reduce((total, widget) => total + widgetLimit(widget), 0));
+    const payload = await fetchProducts(keyword, String(requestLimit));
+    const products = payload ? uniqueProducts(Array.isArray(payload.products) ? payload.products : []) : [];
+
+    group.forEach((widget) => {
+      const selected = takeFreshProducts(products, widgetLimit(widget));
+      if (selected.length > 0) {
+        render(widget, selected);
+        return;
+      }
       widget.hidden = true;
-    }
+    });
   };
 
-  widgets.forEach(load);
+  (async () => {
+    for (const [keyword, group] of groupedWidgets) {
+      await loadGroup(keyword, group);
+    }
+  })();
 })();
