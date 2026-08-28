@@ -424,7 +424,7 @@ test("the home is a compact support landing with twelve latest posts", async () 
   assert.match(html, /href="contact\.html">문의<\/a>/);
   assert.match(html, /href="privacy\.html">개인정보처리방침<\/a>/);
   assert.match(html, /최근 업데이트 12개/);
-  assert.match(html, /blog\.css\?v=20260828-home3/);
+  assert.match(html, /blog\.css\?v=20260828-mobilenav1/);
   assert.match(html, /google-adsense-account/);
   assert.ok(html.includes(publisherId));
   assert.match(html, /<link rel="canonical" href="https:\/\/mustview\.co\.kr\/"/);
@@ -583,7 +583,7 @@ test("each support post has complete metadata, a single H1, and a valid body len
     }
     assert.match(html, /google-adsense-account/);
     assert.ok(html.includes(publisherId));
-    assert.match(html, /blog\.css\?v=20260827-search1/);
+    assert.match(html, /blog\.css\?v=20260828-mobilenav1/);
     assert.match(html, /href="contact\.html">문의<\/a>/, post.file + " links to the contact page");
     assert.match(html, /href="privacy\.html">개인정보처리방침<\/a>/, post.file + " links to the privacy policy");
     assert.equal((html.match(/<img\b/g) || []).length, 1, post.file + " has exactly one contextual body image");
@@ -619,7 +619,7 @@ test("trust pages are substantial and consistent for AdSense review", async () =
     assert.match(html, /google-adsense-account/);
     assert.ok(html.includes(publisherId));
     assert.match(html, /pagead2\.googlesyndication\.com\/pagead\/js\/adsbygoogle\.js/);
-    assert.match(html, /blog\.css\?v=20260827-search1/);
+    assert.match(html, /blog\.css\?v=20260828-mobilenav1/);
     assert.match(html, /복지모음집/);
     assert.match(html, /href="sources\.html">자료 기준<\/a>/);
     assert.match(html, /href="about\.html">블로그 소개<\/a>/);
