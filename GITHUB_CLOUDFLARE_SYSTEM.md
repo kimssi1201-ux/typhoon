@@ -4,19 +4,10 @@
 
 1. 코드를 수정합니다.
 2. GitHub 저장소의 `main` 브랜치에 업로드합니다.
-3. GitHub Actions가 문법 검사와 빌드 명령을 실행합니다.
-4. 검사가 통과하면 Cloudflare Pages에 자동 배포합니다.
+3. GitHub Actions(`CI Checks`)가 문법 검사, 테스트와 빌드 명령을 실행해 결과를 검증합니다.
+4. 실제 배포는 Cloudflare Pages의 GitHub 연동(Git integration)이 `main` 브랜치 push를 감지해 자동으로 수행합니다. GitHub Actions는 검증만 담당하며 배포를 트리거하지 않습니다.
 
-## GitHub Secrets
-
-GitHub 저장소의 `Settings` > `Secrets and variables` > `Actions`에 아래 값을 추가합니다.
-
-- `CLOUDFLARE_API_TOKEN`: Cloudflare Pages 배포 권한이 있는 API 토큰
-- `CLOUDFLARE_ACCOUNT_ID`: Cloudflare Account ID
-
-선택 변수:
-
-- `CLOUDFLARE_PROJECT_NAME`: Cloudflare Pages 프로젝트 이름. 기본값은 `typhoon-path-site`입니다.
+과거에는 GitHub Actions에서 `wrangler pages deploy`로 직접 배포했지만, Cloudflare Pages Git 연동과 중복되고 `CLOUDFLARE_API_TOKEN` 시크릿 없이는 항상 실패했기 때문에 배포 단계를 제거했습니다. 별도의 GitHub Secrets 설정은 더 이상 필요하지 않습니다.
 
 ## Cloudflare 환경변수
 
@@ -29,9 +20,8 @@ Cloudflare Pages 프로젝트의 `Settings` > `Environment variables`에 아래 
 ## Cloudflare에서 먼저 할 일
 
 1. Cloudflare 대시보드에서 `Workers & Pages`로 이동합니다.
-2. Pages 프로젝트를 만듭니다.
-3. 프로젝트 이름을 `typhoon-path-site`로 맞추면 별도 변수 설정 없이 동작합니다.
-4. Pages 프로젝트 환경변수에 `KMA_AUTH_KEY`를 추가합니다.
+2. Pages 프로젝트를 GitHub 저장소와 연결된 Git integration 방식으로 만듭니다(빌드 명령 없음, 빌드 출력 디렉터리는 `/`).
+3. Pages 프로젝트 환경변수에 `KMA_AUTH_KEY`를 추가합니다.
 
 ## 로컬 확인
 
