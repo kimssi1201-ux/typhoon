@@ -7,6 +7,15 @@ const readProjectBuffer = (path) => readFile(new URL("../" + path, import.meta.u
 const publisherId = "ca-pub-5751319666030430";
 const posts = [
   {
+    "file": "national-scholarship-second-round-2026.html",
+    "slug": "national-scholarship-second-round-2026",
+    "image": "benefit-learning-inline.webp",
+    "title": "국가장학금 2026년 2학기 2차 신청: 9월 9일 마감 전 확인",
+    "category": "생활·에너지",
+    "categoryId": "category-life-energy",
+    "source": "kosaf.go.kr"
+  },
+  {
     "file": "modui-card-kpass-benefit.html",
     "slug": "modui-card-kpass-benefit",
     "image": "benefit-energy-voucher-inline.webp",
@@ -316,7 +325,7 @@ const categories = [
   {
     "id": "category-life-energy",
     "label": "생활·에너지",
-    "count": 14
+    "count": 15
   },
   {
     "id": "category-tax-refund",
@@ -325,6 +334,7 @@ const categories = [
   }
 ];
 const affiliateKeywords = {
+  "national-scholarship-second-round-2026.html": "대학생 노트북 파우치",
   "modui-card-kpass-benefit.html": "교통카드 목걸이",
   "k-pass-refund-calculator.html": "교통카드 케이스",
   "k-pass-card-registration.html": "교통카드 지갑",
@@ -407,7 +417,7 @@ test("the home is a compact support landing with twelve latest posts", async () 
   const [html, css] = await Promise.all([readProjectFile("index.html"), readProjectFile("blog.css")]);
 
   assert.equal((html.match(/<article class="post-card"/g) || []).length, 12, "the home shows exactly twelve latest posts");
-  assert.match(html, /data-post-count="32"/);
+  assert.match(html, /data-post-count="33"/);
   assert.match(html, /class="content-area home-landing"/);
   assert.match(html, /class="home-finder"/);
   assert.match(html, /<h1 id="home-title">지원금 검색<\/h1>/);
@@ -501,7 +511,7 @@ test("the support archive lives at /지원금 and contains all categorized posts
   ]);
 
   assert.equal((html.match(/<article class="post-card"/g) || []).length, posts.length, "the support archive has every categorized post");
-  assert.match(html, /data-post-count="32"/);
+  assert.match(html, /data-post-count="33"/);
   assert.match(html, /<link rel="stylesheet" href="\/blog\.css\?v=20260828-archive1" \/>/);
   assert.match(html, /<link rel="canonical" href="https:\/\/mustview\.co\.kr\/지원금"/);
   assert.match(html, /"@type": "CollectionPage"/);
@@ -646,7 +656,7 @@ test("trust pages are substantial and consistent for AdSense review", async () =
   assert.match(about, /광고와 편집의 독립성/);
   assert.doesNotMatch(about, /40대 중반 성인의 확인 사례/);
   assert.match(about, /문의 및 정보 수정 요청/);
-  assert.match(about, /현재 공개한 게시글은 정확히 32개/);
+  assert.match(about, /현재 공개한 게시글은 정확히 33개/);
   assert.match(sources, /nts\.go\.kr/);
   assert.match(sources, /work24\.go\.kr/);
   assert.match(sources, /bokjiro\.go\.kr/);
