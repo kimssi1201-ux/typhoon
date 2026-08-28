@@ -1199,7 +1199,6 @@ img { display: block; max-width: 100%; height: auto; }
   .site-header-note { display: none; }
   .site-description { display: none; }
   .header-actions { display: flex; }
-  .main-navigation { display: none; }
   .inside-navigation { justify-content: flex-start; padding: 0 8px; border-radius: 9px; overflow-x: auto; scrollbar-width: none; }
   .inside-navigation::-webkit-scrollbar { display: none; }
   .main-navigation ul { min-width: max-content; }

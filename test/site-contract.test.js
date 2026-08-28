@@ -474,7 +474,8 @@ test("the home is a compact support landing with twelve latest posts", async () 
   assert.match(css, /@media \(max-width: 767px\)/);
   assert.match(css, /@media \(max-width: 767px\)[\s\S]*?\.home-latest\s*\{\s*grid-template-columns:\s*1fr/);
   assert.match(css, /@media \(max-width: 767px\)[\s\S]*?\.header-actions\s*\{\s*display:\s*flex/);
-  assert.match(css, /@media \(max-width: 767px\)[\s\S]*?\.main-navigation\s*\{\s*display:\s*none/);
+  assert.doesNotMatch(css, /@media \(max-width: 767px\)[\s\S]*?\.main-navigation\s*\{\s*display:\s*none/, "the category tab bar stays visible (horizontally scrollable) on mobile like desktop");
+  assert.match(css, /@media \(max-width: 767px\)[\s\S]*?\.inside-navigation\s*\{[\s\S]*?overflow-x:\s*auto/, "the mobile nav scrolls horizontally instead of being hidden");
   assert.match(css, /@media \(max-width: 767px\)[\s\S]*?grid-template-columns:\s*92px minmax\(0, 1fr\)/);
   assert.match(css, /\.table-of-contents/);
   assert.doesNotMatch(css, /\.reader-persona/, "the removed reader persona has no leftover styles");
