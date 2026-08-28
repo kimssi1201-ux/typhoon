@@ -4,7 +4,7 @@ import { onRequest } from "../functions/_middleware.js";
 import { makeRequest } from "./helpers.js";
 
 test("HTML middleware preserves the response and injects canonical, AdSense, and map hooks", async () => {
-  const html = '<!doctype html><html><head><link rel="canonical" href="https://old.example/old"></head><body><div id="liveMap"></div><script src="app.js"></script></body></html>';
+  const html = '<!doctype html><html><head><link rel="canonical" href="https://old.example/old"><link rel="stylesheet" href="blog.css?v=test"></head><body><div id="liveMap"></div><script src="app.js"></script></body></html>';
   const response = await onRequest({
     request: makeRequest("/map?from=test"),
     next: async () => new Response(html, { status: 200, headers: { "content-type": "text/html; charset=utf-8" } })
@@ -14,6 +14,7 @@ test("HTML middleware preserves the response and injects canonical, AdSense, and
   assert.equal(response.status, 200);
   assert.match(body, /canonical" href="https:\/\/mustview\.co\.kr\/map/);
   assert.match(body, /google-adsense-account/);
+  assert.match(body, /href="\/blog\.css\?v=test"/);
   assert.match(body, /pagead2\.googlesyndication\.com\/pagead\/js\/adsbygoogle\.js/);
   assert.match(body, /id="leaflet-map-capture"/);
   assert.match(body, /id="global-cyclone-tracker-loader"/);
@@ -21,7 +22,7 @@ test("HTML middleware preserves the response and injects canonical, AdSense, and
 
 test("HTML middleware serves the support archive without redirecting the Korean path", async () => {
   let fetchedPath = "";
-  const html = '<!doctype html><html><head><link rel="canonical" href="https://mustview.co.kr/support"></head><body><main data-post-count="8">지원금</main></body></html>';
+  const html = '<!doctype html><html><head><link rel="canonical" href="https://mustview.co.kr/support"><link rel="stylesheet" href="blog.css?v=archive"></head><body><main data-post-count="8">지원금</main></body></html>';
   const response = await onRequest({
     request: makeRequest("/%EC%A7%80%EC%9B%90%EA%B8%88"),
     env: {
@@ -42,7 +43,20 @@ test("HTML middleware serves the support archive without redirecting the Korean 
   assert.equal(fetchedPath, "/support-archive.page");
   assert.match(response.headers.get("content-type") || "", /text\/html/);
   assert.match(body, /canonical" href="https:\/\/mustview\.co\.kr\/지원금/);
+  assert.match(body, /href="\/blog\.css\?v=archive"/);
   assert.match(body, /data-post-count="8"/);
+});
+
+test("HTML middleware redirects the slash support archive to the canonical Korean path", async () => {
+  const response = await onRequest({
+    request: makeRequest("/%EC%A7%80%EC%9B%90%EA%B8%88/"),
+    next: async () => {
+      throw new Error("the slash support archive should redirect before asset lookup");
+    }
+  });
+
+  assert.equal(response.status, 301);
+  assert.equal(response.headers.get("location"), "https://mustview.co.kr/%EC%A7%80%EC%9B%90%EA%B8%88");
 });
 
 test("HTML middleware serves legacy support URLs and normalizes them client-side", async () => {

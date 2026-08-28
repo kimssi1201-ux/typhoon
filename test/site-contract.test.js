@@ -490,6 +490,7 @@ test("the support archive lives at /지원금 and contains all categorized posts
 
   assert.equal((html.match(/<article class="post-card"/g) || []).length, posts.length, "the support archive has every categorized post");
   assert.match(html, /data-post-count="32"/);
+  assert.match(html, /<link rel="stylesheet" href="\/blog\.css\?v=20260828-mobilenav1" \/>/);
   assert.match(html, /<link rel="canonical" href="https:\/\/mustview\.co\.kr\/지원금"/);
   assert.match(html, /"@type": "CollectionPage"/);
   assert.match(html, /<h1 id="archive-title">지원금<\/h1>/);

@@ -71,6 +71,10 @@ function insertBefore(html, needle, value) {
 
 export async function onRequest(context) {
   const requestUrl = new URL(context.request.url);
+  if (safeDecodePathname(requestUrl.pathname) === "/지원금/") {
+    return Response.redirect(`${CANONICAL_ORIGIN}/지원금${requestUrl.search}`, 301);
+  }
+
   const legacySupportArchive = LEGACY_SUPPORT_ARCHIVE_PATHS.has(safeDecodePathname(requestUrl.pathname));
   const archiveRequest = supportArchiveRequest(context.request);
   let response;
@@ -93,6 +97,7 @@ export async function onRequest(context) {
 
   let html = await response.text();
   const canonical = canonicalTag(context.request.url);
+  html = html.replace(/\s+href=(["'])blog\.css(\?[^"']*)?\1/g, (_match, quote, version = "") => ` href=${quote}/blog.css${version}${quote}`);
 
   if (html.includes('rel="canonical"')) {
     html = html.replace(/<link\s+rel=["']canonical["'][^>]*>/i, canonical);
