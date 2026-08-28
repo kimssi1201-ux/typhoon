@@ -2,6 +2,8 @@
   const widgets = [...document.querySelectorAll("[data-coupang-partners]")];
   if (widgets.length === 0) return;
 
+  const requests = new Map();
+
   const formatPrice = (value) => {
     const number = Number(value);
     return Number.isFinite(number) && number > 0
@@ -57,15 +59,14 @@
     widget.append(grid);
   };
 
-  const load = async (widget) => {
-    const keyword = String(widget.dataset.keyword || "").trim();
-    if (keyword.length < 2) return;
-
+  const fetchProducts = (keyword, limit) => {
+    const cacheKey = `${keyword}\n${limit}`;
+    if (requests.has(cacheKey)) return requests.get(cacheKey);
     const url = new URL("/api/coupang-partners", window.location.origin);
     url.searchParams.set("keyword", keyword);
-    url.searchParams.set("limit", widget.dataset.limit || "3");
+    url.searchParams.set("limit", limit);
 
-    try {
+    const request = (async () => {
       const response = await fetch(url.toString(), {
         cache: "no-store",
         credentials: "omit",
@@ -74,11 +75,23 @@
           "X-Requested-With": "MustViewAffiliateWidget"
         }
       });
-      if (!response.ok) return;
+      if (!response.ok) return null;
       const payload = await response.json();
-      if (!payload.ok || !payload.configured) return;
+      return payload.ok && payload.configured ? payload : null;
+    })().catch(() => null);
+
+    requests.set(cacheKey, request);
+    return request;
+  };
+
+  const load = async (widget) => {
+    const keyword = String(widget.dataset.keyword || "").trim();
+    if (keyword.length < 2) return;
+
+    const payload = await fetchProducts(keyword, widget.dataset.limit || "3");
+    if (payload) {
       render(widget, payload);
-    } catch {
+    } else {
       widget.hidden = true;
     }
   };
