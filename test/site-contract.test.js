@@ -7,6 +7,42 @@ const readProjectBuffer = (path) => readFile(new URL("../" + path, import.meta.u
 const publisherId = "ca-pub-5751319666030430";
 const posts = [
   {
+    "file": "chuseok-agri-discount-2026.html",
+    "slug": "chuseok-agri-discount-2026",
+    "image": "benefit-energy-voucher-inline.webp",
+    "title": "추석 농축산물 할인 지원 2026: 9월 성수품 20~30% 할인 정리",
+    "category": "생활·에너지",
+    "categoryId": "category-life-energy",
+    "source": "mafra.go.kr"
+  },
+  {
+    "file": "k-newdeal-academy-2026.html",
+    "slug": "k-newdeal-academy-2026",
+    "image": "benefit-employment-inline.webp",
+    "title": "K-뉴딜 아카데미 2026: 수도권 월 30만 원·비수도권 월 50만 원 참여수당",
+    "category": "고용·취업",
+    "categoryId": "category-employment",
+    "source": "moelyouth.work24.go.kr"
+  },
+  {
+    "file": "youth-future-center-2026.html",
+    "slug": "youth-future-center-2026",
+    "image": "benefit-employment-inline.webp",
+    "title": "청년 미래센터 2026: 가족돌봄·고립은둔청년 상담과 자기돌봄비",
+    "category": "고용·취업",
+    "categoryId": "category-employment",
+    "source": "moelyouth.work24.go.kr"
+  },
+  {
+    "file": "k-digital-training-2026.html",
+    "slug": "k-digital-training-2026",
+    "image": "benefit-learning-inline.webp",
+    "title": "K-디지털 트레이닝 2026: AI·빅데이터 훈련비와 월 최대 20만 원 장려금",
+    "category": "고용·취업",
+    "categoryId": "category-employment",
+    "source": "work24.go.kr"
+  },
+  {
     "file": "chuseok-minsaeng-support-2026.html",
     "slug": "chuseok-minsaeng-support-2026",
     "image": "benefit-energy-voucher-inline.webp",
@@ -383,12 +419,12 @@ const categories = [
   {
     "id": "category-employment",
     "label": "고용·취업",
-    "count": 7
+    "count": 10
   },
   {
     "id": "category-life-energy",
     "label": "생활·에너지",
-    "count": 22
+    "count": 23
   },
   {
     "id": "category-tax-refund",
@@ -397,6 +433,10 @@ const categories = [
   }
 ];
 const affiliateKeywords = {
+  "chuseok-agri-discount-2026.html": "명절 과일 선물세트",
+  "k-newdeal-academy-2026.html": "온라인 강의 헤드셋",
+  "youth-future-center-2026.html": "마음건강 다이어리",
+  "k-digital-training-2026.html": "코딩 입문 도서",
   "chuseok-minsaeng-support-2026.html": "추석 장바구니",
   "sokcho-chuseok-minsaeng-support-2026.html": "지역화폐 카드지갑",
   "uiryeong-chuseok-minsaeng-support-2026.html": "전통시장 장바구니",
@@ -487,7 +527,7 @@ test("the home is a compact support landing with twelve latest posts", async () 
   const [html, css] = await Promise.all([readProjectFile("index.html"), readProjectFile("blog.css")]);
 
   assert.equal((html.match(/<article class="post-card"/g) || []).length, 12, "the home shows exactly twelve latest posts");
-  assert.match(html, /data-post-count="40"/);
+  assert.match(html, /data-post-count="44"/);
   assert.match(html, /class="content-area home-landing"/);
   assert.match(html, /class="home-finder"/);
   assert.match(html, /<h1 id="home-title">지원금 검색<\/h1>/);
@@ -581,7 +621,7 @@ test("the support archive lives at /지원금 and contains all categorized posts
   ]);
 
   assert.equal((html.match(/<article class="post-card"/g) || []).length, posts.length, "the support archive has every categorized post");
-  assert.match(html, /data-post-count="40"/);
+  assert.match(html, /data-post-count="44"/);
   assert.match(html, /<link rel="stylesheet" href="\/blog\.css\?v=20260828-archive1" \/>/);
   assert.match(html, /<link rel="canonical" href="https:\/\/mustview\.co\.kr\/지원금"/);
   assert.match(html, /"@type": "CollectionPage"/);
@@ -651,7 +691,7 @@ test("each support post has complete metadata, a single H1, and a valid body len
     assert.match(html, /data-toc-list/, post.file + " has a generated table of contents target");
     assert.match(html, /data-post-content/, post.file + " exposes headings for the generated table of contents");
     assert.match(html, /class="key-facts"/, post.file + " has a key facts box");
-    assert.match(html, /최종 확인 2026\. 8\. (14|15|23|24|27|28|29)\./, post.file + " exposes its verification date");
+    assert.match(html, /최종 확인 2026\. 8\. (14|15|23|24|27|28|29|30)\./, post.file + " exposes its verification date");
     assert.doesNotMatch(html, /<span>2026(?:\.|년) 8(?:\.|월) (?:14|15|23|24)(?:\.|일)<\/span>\s*<span>·<\/span>\s*<span>최종 확인/, post.file + " does not duplicate identical publish and verification dates");
     assert.match(html, /class="official-sources"/, post.file + " has a source list");
     assert.match(html, new RegExp(post.source.replace(".", "\\.")), post.file + " cites its official source");
@@ -726,7 +766,7 @@ test("trust pages are substantial and consistent for AdSense review", async () =
   assert.match(about, /광고와 편집의 독립성/);
   assert.doesNotMatch(about, /40대 중반 성인의 확인 사례/);
   assert.match(about, /문의 및 정보 수정 요청/);
-  assert.match(about, /현재 공개한 게시글은 정확히 40개/);
+  assert.match(about, /현재 공개한 게시글은 정확히 44개/);
   assert.match(sources, /nts\.go\.kr/);
   assert.match(sources, /work24\.go\.kr/);
   assert.match(sources, /bokjiro\.go\.kr/);
