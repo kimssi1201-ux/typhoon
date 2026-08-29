@@ -6,8 +6,64 @@
     <atom:link href="https://mustview.co.kr/rss.xml" rel="self" type="application/rss+xml" />
     <description>정부와 공공기관의 공식 자료를 바탕으로 지원금 신청 정보를 정리합니다.</description>
     <language>ko-KR</language>
-    <lastBuildDate>Fri, 28 Aug 2026 00:00:00 +0900</lastBuildDate>
+    <lastBuildDate>Sat, 29 Aug 2026 00:00:00 +0900</lastBuildDate>
     <ttl>60</ttl>
+    <item>
+      <title>추석 민생지원금 2026 지역별 총정리: 속초·의령·영동·고창·함평·완주</title>
+      <link>https://mustview.co.kr/chuseok-minsaeng-support-2026</link>
+      <guid isPermaLink="true">https://mustview.co.kr/chuseok-minsaeng-support-2026</guid>
+      <pubDate>Sat, 29 Aug 2026 00:00:00 +0900</pubDate>
+      <category>생활·에너지</category>
+      <description>2026년 추석 전후 신청 가능한 지자체 민생지원금 확정 지역 6곳의 금액, 대상, 신청기간, 지급수단을 공식 공고 기준으로 비교했습니다.</description>
+    </item>
+    <item>
+      <title>속초시 추석 민생회복지원금 2026: 1인 20만 원, 9월 11일 마감</title>
+      <link>https://mustview.co.kr/sokcho-chuseok-minsaeng-support-2026</link>
+      <guid isPermaLink="true">https://mustview.co.kr/sokcho-chuseok-minsaeng-support-2026</guid>
+      <pubDate>Sat, 29 Aug 2026 00:00:00 +0900</pubDate>
+      <category>생활·에너지</category>
+      <description>속초시 민생회복지원금 20만 원의 대상, 온라인 CHAK 신청, 동주민센터 방문 신청과 9월 11일 마감일을 정리했습니다.</description>
+    </item>
+    <item>
+      <title>의령군 추석 민생안정지원금 2026: 1인 50만 원, 방문 신청</title>
+      <link>https://mustview.co.kr/uiryeong-chuseok-minsaeng-support-2026</link>
+      <guid isPermaLink="true">https://mustview.co.kr/uiryeong-chuseok-minsaeng-support-2026</guid>
+      <pubDate>Sat, 29 Aug 2026 00:00:00 +0900</pubDate>
+      <category>생활·에너지</category>
+      <description>의령군 민생안정지원금 50만 원의 지급 대상, 읍·면사무소 방문 신청, 요일제와 사용기한을 공식 안내 기준으로 정리했습니다.</description>
+    </item>
+    <item>
+      <title>영동군 추석 민생안정지원금 2026: 1인 30만 원, 방문 신청 8월 31일 시작</title>
+      <link>https://mustview.co.kr/yeongdong-chuseok-minsaeng-support-2026</link>
+      <guid isPermaLink="true">https://mustview.co.kr/yeongdong-chuseok-minsaeng-support-2026</guid>
+      <pubDate>Sat, 29 Aug 2026 00:00:00 +0900</pubDate>
+      <category>생활·에너지</category>
+      <description>영동군 민생안정지원금 30만 원의 온라인 신청 종료 후 방문 신청 일정, 영동페이 지급과 대리 신청 서류를 정리했습니다.</description>
+    </item>
+    <item>
+      <title>고창군 추석 군민활력지원금 2026: 1인 30만 원, 9월 1일 신청 시작</title>
+      <link>https://mustview.co.kr/gochang-chuseok-minsaeng-support-2026</link>
+      <guid isPermaLink="true">https://mustview.co.kr/gochang-chuseok-minsaeng-support-2026</guid>
+      <pubDate>Sat, 29 Aug 2026 00:00:00 +0900</pubDate>
+      <category>생활·에너지</category>
+      <description>고창군 군민활력지원금 30만 원의 신청기간, 주민행복센터 신청, 첫 주 5부제와 선불카드 사용기한을 정리했습니다.</description>
+    </item>
+    <item>
+      <title>함평군 추석 민생회복지원금 2026: 1인 50만 원, 9월 7일 신청 시작</title>
+      <link>https://mustview.co.kr/hampyeong-chuseok-minsaeng-support-2026</link>
+      <guid isPermaLink="true">https://mustview.co.kr/hampyeong-chuseok-minsaeng-support-2026</guid>
+      <pubDate>Sat, 29 Aug 2026 00:00:00 +0900</pubDate>
+      <category>생활·에너지</category>
+      <description>함평군 민생회복지원금 50만 원의 기준일, 신청기간, 읍·면사무소 신청과 함평사랑상품권 가맹점 사용 기준을 정리했습니다.</description>
+    </item>
+    <item>
+      <title>완주군 추석 민생안정지원금 2026: 1인 30만 원, 9월 8일 지급 시작</title>
+      <link>https://mustview.co.kr/wanju-chuseok-minsaeng-support-2026</link>
+      <guid isPermaLink="true">https://mustview.co.kr/wanju-chuseok-minsaeng-support-2026</guid>
+      <pubDate>Sat, 29 Aug 2026 00:00:00 +0900</pubDate>
+      <category>생활·에너지</category>
+      <description>완주군 민생안정지원금 30만 원의 신청기간, 집중 지급 일정, 읍·면 신청과 사용기한을 공식 안내 기준으로 정리했습니다.</description>
+    </item>
     <item>
       <title>국가장학금 2026년 2학기 2차 신청: 9월 9일 마감 전 확인</title>
       <link>https://mustview.co.kr/national-scholarship-second-round-2026</link>

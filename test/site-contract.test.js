@@ -7,6 +7,69 @@ const readProjectBuffer = (path) => readFile(new URL("../" + path, import.meta.u
 const publisherId = "ca-pub-5751319666030430";
 const posts = [
   {
+    "file": "chuseok-minsaeng-support-2026.html",
+    "slug": "chuseok-minsaeng-support-2026",
+    "image": "benefit-energy-voucher-inline.webp",
+    "title": "추석 민생지원금 2026 지역별 총정리: 속초·의령·영동·고창·함평·완주",
+    "category": "생활·에너지",
+    "categoryId": "category-life-energy",
+    "source": "hope.sokcho.go.kr"
+  },
+  {
+    "file": "sokcho-chuseok-minsaeng-support-2026.html",
+    "slug": "sokcho-chuseok-minsaeng-support-2026",
+    "image": "benefit-energy-voucher-inline.webp",
+    "title": "속초시 추석 민생회복지원금 2026: 1인 20만 원, 9월 11일 마감",
+    "category": "생활·에너지",
+    "categoryId": "category-life-energy",
+    "source": "hope.sokcho.go.kr"
+  },
+  {
+    "file": "uiryeong-chuseok-minsaeng-support-2026.html",
+    "slug": "uiryeong-chuseok-minsaeng-support-2026",
+    "image": "benefit-energy-voucher-inline.webp",
+    "title": "의령군 추석 민생안정지원금 2026: 1인 50만 원, 방문 신청",
+    "category": "생활·에너지",
+    "categoryId": "category-life-energy",
+    "source": "uiryeong.go.kr"
+  },
+  {
+    "file": "yeongdong-chuseok-minsaeng-support-2026.html",
+    "slug": "yeongdong-chuseok-minsaeng-support-2026",
+    "image": "benefit-energy-voucher-inline.webp",
+    "title": "영동군 추석 민생안정지원금 2026: 1인 30만 원, 방문 신청 8월 31일 시작",
+    "category": "생활·에너지",
+    "categoryId": "category-life-energy",
+    "source": "yd21.go.kr"
+  },
+  {
+    "file": "gochang-chuseok-minsaeng-support-2026.html",
+    "slug": "gochang-chuseok-minsaeng-support-2026",
+    "image": "benefit-energy-voucher-inline.webp",
+    "title": "고창군 추석 군민활력지원금 2026: 1인 30만 원, 9월 1일 신청 시작",
+    "category": "생활·에너지",
+    "categoryId": "category-life-energy",
+    "source": "gochang.go.kr"
+  },
+  {
+    "file": "hampyeong-chuseok-minsaeng-support-2026.html",
+    "slug": "hampyeong-chuseok-minsaeng-support-2026",
+    "image": "benefit-energy-voucher-inline.webp",
+    "title": "함평군 추석 민생회복지원금 2026: 1인 50만 원, 9월 7일 신청 시작",
+    "category": "생활·에너지",
+    "categoryId": "category-life-energy",
+    "source": "hampyeong.go.kr"
+  },
+  {
+    "file": "wanju-chuseok-minsaeng-support-2026.html",
+    "slug": "wanju-chuseok-minsaeng-support-2026",
+    "image": "benefit-energy-voucher-inline.webp",
+    "title": "완주군 추석 민생안정지원금 2026: 1인 30만 원, 9월 8일 지급 시작",
+    "category": "생활·에너지",
+    "categoryId": "category-life-energy",
+    "source": "wanju.go.kr"
+  },
+  {
     "file": "national-scholarship-second-round-2026.html",
     "slug": "national-scholarship-second-round-2026",
     "image": "benefit-learning-inline.webp",
@@ -325,7 +388,7 @@ const categories = [
   {
     "id": "category-life-energy",
     "label": "생활·에너지",
-    "count": 15
+    "count": 22
   },
   {
     "id": "category-tax-refund",
@@ -334,6 +397,13 @@ const categories = [
   }
 ];
 const affiliateKeywords = {
+  "chuseok-minsaeng-support-2026.html": "추석 장바구니",
+  "sokcho-chuseok-minsaeng-support-2026.html": "지역화폐 카드지갑",
+  "uiryeong-chuseok-minsaeng-support-2026.html": "전통시장 장바구니",
+  "yeongdong-chuseok-minsaeng-support-2026.html": "지역상품권 지갑",
+  "gochang-chuseok-minsaeng-support-2026.html": "선불카드 지갑",
+  "hampyeong-chuseok-minsaeng-support-2026.html": "명절 장보기 카트",
+  "wanju-chuseok-minsaeng-support-2026.html": "명절 식재료 보관용기",
   "national-scholarship-second-round-2026.html": "대학생 노트북 파우치",
   "modui-card-kpass-benefit.html": "교통카드 목걸이",
   "k-pass-refund-calculator.html": "교통카드 케이스",
@@ -417,7 +487,7 @@ test("the home is a compact support landing with twelve latest posts", async () 
   const [html, css] = await Promise.all([readProjectFile("index.html"), readProjectFile("blog.css")]);
 
   assert.equal((html.match(/<article class="post-card"/g) || []).length, 12, "the home shows exactly twelve latest posts");
-  assert.match(html, /data-post-count="33"/);
+  assert.match(html, /data-post-count="40"/);
   assert.match(html, /class="content-area home-landing"/);
   assert.match(html, /class="home-finder"/);
   assert.match(html, /<h1 id="home-title">지원금 검색<\/h1>/);
@@ -511,7 +581,7 @@ test("the support archive lives at /지원금 and contains all categorized posts
   ]);
 
   assert.equal((html.match(/<article class="post-card"/g) || []).length, posts.length, "the support archive has every categorized post");
-  assert.match(html, /data-post-count="33"/);
+  assert.match(html, /data-post-count="40"/);
   assert.match(html, /<link rel="stylesheet" href="\/blog\.css\?v=20260828-archive1" \/>/);
   assert.match(html, /<link rel="canonical" href="https:\/\/mustview\.co\.kr\/지원금"/);
   assert.match(html, /"@type": "CollectionPage"/);
@@ -581,7 +651,7 @@ test("each support post has complete metadata, a single H1, and a valid body len
     assert.match(html, /data-toc-list/, post.file + " has a generated table of contents target");
     assert.match(html, /data-post-content/, post.file + " exposes headings for the generated table of contents");
     assert.match(html, /class="key-facts"/, post.file + " has a key facts box");
-    assert.match(html, /최종 확인 2026\. 8\. (14|15|23|24|27|28)\./, post.file + " exposes its verification date");
+    assert.match(html, /최종 확인 2026\. 8\. (14|15|23|24|27|28|29)\./, post.file + " exposes its verification date");
     assert.doesNotMatch(html, /<span>2026(?:\.|년) 8(?:\.|월) (?:14|15|23|24)(?:\.|일)<\/span>\s*<span>·<\/span>\s*<span>최종 확인/, post.file + " does not duplicate identical publish and verification dates");
     assert.match(html, /class="official-sources"/, post.file + " has a source list");
     assert.match(html, new RegExp(post.source.replace(".", "\\.")), post.file + " cites its official source");
@@ -656,7 +726,7 @@ test("trust pages are substantial and consistent for AdSense review", async () =
   assert.match(about, /광고와 편집의 독립성/);
   assert.doesNotMatch(about, /40대 중반 성인의 확인 사례/);
   assert.match(about, /문의 및 정보 수정 요청/);
-  assert.match(about, /현재 공개한 게시글은 정확히 33개/);
+  assert.match(about, /현재 공개한 게시글은 정확히 40개/);
   assert.match(sources, /nts\.go\.kr/);
   assert.match(sources, /work24\.go\.kr/);
   assert.match(sources, /bokjiro\.go\.kr/);
