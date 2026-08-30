@@ -51,22 +51,34 @@
 
       <nav class="main-navigation" aria-label="주요 메뉴"><div class="inside-navigation"><ul><li><a href="index.html">홈</a></li><li><a href="/지원금" aria-current="page">지원금</a></li><li><a href="/지원금#category-childbirth">육아·출산</a></li><li><a href="/지원금#category-employment">고용·취업</a></li><li><a href="/지원금#category-life-energy">생활·에너지</a></li><li><a href="/지원금#category-tax-refund">세금·환급</a></li><li><a href="sources.html">자료 기준</a></li><li><a href="about.html">블로그 소개</a></li><li><a href="contact.html">문의</a></li></ul></div></nav>
 
-      <main class="site-main" id="main" data-post-count="44">
+      <main class="site-main" id="main" data-post-count="45">
         <div class="site-grid">
           <section class="content-area" aria-labelledby="archive-title">
             <header class="archive-title" id="support-category">
               <h1 id="archive-title">지원금</h1>
               <p class="archive-intro">신청 전에 꼭 알아야 할 조건과 서류를 읽기 쉽게 정리했습니다. 모든 글은 정부기관 또는 공공기관의 공식 페이지를 연결하며, 최종 확인일을 함께 표시합니다.</p>
-              <nav class="category-filter" aria-label="지원금 하위 카테고리"><ul><li><a href="#category-childbirth">육아·출산 <span>9</span></a></li><li><a href="#category-employment">고용·취업 <span>10</span></a></li><li><a href="#category-life-energy">생활·에너지 <span>23</span></a></li><li><a href="#category-tax-refund">세금·환급 <span>2</span></a></li></ul></nav>
+              <nav class="category-filter" aria-label="지원금 하위 카테고리"><ul><li><a href="#category-childbirth">육아·출산 <span>9</span></a></li><li><a href="#category-employment">고용·취업 <span>11</span></a></li><li><a href="#category-life-energy">생활·에너지 <span>23</span></a></li><li><a href="#category-tax-refund">세금·환급 <span>2</span></a></li></ul></nav>
               <form class="support-search" id="support-search" role="search" aria-label="지원금 글 검색" data-support-search>
                 <label for="supportSearchInput">지원금 글 검색</label>
                 <div class="support-search-row">
                   <input id="supportSearchInput" name="q" type="search" maxlength="40" autocomplete="off" placeholder="예: K패스, 청년월세, 부모급여" data-support-search-input />
                   <button class="support-search-clear" type="button" data-support-search-clear hidden>지우기</button>
                 </div>
-                <p class="support-search-count" data-support-search-status aria-live="polite">전체 44개 글을 표시 중입니다.</p>
+                <p class="support-search-count" data-support-search-status aria-live="polite">전체 45개 글을 표시 중입니다.</p>
               </form>
             </header>
+
+<article class="post-card" id="category-employment" data-post="youth-future-savings-2026" data-category="category-employment">
+              <div class="post-card-inner">
+                <div class="post-card-content">
+                  <h2 class="entry-title"><a href="youth-future-savings-2026.html">청년미래적금 2026: 월 50만 원, 정부기여금 6%·12%, 신청 조건</a></h2>
+                  <div class="post-card-body">
+                    <a class="post-card-thumbnail" href="youth-future-savings-2026.html" tabindex="-1" style="--tile-accent:#244a9a;--tile-bg:#eef3ff;"><span>고용·취업</span><strong>청년미래<br />적금</strong></a>
+                    <div class="post-card-copy"><p class="entry-summary">청년미래적금의 가입 대상, 월 50만 원 납입한도, 정부기여금 6%·12%, 비과세 혜택과 심사·계좌개설 절차를 정리했습니다.</p><p class="entry-meta"><a class="category-chip" href="#category-employment">고용·취업</a><span>·</span><span>2026. 8. 30.</span></p><a class="read-more" href="youth-future-savings-2026.html">더보기</a></div>
+                  </div>
+                </div>
+              </div>
+            </article>
 
 <article class="post-card" id="category-life-energy" data-post="chuseok-agri-discount-2026" data-category="category-life-energy">
               <div class="post-card-inner">
@@ -80,7 +92,7 @@
               </div>
             </article>
 
-<article class="post-card" id="category-employment" data-post="k-newdeal-academy-2026" data-category="category-employment">
+<article class="post-card" data-post="k-newdeal-academy-2026" data-category="category-employment">
               <div class="post-card-inner">
                 <div class="post-card-content">
                   <h2 class="entry-title"><a href="k-newdeal-academy-2026.html">K-뉴딜 아카데미 2026: 수도권 월 30만 원·비수도권 월 50만 원 참여수당</a></h2>
@@ -600,7 +612,7 @@
           <aside class="widget-area" aria-label="블로그 사이드바">
             <section class="widget category-widget">
               <h2 class="widget-title">카테고리</h2>
-              <ul><li><a href="#category-childbirth">육아·출산 <span>9</span></a></li><li><a href="#category-employment">고용·취업 <span>10</span></a></li><li><a href="#category-life-energy">생활·에너지 <span>23</span></a></li><li><a href="#category-tax-refund">세금·환급 <span>2</span></a></li></ul>
+              <ul><li><a href="#category-childbirth">육아·출산 <span>9</span></a></li><li><a href="#category-employment">고용·취업 <span>11</span></a></li><li><a href="#category-life-energy">생활·에너지 <span>23</span></a></li><li><a href="#category-tax-refund">세금·환급 <span>2</span></a></li></ul>
             </section>
 
             <section class="widget">
