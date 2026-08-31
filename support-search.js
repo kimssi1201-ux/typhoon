@@ -6,6 +6,7 @@
   const clear = form.querySelector("[data-support-search-clear]");
   const status = form.querySelector("[data-support-search-status]");
   const cards = [...document.querySelectorAll(".post-card[data-post]")];
+  const allLabel = form.dataset.supportSearchAllLabel || "전체";
 
   if (!input || !status || cards.length === 0) return;
 
@@ -41,7 +42,7 @@
 
     status.textContent = query
       ? `${visibleCount}개 글이 검색되었습니다.`
-      : `전체 ${cards.length}개 글을 표시 중입니다.`;
+      : `${allLabel} ${cards.length}개 글을 표시 중입니다.`;
     if (clear) clear.hidden = query.length === 0;
   };
 
