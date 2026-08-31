@@ -668,6 +668,7 @@ test("the home is a support portal with category navigation and recommended post
   assert.doesNotMatch(html, /class="category-grid"|class="category-card"|category-count|관심 있는 지원금부터 확인/, "the home does not duplicate the old category entry cards");
   assert.doesNotMatch(html, /<nav class="breadcrumbs"/, "the home has no breadcrumb");
   assert.doesNotMatch(html, /카테고리 · 지원금/, "the home is no longer the support archive");
+  assert.doesNotMatch(html, /빠른 확인/, "the redundant quick-check widget (only covering two of five categories) is removed");
   for (const category of categories) {
     assert.match(html, new RegExp(`href="/지원금#${category.id}"`), "the home links to " + category.label);
     assert.match(html, new RegExp(`${category.label} <span>${category.count}</span>`), "the home exposes " + category.label + " count");
@@ -746,7 +747,7 @@ test("the support archive lives at /지원금 and contains all categorized posts
   assert.match(html, /class="category-filter support-side-filter"/);
   assert.match(html, /class="widget category-widget support-side-menu"/);
   assert.match(html, /복지서비스/);
-  assert.match(html, /빠른 확인/);
+  assert.doesNotMatch(html, /빠른 확인/, "the redundant quick-check widget (only covering two of five categories) is removed");
   assert.doesNotMatch(redirects, /\/%EC%A7%80%EC%9B%90%EA%B8%88 \/support/);
   assert.doesNotMatch(redirects, /\/지원금 \/support/);
   assert.doesNotMatch(html, /<nav class="breadcrumbs"/, "the support archive has no breadcrumb trail");

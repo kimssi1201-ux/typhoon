@@ -1007,25 +1007,6 @@ img { display: block; max-width: 100%; height: auto; }
   font-size: 0.82rem;
 }
 
-.support-side-guide {
-  display: grid;
-  gap: 8px;
-}
-
-.support-side-guide a {
-  display: block;
-  padding: 9px 0;
-  border-top: 1px solid var(--gp-line);
-  color: #445064;
-  font-size: 0.86rem;
-  font-weight: 700;
-  text-decoration: none;
-}
-
-.support-side-guide a:hover {
-  color: var(--gp-accent);
-}
-
 .support-portal-content .archive-title {
   margin-bottom: 18px;
 }
