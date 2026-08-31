@@ -638,10 +638,10 @@ const requiredFragments = [
   "공식 신청처와 문의처"
 ];
 
-test("the home is a compact support landing with twelve latest posts", async () => {
+test("the home is a compact landing with a featured post and topic rows", async () => {
   const [html, css] = await Promise.all([readProjectFile("index.html"), readProjectFile("blog.css")]);
 
-  assert.equal((html.match(/<article class="post-card"/g) || []).length, 12, "the home shows exactly twelve latest posts");
+  assert.equal((html.match(/<article class="post-card/g) || []).length, 12, "the home shows exactly twelve linked post cards");
   assert.match(html, /data-post-count="55"/);
   assert.match(html, /class="content-area home-landing"/);
   assert.match(html, /class="home-finder"/);
@@ -649,9 +649,20 @@ test("the home is a compact support landing with twelve latest posts", async () 
   assert.match(html, /필요한 지원금의 신청 대상, 기간, 서류, 신청처를 빠르게 확인하세요\./);
   assert.match(html, /<form class="home-search" action="\/지원금#support-search" method="get" role="search"/);
   assert.match(html, /name="q" type="search"/);
+  assert.match(html, /class="home-section home-showcase"/);
+  assert.match(html, /class="home-showcase-grid"/);
+  assert.match(html, /class="post-card post-card-featured"/);
+  assert.match(html, /class="home-quick-list"/);
+  assert.match(html, /빠르게 보는 글/);
+  assert.match(html, /지금 먼저 볼 지원금/);
+  assert.match(html, /class="home-topic-board"/);
+  assert.match(html, /주제별로 묶어 보기/);
+  assert.match(html, /소상공인 주요 자금/);
+  assert.match(html, /성장·안전망 지원/);
+  assert.match(html, /최근 추가 지원금/);
   assert.doesNotMatch(html, /class="home-eyebrow"|class="home-keywords"|class="home-finder-stats"/, "the home finder stays simple");
   assert.doesNotMatch(html, /class="home-hero"|home-primary-link|home-intro|공식 자료 기반 지원금 안내|전체 지원금 글 보기/, "the visible home hero is removed");
-  assert.doesNotMatch(html, /home-category-title|class="category-grid"|class="category-card"|category-count|관심 있는 지원금부터 확인/, "the home does not duplicate category entry cards");
+  assert.doesNotMatch(html, /class="category-grid"|class="category-card"|category-count|관심 있는 지원금부터 확인/, "the home does not duplicate category entry cards");
   assert.doesNotMatch(html, /<nav class="breadcrumbs"/, "the home has no breadcrumb");
   assert.doesNotMatch(html, /카테고리 · 지원금/, "the home is no longer the support archive");
   for (const category of categories) {
@@ -663,8 +674,7 @@ test("the home is a compact support landing with twelve latest posts", async () 
   assert.match(html, /class="header-menu-panel"/);
   assert.match(html, /href="contact\.html">문의<\/a>/);
   assert.match(html, /href="privacy\.html">개인정보처리방침<\/a>/);
-  assert.match(html, /최근 업데이트 12개/);
-  assert.match(html, /\/blog\.css\?v=20260828-home5/);
+  assert.match(html, /\/blog\.css\?v=20260831-home6/);
   assert.match(html, /google-adsense-account/);
   assert.ok(html.includes(publisherId));
   assert.match(html, /<link rel="canonical" href="https:\/\/mustview\.co\.kr\/"/);
@@ -672,7 +682,7 @@ test("the home is a compact support landing with twelve latest posts", async () 
   assert.doesNotMatch(visibleText(html), /\?{3,}/, "the home does not expose corrupted Korean text");
 
   for (const post of posts.slice(0, 12)) {
-    assert.match(html, new RegExp(`href="${post.file}"`), post.file + " is linked from the home latest section");
+    assert.match(html, new RegExp(`href="${post.file}"`), post.file + " is linked from the home landing");
     assert.match(html, new RegExp(`data-post="${post.slug}"[^>]+data-category="${post.categoryId}"`), post.file + " keeps category metadata on the home");
   }
   for (const post of posts.slice(12)) {
@@ -708,18 +718,25 @@ test("the home is a compact support landing with twelve latest posts", async () 
   assert.match(css, /\.home-search button\s*\{[\s\S]*?background:\s*#1d4ed8;[\s\S]*?color:\s*#fff/);
   assert.doesNotMatch(css, /\.home-eyebrow|\.home-keywords|\.home-finder-stats/, "the removed home finder extras have no leftover styles");
   assert.doesNotMatch(css, /\.category-grid|\.category-card|\.category-count/, "the removed home category cards have no leftover styles");
-  assert.match(css, /\.home-latest\s*\{[\s\S]*?display:\s*grid;[\s\S]*?grid-template-columns:\s*repeat\(3, minmax\(0, 1fr\)\);[\s\S]*?gap:\s*14px/);
-  assert.match(css, /\.home-latest \.post-card-content\s*\{[\s\S]*?padding:\s*16px/);
-  assert.match(css, /\.home-latest \.post-card-body\s*\{[\s\S]*?grid-template-columns:\s*82px minmax\(0, 1fr\)/);
-  assert.match(css, /\.home-latest \.read-more\s*\{[\s\S]*?display:\s*none/);
+  assert.doesNotMatch(css, /\.home-latest/, "the old flat latest grid is removed");
+  assert.match(css, /\.home-showcase-grid\s*\{[\s\S]*?display:\s*grid;[\s\S]*?grid-template-columns:\s*minmax\(0, 1\.35fr\) minmax\(280px, 0\.75fr\);[\s\S]*?gap:\s*16px/);
+  assert.match(css, /\.home-showcase \.post-card-featured\s*\{[\s\S]*?border:\s*1px solid #e5e7eb;[\s\S]*?border-radius:\s*12px/);
+  assert.match(css, /\.home-showcase \.post-card-featured \.post-card-content\s*\{[\s\S]*?min-height:\s*246px;[\s\S]*?padding:\s*24px/);
+  assert.match(css, /\.home-showcase \.post-card-featured \.post-card-body\s*\{[\s\S]*?grid-template-columns:\s*132px minmax\(0, 1fr\)/);
+  assert.match(css, /\.home-quick-list\s*\{[\s\S]*?border:\s*1px solid #e5e7eb;[\s\S]*?border-radius:\s*12px/);
+  assert.match(css, /\.home-quick-link\s*\{[\s\S]*?display:\s*grid;[\s\S]*?border-top:\s*1px solid #edf1f5/);
+  assert.match(css, /\.home-topic-board\s*\{[\s\S]*?grid-template-columns:\s*repeat\(2, minmax\(0, 1fr\)\);[\s\S]*?gap:\s*18px/);
+  assert.match(css, /\.home-topic-posts\s*\{[\s\S]*?grid-template-columns:\s*1fr;[\s\S]*?gap:\s*12px/);
+  assert.match(css, /\.home-topic-block-wide \.home-topic-posts\s*\{[\s\S]*?grid-template-columns:\s*repeat\(2, minmax\(0, 1fr\)\)/);
+  assert.match(css, /\.home-topic-posts \.post-card-content\s*\{[\s\S]*?padding:\s*15px 17px/);
+  assert.match(css, /\.home-topic-posts \.read-more\s*\{[\s\S]*?display:\s*none/);
   assert.match(css, /\.home-section-header\s*\{[\s\S]*?margin:\s*48px 0 20px/);
   assert.match(css, /\.home-section-header h2\s*\{[\s\S]*?font-size:\s*24px/);
-  assert.match(css, /\.home-latest \.post-card \+ \.post-card\s*\{[\s\S]*?margin-top:\s*0/);
-  assert.match(css, /@media \(max-width: 1024px\)[\s\S]*?\.home-latest\s*\{[\s\S]*?grid-template-columns:\s*repeat\(2, minmax\(0, 1fr\)\)/);
+  assert.match(css, /@media \(max-width: 1024px\)[\s\S]*?\.home-showcase-grid,[\s\S]*?\.home-topic-board,[\s\S]*?\.home-topic-block-wide \.home-topic-posts\s*\{[\s\S]*?grid-template-columns:\s*1fr/);
   assert.match(css, /@media \(max-width: 1024px\)[\s\S]*?\.home-finder\s*\{[\s\S]*?grid-template-columns:\s*1fr/);
   assert.match(css, /@media \(max-width: 767px\)/);
   assert.match(css, /@media \(max-width: 767px\)[\s\S]*?\.home-finder\s*\{[\s\S]*?padding:\s*18px/);
-  assert.match(css, /@media \(max-width: 767px\)[\s\S]*?\.home-latest\s*\{\s*grid-template-columns:\s*1fr/);
+  assert.match(css, /@media \(max-width: 767px\)[\s\S]*?\.home-showcase \.post-card-featured \.post-card-body\s*\{[\s\S]*?grid-template-columns:\s*92px minmax\(0, 1fr\)/);
   assert.match(css, /@media \(max-width: 767px\)[\s\S]*?\.header-actions\s*\{\s*display:\s*flex/);
   assert.doesNotMatch(css, /@media \(max-width: 767px\)[\s\S]*?\.main-navigation\s*\{\s*display:\s*none/, "the category tab bar stays visible (horizontally scrollable) on mobile like desktop");
   assert.match(css, /@media \(max-width: 767px\)[\s\S]*?\.inside-navigation\s*\{[\s\S]*?overflow-x:\s*auto/, "the mobile nav scrolls horizontally instead of being hidden");
@@ -727,7 +744,6 @@ test("the home is a compact support landing with twelve latest posts", async () 
   assert.match(css, /\.table-of-contents/);
   assert.doesNotMatch(css, /\.reader-persona/, "the removed reader persona has no leftover styles");
 });
-
 test("the support archive lives at /지원금 and contains all categorized posts", async () => {
   const [html, redirects, searchScript] = await Promise.all([
     readProjectFile(supportArchive.file),
