@@ -6,7 +6,7 @@
     <meta name="theme-color" content="#23634d" />
     <meta name="google-adsense-account" content="ca-pub-5751319666030430" />
     <title>지원금 전체 글 | 복지모음집</title>
-    <meta name="description" content="복지모음집의 지원금 글 전체 목록입니다. 소상공인, 소상공인, 육아·출산, 고용·취업, 생활·에너지, 세금·환급 카테고리별로 확인하세요." />
+    <meta name="description" content="복지모음집의 지원금 글 전체 목록입니다. 소상공인, 육아·출산, 고용·취업, 생활·에너지, 세금·환급 카테고리별로 확인하세요." />
     <link rel="canonical" href="https://mustview.co.kr/지원금" />
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="복지모음집" />
@@ -15,7 +15,7 @@
     <meta property="og:url" content="https://mustview.co.kr/지원금" />
     <meta property="og:image" content="https://mustview.co.kr/assets/benefit-employment-inline.webp" />
     <meta name="twitter:card" content="summary_large_image" />
-    <link rel="stylesheet" href="/blog.css?v=20260828-archive1" />
+    <link rel="stylesheet" href="/blog.css?v=20260831-archive2" />
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5751319666030430" crossorigin="anonymous"></script>
     <script type="application/ld+json">
       {
@@ -52,12 +52,24 @@
       <nav class="main-navigation" aria-label="주요 메뉴"><div class="inside-navigation"><ul><li><a href="index.html">홈</a></li><li><a href="/지원금" aria-current="page">지원금</a></li><li><a href="/지원금#category-small-business">소상공인</a></li><li><a href="/지원금#category-childbirth">육아·출산</a></li><li><a href="/지원금#category-employment">고용·취업</a></li><li><a href="/지원금#category-life-energy">생활·에너지</a></li><li><a href="/지원금#category-tax-refund">세금·환급</a></li><li><a href="sources.html">자료 기준</a></li><li><a href="about.html">블로그 소개</a></li><li><a href="contact.html">문의</a></li></ul></div></nav>
 
       <main class="site-main" id="main" data-post-count="55">
-        <div class="site-grid">
-          <section class="content-area" aria-labelledby="archive-title">
+        <div class="site-grid support-portal-grid">
+          <aside class="support-portal-sidebar" aria-label="지원금 카테고리">
+            <section class="widget category-widget support-side-menu">
+              <h2 class="widget-title">복지서비스</h2>
+              <nav class="category-filter support-side-filter" aria-label="지원금 하위 카테고리"><ul><li><a class="is-active" href="#support-category">전체 <span>55</span></a></li><li><a href="#category-small-business">소상공인 <span>10</span></a></li><li><a href="#category-childbirth">육아·출산 <span>9</span></a></li><li><a href="#category-employment">고용·취업 <span>11</span></a></li><li><a href="#category-life-energy">생활·에너지 <span>23</span></a></li><li><a href="#category-tax-refund">세금·환급 <span>2</span></a></li></ul></nav>
+            </section>
+            <section class="widget support-side-menu support-side-guide">
+              <h2 class="widget-title">빠른 확인</h2>
+              <a href="#support-search">검색으로 찾기</a>
+              <a href="#category-small-business">소상공인 먼저 보기</a>
+              <a href="#category-life-energy">생활·에너지 보기</a>
+            </section>
+          </aside>
+
+          <section class="content-area support-portal-content" aria-labelledby="archive-title">
             <header class="archive-title" id="support-category">
               <h1 id="archive-title">지원금</h1>
               <p class="archive-intro">신청 전에 꼭 알아야 할 조건과 서류를 읽기 쉽게 정리했습니다. 모든 글은 정부기관 또는 공공기관의 공식 페이지를 연결하며, 최종 확인일을 함께 표시합니다.</p>
-              <nav class="category-filter" aria-label="지원금 하위 카테고리"><ul><li><a href="#category-small-business">소상공인 <span>10</span></a></li><li><a href="#category-childbirth">육아·출산 <span>9</span></a></li><li><a href="#category-employment">고용·취업 <span>11</span></a></li><li><a href="#category-life-energy">생활·에너지 <span>23</span></a></li><li><a href="#category-tax-refund">세금·환급 <span>2</span></a></li></ul></nav>
               <form class="support-search" id="support-search" role="search" aria-label="지원금 글 검색" data-support-search>
                 <label for="supportSearchInput">지원금 글 검색</label>
                 <div class="support-search-row">
@@ -67,6 +79,7 @@
                 <p class="support-search-count" data-support-search-status aria-live="polite">전체 55개 글을 표시 중입니다.</p>
               </form>
             </header>
+            <div class="support-card-grid">
 
 <article class="post-card" id="category-small-business" data-post="small-business-support-grants-2026" data-category="category-small-business">
               <div class="post-card-inner">
@@ -727,30 +740,8 @@
                 </div>
               </div>
             </article>
+            </div>
           </section>
-
-          <aside class="widget-area" aria-label="블로그 사이드바">
-            <section class="widget category-widget">
-              <h2 class="widget-title">카테고리</h2>
-              <ul><li><a href="#category-small-business">소상공인 <span>10</span></a></li><li><a href="#category-childbirth">육아·출산 <span>9</span></a></li><li><a href="#category-employment">고용·취업 <span>11</span></a></li><li><a href="#category-life-energy">생활·에너지 <span>23</span></a></li><li><a href="#category-tax-refund">세금·환급 <span>2</span></a></li></ul>
-            </section>
-
-            <section class="widget">
-              <h2 class="widget-title">최근 글</h2>
-              <ul class="recent-post-list">
-                <li><a href="small-business-support-grants-2026.html">소상공인 지원금 총정리</a></li>
-                <li><a href="small-business-stability-voucher-2026.html">경영안정 바우처</a></li>
-                <li><a href="small-business-policy-fund-general-2026.html">정책자금 일반자금</a></li>
-                <li><a href="small-business-refinance-loan-2026.html">소상공인 대환대출</a></li>
-                <li><a href="small-business-employment-insurance-support-2026.html">고용보험료 지원</a></li>
-              </ul>
-            </section>
-
-            <section class="widget notice-widget">
-              <h2 class="widget-title">읽기 전 안내</h2>
-              <p>제도는 예산, 거주지, 가구 상황에 따라 달라질 수 있습니다. 이 블로그의 내용은 신청 결정을 대신하지 않으며, 글 하단의 공식 신청처에서 최신 기준을 확인해야 합니다.</p>
-            </section>
-          </aside>
         </div>
       </main>
 

@@ -753,7 +753,7 @@ test("the support archive lives at /지원금 and contains all categorized posts
 
   assert.equal((html.match(/<article class="post-card"/g) || []).length, posts.length, "the support archive has every categorized post");
   assert.match(html, /data-post-count="55"/);
-  assert.match(html, /<link rel="stylesheet" href="\/blog\.css\?v=20260828-archive1" \/>/);
+  assert.match(html, /<link rel="stylesheet" href="\/blog\.css\?v=20260831-archive2" \/>/);
   assert.match(html, /<link rel="canonical" href="https:\/\/mustview\.co\.kr\/지원금"/);
   assert.match(html, /"@type": "CollectionPage"/);
   assert.match(html, /<h1 id="archive-title">지원금<\/h1>/);
@@ -765,8 +765,14 @@ test("the support archive lives at /지원금 and contains all categorized posts
   assert.match(searchScript, /querySelectorAll\("\.post-card\[data-post\]"\)/);
   assert.match(searchScript, /toLocaleLowerCase\("ko-KR"\)/);
   assert.match(searchScript, /card\.hidden = !matches/);
-  assert.match(html, /class="category-filter"/);
-  assert.match(html, /class="widget category-widget"/);
+  assert.match(html, /class="site-grid support-portal-grid"/);
+  assert.match(html, /class="support-portal-sidebar"/);
+  assert.match(html, /class="content-area support-portal-content"/);
+  assert.match(html, /class="support-card-grid"/);
+  assert.match(html, /class="category-filter support-side-filter"/);
+  assert.match(html, /class="widget category-widget support-side-menu"/);
+  assert.match(html, /복지서비스/);
+  assert.match(html, /빠른 확인/);
   assert.doesNotMatch(redirects, /\/%EC%A7%80%EC%9B%90%EA%B8%88 \/support/);
   assert.doesNotMatch(redirects, /\/지원금 \/support/);
   assert.doesNotMatch(html, /<nav class="breadcrumbs"/, "the support archive has no breadcrumb trail");

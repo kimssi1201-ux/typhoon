@@ -943,6 +943,157 @@ img { display: block; max-width: 100%; height: auto; }
 .read-more::after { content: "»"; font-size: 1rem; }
 .read-more:hover { border-color: #999; color: var(--gp-accent-dark); }
 
+
+.support-archive .support-portal-grid {
+  grid-template-columns: 220px minmax(0, 1fr);
+  gap: 32px;
+  align-items: start;
+}
+
+.support-portal-sidebar {
+  position: sticky;
+  top: 7px;
+  min-width: 0;
+}
+
+.support-side-menu {
+  margin-bottom: 12px;
+}
+
+.support-side-menu .widget-title {
+  margin-bottom: 14px;
+  color: #202428;
+  font-size: 1.35rem;
+}
+
+.support-side-filter {
+  margin-top: 0;
+}
+
+.support-side-menu .support-side-filter ul {
+  display: grid;
+  gap: 7px;
+  border-top: 0;
+}
+
+.support-side-menu .support-side-filter li {
+  border-bottom: 0;
+}
+
+.support-side-menu .support-side-filter a {
+  display: flex;
+  justify-content: space-between;
+  min-height: 44px;
+  padding: 10px 12px;
+  border: 1px solid #d9e0ea;
+  border-radius: 8px;
+  background: #fff;
+  color: #344054;
+  font-size: 0.92rem;
+  font-weight: 750;
+}
+
+.support-side-menu .support-side-filter a:hover,
+.support-side-menu .support-side-filter a.is-active {
+  border-color: #1d4ed8;
+  background: #eff5ff;
+  color: #1d4ed8;
+}
+
+.support-side-menu .support-side-filter span {
+  color: #7b8796;
+  font-size: 0.82rem;
+}
+
+.support-side-guide {
+  display: grid;
+  gap: 8px;
+}
+
+.support-side-guide a {
+  display: block;
+  padding: 9px 0;
+  border-top: 1px solid var(--gp-line);
+  color: #445064;
+  font-size: 0.86rem;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.support-side-guide a:hover {
+  color: var(--gp-accent);
+}
+
+.support-portal-content .archive-title {
+  margin-bottom: 18px;
+}
+
+.support-card-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+  align-items: stretch;
+}
+
+.support-card-grid .post-card {
+  height: 100%;
+}
+
+.support-card-grid .post-card + .post-card {
+  margin-top: 0;
+}
+
+.support-card-grid .post-card-content {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+  padding: 17px;
+}
+
+.support-card-grid .post-card-body {
+  display: block;
+  margin-top: 12px;
+}
+
+.support-card-grid .post-card-thumbnail {
+  width: 100%;
+  height: auto;
+  min-height: 72px;
+  margin: 0 0 12px;
+  padding: 11px 12px;
+  border-radius: 9px;
+}
+
+.support-card-grid .post-card-thumbnail span {
+  margin-bottom: 7px;
+  font-size: 0.54rem;
+}
+
+.support-card-grid .post-card-thumbnail strong {
+  font-size: 0.88rem;
+  line-height: 1.18;
+}
+
+.support-card-grid .post-card .entry-title {
+  font-size: 1rem;
+  line-height: 1.42;
+}
+
+.support-card-grid .post-card .entry-summary {
+  margin-bottom: 9px;
+  font-size: 0.86rem;
+  line-height: 1.48;
+}
+
+.support-card-grid .post-card .entry-meta {
+  margin-bottom: 0;
+  font-size: 0.76rem;
+}
+
+.support-card-grid .read-more {
+  display: none;
+}
+
 .widget-area {
   position: sticky;
   top: 7px;
@@ -1412,6 +1563,24 @@ img { display: block; max-width: 100%; height: auto; }
     margin-top: 7px;
   }
 
+  .support-archive .support-portal-grid {
+    display: block;
+    width: min(828px, calc(100% - 24px));
+  }
+
+  .support-portal-sidebar {
+    position: static;
+    margin-bottom: 14px;
+  }
+
+  .support-side-menu .support-side-filter ul {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .support-card-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
   .home-showcase-grid,
   .home-topic-board,
   .home-topic-block-wide .home-topic-posts {
@@ -1452,6 +1621,8 @@ img { display: block; max-width: 100%; height: auto; }
   .home-topic-head { align-items: flex-start; gap: 10px; }
   .home-topic-posts .post-card-content { padding: 16px; }
   .support-search { padding: 13px; }
+  .support-side-menu .support-side-filter ul { grid-template-columns: 1fr; }
+  .support-card-grid { grid-template-columns: 1fr; }
   .post-card { border-radius: 9px; }
   .post-card-content { padding: 18px 18px; }
   .post-card-body { grid-template-columns: 92px minmax(0, 1fr); gap: 13px; margin-top: 12px; }
