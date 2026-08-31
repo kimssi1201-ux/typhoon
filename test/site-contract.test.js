@@ -677,7 +677,7 @@ test("the home is a support portal with category navigation and recommended post
   assert.match(html, /class="header-menu-panel"/);
   assert.match(html, /href="contact\.html">문의<\/a>/);
   assert.match(html, /href="privacy\.html">개인정보처리방침<\/a>/);
-  assert.match(html, /\/blog\.css\?v=20260831-home8/);
+  assert.match(html, /\/blog\.css\?v=20260901-home-mobile1/);
   assert.match(html, /google-adsense-account/);
   assert.ok(html.includes(publisherId));
   assert.match(html, /<link rel="canonical" href="https:\/\/mustview\.co\.kr\/"/);
@@ -711,6 +711,7 @@ test("the home is a support portal with category navigation and recommended post
   assert.match(css, /@media \(max-width: 1024px\)[\s\S]*?\.support-archive \.support-portal-grid,\s*\.blog-page\.home \.home-portal-grid\s*\{[\s\S]*?display:\s*block/);
   assert.match(css, /@media \(max-width: 1024px\)[\s\S]*?\.support-card-grid\s*\{[\s\S]*?grid-template-columns:\s*repeat\(2, minmax\(0, 1fr\)\)/);
   assert.match(css, /@media \(max-width: 767px\)[\s\S]*?\.support-card-grid\s*\{\s*grid-template-columns:\s*1fr/);
+  assert.match(css, /@media \(max-width: 767px\)[\s\S]*?\.support-card-grid \.post-card-thumbnail\s*\{\s*display:\s*none;\s*\}/);
   assert.match(css, /@media \(max-width: 767px\)[\s\S]*?\.header-actions\s*\{\s*display:\s*flex/);
   assert.doesNotMatch(css, /@media \(max-width: 767px\)[\s\S]*?\.main-navigation\s*\{\s*display:\s*none/, "the category tab bar stays visible (horizontally scrollable) on mobile like desktop");
   assert.match(css, /@media \(max-width: 767px\)[\s\S]*?\.inside-navigation\s*\{[\s\S]*?overflow-x:\s*auto/, "the mobile nav scrolls horizontally instead of being hidden");
@@ -726,7 +727,7 @@ test("the support archive lives at /지원금 and contains all categorized posts
 
   assert.equal((html.match(/<article class="post-card"/g) || []).length, posts.length, "the support archive has every categorized post");
   assert.match(html, /data-post-count="55"/);
-  assert.match(html, /<link rel="stylesheet" href="\/blog\.css\?v=20260831-archive2" \/>/);
+  assert.match(html, /<link rel="stylesheet" href="\/blog\.css\?v=20260901-archive-mobile1" \/>/);
   assert.match(html, /<link rel="canonical" href="https:\/\/mustview\.co\.kr\/지원금"/);
   assert.match(html, /"@type": "CollectionPage"/);
   assert.match(html, /<h1 id="archive-title">지원금<\/h1>/);

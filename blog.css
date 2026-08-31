@@ -1696,6 +1696,12 @@ img { display: block; max-width: 100%; height: auto; }
   .support-search { padding: 13px; }
   .support-side-menu .support-side-filter ul { grid-template-columns: 1fr; }
   .support-card-grid { grid-template-columns: 1fr; }
+  .support-card-grid .post-card-content { padding: 18px; }
+  .support-card-grid .post-card-body { display: block; margin-top: 10px; }
+  .support-card-grid .post-card-thumbnail { display: none; }
+  .support-card-grid .post-card .entry-title { font-size: 1.08rem; }
+  .support-card-grid .post-card .entry-summary { margin-bottom: 8px; }
+  .support-card-grid .post-card .entry-meta { margin-bottom: 0; white-space: normal; }
   .post-card { border-radius: 9px; }
   .post-card-content { padding: 18px 18px; }
   .post-card-body { grid-template-columns: 92px minmax(0, 1fr); gap: 13px; margin-top: 12px; }
