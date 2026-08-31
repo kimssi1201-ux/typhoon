@@ -944,7 +944,8 @@ img { display: block; max-width: 100%; height: auto; }
 .read-more:hover { border-color: #999; color: var(--gp-accent-dark); }
 
 
-.support-archive .support-portal-grid {
+.support-archive .support-portal-grid,
+.blog-page.home .home-portal-grid {
   grid-template-columns: 220px minmax(0, 1fr);
   gap: 32px;
   align-items: start;
@@ -1092,6 +1093,76 @@ img { display: block; max-width: 100%; height: auto; }
 
 .support-card-grid .read-more {
   display: none;
+}
+
+
+
+.home-portal-content .home-portal-title {
+  margin-bottom: 18px;
+}
+
+.home-portal-eyebrow {
+  margin: 0 0 6px;
+  color: #667085;
+  font-size: 0.8rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.home-portal-search {
+  margin-top: 18px;
+}
+
+.home-portal-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.home-all-posts-link {
+  display: inline-block;
+  padding: 10px 17px;
+  border-radius: 8px;
+  background: #1d4ed8;
+  color: #fff;
+  font-size: 0.9rem;
+  font-weight: 800;
+  text-decoration: none;
+}
+
+.home-all-posts-link:hover {
+  background: #1741b6;
+}
+
+.home-portal-section {
+  margin-top: 0;
+}
+
+.home-portal-section-head {
+  margin: 0 0 14px;
+}
+
+.home-portal-section-head p {
+  margin: 0 0 4px;
+  color: #6b7280;
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.home-portal-section-head h2 {
+  margin: 0;
+  color: #202428;
+  font-size: 24px;
+  font-weight: 800;
+  line-height: 1.35;
+}
+
+.home-portal-card-grid {
+  margin-top: 0;
 }
 
 .widget-area {
@@ -1563,7 +1634,8 @@ img { display: block; max-width: 100%; height: auto; }
     margin-top: 7px;
   }
 
-  .support-archive .support-portal-grid {
+  .support-archive .support-portal-grid,
+  .blog-page.home .home-portal-grid {
     display: block;
     width: min(828px, calc(100% - 24px));
   }
