@@ -53,13 +53,6 @@
 
       <main class="site-main" id="main" data-post-count="55">
         <div class="site-grid support-portal-grid">
-          <aside class="support-portal-sidebar" aria-label="지원금 카테고리">
-            <section class="widget category-widget support-side-menu">
-              <h2 class="widget-title">복지서비스</h2>
-              <nav class="category-filter support-side-filter" aria-label="지원금 하위 카테고리"><ul><li><a class="is-active" href="#support-category">전체 <span>55</span></a></li><li><a href="#category-small-business">소상공인 <span>10</span></a></li><li><a href="#category-childbirth">육아·출산 <span>9</span></a></li><li><a href="#category-employment">고용·취업 <span>11</span></a></li><li><a href="#category-life-energy">생활·에너지 <span>23</span></a></li><li><a href="#category-tax-refund">세금·환급 <span>2</span></a></li></ul></nav>
-            </section>
-          </aside>
-
           <section class="content-area support-portal-content" aria-labelledby="archive-title">
             <header class="archive-title" id="support-category">
               <h1 id="archive-title">지원금</h1>
