@@ -58,12 +58,6 @@
               <h2 class="widget-title">복지서비스</h2>
               <nav class="category-filter support-side-filter" aria-label="지원금 하위 카테고리"><ul><li><a class="is-active" href="#support-category">전체 <span>55</span></a></li><li><a href="#category-small-business">소상공인 <span>10</span></a></li><li><a href="#category-childbirth">육아·출산 <span>9</span></a></li><li><a href="#category-employment">고용·취업 <span>11</span></a></li><li><a href="#category-life-energy">생활·에너지 <span>23</span></a></li><li><a href="#category-tax-refund">세금·환급 <span>2</span></a></li></ul></nav>
             </section>
-            <section class="widget support-side-menu support-side-guide">
-              <h2 class="widget-title">빠른 확인</h2>
-              <a href="#support-search">검색으로 찾기</a>
-              <a href="#category-small-business">소상공인 먼저 보기</a>
-              <a href="#category-life-energy">생활·에너지 보기</a>
-            </section>
           </aside>
 
           <section class="content-area support-portal-content" aria-labelledby="archive-title">
