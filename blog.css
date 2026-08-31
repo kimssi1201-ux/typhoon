@@ -946,6 +946,7 @@ img { display: block; max-width: 100%; height: auto; }
 
 .support-archive .support-portal-grid,
 .blog-page.home .home-portal-grid {
+  display: grid;
   grid-template-columns: 220px minmax(0, 1fr);
   gap: 32px;
   align-items: start;

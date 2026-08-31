@@ -677,7 +677,7 @@ test("the home is a support portal with category navigation and recommended post
   assert.match(html, /class="header-menu-panel"/);
   assert.match(html, /href="contact\.html">문의<\/a>/);
   assert.match(html, /href="privacy\.html">개인정보처리방침<\/a>/);
-  assert.match(html, /\/blog\.css\?v=20260831-home7/);
+  assert.match(html, /\/blog\.css\?v=20260831-home8/);
   assert.match(html, /google-adsense-account/);
   assert.ok(html.includes(publisherId));
   assert.match(html, /<link rel="canonical" href="https:\/\/mustview\.co\.kr\/"/);
@@ -700,7 +700,7 @@ test("the home is a support portal with category navigation and recommended post
   assert.match(css, /\.skip-link\s*\{[\s\S]*?left:\s*-9999px;[\s\S]*?width:\s*1px;[\s\S]*?height:\s*1px;[\s\S]*?overflow:\s*hidden/);
   assert.match(css, /\.skip-link:focus\s*\{[\s\S]*?position:\s*fixed;[\s\S]*?left:\s*16px;[\s\S]*?top:\s*16px;[\s\S]*?background:\s*#1d4ed8/);
   assert.match(css, /\.blog-page\.home \.site-grid\s*\{[\s\S]*?max-width:\s*1140px;[\s\S]*?margin:\s*0 auto;[\s\S]*?padding:\s*0 20px/);
-  assert.match(css, /\.support-archive \.support-portal-grid,\s*\.blog-page\.home \.home-portal-grid\s*\{[\s\S]*?grid-template-columns:\s*220px minmax\(0, 1fr\);[\s\S]*?gap:\s*32px/);
+  assert.match(css, /\.support-archive \.support-portal-grid,\s*\.blog-page\.home \.home-portal-grid\s*\{[\s\S]*?display:\s*grid;[\s\S]*?grid-template-columns:\s*220px minmax\(0, 1fr\);[\s\S]*?gap:\s*32px/);
   assert.match(css, /\.support-card-grid\s*\{[\s\S]*?grid-template-columns:\s*repeat\(3, minmax\(0, 1fr\)\);[\s\S]*?gap:\s*16px/);
   assert.match(css, /\.support-side-menu \.support-side-filter a\s*\{[\s\S]*?min-height:\s*44px;[\s\S]*?border-radius:\s*8px/);
   assert.match(css, /\.home-portal-eyebrow\s*\{[\s\S]*?letter-spacing:\s*0\.04em/);
