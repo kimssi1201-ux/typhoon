@@ -946,65 +946,7 @@ img { display: block; max-width: 100%; height: auto; }
 
 .support-archive .support-portal-grid,
 .blog-page.home .home-portal-grid {
-  display: grid;
-  grid-template-columns: 220px minmax(0, 1fr);
-  gap: 32px;
-  align-items: start;
-}
-
-.support-portal-sidebar {
-  position: sticky;
-  top: 7px;
-  min-width: 0;
-}
-
-.support-side-menu {
-  margin-bottom: 12px;
-}
-
-.support-side-menu .widget-title {
-  margin-bottom: 14px;
-  color: #202428;
-  font-size: 1.35rem;
-}
-
-.support-side-filter {
-  margin-top: 0;
-}
-
-.support-side-menu .support-side-filter ul {
-  display: grid;
-  gap: 7px;
-  border-top: 0;
-}
-
-.support-side-menu .support-side-filter li {
-  border-bottom: 0;
-}
-
-.support-side-menu .support-side-filter a {
-  display: flex;
-  justify-content: space-between;
-  min-height: 44px;
-  padding: 10px 12px;
-  border: 1px solid #d9e0ea;
-  border-radius: 8px;
-  background: #fff;
-  color: #344054;
-  font-size: 0.92rem;
-  font-weight: 750;
-}
-
-.support-side-menu .support-side-filter a:hover,
-.support-side-menu .support-side-filter a.is-active {
-  border-color: #1d4ed8;
-  background: #eff5ff;
-  color: #1d4ed8;
-}
-
-.support-side-menu .support-side-filter span {
-  color: #7b8796;
-  font-size: 0.82rem;
+  display: block;
 }
 
 .support-portal-content .archive-title {
@@ -1622,15 +1564,6 @@ img { display: block; max-width: 100%; height: auto; }
     width: min(828px, calc(100% - 24px));
   }
 
-  .support-portal-sidebar {
-    position: static;
-    margin-bottom: 14px;
-  }
-
-  .support-side-menu .support-side-filter ul {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
   .support-card-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
@@ -1675,7 +1608,6 @@ img { display: block; max-width: 100%; height: auto; }
   .home-topic-head { align-items: flex-start; gap: 10px; }
   .home-topic-posts .post-card-content { padding: 16px; }
   .support-search { padding: 13px; }
-  .support-side-menu .support-side-filter ul { grid-template-columns: 1fr; }
   .support-card-grid { grid-template-columns: 1fr; }
   .support-card-grid .post-card-content { padding: 18px; }
   .support-card-grid .post-card-body { display: block; margin-top: 10px; }

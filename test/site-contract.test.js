@@ -649,7 +649,6 @@ test("the home is a support portal with category navigation and recommended post
   assert.match(html, /data-post-count="55"/);
   assert.match(html, /body class="blog-page home home-portal generatepress-style"/);
   assert.match(html, /class="site-grid home-portal-grid"/);
-  assert.match(html, /class="support-portal-sidebar home-portal-sidebar"/);
   assert.match(html, /class="content-area home-portal-content"/);
   assert.match(html, /class="archive-title home-portal-title"/);
   assert.match(html, /<h1 id="home-title">복지모음집<\/h1>/);
@@ -669,9 +668,9 @@ test("the home is a support portal with category navigation and recommended post
   assert.doesNotMatch(html, /<nav class="breadcrumbs"/, "the home has no breadcrumb");
   assert.doesNotMatch(html, /카테고리 · 지원금/, "the home is no longer the support archive");
   assert.doesNotMatch(html, /빠른 확인/, "the redundant quick-check widget (only covering two of five categories) is removed");
+  assert.doesNotMatch(html, /support-portal-sidebar|support-side-menu|support-side-filter|복지서비스/, "the category sidebar (redundant with the top nav's category links) is removed");
   for (const category of categories) {
     assert.match(html, new RegExp(`href="/지원금#${category.id}"`), "the home links to " + category.label);
-    assert.match(html, new RegExp(`${category.label} <span>${category.count}</span>`), "the home exposes " + category.label + " count");
   }
   assert.match(html, /class="main-navigation"/);
   assert.match(html, /class="header-actions"/);
@@ -701,9 +700,9 @@ test("the home is a support portal with category navigation and recommended post
   assert.match(css, /\.skip-link\s*\{[\s\S]*?left:\s*-9999px;[\s\S]*?width:\s*1px;[\s\S]*?height:\s*1px;[\s\S]*?overflow:\s*hidden/);
   assert.match(css, /\.skip-link:focus\s*\{[\s\S]*?position:\s*fixed;[\s\S]*?left:\s*16px;[\s\S]*?top:\s*16px;[\s\S]*?background:\s*#1d4ed8/);
   assert.match(css, /\.blog-page\.home \.site-grid\s*\{[\s\S]*?max-width:\s*1140px;[\s\S]*?margin:\s*0 auto;[\s\S]*?padding:\s*0 20px/);
-  assert.match(css, /\.support-archive \.support-portal-grid,\s*\.blog-page\.home \.home-portal-grid\s*\{[\s\S]*?display:\s*grid;[\s\S]*?grid-template-columns:\s*220px minmax\(0, 1fr\);[\s\S]*?gap:\s*32px/);
+  assert.match(css, /\.support-archive \.support-portal-grid,\s*\.blog-page\.home \.home-portal-grid\s*\{[\s\S]*?display:\s*block;/);
   assert.match(css, /\.support-card-grid\s*\{[\s\S]*?grid-template-columns:\s*repeat\(3, minmax\(0, 1fr\)\);[\s\S]*?gap:\s*16px/);
-  assert.match(css, /\.support-side-menu \.support-side-filter a\s*\{[\s\S]*?min-height:\s*44px;[\s\S]*?border-radius:\s*8px/);
+  assert.doesNotMatch(css, /\.support-side-menu \.support-side-filter/, "the removed category sidebar has no leftover styles");
   assert.match(css, /\.home-portal-eyebrow\s*\{[\s\S]*?letter-spacing:\s*0\.04em/);
   assert.match(css, /\.home-all-posts-link\s*\{[\s\S]*?background:\s*#1d4ed8;[\s\S]*?color:\s*#fff/);
   assert.match(css, /\.home-portal-section-head h2\s*\{[\s\S]*?font-size:\s*24px/);
@@ -741,20 +740,16 @@ test("the support archive lives at /지원금 and contains all categorized posts
   assert.match(searchScript, /toLocaleLowerCase\("ko-KR"\)/);
   assert.match(searchScript, /card\.hidden = !matches/);
   assert.match(html, /class="site-grid support-portal-grid"/);
-  assert.match(html, /class="support-portal-sidebar"/);
   assert.match(html, /class="content-area support-portal-content"/);
   assert.match(html, /class="support-card-grid"/);
-  assert.match(html, /class="category-filter support-side-filter"/);
-  assert.match(html, /class="widget category-widget support-side-menu"/);
-  assert.match(html, /복지서비스/);
   assert.doesNotMatch(html, /빠른 확인/, "the redundant quick-check widget (only covering two of five categories) is removed");
+  assert.doesNotMatch(html, /support-portal-sidebar|support-side-menu|support-side-filter|복지서비스/, "the category sidebar (redundant with the top nav's category links) is removed");
   assert.doesNotMatch(redirects, /\/%EC%A7%80%EC%9B%90%EA%B8%88 \/support/);
   assert.doesNotMatch(redirects, /\/지원금 \/support/);
   assert.doesNotMatch(html, /<nav class="breadcrumbs"/, "the support archive has no breadcrumb trail");
 
   for (const category of categories) {
     assert.match(html, new RegExp(`href="#${category.id}"`), "the support archive links to " + category.label);
-    assert.match(html, new RegExp(`${category.label} <span>${category.count}</span>`), "the support archive shows the " + category.label + " count");
   }
 
   for (const post of posts) {
