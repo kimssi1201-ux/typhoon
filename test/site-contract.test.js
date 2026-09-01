@@ -824,7 +824,7 @@ test("each support post has complete metadata, a single H1, and a valid body len
     }
     assert.match(html, /google-adsense-account/);
     assert.ok(html.includes(publisherId));
-    assert.match(html, /blog\.css\?v=20260828-affiliate1/);
+    assert.match(html, /blog\.css\?v=20260901-affiliate-banner1/);
     assert.match(html, /href="contact\.html">문의<\/a>/, post.file + " links to the contact page");
     assert.match(html, /href="privacy\.html">개인정보처리방침<\/a>/, post.file + " links to the privacy policy");
     assert.equal((html.match(/<img\b/g) || []).length, 1, post.file + " has exactly one contextual body image");
@@ -911,8 +911,8 @@ test("each support article can load a disclosed keyword-matched Coupang Partners
     );
     assert.match(
       html,
-      new RegExp(`<h2>[^<]*지원 금액[^<]*<\\/h2>[\\s\\S]*?<aside class="affiliate-widget affiliate-widget-inline" data-coupang-partners data-keyword="${escapeRegExp(keyword)}" data-title="[^"]+" data-limit="3" hidden><\\/aside>\\s*<h2>`),
-      post.file + " places a keyword-matched affiliate widget after the support amount section"
+      new RegExp(`<h2>[^<]*지원 금액[^<]*<\\/h2>[\\s\\S]*?<aside class="affiliate-widget affiliate-widget-inline" data-coupang-partners data-keyword="${escapeRegExp(keyword)}" data-title="[^"]+" data-limit="1" hidden><\\/aside>\\s*<h2>`),
+      post.file + " places a compact keyword-matched affiliate banner after the support amount section"
     );
     assert.equal((html.match(/data-coupang-partners/g) || []).length, 2, post.file + " has one inline and one footer affiliate widget");
     assert.match(html, /<script src="coupang-partners\.js\?v=20260828-coupang3" defer><\/script>/, post.file + " loads the affiliate script");
@@ -933,6 +933,8 @@ test("each support article can load a disclosed keyword-matched Coupang Partners
   assert.match(script, /쿠팡 파트너스 링크/);
   assert.match(css, /\.affiliate-widget\s*\{[\s\S]*?max-width:\s*760px/);
   assert.match(css, /\.article-content \.affiliate-widget-inline\s*\{[\s\S]*?margin:\s*30px 0 36px/);
+  assert.match(css, /\.article-content \.affiliate-widget-inline\s*\{[\s\S]*?grid-template-columns:\s*minmax\(0, 190px\) minmax\(0, 1fr\)/);
+  assert.match(css, /\.article-content \.affiliate-widget-inline \.affiliate-product\s*\{[\s\S]*?grid-template-columns:\s*72px minmax\(0, 1fr\)/);
   assert.match(css, /\.article-content \.affiliate-widget-inline h2::before\s*\{[\s\S]*?display:\s*none/);
   assert.match(css, /\.affiliate-grid\s*\{[\s\S]*?grid-template-columns:\s*repeat\(3, minmax\(0, 1fr\)\)/);
   assert.match(css, /\.affiliate-product img\s*\{[\s\S]*?aspect-ratio:\s*1/);
