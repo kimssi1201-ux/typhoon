@@ -684,13 +684,28 @@ test("the home is a support portal with category navigation and recommended post
   assert.doesNotMatch(html, /housing-dashboard\.js|housing-support\.js|portal-overview/, "the public home no longer renders a portal dashboard");
   assert.doesNotMatch(visibleText(html), /\?{3,}/, "the home does not expose corrupted Korean text");
 
-  for (const post of posts.slice(0, 18)) {
+  const homeArticles = [...html.matchAll(/<article class="post-card" data-post="([^"]+)" data-category="([^"]+)"/g)];
+  const homeCategoryCounts = {};
+  for (const [, slug, categoryId] of homeArticles) {
+    homeCategoryCounts[categoryId] = (homeCategoryCounts[categoryId] || 0) + 1;
+    const post = posts.find((candidate) => candidate.slug === slug);
+    assert.ok(post, slug + " recommended on the home is a real post");
+    assert.equal(post.categoryId, categoryId, slug + " keeps its real category on the home");
     assert.match(html, new RegExp(`href="${post.file}"`), post.file + " is linked from the home portal");
-    assert.match(html, new RegExp(`data-post="${post.slug}"[^>]+data-category="${post.categoryId}"`), post.file + " keeps category metadata on the home");
   }
-  for (const post of posts.slice(18)) {
-    assert.doesNotMatch(html, new RegExp(`href="${post.file}"`), post.file + " is not linked as a recommended home card");
-  }
+  assert.deepEqual(
+    homeCategoryCounts,
+    {
+      "category-small-business": 4,
+      "category-childbirth": 4,
+      "category-employment": 4,
+      "category-life-energy": 4,
+      "category-tax-refund": 2
+    },
+    "the home's recommended posts represent every category instead of being dominated by one"
+  );
+  const homeCategorySequence = homeArticles.slice(0, 5).map(([, , categoryId]) => categoryId);
+  assert.equal(new Set(homeCategorySequence).size, 5, "the first five recommended cards already span all five categories, not just one");
 
   assert.doesNotMatch(html, /<img\b/, "the home thumbnails are deterministic text tiles, not raster images");
 
