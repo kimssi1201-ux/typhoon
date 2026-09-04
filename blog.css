@@ -1782,8 +1782,8 @@ img { display: block; max-width: 100%; height: auto; }
 
 .home-service-hero {
   display: grid;
-  gap: 14px;
-  padding: 34px 36px;
+  gap: 0;
+  padding: 24px;
 }
 
 .home-service-eyebrow,
@@ -1822,7 +1822,7 @@ img { display: block; max-width: 100%; height: auto; }
 
 .home-service-hero .support-search {
   max-width: 760px;
-  margin-top: 4px;
+  margin-top: 0;
   padding: 18px;
   border-color: #d7e2f1;
   background: #f8fbff;
