@@ -1,7 +1,6 @@
 ---
 import { getCollection } from "astro:content";
 import BaseLayout from "../layouts/BaseLayout.astro";
-import AudienceCategories from "../components/AudienceCategories.astro";
 import PostCard from "../components/PostCard.astro";
 import SupportSearch from "../components/SupportSearch.astro";
 import { SITE } from "../data/site.js";
@@ -50,14 +49,6 @@ const searchExamples = ["청년월세", "근로장려금", "부모급여", "소�
             examples={searchExamples}
           />
         </header>
-
-        <section class="home-service-section" aria-labelledby="audience-title">
-          <div class="home-service-section-head">
-            <p>대상별 찾기</p>
-            <h2 id="audience-title">지원 대상별 빠른 찾기</h2>
-          </div>
-          <AudienceCategories posts={posts} limit={8} titleId="audience-title" />
-        </section>
 
         <section class="home-service-section" aria-labelledby="popular-title">
           <div class="home-service-section-head">

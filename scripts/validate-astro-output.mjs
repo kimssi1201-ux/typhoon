@@ -55,7 +55,7 @@ assert.match(home, /<link rel="alternate" type="application\/rss\+xml" title="�
 assert.match(home, /data-support-search/);
 assert.match(home, /data-post-count="55"/);
 assert.match(home, /내가 받을 수 있는 정부지원금을 쉽게 찾아보세요/);
-assert.match(home, /지원 대상별 빠른 찾기/);
+assert.doesNotMatch(home, /지원 대상별 빠른 찾기/);
 assert.match(home, /먼저 확인할 지원금/);
 assert.match(home, /최근 확인한 지원금/);
 assert.match(home, /전체 55개 지원금 보기/);
