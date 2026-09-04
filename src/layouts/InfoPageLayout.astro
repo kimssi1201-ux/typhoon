@@ -1,0 +1,22 @@
+---
+import BaseLayout from "./BaseLayout.astro";
+
+const { page, activeNav = "" } = Astro.props;
+const data = page.data;
+---
+
+<BaseLayout
+  title={data.seoTitle}
+  description={data.description}
+  canonicalPath={data.canonicalPath}
+  ogType="website"
+  ogTitle={data.ogTitle}
+  ogDescription={data.ogDescription}
+  ogImage={data.ogImage}
+  bodyClass={data.bodyClass}
+  activeNav={activeNav || data.slug}
+  cssHref="/blog.css?v=20260828-mobilenav1"
+  jsonLd={data.schema}
+>
+  <main class="site-main" id="main" set:html={data.mainInnerHtml}></main>
+</BaseLayout>

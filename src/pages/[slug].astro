@@ -1,0 +1,19 @@
+---
+import { getCollection } from "astro:content";
+import BlogLayout from "../layouts/BlogLayout.astro";
+import InfoPageLayout from "../layouts/InfoPageLayout.astro";
+
+export async function getStaticPaths() {
+  const posts = await getCollection("posts");
+  const pages = await getCollection("pages");
+  return [
+    ...posts.map((post) => ({ params: { slug: post.data.slug }, props: { kind: "post", entry: post } })),
+    ...pages.map((page) => ({ params: { slug: page.data.slug }, props: { kind: "page", entry: page } }))
+  ];
+}
+
+const { kind, entry } = Astro.props;
+const posts = await getCollection("posts");
+---
+
+{kind === "post" ? <BlogLayout post={entry} posts={posts} /> : <InfoPageLayout page={entry} activeNav={entry.data.slug} />}

@@ -1,0 +1,59 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import PostCard from "../../components/PostCard.astro";
+import { SITE } from "../../data/site.js";
+import { archivePosts, postsByCategory } from "../../lib/content.js";
+import { supportJsonLd } from "../../lib/seo.js";
+
+const posts = archivePosts(await getCollection("posts"));
+const grouped = postsByCategory(posts);
+const firstPostByCategory = new Map(grouped.map((category) => [category.id, category.posts[0]?.data.slug]));
+---
+
+<BaseLayout
+  title="지원금 전체 글 | 복지모음집"
+  description="복지모음집의 지원금 글 전체 목록입니다. 소상공인, 육아·출산, 고용·취업, 생활·에너지, 세금·환급 카테고리별로 확인하세요."
+  canonicalPath="/지원금"
+  ogType="website"
+  ogTitle="지원금 전체 글 | 복지모음집"
+  ogDescription="카테고리별로 확인하는 정부지원금 글 전체 목록"
+  ogImage={SITE.defaultImage}
+  twitterCard="summary_large_image"
+  bodyClass="blog-page archive support-archive generatepress-style"
+  activeNav="support"
+  cssHref="/blog.css?v=20260901-archive-mobile1"
+  scripts={["/support-search.js"]}
+  themeColor={SITE.themeColor}
+  jsonLd={supportJsonLd}
+>
+  <main class="site-main" id="main" data-post-count={posts.length}>
+    <div class="site-grid support-portal-grid">
+      <section class="content-area support-portal-content" aria-labelledby="archive-title">
+        <header class="archive-title" id="support-category">
+          <h1 id="archive-title">지원금</h1>
+          <p class="archive-intro">신청 전에 꼭 알아야 할 조건과 서류를 읽기 쉽게 정리했습니다. 모든 글은 정부기관 또는 공공기관의 공식 페이지를 연결하며, 최종 확인일을 함께 표시합니다.</p>
+          <form class="support-search" id="support-search" role="search" aria-label="지원금 글 검색" data-support-search>
+            <label for="supportSearchInput">지원금 글 검색</label>
+            <div class="support-search-row">
+              <input id="supportSearchInput" name="q" type="search" maxlength="40" autocomplete="off" placeholder="예: K패스, 청년월세, 부모급여" data-support-search-input />
+              <button class="support-search-clear" type="button" data-support-search-clear hidden>지우기</button>
+            </div>
+            <p class="support-search-count" data-support-search-status aria-live="polite">전체 {posts.length}개 글을 표시 중입니다.</p>
+          </form>
+        </header>
+        <div class="support-card-grid">
+          {
+            posts.map((post) => (
+              <PostCard
+                post={post}
+                categoryHrefBase="#"
+                anchorId={firstPostByCategory.get(post.data.categoryId) === post.data.slug ? post.data.categoryId : ""}
+              />
+            ))
+          }
+        </div>
+      </section>
+    </div>
+  </main>
+</BaseLayout>
