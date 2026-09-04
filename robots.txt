@@ -1,4 +1,5 @@
 User-agent: *
+Content-Signal: search=yes,ai-input=yes,ai-train=no,use=reference
 Allow: /
 Allow: /ads.txt
 Allow: /robots.txt
@@ -7,24 +8,31 @@ Allow: /sitemap.xml
 Allow: /llms.txt
 
 User-agent: GPTBot
+Content-Signal: search=yes,ai-input=yes,ai-train=no,use=reference
 Allow: /
 
 User-agent: ChatGPT-User
+Content-Signal: search=yes,ai-input=yes,ai-train=no,use=reference
 Allow: /
 
 User-agent: OAI-SearchBot
+Content-Signal: search=yes,ai-input=yes,ai-train=no,use=reference
 Allow: /
 
 User-agent: ClaudeBot
+Content-Signal: search=yes,ai-input=yes,ai-train=no,use=reference
 Allow: /
 
 User-agent: Claude-SearchBot
+Content-Signal: search=yes,ai-input=yes,ai-train=no,use=reference
 Allow: /
 
 User-agent: PerplexityBot
+Content-Signal: search=yes,ai-input=yes,ai-train=no,use=reference
 Allow: /
 
 User-agent: Perplexity-User
+Content-Signal: search=yes,ai-input=yes,ai-train=no,use=reference
 Allow: /
 
 Sitemap: https://mustview.co.kr/sitemap.xml

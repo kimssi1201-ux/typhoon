@@ -1010,6 +1010,7 @@ test("the sitemap indexes the home, support archive, all posts, and four trust p
   assert.match(robots, /User-agent:\s*ChatGPT-User/);
   assert.match(robots, /User-agent:\s*Claude-SearchBot/);
   assert.match(robots, /User-agent:\s*PerplexityBot/);
+  assert.match(robots, /Content-Signal:\s*search=yes,ai-input=yes,ai-train=no,use=reference/);
   assert.match(llms, /복지모음집/);
   assert.match(llms, /https:\/\/mustview\.co\.kr\/지원금/);
   assert.match(redirects, /\/destinations \/ 301/);
