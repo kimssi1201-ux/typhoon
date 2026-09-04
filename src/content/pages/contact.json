@@ -1,0 +1,23 @@
+{
+  "slug": "contact",
+  "sourceFile": "contact.html",
+  "seoTitle": "문의 및 정보 수정 요청 | 복지모음집",
+  "description": "지원금 게시글의 오류, 공식 링크 변경, 접근성, 개인정보와 콘텐츠 권리 관련 문의 방법을 안내합니다.",
+  "canonicalPath": "/contact",
+  "ogTitle": "문의 및 정보 수정 요청",
+  "ogDescription": "지원금 정보 오류와 사이트 이용 문제를 전달하는 공식 문의 경로",
+  "ogImage": "",
+  "schema": {
+    "@context": "https://schema.org",
+    "@type": "ContactPage",
+    "name": "복지모음집 문의 및 정보 수정 요청",
+    "url": "https://mustview.co.kr/contact",
+    "isPartOf": {
+      "@type": "WebSite",
+      "name": "복지모음집",
+      "url": "https://mustview.co.kr/"
+    }
+  },
+  "bodyClass": "blog-page single single-post information-page generatepress-style",
+  "mainInnerHtml": "<div class=\"site-grid\">\n        <article class=\"content-area single-post hentry\">\n          <nav class=\"breadcrumbs\" aria-label=\"현재 위치\"><a href=\"index.html\">홈</a><span>/</span><span aria-current=\"page\">문의</span></nav>\n          <header class=\"entry-header\"><p class=\"entry-meta\"><span class=\"category-chip\">운영 안내</span><span>최종 수정 2026년 8월 14일</span></p><h1>문의 및 정보 수정 요청</h1><p class=\"entry-description\">정보 오류와 사이트 이용 문제를 확인할 수 있도록 접수합니다.</p></header>\n          <section class=\"article-content information-content\">\n            <p class=\"lead\">지원금 조건, 금액, 일정이나 공식 링크가 실제 안내와 다르거나 사이트 이용 중 문제가 발생했다면 공개 문의 채널로 알려 주세요. 접수된 내용은 공식 자료와 대조한 뒤 필요한 경우 게시글과 검수일을 수정합니다.</p>\n            <aside class=\"key-facts\" aria-label=\"문의 핵심 정보\"><strong>문의 핵심 정보</strong><dl><dt>접수 채널</dt><dd>GitHub Issues 공개 게시판</dd><dt>접수 대상</dt><dd>정보 오류·링크·접근성·권리 요청</dd><dt>주의사항</dt><dd>개인정보와 신청 서류 작성 금지</dd><dt>자격 상담</dt><dd>해당 정부기관 또는 주민센터 이용</dd></dl></aside>\n\n            <h2>문의 작성 방법</h2>\n            <p><a href=\"https://github.com/kimssi1201-ux/typhoon/issues\" target=\"_blank\" rel=\"noopener noreferrer\">MustView 공개 문의 게시판</a>에서 새 문의를 작성할 수 있습니다. 공개 저장소에 남는 글이므로 아래 정보만 작성해 주세요.</p>\n            <ul><li>문제가 있는 MustView 페이지 주소</li><li>잘못됐다고 판단한 문장 또는 링크</li><li>비교한 정부기관·공공기관의 공식 페이지 주소</li><li>오류를 확인한 날짜와 사용 기기·브라우저</li><li>접근성이나 화면 문제라면 개인정보를 가린 화면 설명</li></ul>\n\n            <h2>작성하면 안 되는 정보</h2>\n            <p>주민등록번호, 생년월일 전체, 전화번호, 정확한 집 주소, 계좌번호, 소득·재산 자료, 가족관계 서류, 인증번호와 지원금 신청서류를 작성하거나 첨부하지 마세요. 게시판은 개인별 신청 상담이나 서류 제출 창구가 아닙니다.</p>\n\n            <h2>접수 가능한 문의</h2>\n            <ul><li>지원 대상, 금액, 신청 기간과 필요 서류의 표시 오류</li><li>종료되거나 다른 페이지로 바뀐 공식 출처·신청 링크</li><li>모바일 화면, 키보드 탐색과 대체텍스트 등 접근성 문제</li><li>저작권, 개인정보처리방침과 광고 표시 관련 요청</li></ul>\n\n            <h2>처리하지 않는 문의</h2>\n            <p>개인의 수급 가능 여부, 심사 결과, 지급일 변경, 이의신청과 서류 제출은 MustView에서 확인하거나 처리할 수 없습니다. 취업 지원 제도는 고용24와 고용노동부 고객상담센터 1350, 보건복지 제도는 복지로와 보건복지상담센터 129, 민원 절차는 정부민원안내콜센터 110 또는 주소지 주민센터를 이용하세요.</p>\n\n            <h2>수정 처리 원칙</h2>\n            <p>접수된 내용이 공식 자료로 확인되면 본문을 수정하고 해당 글의 최종 확인일을 갱신합니다. 공식 기관별 안내가 서로 다르거나 적용 범위가 불명확하면 한쪽을 임의로 선택하지 않고, 확인이 필요하다는 주의 문구를 추가합니다. 공개 문의에 대한 즉시 답변이나 처리 기한은 보장하지 않습니다.</p>\n          </section>\n        </article>\n        <aside class=\"widget-area article-sidebar\" aria-label=\"블로그 안내\"><section class=\"widget\"><h2 class=\"widget-title\">블로그 안내</h2><ul><li><a href=\"about.html\">블로그 소개</a></li><li><a href=\"sources.html\">자료 기준</a></li><li><a href=\"contact.html\">문의</a></li><li><a href=\"privacy.html\">개인정보처리방침</a></li></ul></section><section class=\"widget notice-widget\"><h2 class=\"widget-title\">개인정보 주의</h2><p>문의 게시판은 공개됩니다. 개인 식별정보와 신청 서류를 남기지 마세요.</p></section></aside>\n      </div>"
+}
