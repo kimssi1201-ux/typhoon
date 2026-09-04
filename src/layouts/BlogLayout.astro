@@ -3,12 +3,13 @@ import BaseLayout from "./BaseLayout.astro";
 import BenefitSummary from "../components/BenefitSummary.astro";
 import Sidebar from "../components/Sidebar.astro";
 import { SITE } from "../data/site.js";
-import { metaDateHtml, removeFirstKeyFactsHtml } from "../lib/content.js";
+import { formatDateDots, removeFirstKeyFactsHtml } from "../lib/content.js";
 import { postJsonLd } from "../lib/seo.js";
 
 const { post, posts } = Astro.props;
 const data = post.data;
 const articleBodyHtml = removeFirstKeyFactsHtml(data.bodyHtml);
+const showPublishedDate = data.datePublished !== data.dateModified;
 ---
 
 <BaseLayout
@@ -22,9 +23,12 @@ const articleBodyHtml = removeFirstKeyFactsHtml(data.bodyHtml);
   twitterCard={data.twitterCard}
   bodyClass={data.bodyClass}
   activeNav="support"
-  cssHref="/blog.css?v=20260905-benefit-compact2"
+  cssHref="/blog.css?v=20260905-ai-trust1"
   scripts={["/blog.js?v=20260904-toc-simple1", "/coupang-partners.js?v=20260828-coupang3"]}
   themeColor={SITE.themeColor}
+  authorName={SITE.authorName}
+  publishedTime={data.datePublished}
+  modifiedTime={data.dateModified}
   jsonLd={postJsonLd(data)}
 >
   <main class="site-main" id="main">
@@ -36,7 +40,9 @@ const articleBodyHtml = removeFirstKeyFactsHtml(data.bodyHtml);
         <header class="entry-header">
           <p class="entry-meta">
             <a class="category-chip" href={`/지원금#${data.categoryId}`}>{data.category}</a>
-            <span>{metaDateHtml(data)}</span>
+            <span class="entry-author">작성 <a href={SITE.authorPath} rel="author">{SITE.authorName}</a></span>
+            {showPublishedDate && <time datetime={data.datePublished}>게시 {formatDateDots(data.datePublished)}</time>}
+            <time datetime={data.dateModified}>최종 확인 {formatDateDots(data.dateModified)}</time>
           </p>
           <h1>{data.title}</h1>
           <p class="entry-description">{data.entryDescription || data.description}</p>

@@ -995,16 +995,23 @@ test("HTML images keep non-empty alt text and the build warns about omissions", 
 });
 
 test("the sitemap indexes the home, support archive, all posts, and four trust pages", async () => {
-  const [sitemap, redirects, robots] = await Promise.all([
+  const [sitemap, redirects, robots, llms] = await Promise.all([
     readProjectFile("sitemap.xml"),
     readProjectFile("_redirects"),
-    readProjectFile("robots.txt")
+    readProjectFile("robots.txt"),
+    readProjectFile("llms.txt")
   ]);
   const indexed = [...sitemap.matchAll(/<loc>https:\/\/mustview\.co\.kr\/?([^<]*)<\/loc>/g)].map((match) => match[1]);
 
   assert.deepEqual(indexed, ["", supportArchive.slug, ...posts.map((post) => post.slug), ...trustPages.map((page) => page.slug)]);
   assert.match(robots, /Sitemap:\s*https:\/\/mustview\.co\.kr\/sitemap\.xml/);
   assert.match(robots, /Allow:\s*\/ads\.txt/);
+  assert.match(robots, /Allow:\s*\/llms\.txt/);
+  assert.match(robots, /User-agent:\s*ChatGPT-User/);
+  assert.match(robots, /User-agent:\s*Claude-SearchBot/);
+  assert.match(robots, /User-agent:\s*PerplexityBot/);
+  assert.match(llms, /복지모음집/);
+  assert.match(llms, /https:\/\/mustview\.co\.kr\/지원금/);
   assert.match(redirects, /\/destinations \/ 301/);
   assert.match(redirects, /\/travel-guide \/ 301/);
   assert.match(redirects, /\/housing-guide \/ 301/);

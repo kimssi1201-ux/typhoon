@@ -1,5 +1,30 @@
 User-agent: *
 Allow: /
 Allow: /ads.txt
+Allow: /robots.txt
+Allow: /rss.xml
+Allow: /sitemap.xml
+Allow: /llms.txt
+
+User-agent: GPTBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Claude-SearchBot
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Perplexity-User
+Allow: /
 
 Sitemap: https://mustview.co.kr/sitemap.xml

@@ -885,6 +885,23 @@ img { display: block; max-width: 100%; height: auto; }
 
 .entry-meta .category-chip { margin-right: 2px; }
 
+.entry-meta time,
+.entry-meta .entry-author {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.entry-meta .entry-author a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.entry-meta .entry-author a:hover {
+  color: var(--gp-accent);
+  text-decoration: underline;
+}
+
 .post-card .entry-title { font-size: clamp(1.18rem, 1.9vw, 1.35rem); }
 
 .entry-title a { text-decoration: none; }

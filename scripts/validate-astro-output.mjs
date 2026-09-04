@@ -36,7 +36,7 @@ const pages = await readJsonDir(pagesDir);
 assert.equal(posts.length, 55, "Astro content contains all 55 support posts");
 assert.equal(pages.length, 4, "Astro content contains all 4 information pages");
 
-for (const file of ["blog.css", "blog.js", "support-search.js", "coupang-partners.js", "ads.txt", "robots.txt", "_headers", "_redirects"]) {
+for (const file of ["blog.css", "blog.js", "support-search.js", "coupang-partners.js", "ads.txt", "robots.txt", "llms.txt", "_headers", "_redirects"]) {
   assert.ok(existsSync(join(dist, file)), `${file} is copied to dist`);
 }
 
@@ -49,9 +49,14 @@ for (const file of [
 }
 
 const home = await readDist("index.html");
+const homeSchemas = schemas(home);
+const homeOrganization = homeSchemas.find((schema) => schema["@type"] === "Organization");
+const homeWebsite = homeSchemas.find((schema) => schema["@type"] === "WebSite");
 assert.match(home, /<meta name="naver-site-verification" content="106c6629e63710702856b234d6dd4903894de678"/);
 assert.match(home, /<link rel="canonical" href="https:\/\/mustview\.co\.kr\/"/);
 assert.match(home, /<link rel="alternate" type="application\/rss\+xml" title="복지모음집 RSS" href="https:\/\/mustview\.co\.kr\/rss\.xml"/);
+assert.equal(homeOrganization?.["@id"], "https://mustview.co.kr/#organization", "home exposes the site organization schema");
+assert.equal(homeWebsite?.["@id"], "https://mustview.co.kr/#website", "home exposes the website schema");
 assert.match(home, /data-support-search/);
 assert.match(home, /data-post-count="55"/);
 assert.match(home, /복지모음집 지원금 검색/);
@@ -86,6 +91,8 @@ for (const post of posts) {
   const html = await readDist(routeHtmlPath(`/${post.slug}`));
   const postSchemas = schemas(html);
   const article = postSchemas.find((schema) => schema["@type"] === "Article");
+  const organization = postSchemas.find((schema) => schema["@type"] === "Organization");
+  const website = postSchemas.find((schema) => schema["@type"] === "WebSite");
   const breadcrumb = postSchemas.find((schema) => schema["@type"] === "BreadcrumbList");
   const faq = postSchemas.find((schema) => schema["@type"] === "FAQPage");
 
@@ -103,7 +110,10 @@ for (const post of posts) {
   assert.equal(article?.headline, post.title, `${post.slug} Article JSON-LD headline is preserved`);
   assert.equal(article?.datePublished, post.datePublished, `${post.slug} datePublished is preserved`);
   assert.equal(article?.dateModified, post.dateModified, `${post.slug} dateModified is preserved`);
-  assert.deepEqual(article?.author, { "@type": "Organization", name: "복지모음집" }, `${post.slug} author is preserved`);
+  assert.equal(organization?.["@id"], "https://mustview.co.kr/#organization", `${post.slug} organization JSON-LD is present`);
+  assert.equal(website?.["@id"], "https://mustview.co.kr/#website", `${post.slug} website JSON-LD is present`);
+  assert.deepEqual(article?.author, { "@id": "https://mustview.co.kr/#organization" }, `${post.slug} author is linked to the site organization`);
+  assert.ok(article?.citation?.length >= 1, `${post.slug} cites at least one official source`);
   assert.deepEqual(breadcrumb?.itemListElement?.map((item) => item.name), ["홈", "지원금", post.title], `${post.slug} breadcrumb JSON-LD is preserved`);
   assert.ok(faq?.mainEntity?.length >= 2, `${post.slug} FAQ JSON-LD is generated`);
   assert.match(redirects, new RegExp(`/${post.slug}\\.html /${post.slug} 301`), `${post.slug}.html redirects to canonical URL`);
@@ -118,8 +128,16 @@ for (const page of pages) {
 
 const sitemap = await readDist("sitemap.xml");
 const rss = await readDist("rss.xml");
+const robots = await readDist("robots.txt");
+const llms = await readDist("llms.txt");
 assert.match(sitemap, /<loc>https:\/\/mustview\.co\.kr\/<\/loc>/);
 assert.match(sitemap, /<loc>https:\/\/mustview\.co\.kr\/지원금<\/loc>/);
+assert.match(robots, /User-agent:\s*ChatGPT-User/);
+assert.match(robots, /User-agent:\s*Claude-SearchBot/);
+assert.match(robots, /User-agent:\s*PerplexityBot/);
+assert.match(robots, /Allow:\s*\/llms\.txt/);
+assert.match(llms, /복지모음집/);
+assert.match(llms, /https:\/\/mustview\.co\.kr\/지원금/);
 assert.equal((rss.match(/<item>/g) || []).length, posts.length, "RSS renders every support article");
 for (const post of posts) {
   assert.match(sitemap, new RegExp(`<loc>https://mustview\\.co\\.kr/${post.slug}<\\/loc>`), `${post.slug} is in sitemap`);

@@ -53,13 +53,67 @@ const schemas = (html) => {
   return sorted(found);
 };
 
+const normalizedMainEntityOfPage = (value) => {
+  if (!value || typeof value === "string") return value || "";
+  return value["@id"] || value.url || value;
+};
+
+const comparableSchema = (schema) => {
+  switch (schema["@type"]) {
+    case "Article":
+      return sorted({
+        "@type": "Article",
+        "@id": schema["@id"],
+        headline: schema.headline,
+        description: schema.description,
+        image: schema.image,
+        datePublished: schema.datePublished,
+        dateModified: schema.dateModified,
+        inLanguage: schema.inLanguage,
+        mainEntityOfPage: normalizedMainEntityOfPage(schema.mainEntityOfPage)
+      });
+    case "BreadcrumbList":
+      return sorted({
+        "@type": "BreadcrumbList",
+        "@id": schema["@id"],
+        itemListElement: schema.itemListElement
+      });
+    case "FAQPage":
+      return sorted({
+        "@type": "FAQPage",
+        "@id": schema["@id"],
+        mainEntity: schema.mainEntity
+      });
+    case "Blog":
+    case "CollectionPage":
+    case "AboutPage":
+    case "ContactPage":
+    case "WebPage":
+      return sorted({
+        "@type": schema["@type"],
+        name: schema.name,
+        url: schema.url,
+        description: schema.description,
+        inLanguage: schema.inLanguage
+      });
+    default:
+      return null;
+  }
+};
+
+const comparableSchemas = (items) =>
+  items
+    .map(comparableSchema)
+    .filter(Boolean)
+    .sort((left, right) => JSON.stringify(left).localeCompare(JSON.stringify(right)));
+
 const comparePage = (sourceHtml, generatedHtml, label, options = {}) => {
   const { compareBody = false, compareH1 = true } = options;
   for (const key of ["title", "description", "canonical", "h1"]) {
     if (key === "h1" && !compareH1) continue;
     assert.equal(field[key](generatedHtml), field[key](sourceHtml), `${label} ${key} changed`);
   }
-  assert.deepEqual(schemas(generatedHtml), schemas(sourceHtml), `${label} JSON-LD changed`);
+  assert.deepEqual(comparableSchemas(schemas(generatedHtml)), comparableSchemas(schemas(sourceHtml)), `${label} core JSON-LD changed`);
   if (compareBody) {
     const sourceArticle = sourceHtml.match(/<section\s+class=(["'])article-content\1[\s\S]*?<\/section>/i)?.[0] || "";
     const sourceBody = visibleText(sourceArticle.replace(/<aside\s+class=(["'])key-facts\1[\s\S]*?<\/aside>/i, ""));

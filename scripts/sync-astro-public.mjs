@@ -15,6 +15,7 @@ const copyFiles = [
   "blog.js",
   "CNAME",
   "coupang-partners.js",
+  "llms.txt",
   "robots.txt",
   "support-search.js",
   "_headers"
