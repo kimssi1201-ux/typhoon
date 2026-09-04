@@ -1,0 +1,42 @@
+---
+import { CATEGORIES } from "../data/site.js";
+import { categoryCounts } from "../lib/content.js";
+
+type RelatedLink = { href: string; label: string };
+type SidebarPost = { related: RelatedLink[] };
+
+const { posts, post = null } = Astro.props as {
+  posts: Array<{ data: { categoryId: string } }>;
+  post?: SidebarPost | null;
+};
+const counts = categoryCounts(posts);
+---
+
+<aside class="widget-area article-sidebar" aria-label={post ? "글 사이드바" : "블로그 안내"}>
+  <section class="widget">
+    <h2 class="widget-title">카테고리</h2>
+    <ul>
+      {
+        CATEGORIES.map((category) => (
+          <li>
+            <a href={`/지원금#${category.id}`}>
+              {category.label} <span>{counts.get(category.id) || 0}</span>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+  {
+    post && post.related.length > 0 && (
+      <section class="widget related-posts">
+        <h2 class="widget-title">관련 글</h2>
+        {post.related.map((link: RelatedLink) => <a href={link.href.replace(/\.html$/, "")}>{link.label}</a>)}
+      </section>
+    )
+  }
+  <section class="widget notice-widget">
+    <h2 class="widget-title">공식 확인</h2>
+    <p>지원 대상과 금액은 예산, 신청자 상태, 거주지와 심사 결과에 따라 달라질 수 있습니다. 신청 전에는 글 하단의 공식 출처를 다시 확인하세요.</p>
+  </section>
+</aside>

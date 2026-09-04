@@ -1,0 +1,29 @@
+---
+import { CATEGORIES, FOOTER_INFO_LINKS, SITE } from "../data/site.js";
+---
+
+<footer>
+  <div class="footer-widgets">
+    <div class="footer-widgets-inner">
+      <section class="footer-widget">
+        <h2>{SITE.name}</h2>
+        <p>정부·지방자치단체·공공기관의 공개 자료를 읽기 쉽게 정리합니다. 개별 수급 자격을 판정하거나 신청을 대행하지는 않습니다.</p>
+      </section>
+      <section class="footer-widget">
+        <h2>카테고리</h2>
+        <ul>
+          {CATEGORIES.map((category) => <li><a href={`/지원금#${category.id}`}>{category.label}</a></li>)}
+        </ul>
+      </section>
+      <section class="footer-widget">
+        <h2>안내</h2>
+        <ul>
+          {FOOTER_INFO_LINKS.map((link) => <li><a href={link.href}>{link.label}</a></li>)}
+        </ul>
+      </section>
+    </div>
+  </div>
+  <div class="site-info">
+    <div class="site-info-inner">© 2026 {SITE.name}. 공식 신청 전 최신 공고를 확인하세요.</div>
+  </div>
+</footer>

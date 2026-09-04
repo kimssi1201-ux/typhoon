@@ -1,0 +1,63 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import PostCard from "../components/PostCard.astro";
+import { SITE } from "../data/site.js";
+import { homePosts } from "../lib/content.js";
+import { homeJsonLd } from "../lib/seo.js";
+
+const posts = await getCollection("posts");
+const cards = homePosts(posts, 18);
+---
+
+<BaseLayout
+  title="복지모음집 | 정부지원금 신청 정보 블로그"
+  description="정부와 공공기관의 공식 자료를 바탕으로 지원 대상, 금액, 신청 기간과 방법을 정리하는 지원금 정보 블로그입니다."
+  canonicalPath="/"
+  ogType="website"
+  ogTitle="복지모음집 | 정부지원금 신청 정보 블로그"
+  ogDescription="공식 신청처와 함께 보는 정부지원금 정보 블로그"
+  ogImage={SITE.defaultImage}
+  twitterCard="summary_large_image"
+  bodyClass="blog-page home home-portal generatepress-style"
+  activeNav="home"
+  cssHref="/blog.css?v=20260901-home-mobile1"
+  scripts={["/support-search.js"]}
+  includeRss
+  includeNaverVerification
+  themeColor={SITE.themeColor}
+  jsonLd={homeJsonLd}
+>
+  <main class="site-main" id="main" data-post-count={posts.length}>
+    <div class="site-grid home-portal-grid">
+      <section class="content-area home-portal-content" aria-labelledby="home-title">
+        <header class="archive-title home-portal-title">
+          <p class="home-portal-eyebrow">공식 자료 기반 지원금 안내</p>
+          <h1 id="home-title">복지모음집</h1>
+          <p class="archive-intro">정부와 공공기관의 공개 자료를 바탕으로 지원 대상, 신청 기간, 필요 서류와 공식 신청처를 빠르게 확인할 수 있게 정리합니다.</p>
+          <form class="support-search home-portal-search" id="home-support-search" action="/지원금#support-search" method="get" role="search" aria-label="지원금 글 검색" data-support-search data-support-search-all-label="추천">
+            <label for="homeSearchInput">지원금 글 검색</label>
+            <div class="support-search-row">
+              <input id="homeSearchInput" name="q" type="search" maxlength="40" autocomplete="off" placeholder="예: K패스, 청년월세, 부모급여" data-support-search-input />
+              <button class="support-search-clear" type="button" data-support-search-clear hidden>지우기</button>
+            </div>
+            <p class="support-search-count" data-support-search-status aria-live="polite">추천 {cards.length}개 글을 표시 중입니다.</p>
+          </form>
+          <div class="home-portal-actions">
+            <a class="home-all-posts-link" href="/지원금">전체 {posts.length}개 글 보기</a>
+          </div>
+        </header>
+
+        <section class="home-portal-section" aria-labelledby="home-recommended-title">
+          <div class="home-portal-section-head">
+            <p>추천 글</p>
+            <h2 id="home-recommended-title">먼저 확인할 지원금</h2>
+          </div>
+          <div class="support-card-grid home-portal-card-grid">
+            {cards.map((post) => <PostCard post={post} />)}
+          </div>
+        </section>
+      </section>
+    </div>
+  </main>
+</BaseLayout>

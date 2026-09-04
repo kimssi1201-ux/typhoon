@@ -1,6 +1,9 @@
 .DS_Store
 Thumbs.db
 node_modules/
+.astro/
+dist/
+public/
 *.log
 .dev.vars
 .wrangler/

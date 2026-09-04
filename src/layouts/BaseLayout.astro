@@ -1,0 +1,79 @@
+---
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import { SITE } from "../data/site.js";
+import { canonicalUrl } from "../lib/content.js";
+
+const {
+  title,
+  description,
+  canonicalPath = "/",
+  ogType = "website",
+  ogTitle = title,
+  ogDescription = description,
+  ogImage = "",
+  twitterCard = "",
+  bodyClass = "blog-page generatepress-style",
+  activeNav = "",
+  cssHref = "/blog.css",
+  scripts = [],
+  includeRss = false,
+  includeNaverVerification = false,
+  themeColor = "",
+  jsonLd = null
+} = Astro.props as {
+  title: string;
+  description: string;
+  canonicalPath?: string;
+  ogType?: string;
+  ogTitle?: string;
+  ogDescription?: string;
+  ogImage?: string;
+  twitterCard?: string;
+  bodyClass?: string;
+  activeNav?: string;
+  cssHref?: string;
+  scripts?: string[];
+  includeRss?: boolean;
+  includeNaverVerification?: boolean;
+  themeColor?: string;
+  jsonLd?: unknown;
+};
+
+const canonical = canonicalUrl(canonicalPath);
+const jsonLdText = jsonLd ? JSON.stringify(jsonLd, null, 6).replace(/</g, "\\u003c") : "";
+---
+
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    {themeColor && <meta name="theme-color" content={themeColor} />}
+    <meta name="google-adsense-account" content={SITE.publisherId} />
+    {includeNaverVerification && <meta name="naver-site-verification" content={SITE.naverVerification} />}
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <meta property="og:type" content={ogType} />
+    <meta property="og:site_name" content={SITE.name} />
+    <meta property="og:title" content={ogTitle} />
+    <meta property="og:description" content={ogDescription} />
+    <meta property="og:url" content={canonical} />
+    {ogImage && <meta property="og:image" content={ogImage} />}
+    {twitterCard && <meta name="twitter:card" content={twitterCard} />}
+    {includeRss && <link rel="alternate" type="application/rss+xml" title="복지모음집 RSS" href={`${SITE.origin}/rss.xml`} />}
+    <link rel="stylesheet" href={cssHref} />
+    <script is:inline async src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${SITE.publisherId}`} crossorigin="anonymous"></script>
+    {jsonLd && <script is:inline type="application/ld+json" set:html={jsonLdText}></script>}
+  </head>
+  <body class={bodyClass}>
+    <a class="skip-link" href="#main">본문으로 바로가기</a>
+    <div class="site-shell">
+      <Header active={activeNav} />
+      <slot />
+      <Footer />
+    </div>
+    {scripts.map((src: string) => <script is:inline src={src} defer></script>)}
+  </body>
+</html>

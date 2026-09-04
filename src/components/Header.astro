@@ -1,0 +1,45 @@
+---
+import { NAV_ITEMS, SITE } from "../data/site.js";
+
+const { active = "" } = Astro.props;
+const mobileItems = [...NAV_ITEMS, { href: "/privacy", label: "개인정보처리방침", key: "privacy" }];
+---
+
+<header class="site-header">
+  <div class="inside-header">
+    <a class="site-branding" href="/" aria-label={`${SITE.name} 홈`}>
+      <span class="site-title">{SITE.name}</span>
+      <span class="site-description">{SITE.description}</span>
+    </a>
+    <p class="site-header-note">지원 가능 여부는 신청 전 공식 기관에서 다시 확인하세요.</p>
+    <div class="header-actions">
+      <a class="header-icon header-search" href="/지원금#support-search">
+        <span class="screen-reader-text">지원금 글 검색</span>
+      </a>
+      <details class="header-menu">
+        <summary class="header-icon header-menu-toggle">
+          <span class="screen-reader-text">메뉴 열기</span>
+        </summary>
+        <nav class="header-menu-panel" aria-label="모바일 메뉴">
+          {mobileItems.map((item) => <a href={item.href}>{item.label}</a>)}
+        </nav>
+      </details>
+    </div>
+  </div>
+</header>
+
+<nav class="main-navigation" aria-label="주요 메뉴">
+  <div class="inside-navigation">
+    <ul>
+      {
+        NAV_ITEMS.map((item) => (
+          <li>
+            <a href={item.href} aria-current={active === item.key ? "page" : undefined}>
+              {item.label}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</nav>

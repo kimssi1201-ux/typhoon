@@ -1,0 +1,31 @@
+---
+import { formatDateDots } from "../lib/content.js";
+
+const { post, categoryHrefBase = "/지원금#", anchorId = "" } = Astro.props;
+const data = post.data;
+const href = `/${data.slug}`;
+const categoryHref = `${categoryHrefBase}${data.categoryId}`;
+---
+
+<article class="post-card" id={anchorId || undefined} data-post={data.slug} data-category={data.categoryId}>
+  <div class="post-card-inner">
+    <div class="post-card-content">
+      <h2 class="entry-title"><a href={href}>{data.title}</a></h2>
+      <div class="post-card-body">
+        <a class="post-card-thumbnail" href={href} tabindex="-1" style={data.tile.style}>
+          <span>{data.tile.label}</span>
+          <strong set:html={data.tile.html}></strong>
+        </a>
+        <div class="post-card-copy">
+          <p class="entry-summary">{data.summary}</p>
+          <p class="entry-meta">
+            <a class="category-chip" href={categoryHref}>{data.category}</a>
+            <span>·</span>
+            <span>{formatDateDots(data.dateModified)}</span>
+          </p>
+          <a class="read-more" href={href}>더보기</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</article>
