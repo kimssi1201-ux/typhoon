@@ -1,0 +1,45 @@
+---
+import { AUDIENCES } from "../data/site.js";
+import { stripHtml } from "../lib/content.js";
+
+const { posts = [], limit = 8, titleId = "audience-title" } = Astro.props;
+
+const normalize = (value: string) =>
+  String(value || "")
+    .normalize("NFKC")
+    .toLocaleLowerCase("ko-KR")
+    .replace(/\s+/g, " ")
+    .trim();
+
+const countFor = (query: string) => {
+  const terms = normalize(query).split(" ").filter(Boolean);
+  return posts.filter((post: any) => {
+    const data = post.data || post;
+    const text = normalize([data.title, data.summary, data.category, data.slug, stripHtml(data.bodyHtml || "")].join(" "));
+    return terms.some((term) => text.includes(term));
+  }).length;
+};
+
+const items = AUDIENCES.slice(0, limit).map((item) => ({
+  ...item,
+  count: countFor(item.query),
+  href: `/지원금?q=${encodeURIComponent(item.query)}#support-search`
+}));
+---
+
+<div class="audience-grid" aria-labelledby={titleId}>
+  {
+    items.map((item) => (
+      <a class="audience-card" href={item.href} id={item.id}>
+        <span class="audience-card-label">{item.label}</span>
+        <span class="audience-card-hint">{item.hint}</span>
+        <span class="audience-card-count">{item.count}개 보기</span>
+      </a>
+    ))
+  }
+  <a class="audience-card audience-card-all" href="/지원금">
+    <span class="audience-card-label">전체보기</span>
+    <span class="audience-card-hint">분야별 지원금 전체 목록</span>
+    <span class="audience-card-count">목록으로 이동</span>
+  </a>
+</div>

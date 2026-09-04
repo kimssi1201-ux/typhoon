@@ -1,0 +1,51 @@
+---
+const {
+  id = "support-search",
+  label = "지원금 검색",
+  description = "",
+  placeholder = "예: 청년월세, 근로장려금, 부모급여",
+  countText = "",
+  allLabel = "전체",
+  className = "",
+  mode = "filter",
+  examples = []
+} = Astro.props;
+---
+
+<form
+  class={`support-search ${className}`.trim()}
+  id={id}
+  action="/지원금#support-search"
+  method="get"
+  role="search"
+  aria-label={label}
+  data-support-search
+  data-support-search-all-label={allLabel}
+  data-support-search-mode={mode}
+>
+  <label for={`${id}-input`}>{label}</label>
+  {description && <p class="support-search-description">{description}</p>}
+  <div class="support-search-row">
+    <input
+      id={`${id}-input`}
+      name="q"
+      type="search"
+      maxlength="40"
+      autocomplete="off"
+      placeholder={placeholder}
+      data-support-search-input
+    />
+    <button class="support-search-submit" type="submit">검색</button>
+    <button class="support-search-clear" type="button" data-support-search-clear hidden>지우기</button>
+  </div>
+  {
+    examples.length > 0 && (
+      <div class="support-search-examples" aria-label="검색 예시">
+        {examples.map((example: string) => (
+          <a href={`/지원금?q=${encodeURIComponent(example)}#support-search`}>{example}</a>
+        ))}
+      </div>
+    )
+  }
+  {countText && <p class="support-search-count" data-support-search-status aria-live="polite">{countText}</p>}
+</form>

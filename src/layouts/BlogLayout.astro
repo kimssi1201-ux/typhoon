@@ -1,12 +1,14 @@
 ---
 import BaseLayout from "./BaseLayout.astro";
+import BenefitSummary from "../components/BenefitSummary.astro";
 import Sidebar from "../components/Sidebar.astro";
 import { SITE } from "../data/site.js";
-import { metaDateHtml } from "../lib/content.js";
+import { metaDateHtml, removeFirstKeyFactsHtml } from "../lib/content.js";
 import { postJsonLd } from "../lib/seo.js";
 
 const { post, posts } = Astro.props;
 const data = post.data;
+const articleBodyHtml = removeFirstKeyFactsHtml(data.bodyHtml);
 ---
 
 <BaseLayout
@@ -20,7 +22,7 @@ const data = post.data;
   twitterCard={data.twitterCard}
   bodyClass={data.bodyClass}
   activeNav="support"
-  cssHref="/blog.css?v=20260901-affiliate-banner1"
+  cssHref="/blog.css?v=20260904-info-service1"
   scripts={["/blog.js?v=20260814-gpblog3", "/coupang-partners.js?v=20260828-coupang3"]}
   themeColor={SITE.themeColor}
   jsonLd={postJsonLd(data)}
@@ -39,7 +41,8 @@ const data = post.data;
           <h1>{data.title}</h1>
           <p class="entry-description">{data.entryDescription || data.description}</p>
         </header>
-        <section class="article-content" data-post-content data-counted-content set:html={data.bodyHtml}></section>
+        <BenefitSummary post={post} />
+        <section class="article-content" data-post-content data-counted-content set:html={articleBodyHtml}></section>
 
         <footer class="official-sources" set:html={data.officialSourcesHtml}></footer>
         {

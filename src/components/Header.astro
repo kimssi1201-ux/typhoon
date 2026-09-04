@@ -2,7 +2,6 @@
 import { NAV_ITEMS, SITE } from "../data/site.js";
 
 const { active = "" } = Astro.props;
-const mobileItems = [...NAV_ITEMS, { href: "/privacy", label: "개인정보처리방침", key: "privacy" }];
 ---
 
 <header class="site-header">
@@ -21,7 +20,7 @@ const mobileItems = [...NAV_ITEMS, { href: "/privacy", label: "개인정보처�
           <span class="screen-reader-text">메뉴 열기</span>
         </summary>
         <nav class="header-menu-panel" aria-label="모바일 메뉴">
-          {mobileItems.map((item) => <a href={item.href}>{item.label}</a>)}
+          {NAV_ITEMS.map((item) => <a href={item.href}>{item.label}</a>)}
         </nav>
       </details>
     </div>

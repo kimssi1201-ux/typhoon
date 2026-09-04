@@ -1,0 +1,39 @@
+---
+import { extractKeyFacts, formatDateDots, officialLink, supportMethod } from "../lib/content.js";
+
+const { post } = Astro.props;
+const data = post.data || post;
+const facts = extractKeyFacts(post).slice(0, 6);
+const official = officialLink(post);
+const method = supportMethod(post);
+const sourceLabels = (data.sources || []).map((source: { label: string }) => source.label).slice(0, 2).join(" · ");
+---
+
+{
+  (facts.length > 0 || official) && (
+    <aside class="benefit-summary key-facts" aria-label={`${data.title} 핵심정보`}>
+      {facts.length > 0 && (
+        <dl class="benefit-summary-grid">
+          {facts.map((fact) => (
+            <div>
+              <dt>{fact.label}</dt>
+              <dd>{fact.value}</dd>
+            </div>
+          ))}
+        </dl>
+      )}
+      <div class="benefit-trust">
+        <p><strong>최종 확인</strong><span>{formatDateDots(data.dateModified)}</span></p>
+        {sourceLabels && <p><strong>공식 출처</strong><span>{sourceLabels}</span></p>}
+        {method && <p><strong>신청·확인</strong><span>{method}</span></p>}
+      </div>
+      {
+        official && (
+          <a class="official-apply-button" href={official.href} target="_blank" rel="noopener noreferrer">
+            {official.ctaLabel}
+          </a>
+        )
+      }
+    </aside>
+  )
+}

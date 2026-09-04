@@ -1,31 +1,29 @@
 ---
-import { formatDateDots } from "../lib/content.js";
+import { formatDateDots, stripHtml, supportBenefit, supportPeriod } from "../lib/content.js";
 
-const { post, categoryHrefBase = "/지원금#", anchorId = "" } = Astro.props;
+const { post, anchorId = "" } = Astro.props;
 const data = post.data;
 const href = `/${data.slug}`;
-const categoryHref = `${categoryHrefBase}${data.categoryId}`;
+const benefit = supportBenefit(post);
+const period = supportPeriod(post);
+const titleId = `post-card-${data.slug}`;
+const searchText = stripHtml([data.title, data.summary, data.category, data.slug, benefit, period].filter(Boolean).join(" "));
 ---
 
-<article class="post-card" id={anchorId || undefined} data-post={data.slug} data-category={data.categoryId}>
-  <div class="post-card-inner">
+<article class="post-card" id={anchorId || undefined} data-post={data.slug} data-category={data.categoryId} data-search-text={searchText}>
+  <a class="post-card-link" href={href} aria-labelledby={titleId}>
     <div class="post-card-content">
-      <h2 class="entry-title"><a href={href}>{data.title}</a></h2>
-      <div class="post-card-body">
-        <a class="post-card-thumbnail" href={href} tabindex="-1" style={data.tile.style}>
-          <span>{data.tile.label}</span>
-          <strong set:html={data.tile.html}></strong>
-        </a>
-        <div class="post-card-copy">
-          <p class="entry-summary">{data.summary}</p>
-          <p class="entry-meta">
-            <a class="category-chip" href={categoryHref}>{data.category}</a>
-            <span>·</span>
-            <span>{formatDateDots(data.dateModified)}</span>
-          </p>
-          <a class="read-more" href={href}>더보기</a>
-        </div>
-      </div>
+      <p class="entry-meta">
+        <span class="category-chip">{data.category}</span>
+        <span>·</span>
+        <span>최종 확인 {formatDateDots(data.dateModified)}</span>
+      </p>
+      <h2 class="entry-title" id={titleId}>{data.title}</h2>
+      <p class="entry-summary">{benefit}</p>
+      <dl class="post-card-facts">
+        {period && <div><dt>신청기간</dt><dd>{period}</dd></div>}
+        <div><dt>신청정보</dt><dd>공식 공고 확인</dd></div>
+      </dl>
     </div>
-  </div>
+  </a>
 </article>

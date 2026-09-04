@@ -1,13 +1,18 @@
 ---
 import { getCollection } from "astro:content";
 import BaseLayout from "../layouts/BaseLayout.astro";
+import AudienceCategories from "../components/AudienceCategories.astro";
 import PostCard from "../components/PostCard.astro";
+import SupportSearch from "../components/SupportSearch.astro";
 import { SITE } from "../data/site.js";
-import { homePosts } from "../lib/content.js";
+import { popularPosts, recentPosts } from "../lib/content.js";
 import { homeJsonLd } from "../lib/seo.js";
 
 const posts = await getCollection("posts");
-const cards = homePosts(posts, 18);
+const popular = popularPosts(posts, 8);
+const popularSlugs = new Set(popular.map((post) => post.data.slug));
+const recent = recentPosts(posts, 12).filter((post) => !popularSlugs.has(post.data.slug)).slice(0, 8);
+const searchExamples = ["청년월세", "근로장려금", "부모급여", "소상공인", "전기요금", "주거지원"];
 ---
 
 <BaseLayout
@@ -21,7 +26,7 @@ const cards = homePosts(posts, 18);
   twitterCard="summary_large_image"
   bodyClass="blog-page home home-portal generatepress-style"
   activeNav="home"
-  cssHref="/blog.css?v=20260901-home-mobile1"
+  cssHref="/blog.css?v=20260904-info-service1"
   scripts={["/support-search.js"]}
   includeRss
   includeNaverVerification
@@ -29,34 +34,54 @@ const cards = homePosts(posts, 18);
   jsonLd={homeJsonLd}
 >
   <main class="site-main" id="main" data-post-count={posts.length}>
-    <div class="site-grid home-portal-grid">
-      <section class="content-area home-portal-content" aria-labelledby="home-title">
-        <header class="archive-title home-portal-title">
-          <p class="home-portal-eyebrow">공식 자료 기반 지원금 안내</p>
-          <h1 id="home-title">복지모음집</h1>
-          <p class="archive-intro">정부와 공공기관의 공개 자료를 바탕으로 지원 대상, 신청 기간, 필요 서류와 공식 신청처를 빠르게 확인할 수 있게 정리합니다.</p>
-          <form class="support-search home-portal-search" id="home-support-search" action="/지원금#support-search" method="get" role="search" aria-label="지원금 글 검색" data-support-search data-support-search-all-label="추천">
-            <label for="homeSearchInput">지원금 글 검색</label>
-            <div class="support-search-row">
-              <input id="homeSearchInput" name="q" type="search" maxlength="40" autocomplete="off" placeholder="예: K패스, 청년월세, 부모급여" data-support-search-input />
-              <button class="support-search-clear" type="button" data-support-search-clear hidden>지우기</button>
-            </div>
-            <p class="support-search-count" data-support-search-status aria-live="polite">추천 {cards.length}개 글을 표시 중입니다.</p>
-          </form>
-          <div class="home-portal-actions">
-            <a class="home-all-posts-link" href="/지원금">전체 {posts.length}개 글 보기</a>
-          </div>
+    <div class="site-grid home-service-grid">
+      <section class="content-area home-service-content" aria-labelledby="home-title">
+        <header class="home-service-hero">
+          <p class="home-service-eyebrow">정부지원금 찾기</p>
+          <h1 id="home-title">내가 받을 수 있는 정부지원금을 쉽게 찾아보세요</h1>
+          <p>청년·육아·소상공인·생활비·복지 지원까지 필요한 정보를 빠르게 확인하고 공식 신청처로 이동할 수 있습니다.</p>
+          <SupportSearch
+            id="home-support-search"
+            label="지원금 검색"
+            description="정책명을 몰라도 대상이나 상황으로 검색할 수 있습니다."
+            placeholder="예: 청년월세, 근로장려금, 부모급여"
+            countText={`전체 ${posts.length}개 글에서 찾기`}
+            mode="navigate"
+            examples={searchExamples}
+          />
         </header>
 
-        <section class="home-portal-section" aria-labelledby="home-recommended-title">
-          <div class="home-portal-section-head">
-            <p>추천 글</p>
-            <h2 id="home-recommended-title">먼저 확인할 지원금</h2>
+        <section class="home-service-section" aria-labelledby="audience-title">
+          <div class="home-service-section-head">
+            <p>대상별 찾기</p>
+            <h2 id="audience-title">지원 대상별 빠른 찾기</h2>
           </div>
-          <div class="support-card-grid home-portal-card-grid">
-            {cards.map((post) => <PostCard post={post} />)}
+          <AudienceCategories posts={posts} limit={8} titleId="audience-title" />
+        </section>
+
+        <section class="home-service-section" aria-labelledby="popular-title">
+          <div class="home-service-section-head">
+            <p>많이 찾는 지원금</p>
+            <h2 id="popular-title">먼저 확인할 지원금</h2>
+          </div>
+          <div class="support-card-grid home-service-card-grid">
+            {popular.map((post) => <PostCard post={post} />)}
           </div>
         </section>
+
+        <section class="home-service-section" aria-labelledby="recent-title">
+          <div class="home-service-section-head">
+            <p>최근 업데이트</p>
+            <h2 id="recent-title">최근 확인한 지원금</h2>
+          </div>
+          <div class="support-card-grid home-service-card-grid home-service-recent-grid">
+            {recent.map((post) => <PostCard post={post} />)}
+          </div>
+        </section>
+
+        <p class="home-service-more">
+          <a class="home-all-posts-link" href="/지원금">전체 {posts.length}개 지원금 보기</a>
+        </p>
       </section>
     </div>
   </main>
