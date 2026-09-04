@@ -1783,6 +1783,7 @@ img { display: block; max-width: 100%; height: auto; }
 .home-service-hero {
   display: grid;
   gap: 0;
+  max-width: 820px;
   padding: 24px;
 }
 
@@ -1821,6 +1822,7 @@ img { display: block; max-width: 100%; height: auto; }
 }
 
 .home-service-hero .support-search {
+  width: 100%;
   max-width: 760px;
   margin-top: 0;
   padding: 18px;
