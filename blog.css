@@ -2117,26 +2117,26 @@ img { display: block; max-width: 100%; height: auto; }
 
 .benefit-summary.key-facts {
   max-width: 760px;
-  margin: 24px 0 0;
-  padding: 20px;
+  margin: 20px 0 0;
+  padding: 14px 16px 16px;
   border: 1px solid #dbe4f0;
-  border-left: 4px solid #1d4ed8;
-  border-radius: 12px;
+  border-left: 3px solid #1d4ed8;
+  border-radius: 10px;
   background: #f8fbff;
 }
 
 .benefit-summary-grid {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 10px;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
   margin: 0;
 }
 
 .benefit-summary-grid div {
   min-width: 0;
-  padding: 12px 13px;
+  padding: 9px 10px;
   border: 1px solid #e2e8f0;
-  border-radius: 9px;
+  border-radius: 8px;
   background: #fff;
 }
 
@@ -2153,32 +2153,47 @@ img { display: block; max-width: 100%; height: auto; }
 }
 
 .benefit-summary-grid dd {
-  margin-top: 4px;
+  display: -webkit-box;
+  margin-top: 3px;
+  overflow: hidden;
   color: #111827;
-  font-size: 0.93rem;
+  font-size: 0.88rem;
   font-weight: 700;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
 }
 
 .benefit-trust {
   display: grid;
-  gap: 5px;
-  margin-top: 14px;
-  padding-top: 14px;
+  gap: 4px;
+  margin-top: 10px;
+  padding-top: 10px;
   border-top: 1px solid #dbe4f0;
 }
 
 .benefit-trust p {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 7px;
+  display: grid;
+  grid-template-columns: 68px minmax(0, 1fr);
+  gap: 8px;
   margin: 0;
   color: #4b5563;
-  font-size: 0.84rem;
-  line-height: 1.55;
+  font-size: 0.8rem;
+  line-height: 1.45;
 }
 
 .benefit-trust strong {
   color: #243244;
+}
+
+.benefit-trust span {
+  min-width: 0;
+}
+
+.benefit-trust p:nth-child(2) span {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
 }
 
 .official-apply-button {
@@ -2186,13 +2201,13 @@ img { display: block; max-width: 100%; height: auto; }
   align-items: center;
   justify-content: center;
   width: fit-content;
-  min-height: 44px;
-  margin-top: 16px;
-  padding: 10px 18px;
+  min-height: 38px;
+  margin-top: 12px;
+  padding: 8px 14px;
   border-radius: 8px;
   background: #1d4ed8;
   color: #fff;
-  font-size: 0.92rem;
+  font-size: 0.86rem;
   font-weight: 850;
   text-decoration: none;
 }
@@ -2306,11 +2321,11 @@ img { display: block; max-width: 100%; height: auto; }
   }
 
   .benefit-summary-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .benefit-summary.key-facts {
-    padding: 17px;
+    padding: 13px;
   }
 }
 

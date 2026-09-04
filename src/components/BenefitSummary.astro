@@ -3,7 +3,7 @@ import { extractKeyFacts, formatDateDots, officialLink, supportMethod } from "..
 
 const { post } = Astro.props;
 const data = post.data || post;
-const facts = extractKeyFacts(post).slice(0, 6);
+const facts = extractKeyFacts(post).slice(0, 4);
 const official = officialLink(post);
 const method = supportMethod(post);
 const sourceLabels = (data.sources || []).map((source: { label: string }) => source.label).slice(0, 2).join(" · ");
