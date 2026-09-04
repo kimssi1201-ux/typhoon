@@ -2125,7 +2125,7 @@ img { display: block; max-width: 100%; height: auto; }
   background: #f8fbff;
 }
 
-.benefit-summary-grid {
+.benefit-summary.key-facts .benefit-summary-grid {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 8px;
@@ -2320,7 +2320,7 @@ img { display: block; max-width: 100%; height: auto; }
     min-width: 78px;
   }
 
-  .benefit-summary-grid {
+  .benefit-summary.key-facts .benefit-summary-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
