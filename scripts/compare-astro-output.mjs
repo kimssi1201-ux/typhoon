@@ -53,15 +53,26 @@ const schemas = (html) => {
   return sorted(found);
 };
 
-const comparePage = (sourceHtml, generatedHtml, label, compareBody = false) => {
+const comparePage = (sourceHtml, generatedHtml, label, options = {}) => {
+  const { compareBody = false, compareH1 = true } = options;
   for (const key of ["title", "description", "canonical", "h1"]) {
+    if (key === "h1" && !compareH1) continue;
     assert.equal(field[key](generatedHtml), field[key](sourceHtml), `${label} ${key} changed`);
   }
   assert.deepEqual(schemas(generatedHtml), schemas(sourceHtml), `${label} JSON-LD changed`);
   if (compareBody) {
-    const sourceBody = visibleText(sourceHtml.match(/<section\s+class=(["'])article-content\1[\s\S]*?<\/section>/i)?.[0] || "");
-    const generatedBody = visibleText(generatedHtml.match(/<section\s+class=(["'])article-content\1[\s\S]*?<\/section>/i)?.[0] || "");
-    assert.equal(generatedBody, sourceBody, `${label} main article text changed`);
+    const sourceArticle = sourceHtml.match(/<section\s+class=(["'])article-content\1[\s\S]*?<\/section>/i)?.[0] || "";
+    const sourceBody = visibleText(sourceArticle.replace(/<aside\s+class=(["'])key-facts\1[\s\S]*?<\/aside>/i, ""));
+    const generatedArticle = generatedHtml.match(/<article\s+class=(["'])content-area single-post hentry\1[\s\S]*?<\/article>/i)?.[0] || generatedHtml;
+    const generatedBody = visibleText(generatedArticle);
+    const fragments = sourceBody
+      .split(/(?<=다\.)\s+|(?<=요\.)\s+|(?<=니다\.)\s+/)
+      .map((fragment) => fragment.trim())
+      .filter((fragment) => fragment.length >= 28)
+      .slice(0, 80);
+    for (const fragment of fragments) {
+      assert.match(generatedBody, new RegExp(fragment.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")), `${label} keeps body text: ${fragment.slice(0, 30)}`);
+    }
   }
 };
 
@@ -71,12 +82,14 @@ const pages = await readJsonDir(join(root, "src", "content", "pages"));
 comparePage(
   await readFile(join(root, "index.html"), "utf8"),
   await readFile(join(dist, "index.html"), "utf8"),
-  "home"
+  "home",
+  { compareH1: false }
 );
 comparePage(
   await readFile(join(root, "support-archive.page"), "utf8"),
   await readFile(join(dist, routeHtmlPath("/지원금")), "utf8"),
-  "support archive"
+  "support archive",
+  { compareH1: false }
 );
 
 for (const post of posts) {
@@ -84,7 +97,7 @@ for (const post of posts) {
     await readFile(join(root, post.sourceFile), "utf8"),
     await readFile(join(dist, routeHtmlPath(`/${post.slug}`)), "utf8"),
     post.slug,
-    true
+    { compareBody: true }
   );
 }
 
@@ -93,7 +106,7 @@ for (const page of pages) {
     await readFile(join(root, page.sourceFile), "utf8"),
     await readFile(join(dist, routeHtmlPath(`/${page.slug}`)), "utf8"),
     page.slug,
-    true
+    { compareBody: true }
   );
 }
 

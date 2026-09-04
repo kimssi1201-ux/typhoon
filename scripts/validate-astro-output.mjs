@@ -54,7 +54,12 @@ assert.match(home, /<link rel="canonical" href="https:\/\/mustview\.co\.kr\/"/);
 assert.match(home, /<link rel="alternate" type="application\/rss\+xml" title="복지모음집 RSS" href="https:\/\/mustview\.co\.kr\/rss\.xml"/);
 assert.match(home, /data-support-search/);
 assert.match(home, /data-post-count="55"/);
-assert.equal((home.match(/class="post-card"/g) || []).length, 18, "home renders the expected recommendation card count");
+assert.match(home, /내가 받을 수 있는 정부지원금을 쉽게 찾아보세요/);
+assert.match(home, /지원 대상별 빠른 찾기/);
+assert.match(home, /먼저 확인할 지원금/);
+assert.match(home, /최근 확인한 지원금/);
+assert.match(home, /전체 55개 지원금 보기/);
+assert.equal((home.match(/class="post-card"/g) || []).length, 16, "home renders popular and recent support cards");
 assert.doesNotMatch(home, /support-archive\.page/);
 
 const support = await readDist(routeHtmlPath("/지원금"));
@@ -62,6 +67,8 @@ assert.ok(!existsSync(join(dist, "지원금", "index.html")), "support archive i
 assert.match(support, /<link rel="canonical" href="https:\/\/mustview\.co\.kr\/지원금"/);
 assert.match(support, /id="support-search"/);
 assert.match(support, /data-post-count="55"/);
+assert.match(support, /지원 대상, 혜택, 신청기간과 공식 확인처를 비교/);
+assert.match(support, /aria-label="지원금 분야"/);
 assert.equal((support.match(/class="post-card"/g) || []).length, posts.length, "support archive renders every post card");
 for (const categoryId of ["category-small-business", "category-childbirth", "category-employment", "category-life-energy", "category-tax-refund"]) {
   assert.match(support, new RegExp(`id="${categoryId}"`), `support archive preserves ${categoryId} anchor`);
@@ -85,7 +92,7 @@ for (const post of posts) {
   assert.match(html, new RegExp(`<link rel="canonical" href="https://mustview\\.co\\.kr/${post.slug}"`), `${post.slug} canonical is preserved`);
   assert.match(html, new RegExp(`<h1>${post.title.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}<\\/h1>`), `${post.slug} H1 is preserved`);
   assert.match(html, /class="article-content" data-post-content data-counted-content/, `${post.slug} keeps article content target`);
-  assert.match(html, /class="key-facts"/, `${post.slug} keeps key facts`);
+  assert.match(html, /class="[^"]*\bkey-facts\b[^"]*"/, `${post.slug} keeps key facts`);
   assert.match(html, /data-toc-list/, `${post.slug} keeps table of contents target`);
   assert.match(html, /class="official-sources"/, `${post.slug} keeps official sources`);
   assert.match(html, /data-coupang-partners/, `${post.slug} keeps Coupang widgets`);
