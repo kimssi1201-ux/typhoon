@@ -26,9 +26,7 @@
     return id;
   };
 
-  const headings = [...content.querySelectorAll("h2, h3")];
-  let currentTopItem = null;
-  let currentSublist = null;
+  const headings = [...content.querySelectorAll("h2")];
 
   headings.forEach((heading, index) => {
     const id = heading.id || slugify(heading.textContent, `section-${index + 1}`);
@@ -40,25 +38,7 @@
     link.textContent = heading.textContent;
     item.append(link);
 
-    if (heading.tagName === "H2") {
-      item.className = "toc-item";
-      list.append(item);
-      currentTopItem = item;
-      currentSublist = null;
-      return;
-    }
-
-    item.className = "toc-subitem";
-    if (!currentTopItem) {
-      list.append(item);
-      return;
-    }
-
-    if (!currentSublist) {
-      currentSublist = document.createElement("ol");
-      currentSublist.className = "toc-sublist";
-      currentTopItem.append(currentSublist);
-    }
-    currentSublist.append(item);
+    item.className = "toc-item";
+    list.append(item);
   });
 })();

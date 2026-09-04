@@ -957,16 +957,15 @@ test("each support article can load a disclosed keyword-matched Coupang Partners
   assert.match(packageJson, /node --check coupang-partners\.js/);
 });
 
-test("the table of contents script gives every article heading a stable unique anchor", async () => {
+test("the table of contents script keeps the article outline concise", async () => {
   const script = await readProjectFile("blog.js");
-  assert.match(script, /querySelectorAll\("h2, h3"\)/);
+  assert.match(script, /querySelectorAll\("h2"\)/);
+  assert.doesNotMatch(script, /querySelectorAll\("h2, h3"\)/);
   assert.match(script, /heading\.id = id/);
   assert.match(script, /reserved\.has\(id\)/);
   assert.match(script, /link\.href = `#\$\{id\}`/);
-  assert.match(script, /currentSublist = document\.createElement\("ol"\)/);
-  assert.match(script, /currentSublist\.className = "toc-sublist"/);
-  assert.match(script, /currentTopItem\.append\(currentSublist\)/);
-  assert.match(script, /toc-subitem/);
+  assert.doesNotMatch(script, /currentSublist = document\.createElement\("ol"\)/);
+  assert.doesNotMatch(script, /toc-subitem/);
   assert.match(script, /matchMedia\("\(min-width: 768px\)"\)/);
   assert.match(script, /tableOfContents\.open = true/);
 });
