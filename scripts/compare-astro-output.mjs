@@ -11,7 +11,10 @@ const readJsonDir = async (dir) => {
   return Promise.all(files.map(async (file) => JSON.parse(await readFile(join(dir, file), "utf8"))));
 };
 
-const routeHtmlPath = (route) => (route === "/" ? "index.html" : join(route.replace(/^\//, ""), "index.html"));
+const routeHtmlPath = (route) => {
+  if (route === "/") return "index.html";
+  return `${route.replace(/^\/|\/$/g, "")}.html`;
+};
 
 const field = {
   title: (html) => html.match(/<title>([\s\S]*?)<\/title>/i)?.[1]?.trim() || "",

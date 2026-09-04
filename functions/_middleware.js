@@ -49,18 +49,24 @@ function canonicalTag(requestUrl) {
   return `<link rel="canonical" href="${CANONICAL_ORIGIN}${canonicalPath}">`;
 }
 
+function redirectOrigin(requestUrl) {
+  return requestUrl.hostname.endsWith(".pages.dev") ? requestUrl.origin : CANONICAL_ORIGIN;
+}
+
 function insertBefore(html, needle, value) {
   return html.includes(needle) ? html.replace(needle, `${value}\n${needle}`) : html;
 }
 
 export async function onRequest(context) {
   const requestUrl = new URL(context.request.url);
-  if (safeDecodePathname(requestUrl.pathname) === "/지원금/") {
-    return Response.redirect(`${CANONICAL_ORIGIN}/지원금${requestUrl.search}`, 301);
+  const decodedPathname = safeDecodePathname(requestUrl.pathname);
+
+  if (LEGACY_SUPPORT_ARCHIVE_PATHS.has(decodedPathname)) {
+    return Response.redirect(`${redirectOrigin(requestUrl)}/지원금${requestUrl.search}${requestUrl.hash}`, 301);
   }
 
-  if (LEGACY_SUPPORT_ARCHIVE_PATHS.has(safeDecodePathname(requestUrl.pathname))) {
-    return Response.redirect(`${CANONICAL_ORIGIN}/지원금${requestUrl.search}${requestUrl.hash}`, 301);
+  if (decodedPathname !== "/" && decodedPathname.endsWith("/")) {
+    return Response.redirect(`${redirectOrigin(requestUrl)}${decodedPathname.replace(/\/+$/, "")}${requestUrl.search}${requestUrl.hash}`, 301);
   }
 
   const response = await context.next();

@@ -5,6 +5,9 @@ export default defineConfig({
   output: "static",
   trailingSlash: "never",
   build: {
-    format: "directory"
+    format: "file"
+  },
+  vite: {
+    cacheDir: ".astro/vite"
   }
 });

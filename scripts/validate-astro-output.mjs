@@ -15,7 +15,10 @@ const readJsonDir = async (dir) => {
 };
 
 const readDist = (path) => readFile(join(dist, path), "utf8");
-const routeHtmlPath = (route) => (route === "/" ? "index.html" : join(route.replace(/^\//, ""), "index.html"));
+const routeHtmlPath = (route) => {
+  if (route === "/") return "index.html";
+  return `${route.replace(/^\/|\/$/g, "")}.html`;
+};
 
 const schemas = (html) => {
   const found = [];
@@ -55,6 +58,7 @@ assert.equal((home.match(/class="post-card"/g) || []).length, 18, "home renders 
 assert.doesNotMatch(home, /support-archive\.page/);
 
 const support = await readDist(routeHtmlPath("/지원금"));
+assert.ok(!existsSync(join(dist, "지원금", "index.html")), "support archive is not emitted as a trailing-slash directory URL");
 assert.match(support, /<link rel="canonical" href="https:\/\/mustview\.co\.kr\/지원금"/);
 assert.match(support, /id="support-search"/);
 assert.match(support, /data-post-count="55"/);

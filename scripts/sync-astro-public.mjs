@@ -1,4 +1,4 @@
-import { cp, mkdir, readFile, readdir, writeFile } from "node:fs/promises";
+import { copyFile, mkdir, readFile, readdir, writeFile } from "node:fs/promises";
 import { existsSync } from "node:fs";
 import { basename, join } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -38,20 +38,42 @@ const uniqueLines = (lines) => {
   });
 };
 
+const filesMatch = async (source, destination) => {
+  if (!existsSync(destination)) return false;
+  const [sourceBuffer, destinationBuffer] = await Promise.all([readFile(source), readFile(destination)]);
+  return sourceBuffer.equals(destinationBuffer);
+};
+
+const syncFile = async (source, destination) => {
+  if (await filesMatch(source, destination)) return;
+  await copyFile(source, destination);
+};
+
+const syncDirectory = async (sourceDir, destinationDir) => {
+  await mkdir(destinationDir, { recursive: true });
+  const entries = await readdir(sourceDir, { withFileTypes: true });
+  for (const entry of entries) {
+    const source = join(sourceDir, entry.name);
+    const destination = join(destinationDir, entry.name);
+    if (entry.isDirectory()) {
+      await syncDirectory(source, destination);
+    } else if (entry.isFile()) {
+      await syncFile(source, destination);
+    }
+  }
+};
+
 await mkdir(publicDir, { recursive: true });
 
 for (const file of copyFiles) {
   const source = join(root, file);
   if (existsSync(source)) {
-    await cp(source, join(publicDir, basename(file)), { force: true });
+    await syncFile(source, join(publicDir, basename(file)));
   }
 }
 
 if (existsSync(join(root, "assets"))) {
-  await cp(join(root, "assets"), join(publicDir, "assets"), {
-    recursive: true,
-    force: true
-  });
+  await syncDirectory(join(root, "assets"), join(publicDir, "assets"));
 }
 
 const redirects = existsSync(join(root, "_redirects"))
@@ -76,6 +98,10 @@ const output = [
   ...uniqueLines(canonicalRedirects)
 ].join("\n");
 
-await writeFile(join(publicDir, "_redirects"), `${output}\n`);
+const redirectOutput = `${output}\n`;
+const redirectDestination = join(publicDir, "_redirects");
+if (!existsSync(redirectDestination) || (await readFile(redirectDestination, "utf8")) !== redirectOutput) {
+  await writeFile(redirectDestination, redirectOutput);
+}
 
 console.log(`synced public assets and ${canonicalRedirects.length} Astro redirects`);
