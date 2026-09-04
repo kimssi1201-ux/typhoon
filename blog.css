@@ -2023,11 +2023,15 @@ img { display: block; max-width: 100%; height: auto; }
 
 .post-card .entry-title,
 .support-card-grid .post-card .entry-title {
+  display: -webkit-box;
+  overflow: hidden;
   margin: 0;
   color: #111827;
   font-size: 1.02rem;
   font-weight: 850;
   line-height: 1.45;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
 }
 
 .post-card-link:hover .entry-title,
@@ -2255,7 +2259,43 @@ img { display: block; max-width: 100%; height: auto; }
 
   .post-card-content,
   .support-card-grid .post-card-content {
-    padding: 18px;
+    gap: 8px;
+    padding: 15px;
+  }
+
+  .post-card .entry-title,
+  .support-card-grid .post-card .entry-title {
+    font-size: 1rem;
+    line-height: 1.38;
+  }
+
+  .post-card .entry-summary,
+  .support-card-grid .post-card .entry-summary {
+    font-size: 0.88rem;
+    line-height: 1.48;
+    -webkit-line-clamp: 1;
+  }
+
+  .post-card-facts {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+    margin-top: 1px;
+  }
+
+  .post-card-facts div {
+    grid-template-columns: 1fr;
+    gap: 2px;
+    padding-top: 6px;
+    border-top: 1px solid #eef2f7;
+  }
+
+  .post-card-facts dt {
+    font-size: 0.72rem;
+  }
+
+  .post-card-facts dd {
+    font-size: 0.78rem;
+    -webkit-line-clamp: 1;
   }
 
   .support-search-submit,
