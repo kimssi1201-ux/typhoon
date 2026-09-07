@@ -36,7 +36,7 @@ const pages = await readJsonDir(pagesDir);
 assert.equal(posts.length, 55, "Astro content contains all 55 support posts");
 assert.equal(pages.length, 4, "Astro content contains all 4 information pages");
 
-for (const file of ["blog.css", "blog.js", "support-search.js", "support-landing.css", "support-landing.js", "coupang-partners.js", "ads.txt", "robots.txt", "llms.txt", "_headers", "_redirects"]) {
+for (const file of ["blog.css", "blog.js", "support-search.js", "support-landing.css", "support-landing.js", "support-mobile-fix.css", "support-mobile-fix.js", "coupang-partners.js", "ads.txt", "robots.txt", "llms.txt", "_headers", "_redirects"]) {
   assert.ok(existsSync(join(dist, file)), `${file} is copied to dist`);
 }
 
@@ -71,6 +71,8 @@ assert.match(home, /data-support-list/);
 assert.match(home, /data-support-results/);
 assert.match(home, /support-landing\.css\?v=20260907-support4/);
 assert.match(home, /support-landing\.js\?v=20260907-support4/);
+assert.match(home, /support-mobile-fix\.css\?v=20260907-mobile1/);
+assert.match(home, /support-mobile-fix\.js\?v=20260907-mobile1/);
 assert.match(home, /원하는 지원금이 있으신가요/);
 assert.match(home, /현재 확인 가능한 지원금/);
 assert.doesNotMatch(home, /내가 받을 수 있는 정부지원금을 쉽게 찾아보세요/);
@@ -93,6 +95,8 @@ for (const categoryId of ["category-small-business", "category-childbirth", "cat
 const supportLanding = await readDist(routeHtmlPath("/support"));
 const supportLandingCss = await readDist("support-landing.css");
 const supportLandingScript = await readDist("support-landing.js");
+const supportMobileFixCss = await readDist("support-mobile-fix.css");
+const supportMobileFixScript = await readDist("support-mobile-fix.js");
 const supportLandingSchemas = schemas(supportLanding);
 const landingCollection = supportLandingSchemas.find((schema) => schema["@type"] === "CollectionPage");
 const landingBreadcrumb = supportLandingSchemas.find((schema) => schema["@type"] === "BreadcrumbList");
@@ -113,6 +117,8 @@ assert.match(supportLanding, /data-support-results/);
 assert.match(supportLanding, /data-support-mobile-cta|support-mobile-cta/);
 assert.match(supportLanding, /support-landing\.css\?v=20260907-support4/);
 assert.match(supportLanding, /support-landing\.js\?v=20260907-support4/);
+assert.match(supportLanding, /support-mobile-fix\.css\?v=20260907-mobile1/);
+assert.match(supportLanding, /support-mobile-fix\.js\?v=20260907-mobile1/);
 assert.match(supportLanding, /support-motion-badge/);
 assert.match(supportLanding, /support-live-strip/);
 assert.match(supportLanding, /support-flow-card/);
@@ -137,6 +143,10 @@ assert.match(supportLandingScript, /data-support-result-count/);
 assert.match(supportLandingScript, /data-support-tab/);
 assert.match(supportLandingScript, /data-support-region-toggle/);
 assert.match(supportLandingScript, /data-count-up/);
+assert.match(supportMobileFixCss, /@keyframes supportFloatPhoneMobile/);
+assert.match(supportMobileFixCss, /\.support-mobile-cta\.is-visible/);
+assert.match(supportMobileFixScript, /syncMobileCta/);
+assert.match(supportMobileFixScript, /keepCurrentRoute/);
 
 const redirects = await readDist("_redirects");
 assert.match(redirects, /\/destinations \/ 301/);
