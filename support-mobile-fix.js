@@ -12,7 +12,7 @@
     if (!mobileCta || !decisionSection) return;
     const isMobile = window.innerWidth <= 640;
     const decisionBottom = decisionSection.getBoundingClientRect().bottom;
-    mobileCta.classList.toggle("is-visible", isMobile && decisionBottom < window.innerHeight * 0.72);
+    mobileCta.classList.toggle("is-visible", isMobile && decisionBottom < 0);
   };
 
   const keepCurrentRoute = () => {
