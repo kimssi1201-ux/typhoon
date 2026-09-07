@@ -94,8 +94,9 @@ assert.match(supportLanding, /data-support-hero-search/);
 assert.match(supportLanding, /data-support-finder/);
 assert.match(supportLanding, /data-support-results/);
 assert.match(supportLanding, /data-support-mobile-cta|support-mobile-cta/);
-assert.match(supportLanding, /support-landing\.css\?v=20260907-support1/);
-assert.match(supportLanding, /support-landing\.js\?v=20260907-support1/);
+assert.match(supportLanding, /support-landing\.css\?v=20260907-support2/);
+assert.match(supportLanding, /support-landing\.js\?v=20260907-support2/);
+assert.match(supportLanding, /support-motion-badge/);
 assert.equal((supportLanding.match(/data-support-program/g) || []).length, posts.length, "support landing filter results use every post exactly once");
 for (const label of ["청년", "취업 / 구직", "소상공인", "전국", "서울", "제주"]) {
   assert.match(supportLanding, new RegExp(label.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")), `support landing includes ${label} filter content`);
@@ -105,6 +106,9 @@ assert.deepEqual(landingBreadcrumb?.itemListElement?.map((item) => item.name), [
 assert.match(supportLandingCss, /@media \(prefers-reduced-motion: reduce\)/);
 assert.match(supportLandingCss, /@keyframes supportKenBurns/);
 assert.match(supportLandingCss, /@keyframes supportFloatPhone/);
+assert.match(supportLandingCss, /@keyframes supportVisualSweep/);
+assert.match(supportLandingCss, /@keyframes supportProgressFill/);
+assert.match(supportLandingCss, /@keyframes supportBadgeFloat/);
 assert.match(supportLandingScript, /IntersectionObserver/);
 assert.match(supportLandingScript, /history\.replaceState/);
 assert.match(supportLandingScript, /data-count-up/);
