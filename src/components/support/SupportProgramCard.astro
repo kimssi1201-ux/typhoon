@@ -6,6 +6,7 @@ type SupportProgram = {
   description: string;
   category: string;
   target: string;
+  benefit?: string;
   amount: string;
   period: string;
   status: string;
@@ -39,6 +40,10 @@ const showMeta = !compact;
   data-reveal
   data-support-program={filterable ? "" : undefined}
   data-search-text={filterable ? program.searchText : undefined}
+  data-title={filterable ? program.title : undefined}
+  data-benefit={filterable ? program.benefit || program.amount || program.description : undefined}
+  data-href={filterable ? program.href : undefined}
+  data-category={filterable ? program.category : undefined}
   data-age-groups={filterable ? program.ageGroups.join("|") : undefined}
   data-fields={filterable ? program.fields.join("|") : undefined}
   data-regions={filterable ? program.regions.join("|") : undefined}
