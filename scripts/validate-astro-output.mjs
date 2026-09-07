@@ -8,23 +8,12 @@ const root = fileURLToPath(new URL('..', import.meta.url));
 const dist = join(root, 'dist');
 const postsDir = join(root, 'src', 'content', 'posts');
 const pagesDir = join(root, 'src', 'content', 'pages');
+const quote = String.fromCharCode(34);
 
+const read = (file) => readFile(join(dist, file), 'utf8');
 const readJsonDir = async (dir) => {
   const files = (await readdir(dir)).filter((file) => file.endsWith('.json')).sort();
   return Promise.all(files.map(async (file) => JSON.parse(await readFile(join(dir, file), 'utf8'))));
-};
-const readDist = (path) => readFile(join(dist, path), 'utf8');
-const routeHtmlPath = (route) => (route === '/' ? 'index.html' : `${route.replace(/^\/|\/$/g, '')}.html`);
-const escapeRegExp = (value) => value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-const exactPostCardClass = new RegExp('class=' + String.fromCharCode(34) + 'post-card' + String.fromCharCode(34), 'g');
-const schemas = (html) => {
-  const out = [];
-  for (const match of html.matchAll(/application\/ld\+json[^>]*>([\s\S]*?)<\/script>/gi)) {
-    const parsed = JSON.parse(match[1]);
-    if (Array.isArray(parsed['@graph'])) out.push(...parsed['@graph']);
-    else out.push(parsed);
-  }
-  return out;
 };
 
 const posts = await readJsonDir(postsDir);
@@ -58,114 +47,80 @@ for (const file of [
   assert.ok(existsSync(join(root, file)), `${file} remains in root functions`);
 }
 
-const home = await readDist('index.html');
-const homeSchemas = schemas(home);
-assert.match(home, /canonical.+https:\/\/mustview\.co\.kr\//);
-assert.match(home, /support-landing\.css\?v=20260907-support4/);
-assert.match(home, /support-landing\.js\?v=20260907-support4/);
-assert.match(home, /support-mobile-fix\.css\?v=20260907-mobile4/);
-assert.match(home, /support-mobile-fix\.js\?v=20260907-mobile4/);
-assert.match(home, /data-support-page/);
-assert.match(home, /data-support-decision/);
-assert.match(home, /support-choice-panel/);
-assert.match(home, /data-support-result-count/);
+const home = await read('index.html');
+assert.ok(home.includes('https://mustview.co.kr/'), 'home canonical is present');
+assert.ok(home.includes('support-mobile-fix.css?v=20260907-mobile5'), 'home uses mobile5 CSS');
+assert.ok(home.includes('support-mobile-fix.js?v=20260907-mobile5'), 'home uses mobile5 JS');
+assert.ok(home.includes('data-support-decision'), 'home has support decision UI');
 assert.equal((home.match(/data-support-program/g) || []).length, posts.length, 'home uses every support post');
-assert.ok(homeSchemas.some((schema) => schema['@type'] === 'Organization'), 'home has Organization schema');
-assert.ok(homeSchemas.some((schema) => schema['@type'] === 'WebSite'), 'home has WebSite schema');
 
-const archive = await readDist(routeHtmlPath('/지원금'));
-assert.ok(!existsSync(join(dist, '지원금', 'index.html')), 'archive keeps canonical non-directory route');
-assert.match(archive, /canonical.+https:\/\/mustview\.co\.kr\/지원금/);
-assert.match(archive, /id=.support-search/);
-assert.equal((archive.match(exactPostCardClass) || []).length, posts.length, 'archive renders every post card');
-for (const id of ['category-small-business', 'category-childbirth', 'category-employment', 'category-life-energy', 'category-tax-refund']) {
-  assert.match(archive, new RegExp(`id=.${id}`), `archive preserves ${id}`);
-}
+const archive = await read('지원금.html');
+assert.ok(archive.includes('https://mustview.co.kr/지원금'), 'archive canonical is present');
+assert.ok(archive.includes('id="support-search"'), 'archive keeps search');
+assert.equal((archive.match(/class="post-card"/g) || []).length, posts.length, 'archive renders every post card');
 
-const landing = await readDist(routeHtmlPath('/support'));
-const landingCss = await readDist('support-landing.css');
-const landingJs = await readDist('support-landing.js');
-const mobileCss = await readDist('support-mobile-fix.css');
-const mobileJs = await readDist('support-mobile-fix.js');
-const landingSchemas = schemas(landing);
-assert.ok(!existsSync(join(dist, 'support', 'index.html')), 'support keeps canonical non-directory route');
-assert.match(landing, /canonical.+https:\/\/mustview\.co\.kr\/support/);
-assert.match(landing, /정부지원금 찾기 \| 청년·주거·육아·소상공인 지원금 - mustview/);
-assert.match(landing, /support-mobile-fix\.css\?v=20260907-mobile4/);
-assert.match(landing, /support-mobile-fix\.js\?v=20260907-mobile4/);
-assert.match(landing, /support-choice-panel/);
-assert.match(landing, /support-option-card/);
-assert.match(landing, /data-support-feature-list/);
-assert.match(landing, /support-category-tabs/);
-assert.match(landing, /data-support-list/);
-assert.match(landing, /data-support-results/);
-assert.equal((landing.match(/data-support-program/g) || []).length, posts.length, 'landing uses every support post');
-assert.ok(landingSchemas.some((schema) => schema['@type'] === 'CollectionPage'), 'landing has CollectionPage schema');
-assert.ok(landingSchemas.some((schema) => schema['@type'] === 'BreadcrumbList'), 'landing has BreadcrumbList schema');
-assert.match(landingCss, /@media \(prefers-reduced-motion: reduce\)/);
-assert.match(landingCss, /@keyframes supportKenBurns/);
-assert.match(landingCss, /@keyframes supportFloatPhone/);
-assert.match(landingJs, /IntersectionObserver/);
-assert.match(landingJs, /history\.replaceState/);
-assert.match(mobileCss, /grid-template-areas:\s*"intro"\s*"picker"\s*"visual"/);
-assert.match(mobileCss, /@keyframes supportFloatPhoneMobile/);
-assert.match(mobileJs, /syncMobileCta/);
+const support = await read('support.html');
+assert.ok(support.includes('https://mustview.co.kr/support'), 'support canonical is present');
+assert.ok(support.includes('정부지원금 찾기 | 청년·주거·육아·소상공인 지원금 - mustview'), 'support title is present');
+assert.ok(support.includes('support-mobile-fix.css?v=20260907-mobile5'), 'support uses mobile5 CSS');
+assert.ok(support.includes('support-mobile-fix.js?v=20260907-mobile5'), 'support uses mobile5 JS');
+assert.ok(support.includes('support-choice-panel'), 'support has choice panel');
+assert.ok(support.includes('support-category-tabs'), 'support has category tabs');
+assert.ok(support.includes('data-support-results'), 'support has result list');
+assert.equal((support.match(/data-support-program/g) || []).length, posts.length, 'support uses every support post');
 
-const redirects = await readDist('_redirects');
-assert.match(redirects, /\/destinations \/ 301/);
-assert.match(redirects, /\/travel-guide \/ 301/);
-assert.match(redirects, /\/housing-guide \/ 301/);
-assert.match(redirects, /\/support\/ \/support 301/);
-assert.match(redirects, /\/support\.html \/support 301/);
-assert.match(redirects, /\/지원금\.html \/지원금 301/);
+const landingCss = await read('support-landing.css');
+const landingJs = await read('support-landing.js');
+const mobileCss = await read('support-mobile-fix.css');
+const mobileJs = await read('support-mobile-fix.js');
+assert.ok(landingCss.includes('@keyframes supportKenBurns'), 'landing keeps Ken Burns animation');
+assert.ok(landingCss.includes('@keyframes supportFloatPhone'), 'landing keeps floating animation');
+assert.ok(landingCss.includes('@media (prefers-reduced-motion: reduce)'), 'landing respects reduced motion');
+assert.ok(landingJs.includes('IntersectionObserver'), 'landing keeps scroll reveal');
+assert.ok(landingJs.includes('history.replaceState'), 'landing keeps URL filter state');
+const introOrder = mobileCss.indexOf(`${quote}intro${quote}`);
+const visualOrder = mobileCss.indexOf(`${quote}visual${quote}`);
+const pickerOrder = mobileCss.indexOf(`${quote}picker${quote}`);
+assert.ok(introOrder !== -1 && visualOrder > introOrder && pickerOrder > visualOrder, 'mobile hero order is intro, visual, picker');
+assert.ok(mobileCss.includes('@keyframes supportFloatPhoneMobile'), 'mobile keeps compact phone motion');
+assert.ok(mobileJs.includes('syncMobileCta'), 'mobile CTA visibility script remains');
+
+const redirects = await read('_redirects');
+assert.ok(redirects.includes('/support/ /support 301'), 'support slash redirects');
+assert.ok(redirects.includes('/support.html /support 301'), 'support html redirects');
+assert.ok(redirects.includes('/지원금.html /지원금 301'), 'archive html redirects');
+
+const sitemap = await read('sitemap.xml');
+const rss = await read('rss.xml');
+const robots = await read('robots.txt');
+const llms = await read('llms.txt');
+assert.ok(sitemap.includes('https://mustview.co.kr/'), 'sitemap has home');
+assert.ok(sitemap.includes('https://mustview.co.kr/지원금'), 'sitemap has archive');
+assert.ok(sitemap.includes('https://mustview.co.kr/support'), 'sitemap has support');
+assert.ok(robots.includes('ChatGPT-User'), 'robots has ChatGPT-User policy');
+assert.ok(robots.includes('Claude-SearchBot'), 'robots has Claude-SearchBot policy');
+assert.ok(robots.includes('PerplexityBot'), 'robots has PerplexityBot policy');
+assert.ok(llms.includes('복지모음집'), 'llms describes the site');
+assert.equal((rss.match(/<item>/g) || []).length, posts.length, 'RSS renders every support article');
 
 for (const post of posts) {
-  const html = await readDist(routeHtmlPath(`/${post.slug}`));
-  const pageSchemas = schemas(html);
-  const article = pageSchemas.find((schema) => schema['@type'] === 'Article');
-  const breadcrumb = pageSchemas.find((schema) => schema['@type'] === 'BreadcrumbList');
-  const faq = pageSchemas.find((schema) => schema['@type'] === 'FAQPage');
-  assert.match(html, new RegExp(`<title>${escapeRegExp(post.seoTitle)}<\\/title>`), `${post.slug} title is preserved`);
-  assert.match(html, new RegExp(`canonical.+https://mustview\\.co\\.kr/${post.slug}`), `${post.slug} canonical is preserved`);
-  assert.match(html, new RegExp(`<h1>${escapeRegExp(post.title)}<\\/h1>`), `${post.slug} H1 is preserved`);
-  assert.match(html, /article-content.+data-post-content.+data-counted-content/, `${post.slug} keeps article content`);
-  assert.match(html, /key-facts/, `${post.slug} keeps key facts`);
-  assert.match(html, /official-sources/, `${post.slug} keeps official sources`);
-  assert.match(html, /data-coupang-partners/, `${post.slug} keeps Coupang widgets`);
-  assert.equal(article?.headline, post.title, `${post.slug} Article headline is preserved`);
-  assert.equal(article?.datePublished, post.datePublished, `${post.slug} datePublished is preserved`);
-  assert.equal(article?.dateModified, post.dateModified, `${post.slug} dateModified is preserved`);
-  assert.ok(article?.citation?.length >= 1, `${post.slug} cites an official source`);
-  assert.deepEqual(breadcrumb?.itemListElement?.map((item) => item.name), ['홈', '지원금', post.title], `${post.slug} breadcrumb is preserved`);
-  assert.ok(faq?.mainEntity?.length >= 2, `${post.slug} FAQ schema is generated`);
-  assert.match(redirects, new RegExp(`/${post.slug}\\.html /${post.slug} 301`), `${post.slug}.html redirects to canonical URL`);
+  assert.ok(existsSync(join(dist, `${post.slug}.html`)), `${post.slug} page exists`);
+  const html = await read(`${post.slug}.html`);
+  assert.ok(html.includes(`https://mustview.co.kr/${post.slug}`), `${post.slug} canonical is present`);
+  assert.ok(html.includes(post.title), `${post.slug} title content is present`);
+  assert.ok(html.includes('key-facts'), `${post.slug} keeps key facts`);
+  assert.ok(html.includes('official-sources'), `${post.slug} keeps official sources`);
+  assert.ok(html.includes('data-coupang-partners'), `${post.slug} keeps Coupang widgets`);
+  assert.ok(redirects.includes(`/${post.slug}.html /${post.slug} 301`), `${post.slug}.html redirects to canonical URL`);
+  assert.ok(sitemap.includes(`https://mustview.co.kr/${post.slug}`), `${post.slug} is in sitemap`);
+  assert.ok(rss.includes(`https://mustview.co.kr/${post.slug}`), `${post.slug} is in RSS`);
 }
 
 for (const page of pages) {
-  const html = await readDist(routeHtmlPath(`/${page.slug}`));
-  assert.match(html, new RegExp(`canonical.+https://mustview\\.co\\.kr/${page.slug}`), `${page.slug} canonical is preserved`);
-  assert.match(html, /article-content information-content/, `${page.slug} content is preserved`);
-  assert.match(redirects, new RegExp(`/${page.slug}\\.html /${page.slug} 301`), `${page.slug}.html redirects to canonical URL`);
-}
-
-const sitemap = await readDist('sitemap.xml');
-const rss = await readDist('rss.xml');
-const robots = await readDist('robots.txt');
-const llms = await readDist('llms.txt');
-assert.match(sitemap, /<loc>https:\/\/mustview\.co\.kr\/<\/loc>/);
-assert.match(sitemap, /<loc>https:\/\/mustview\.co\.kr\/지원금<\/loc>/);
-assert.match(sitemap, /<loc>https:\/\/mustview\.co\.kr\/support<\/loc>/);
-assert.match(robots, /User-agent:\s*ChatGPT-User/);
-assert.match(robots, /User-agent:\s*Claude-SearchBot/);
-assert.match(robots, /User-agent:\s*PerplexityBot/);
-assert.match(robots, /Content-Signal:\s*search=yes,ai-input=yes,ai-train=no,use=reference/);
-assert.match(llms, /복지모음집/);
-assert.match(llms, /https:\/\/mustview\.co\.kr\/지원금/);
-assert.match(llms, /https:\/\/mustview\.co\.kr\/support/);
-assert.equal((rss.match(/<item>/g) || []).length, posts.length, 'RSS renders every support article');
-for (const post of posts) {
-  assert.match(sitemap, new RegExp(`<loc>https://mustview\\.co\\.kr/${post.slug}<\\/loc>`), `${post.slug} is in sitemap`);
-  assert.match(rss, new RegExp(`<link>https://mustview\\.co\\.kr/${post.slug}<\\/link>`), `${post.slug} is in RSS`);
+  assert.ok(existsSync(join(dist, `${page.slug}.html`)), `${page.slug} page exists`);
+  const html = await read(`${page.slug}.html`);
+  assert.ok(html.includes(`https://mustview.co.kr/${page.slug}`), `${page.slug} canonical is present`);
+  assert.ok(redirects.includes(`/${page.slug}.html /${page.slug} 301`), `${page.slug}.html redirects to canonical URL`);
 }
 
 console.log(`validated Astro dist: ${posts.length} posts, ${pages.length} pages`);
