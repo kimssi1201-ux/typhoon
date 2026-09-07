@@ -1,0 +1,30 @@
+---
+interface SupportRegion {
+  label: string;
+  count: number;
+}
+
+interface Props {
+  regions: SupportRegion[];
+}
+
+const { regions } = Astro.props as Props;
+---
+
+<section class="support-section support-regions" aria-labelledby="support-regions-title" data-reveal>
+  <div class="support-section-head">
+    <p>지역별 찾기</p>
+    <h2 id="support-regions-title">내 지역 지원금 확인</h2>
+    <span>현재 등록된 글 기준으로 지역 키워드가 확인되는 지원금을 연결합니다.</span>
+  </div>
+  <div class="support-region-grid">
+    {
+      regions.map((region) => (
+        <button type="button" data-support-set="region" data-value={region.label}>
+          <strong>{region.label}</strong>
+          <span>{region.count}개</span>
+        </button>
+      ))
+    }
+  </div>
+</section>

@@ -16,6 +16,7 @@ const {
   bodyClass = "blog-page generatepress-style",
   activeNav = "",
   cssHref = "/blog.css",
+  extraCss = [],
   scripts = [],
   includeRss = false,
   includeNaverVerification = false,
@@ -36,6 +37,7 @@ const {
   bodyClass?: string;
   activeNav?: string;
   cssHref?: string;
+  extraCss?: string[];
   scripts?: string[];
   includeRss?: boolean;
   includeNaverVerification?: boolean;
@@ -73,6 +75,7 @@ const jsonLdText = jsonLd ? JSON.stringify(jsonLd, null, 6).replace(/</g, "\\u00
     {twitterCard && <meta name="twitter:card" content={twitterCard} />}
     {includeRss && <link rel="alternate" type="application/rss+xml" title="복지모음집 RSS" href={`${SITE.origin}/rss.xml`} />}
     <link rel="stylesheet" href={cssHref} />
+    {extraCss.map((href: string) => <link rel="stylesheet" href={href} />)}
     <script is:inline async src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${SITE.publisherId}`} crossorigin="anonymous"></script>
     {jsonLd && <script is:inline type="application/ld+json" set:html={jsonLdText}></script>}
   </head>

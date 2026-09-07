@@ -1003,7 +1003,7 @@ test("the sitemap indexes the home, support archive, all posts, and four trust p
   ]);
   const indexed = [...sitemap.matchAll(/<loc>https:\/\/mustview\.co\.kr\/?([^<]*)<\/loc>/g)].map((match) => match[1]);
 
-  assert.deepEqual(indexed, ["", supportArchive.slug, ...posts.map((post) => post.slug), ...trustPages.map((page) => page.slug)]);
+  assert.deepEqual(indexed, ["", supportArchive.slug, "support", ...posts.map((post) => post.slug), ...trustPages.map((page) => page.slug)]);
   assert.match(robots, /Sitemap:\s*https:\/\/mustview\.co\.kr\/sitemap\.xml/);
   assert.match(robots, /Allow:\s*\/ads\.txt/);
   assert.match(robots, /Allow:\s*\/llms\.txt/);
@@ -1019,6 +1019,7 @@ test("the sitemap indexes the home, support archive, all posts, and four trust p
   assert.match(robots, /User-agent:\s*PerplexityBot[\s\S]*?Allow:\s*\//);
   assert.match(llms, /복지모음집/);
   assert.match(llms, /https:\/\/mustview\.co\.kr\/지원금/);
+  assert.match(llms, /https:\/\/mustview\.co\.kr\/support/);
   assert.match(redirects, /\/destinations \/ 301/);
   assert.match(redirects, /\/travel-guide \/ 301/);
   assert.match(redirects, /\/housing-guide \/ 301/);

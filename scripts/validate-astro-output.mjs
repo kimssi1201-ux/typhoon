@@ -36,7 +36,7 @@ const pages = await readJsonDir(pagesDir);
 assert.equal(posts.length, 55, "Astro content contains all 55 support posts");
 assert.equal(pages.length, 4, "Astro content contains all 4 information pages");
 
-for (const file of ["blog.css", "blog.js", "support-search.js", "coupang-partners.js", "ads.txt", "robots.txt", "llms.txt", "_headers", "_redirects"]) {
+for (const file of ["blog.css", "blog.js", "support-search.js", "support-landing.css", "support-landing.js", "coupang-partners.js", "ads.txt", "robots.txt", "llms.txt", "_headers", "_redirects"]) {
   assert.ok(existsSync(join(dist, file)), `${file} is copied to dist`);
 }
 
@@ -80,11 +80,42 @@ for (const categoryId of ["category-small-business", "category-childbirth", "cat
   assert.match(support, new RegExp(`id="${categoryId}"`), `support archive preserves ${categoryId} anchor`);
 }
 
+const supportLanding = await readDist(routeHtmlPath("/support"));
+const supportLandingCss = await readDist("support-landing.css");
+const supportLandingScript = await readDist("support-landing.js");
+const supportLandingSchemas = schemas(supportLanding);
+const landingCollection = supportLandingSchemas.find((schema) => schema["@type"] === "CollectionPage");
+const landingBreadcrumb = supportLandingSchemas.find((schema) => schema["@type"] === "BreadcrumbList");
+assert.ok(!existsSync(join(dist, "support", "index.html")), "support landing is not emitted as a trailing-slash directory URL");
+assert.match(supportLanding, /<link rel="canonical" href="https:\/\/mustview\.co\.kr\/support"/);
+assert.match(supportLanding, /정부지원금 찾기 \| 청년·주거·육아·소상공인 지원금 - mustview/);
+assert.match(supportLanding, /data-support-page/);
+assert.match(supportLanding, /data-support-hero-search/);
+assert.match(supportLanding, /data-support-finder/);
+assert.match(supportLanding, /data-support-results/);
+assert.match(supportLanding, /data-support-mobile-cta|support-mobile-cta/);
+assert.match(supportLanding, /support-landing\.css\?v=20260907-support1/);
+assert.match(supportLanding, /support-landing\.js\?v=20260907-support1/);
+assert.equal((supportLanding.match(/data-support-program/g) || []).length, posts.length, "support landing filter results use every post exactly once");
+for (const label of ["청년", "취업 / 구직", "소상공인", "전국", "서울", "제주"]) {
+  assert.match(supportLanding, new RegExp(label.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")), `support landing includes ${label} filter content`);
+}
+assert.equal(landingCollection?.["@id"], "https://mustview.co.kr/support#collection", "support landing exposes CollectionPage schema");
+assert.deepEqual(landingBreadcrumb?.itemListElement?.map((item) => item.name), ["홈", "지원금 찾기"], "support landing breadcrumb JSON-LD is generated");
+assert.match(supportLandingCss, /@media \(prefers-reduced-motion: reduce\)/);
+assert.match(supportLandingCss, /@keyframes supportKenBurns/);
+assert.match(supportLandingCss, /@keyframes supportFloatPhone/);
+assert.match(supportLandingScript, /IntersectionObserver/);
+assert.match(supportLandingScript, /history\.replaceState/);
+assert.match(supportLandingScript, /data-count-up/);
+
 const redirects = await readDist("_redirects");
 assert.match(redirects, /\/destinations \/ 301/);
 assert.match(redirects, /\/travel-guide \/ 301/);
 assert.match(redirects, /\/housing-guide \/ 301/);
-assert.match(redirects, /\/support \/지원금 301/);
+assert.doesNotMatch(redirects, /\/support \/지원금 301/);
+assert.match(redirects, /\/support\/ \/support 301/);
+assert.match(redirects, /\/support\.html \/support 301/);
 assert.match(redirects, /\/지원금\.html \/지원금 301/);
 
 for (const post of posts) {
@@ -132,6 +163,7 @@ const robots = await readDist("robots.txt");
 const llms = await readDist("llms.txt");
 assert.match(sitemap, /<loc>https:\/\/mustview\.co\.kr\/<\/loc>/);
 assert.match(sitemap, /<loc>https:\/\/mustview\.co\.kr\/지원금<\/loc>/);
+assert.match(sitemap, /<loc>https:\/\/mustview\.co\.kr\/support<\/loc>/);
 assert.match(robots, /User-agent:\s*ChatGPT-User/);
 assert.match(robots, /User-agent:\s*Claude-SearchBot/);
 assert.match(robots, /User-agent:\s*PerplexityBot/);
@@ -145,6 +177,7 @@ assert.match(robots, /User-agent:\s*Claude-SearchBot[\s\S]*?Allow:\s*\//);
 assert.match(robots, /User-agent:\s*PerplexityBot[\s\S]*?Allow:\s*\//);
 assert.match(llms, /복지모음집/);
 assert.match(llms, /https:\/\/mustview\.co\.kr\/지원금/);
+assert.match(llms, /https:\/\/mustview\.co\.kr\/support/);
 assert.equal((rss.match(/<item>/g) || []).length, posts.length, "RSS renders every support article");
 for (const post of posts) {
   assert.match(sitemap, new RegExp(`<loc>https://mustview\\.co\\.kr/${post.slug}<\\/loc>`), `${post.slug} is in sitemap`);

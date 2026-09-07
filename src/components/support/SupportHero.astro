@@ -1,0 +1,64 @@
+---
+const { totalCount, categoryCount, regionCount, sourceCount } = Astro.props;
+const searchExamples = ["청년월세", "근로장려금", "부모급여", "소상공인", "주거지원", "생활지원"];
+---
+
+<section class="support-hero" aria-labelledby="support-hero-title" data-reveal>
+  <div class="support-hero-copy">
+    <p class="support-eyebrow">정부지원금 찾기</p>
+    <h1 id="support-hero-title">놓치고 있는 지원금, 한 번에 확인하세요</h1>
+    <p class="support-hero-lead">나이와 지역, 현재 상황에 맞는 정부지원금과 복지혜택을 빠르게 찾아보세요.</p>
+    <form class="support-hero-search" action="/support#support-finder" method="get" role="search" data-support-hero-search>
+      <label class="screen-reader-text" for="support-hero-query">지원금 이름이나 키워드 검색</label>
+      <input id="support-hero-query" name="q" type="search" maxlength="40" placeholder="지원금 이름이나 키워드를 검색하세요" data-support-hero-query />
+      <button type="submit">검색</button>
+    </form>
+    <div class="support-example-links" aria-label="검색 예시">
+      {searchExamples.map((example) => <button type="button" data-support-set="query" data-value={example}>{example}</button>)}
+    </div>
+    <div class="support-hero-actions">
+      <a class="support-primary-cta" href="#support-finder">내 지원금 찾기<span aria-hidden="true">→</span></a>
+      <a class="support-secondary-cta" href="#support-results">지원금 전체보기</a>
+    </div>
+    <dl class="support-hero-stats" aria-label="지원금 데이터 요약">
+      <div><dt>등록 지원금</dt><dd><span data-count-up={totalCount}>{totalCount}</span>개</dd></div>
+      <div><dt>지원 분야</dt><dd><span data-count-up={categoryCount}>{categoryCount}</span>개</dd></div>
+      <div><dt>지역 필터</dt><dd><span data-count-up={regionCount}>{regionCount}</span>개</dd></div>
+      <div><dt>공식 출처</dt><dd><span data-count-up={sourceCount}>{sourceCount}</span>개</dd></div>
+    </dl>
+  </div>
+
+  <div class="support-hero-visual" aria-label="지원금 확인 화면 예시">
+    <div class="support-visual-photo" data-parallax="0.05">
+      <img src="/assets/benefit-employment-inline.webp" width="1200" height="800" alt="지원금 정보를 확인하는 화면 일러스트" decoding="async" />
+    </div>
+    <div class="support-phone-visual" data-parallax="0.12">
+      <div class="support-phone-top">
+        <span></span>
+        <strong>지원금 확인</strong>
+      </div>
+      <div class="support-phone-screen">
+        <p>오늘 확인할 혜택</p>
+        <strong>월 최대 20만 원</strong>
+        <span>청년·주거 지원</span>
+        <div class="support-phone-progress"><i></i></div>
+        <ul>
+          <li><span></span>대상 조건 확인</li>
+          <li><span></span>신청기간 확인</li>
+          <li><span></span>공식 출처 이동</li>
+        </ul>
+      </div>
+    </div>
+    <div class="support-float support-float-coin" data-parallax="0.2">₩</div>
+    <div class="support-float support-float-card" data-parallax="0.15">
+      <span>소상공인</span>
+      <strong>정책자금</strong>
+    </div>
+    <div class="support-float support-float-doc" data-parallax="-0.06">
+      <span></span>
+      <span></span>
+      <strong>공식 공고</strong>
+    </div>
+    <div class="support-float support-float-check" data-parallax="0.1">✓</div>
+  </div>
+</section>

@@ -28,7 +28,6 @@ const MAP_CAPTURE = `<script id="leaflet-map-capture">
 })();
 </script>`;
 const GLOBAL_TRACKER = '<script id="global-cyclone-tracker-loader" src="/global-cyclone-tracker.js?v=20260719-popup-info1" defer></script>';
-const LEGACY_SUPPORT_ARCHIVE_PATHS = new Set(["/support", "/support/", "/support.html"]);
 
 function safeDecodePathname(pathname) {
   try {
@@ -41,9 +40,6 @@ function safeDecodePathname(pathname) {
 function canonicalTag(requestUrl) {
   const url = new URL(requestUrl);
   const decodedPathname = safeDecodePathname(url.pathname);
-  if (LEGACY_SUPPORT_ARCHIVE_PATHS.has(decodedPathname)) {
-    return `<link rel="canonical" href="${CANONICAL_ORIGIN}/지원금">`;
-  }
   const pathname = decodedPathname.endsWith(".html") ? (decodedPathname.slice(0, -5) || "/") : decodedPathname;
   const canonicalPath = pathname === "/index" ? "/" : pathname;
   return `<link rel="canonical" href="${CANONICAL_ORIGIN}${canonicalPath}">`;
@@ -60,10 +56,6 @@ function insertBefore(html, needle, value) {
 export async function onRequest(context) {
   const requestUrl = new URL(context.request.url);
   const decodedPathname = safeDecodePathname(requestUrl.pathname);
-
-  if (LEGACY_SUPPORT_ARCHIVE_PATHS.has(decodedPathname)) {
-    return Response.redirect(`${redirectOrigin(requestUrl)}/지원금${requestUrl.search}${requestUrl.hash}`, 301);
-  }
 
   if (decodedPathname !== "/" && decodedPathname.endsWith("/")) {
     return Response.redirect(`${redirectOrigin(requestUrl)}${decodedPathname.replace(/\/+$/, "")}${requestUrl.search}${requestUrl.hash}`, 301);

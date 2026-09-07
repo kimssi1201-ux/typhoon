@@ -1,0 +1,93 @@
+---
+import SupportProgramCard from "./SupportProgramCard.astro";
+
+type SupportProgram = {
+  slug: string;
+  href: string;
+  title: string;
+  description: string;
+  category: string;
+  target: string;
+  amount: string;
+  period: string;
+  status: string;
+  regions: string[];
+  fields: string[];
+  ageGroups: string[];
+  updatedLabel: string;
+  searchText: string;
+  tile?: {
+    label: string;
+    html: string;
+    style: string;
+  };
+};
+
+interface Props {
+  programs: SupportProgram[];
+  ageFilters: string[];
+  fieldFilters: string[];
+  regionFilters: string[];
+}
+
+const { programs, ageFilters, fieldFilters, regionFilters } = Astro.props as Props;
+---
+
+<section class="support-section support-finder" id="support-finder" aria-labelledby="support-finder-title" data-support-finder data-reveal>
+  <div class="support-section-head">
+    <p>맞춤 검색</p>
+    <h2 id="support-finder-title">내 조건으로 지원금 찾기</h2>
+    <span>정책명을 몰라도 나이, 분야, 지역으로 좁혀볼 수 있습니다.</span>
+  </div>
+
+  <div class="support-finder-panel">
+    <form class="support-main-search" action="/support#support-results" method="get" role="search" data-support-main-search>
+      <label for="support-query">통합 지원금 검색</label>
+      <div>
+        <input id="support-query" type="search" name="q" maxlength="40" placeholder="청년월세, 근로장려금, 부모급여, 소상공인" data-support-query />
+        <button type="submit">검색</button>
+      </div>
+    </form>
+
+    <div class="support-filter-steps">
+      <fieldset class="support-filter-group">
+        <legend><span>1</span> 연령대</legend>
+        <div class="support-filter-options">
+          {ageFilters.map((filter) => <button type="button" data-support-filter="age" data-value={filter} aria-pressed={filter === "전체" ? "true" : "false"}>{filter}</button>)}
+        </div>
+      </fieldset>
+
+      <fieldset class="support-filter-group">
+        <legend><span>2</span> 지원 분야</legend>
+        <div class="support-filter-options support-filter-options-wide">
+          {fieldFilters.map((filter) => <button type="button" data-support-filter="field" data-value={filter} aria-pressed={filter === "전체" ? "true" : "false"}>{filter}</button>)}
+        </div>
+      </fieldset>
+
+      <fieldset class="support-filter-group">
+        <legend><span>3</span> 지역</legend>
+        <div class="support-filter-options support-filter-options-region">
+          {regionFilters.map((filter) => <button type="button" data-support-filter="region" data-value={filter} aria-pressed={filter === "전국" ? "true" : "false"}>{filter}</button>)}
+        </div>
+      </fieldset>
+    </div>
+
+    <div class="support-filter-summary">
+      <p data-support-result-status aria-live="polite">전체 {programs.length}개 지원금을 표시 중입니다.</p>
+      <button type="button" data-support-reset>조건 초기화</button>
+    </div>
+  </div>
+
+  <div class="support-results" id="support-results" data-support-results>
+    {programs.map((program, index) => <SupportProgramCard program={program} index={index} />)}
+  </div>
+
+  <div class="support-empty" data-support-empty hidden>
+    <h3>조건에 맞는 지원금을 찾지 못했습니다.</h3>
+    <p>다른 조건을 선택하거나 전체 지원금 목록을 확인해보세요.</p>
+    <div>
+      <button type="button" data-support-reset>조건 초기화</button>
+      <a href="/지원금">전체 지원금 보기</a>
+    </div>
+  </div>
+</section>

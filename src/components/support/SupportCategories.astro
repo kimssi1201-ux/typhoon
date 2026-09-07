@@ -1,0 +1,58 @@
+---
+interface SupportCategory {
+  label: string;
+  count: number;
+  icon: string;
+}
+
+interface FeaturedProgram {
+  href: string;
+  title: string;
+  category: string;
+  benefit: string;
+}
+
+interface Props {
+  categories: SupportCategory[];
+  featuredPrograms: FeaturedProgram[];
+}
+
+const { categories, featuredPrograms } = Astro.props as Props;
+---
+
+<section class="support-section support-categories" aria-labelledby="support-categories-title" data-reveal>
+  <div class="support-section-head">
+    <p>인기 분야</p>
+    <h2 id="support-categories-title">많이 찾는 지원금 카테고리</h2>
+    <span>관심 분야를 누르면 관련 지원금만 바로 볼 수 있습니다.</span>
+  </div>
+  <div class="support-category-grid">
+    {
+      categories.map((category) => (
+        <button type="button" class="support-category-card" data-support-set="field" data-value={category.label}>
+          <span aria-hidden="true">{category.icon}</span>
+          <strong>{category.label}</strong>
+          <em>{category.count}개 보기</em>
+        </button>
+      ))
+    }
+  </div>
+
+  <div class="support-featured" aria-labelledby="support-featured-title">
+    <div class="support-section-head support-section-head-small">
+      <p>주요 지원금</p>
+      <h2 id="support-featured-title">먼저 확인할 지원금</h2>
+    </div>
+    <div class="support-featured-list">
+      {
+        featuredPrograms.map((program) => (
+          <a href={program.href}>
+            <span>{program.category}</span>
+            <strong>{program.title}</strong>
+            <em>{program.benefit}</em>
+          </a>
+        ))
+      }
+    </div>
+  </div>
+</section>
