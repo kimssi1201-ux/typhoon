@@ -1,0 +1,81 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import SupportHero from "../../components/support/SupportHero.astro";
+import SupportFinder from "../../components/support/SupportFinder.astro";
+import SupportCategories from "../../components/support/SupportCategories.astro";
+import SupportRegions from "../../components/support/SupportRegions.astro";
+import SupportLatest from "../../components/support/SupportLatest.astro";
+import SupportGuide from "../../components/support/SupportGuide.astro";
+import SupportSourceNotice from "../../components/support/SupportSourceNotice.astro";
+import SupportMobileCTA from "../../components/support/SupportMobileCTA.astro";
+import { SITE } from "../../data/site.js";
+import { popularPosts, recentPosts } from "../../lib/content.js";
+import { supportLandingJsonLd } from "../../lib/seo.js";
+import {
+  AGE_FILTERS,
+  FIELD_FILTERS,
+  REGION_FILTERS,
+  landingCategoryCards,
+  landingRegionCards,
+  supportProgramsFromPosts,
+  toSupportProgram
+} from "../../lib/support-landing.js";
+
+const posts = await getCollection("posts");
+const programs = supportProgramsFromPosts(posts);
+const programBySlug = new Map(programs.map((program) => [program.slug, program]));
+const featuredPrograms = popularPosts(posts, 6).map(toSupportProgram);
+const latestPrograms = recentPosts(posts, 6).map((post) => programBySlug.get(post.data.slug) || toSupportProgram(post));
+const categoryCards = landingCategoryCards(programs);
+const regionCards = landingRegionCards(programs);
+const activeRegions = regionCards.filter((region) => region.count > 0).length;
+const sourceCount = programs.filter((program) => program.sourceLabel).length;
+const categoryCount = new Set(programs.map((program) => program.categoryId)).size;
+---
+
+<BaseLayout
+  title="정부지원금 찾기 | 청년·주거·육아·소상공인 지원금 - mustview"
+  description="청년, 주거, 육아, 취업, 소상공인 등 상황과 지역에 맞는 정부지원금과 복지혜택을 찾아보세요."
+  canonicalPath="/support"
+  ogType="website"
+  ogTitle="정부지원금 찾기 | 복지모음집"
+  ogDescription="나이, 분야, 지역 조건으로 정부지원금과 복지혜택을 빠르게 찾는 지원금 랜딩페이지"
+  ogImage={SITE.defaultImage}
+  twitterCard="summary_large_image"
+  bodyClass="blog-page support-landing-page generatepress-style"
+  cssHref="/blog.css?v=20260905-ai-trust1"
+  extraCss={["/support-landing.css?v=20260907-support1"]}
+  scripts={["/support-landing.js?v=20260907-support1"]}
+  themeColor={SITE.themeColor}
+  jsonLd={supportLandingJsonLd}
+>
+  <main class="site-main support-landing" id="main" data-support-page data-post-count={programs.length}>
+    <SupportHero
+      totalCount={programs.length}
+      categoryCount={categoryCount}
+      regionCount={activeRegions}
+      sourceCount={sourceCount}
+    />
+    <SupportFinder
+      programs={programs}
+      ageFilters={AGE_FILTERS}
+      fieldFilters={FIELD_FILTERS}
+      regionFilters={REGION_FILTERS}
+    />
+    <SupportCategories categories={categoryCards} featuredPrograms={featuredPrograms} />
+    <SupportRegions regions={regionCards} />
+    <SupportLatest programs={latestPrograms} />
+    <SupportGuide />
+    <SupportSourceNotice />
+    <section class="support-final-cta" aria-labelledby="support-final-cta-title" data-reveal>
+      <p>지원금 확인을 시작하세요</p>
+      <h2 id="support-final-cta-title">조건을 고르면 관련 글만 바로 볼 수 있습니다</h2>
+      <div>
+        <a class="support-primary-cta" href="#support-finder">내 조건으로 찾기<span aria-hidden="true">→</span></a>
+        <a class="support-secondary-cta" href="/지원금">전체 지원금 목록</a>
+      </div>
+    </section>
+    <SupportMobileCTA />
+  </main>
+</BaseLayout>

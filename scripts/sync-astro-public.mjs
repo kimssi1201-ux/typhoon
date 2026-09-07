@@ -17,6 +17,8 @@ const copyFiles = [
   "coupang-partners.js",
   "llms.txt",
   "robots.txt",
+  "support-landing.css",
+  "support-landing.js",
   "support-search.js",
   "_headers"
 ];
@@ -85,9 +87,8 @@ const pages = await readJsonFiles(pagesDir);
 
 const canonicalRedirects = [
   "/지원금.html /지원금 301",
-  "/support /지원금 301",
-  "/support/ /지원금 301",
-  "/support.html /지원금 301",
+  "/support/ /support 301",
+  "/support.html /support 301",
   ...posts.map((post) => `/${post.slug}.html /${post.slug} 301`),
   ...pages.map((page) => `/${page.slug}.html /${page.slug} 301`)
 ];

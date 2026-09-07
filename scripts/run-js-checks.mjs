@@ -41,6 +41,7 @@ const files = [
   "functions/api/kma-beach.js",
   "functions/api/oceans-beach.js",
   "blog.js",
+  "support-landing.js",
   "support-search.js",
   "coupang-partners.js",
   "scripts/check-image-alt.js",

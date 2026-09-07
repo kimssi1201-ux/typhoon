@@ -52,18 +52,35 @@ test("HTML middleware redirects the slash support archive to the canonical Korea
   assert.equal(response.headers.get("location"), "https://mustview.co.kr/%EC%A7%80%EC%9B%90%EA%B8%88");
 });
 
-test("HTML middleware redirects legacy support URLs to the canonical Korean path", async () => {
-  for (const path of ["/support", "/support/", "/support.html"]) {
-    const response = await onRequest({
-      request: makeRequest(path),
-      next: async () => {
-        throw new Error("legacy support archive should redirect before asset lookup");
-      }
-    });
+test("HTML middleware lets Astro serve the English support landing path", async () => {
+  let passedToNext = false;
+  const html = '<!doctype html><html><head><link rel="canonical" href="https://old.example/support"><link rel="stylesheet" href="blog.css?v=landing"></head><body><main data-support-page>정부지원금 찾기</main></body></html>';
+  const response = await onRequest({
+    request: makeRequest("/support"),
+    next: async () => {
+      passedToNext = true;
+      return new Response(html, { status: 200, headers: { "content-type": "text/html; charset=utf-8" } });
+    }
+  });
+  const body = await response.text();
 
-    assert.equal(response.status, 301);
-    assert.equal(response.headers.get("location"), "https://mustview.co.kr/%EC%A7%80%EC%9B%90%EA%B8%88");
-  }
+  assert.equal(response.status, 200);
+  assert.equal(passedToNext, true);
+  assert.match(body, /canonical" href="https:\/\/mustview\.co\.kr\/support/);
+  assert.match(body, /href="\/blog\.css\?v=landing"/);
+  assert.match(body, /data-support-page/);
+});
+
+test("HTML middleware redirects the slash support landing to the canonical path", async () => {
+  const response = await onRequest({
+    request: makeRequest("/support/"),
+    next: async () => {
+      throw new Error("the slash support landing should redirect before asset lookup");
+    }
+  });
+
+  assert.equal(response.status, 301);
+  assert.equal(response.headers.get("location"), "https://mustview.co.kr/support");
 });
 
 test("HTML middleware does not rewrite non-HTML responses", async () => {

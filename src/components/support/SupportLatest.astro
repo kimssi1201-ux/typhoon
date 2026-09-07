@@ -1,0 +1,42 @@
+---
+import SupportProgramCard from "./SupportProgramCard.astro";
+
+type SupportProgram = {
+  slug: string;
+  href: string;
+  title: string;
+  description: string;
+  category: string;
+  target: string;
+  amount: string;
+  period: string;
+  status: string;
+  regions: string[];
+  fields: string[];
+  ageGroups: string[];
+  updatedLabel: string;
+  searchText: string;
+  tile?: {
+    label: string;
+    html: string;
+    style: string;
+  };
+};
+
+interface Props {
+  programs: SupportProgram[];
+}
+
+const { programs } = Astro.props as Props;
+---
+
+<section class="support-section support-latest" aria-labelledby="support-latest-title" data-reveal>
+  <div class="support-section-head">
+    <p>최근 업데이트</p>
+    <h2 id="support-latest-title">최근 확인한 지원금</h2>
+    <span>게시일보다 실제 정책 정보의 최종 확인일을 우선해서 정렬합니다.</span>
+  </div>
+  <div class="support-latest-grid">
+    {programs.map((program, index) => <SupportProgramCard program={program} compact filterable={false} index={index} />)}
+  </div>
+</section>

@@ -8,6 +8,7 @@
 
 - 홈: https://mustview.co.kr/
 - 전체 지원금 목록: https://mustview.co.kr/지원금
+- 맞춤 지원금 찾기: https://mustview.co.kr/support
 - 자료 기준: https://mustview.co.kr/sources
 - 블로그 소개: https://mustview.co.kr/about
 - 문의 및 정보 수정 요청: https://mustview.co.kr/contact

@@ -1,0 +1,74 @@
+---
+type SupportProgram = {
+  slug: string;
+  href: string;
+  title: string;
+  description: string;
+  category: string;
+  target: string;
+  amount: string;
+  period: string;
+  status: string;
+  regions: string[];
+  fields: string[];
+  ageGroups: string[];
+  updatedLabel: string;
+  searchText: string;
+  tile?: {
+    label: string;
+    html: string;
+    style: string;
+  };
+};
+
+interface Props {
+  program: SupportProgram;
+  compact?: boolean;
+  filterable?: boolean;
+  index?: number;
+}
+
+const { program, compact = false, filterable = true, index = 0 } = Astro.props as Props;
+const titleId = `support-program-${program.slug}`;
+const showMeta = !compact;
+---
+
+<article
+  class={`support-program-card${compact ? " support-program-card-compact" : ""}`}
+  style={`--stagger: ${index % 8};`}
+  data-reveal
+  data-support-program={filterable ? "" : undefined}
+  data-search-text={filterable ? program.searchText : undefined}
+  data-age-groups={filterable ? program.ageGroups.join("|") : undefined}
+  data-fields={filterable ? program.fields.join("|") : undefined}
+  data-regions={filterable ? program.regions.join("|") : undefined}
+>
+  <a href={program.href} aria-labelledby={titleId}>
+    <div class="support-program-top">
+      <p class="support-program-meta">
+        <span>{program.category}</span>
+        {program.status && <span class="support-status-badge">{program.status}</span>}
+      </p>
+      <h3 id={titleId}>{program.title}</h3>
+    </div>
+    <div class="support-program-body">
+      <div class="support-program-tile" style={program.tile?.style || undefined} aria-hidden="true">
+        <span>{program.tile?.label || program.category}</span>
+        <strong set:html={program.tile?.html || program.category}></strong>
+      </div>
+      <div class="support-program-copy">
+        <p>{program.description}</p>
+        <dl>
+          {program.target && <div><dt>대상</dt><dd>{program.target}</dd></div>}
+          {program.amount && <div><dt>혜택</dt><dd>{program.amount}</dd></div>}
+          {program.period && <div><dt>기간</dt><dd>{program.period}</dd></div>}
+          {showMeta && <div><dt>지역</dt><dd>{program.regions.join(", ")}</dd></div>}
+        </dl>
+      </div>
+    </div>
+    <div class="support-program-footer">
+      <span>최종 확인 {program.updatedLabel}</span>
+      <strong>자세히 보기</strong>
+    </div>
+  </a>
+</article>

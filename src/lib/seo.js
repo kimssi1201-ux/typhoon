@@ -145,4 +145,43 @@ export const supportJsonLd = {
   ]
 };
 
+export const supportLandingJsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    ...siteGraph(),
+    {
+      "@type": "CollectionPage",
+      "@id": `${SITE.origin}/support#collection`,
+      name: "정부지원금 찾기",
+      url: `${SITE.origin}/support`,
+      inLanguage: "ko-KR",
+      description: "청년, 주거, 육아, 취업, 소상공인 등 상황과 지역에 맞는 정부지원금과 복지혜택을 찾는 페이지",
+      isPartOf: {
+        "@id": SITE.websiteId
+      },
+      publisher: {
+        "@id": SITE.organizationId
+      }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "@id": `${SITE.origin}/support#breadcrumb`,
+      itemListElement: [
+        {
+          "@type": "ListItem",
+          position: 1,
+          name: "홈",
+          item: `${SITE.origin}/`
+        },
+        {
+          "@type": "ListItem",
+          position: 2,
+          name: "지원금 찾기",
+          item: `${SITE.origin}/support`
+        }
+      ]
+    }
+  ]
+};
+
 export const categoryById = (id) => CATEGORIES.find((category) => category.id === id);
