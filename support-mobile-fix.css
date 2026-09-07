@@ -69,7 +69,17 @@
 }
 
 .support-choice-stack {
+  order: 1;
   gap: 11px;
+}
+
+.support-selected-result {
+  order: 2;
+}
+
+.support-hero-search {
+  display: none !important;
+  order: 3;
 }
 
 .support-choice-group legend {
@@ -191,10 +201,6 @@
   margin-top: 0;
 }
 
-.support-hero-search {
-  padding-top: 2px;
-}
-
 .support-hero-visual {
   min-height: 520px;
   max-height: 590px;
@@ -270,10 +276,11 @@
       "visual"
       "picker";
     grid-template-columns: 1fr;
+    gap: 16px;
   }
 
   .support-hero-visual {
-    min-height: 238px;
+    min-height: 210px;
   }
 
   .support-visual-photo {
@@ -307,23 +314,23 @@
 
   .support-decision-card {
     gap: 14px;
-    padding: 18px 14px 20px;
+    padding: 16px 14px 18px;
   }
 
   .support-hero h1 {
-    max-width: 9.6em;
-    font-size: clamp(1.78rem, 7.7vw, 2.06rem);
-    line-height: 1.12;
+    max-width: 8.8em;
+    font-size: clamp(1.58rem, 6.6vw, 1.82rem);
+    line-height: 1.14;
   }
 
   .support-hero-lead {
-    margin-top: 10px;
-    font-size: 0.98rem;
-    line-height: 1.5;
+    margin-top: 8px;
+    font-size: 0.9rem;
+    line-height: 1.45;
   }
 
   .support-hero-visual {
-    min-height: 160px;
+    min-height: 134px;
     margin: 0;
   }
 
@@ -341,7 +348,7 @@
 
   .support-phone-visual {
     right: 16px;
-    width: 116px;
+    width: 106px;
     padding: 7px;
     border-radius: 14px;
   }
@@ -403,7 +410,7 @@
     left: 12px;
     bottom: 14px;
     min-width: 0;
-    max-width: 106px;
+    max-width: 92px;
     padding: 8px 9px;
   }
 
@@ -417,20 +424,20 @@
   }
 
   .support-choice-panel {
-    gap: 12px;
+    gap: 10px;
   }
 
   .support-choice-stack {
-    gap: 12px;
+    gap: 10px;
   }
 
   .support-choice-group {
-    gap: 9px;
+    gap: 7px;
   }
 
   .support-choice-group legend {
-    margin-bottom: 7px;
-    font-size: 0.95rem;
+    margin-bottom: 6px;
+    font-size: 0.9rem;
   }
 
   .support-choice-options-audience,
@@ -443,12 +450,12 @@
   }
 
   .support-option-card {
-    min-height: 48px;
-    padding: 9px 10px;
+    min-height: 42px;
+    padding: 8px 10px;
   }
 
   .support-option-card strong {
-    font-size: 0.9rem;
+    font-size: 0.86rem;
   }
 
   .support-option-card span {
@@ -465,16 +472,23 @@
       "cta"
       "features";
     grid-template-columns: 1fr;
-    padding: 14px;
+    gap: 8px;
+    padding: 12px;
   }
 
   .support-result-main strong {
-    font-size: 2.4rem;
+    font-size: 2.18rem;
+  }
+
+  .support-result-main > span {
+    margin-top: 4px;
+    font-size: 0.82rem;
   }
 
   .support-selected-result .support-primary-cta {
     justify-self: stretch;
     width: 100%;
+    min-height: 44px;
   }
 
   .support-selected-result ul {
@@ -484,10 +498,6 @@
 
   .support-selected-result li:nth-child(n + 3) {
     display: none;
-  }
-
-  .support-hero-search {
-    gap: 7px;
   }
 
   .support-hero-search label,
@@ -515,11 +525,11 @@
 
 @media (max-width: 380px) {
   .support-hero h1 {
-    font-size: 1.92rem;
+    font-size: 1.62rem;
   }
 
   .support-hero-visual {
-    min-height: 148px;
+    min-height: 124px;
   }
 
   .support-phone-visual {
