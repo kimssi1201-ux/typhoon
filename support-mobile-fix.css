@@ -1,0 +1,158 @@
+.support-landing-page {
+  overflow-x: hidden;
+}
+
+.support-landing {
+  overflow-x: clip;
+}
+
+.support-decision-card,
+.support-hero-visual {
+  overflow: hidden;
+}
+
+.support-hero-visual {
+  border-radius: 8px;
+}
+
+.support-mobile-cta {
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(calc(100% + 18px));
+  transition: opacity 180ms ease, transform 180ms ease;
+}
+
+.support-mobile-cta.is-visible {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+
+@keyframes supportFloatPhoneMobile {
+  0%,
+  100% {
+    transform: translate3d(0, calc(-50% + var(--parallax-y, 0px)), 0);
+  }
+
+  50% {
+    transform: translate3d(0, calc(-51.5% + var(--parallax-y, 0px)), 0);
+  }
+}
+
+@media (max-width: 640px) {
+  .support-landing {
+    padding: 12px 10px 86px;
+  }
+
+  .support-decision-card {
+    gap: 16px;
+    padding: 20px 14px;
+  }
+
+  .support-hero h1 {
+    font-size: clamp(2rem, 10.8vw, 2.35rem);
+    line-height: 1.08;
+  }
+
+  .support-hero-visual {
+    min-height: 260px;
+    margin-inline: -2px;
+  }
+
+  .support-visual-photo {
+    inset: 8px 0 24px;
+  }
+
+  .support-visual-orbit {
+    right: 8px;
+    top: 30px;
+    width: 164px;
+    height: 164px;
+  }
+
+  .support-phone-visual {
+    left: auto;
+    right: 8px;
+    top: 50%;
+    width: min(58%, 190px);
+    min-height: 218px;
+    padding: 10px;
+    border-radius: 18px;
+    animation-name: supportFloatPhoneMobile;
+  }
+
+  .support-motion-badge,
+  .support-live-strip,
+  .support-flow-card-family {
+    display: none;
+  }
+
+  .support-phone-screen {
+    margin-top: 10px;
+    padding: 12px;
+  }
+
+  .support-phone-screen > strong {
+    font-size: 1.02rem;
+  }
+
+  .support-phone-screen li {
+    font-size: 0.7rem;
+  }
+
+  .support-float-coin-two {
+    left: 22px;
+    top: 76px;
+    width: 38px;
+    height: 38px;
+    font-size: 1rem;
+  }
+
+  .support-float-card {
+    left: 8px;
+    bottom: 18px;
+    min-width: 0;
+    max-width: 126px;
+    padding: 10px 11px;
+  }
+
+  .support-float-check {
+    left: auto;
+    right: 8px;
+    top: 10px;
+    width: 36px;
+    height: 36px;
+    font-size: 1.1rem;
+  }
+
+  .support-flow-card-youth {
+    right: 6px;
+    top: 4px;
+  }
+}
+
+@media (max-width: 380px) {
+  .support-hero h1 {
+    font-size: 2rem;
+  }
+
+  .support-hero-visual {
+    min-height: 238px;
+  }
+
+  .support-phone-visual {
+    right: 6px;
+    width: 176px;
+    min-height: 204px;
+  }
+
+  .support-float-card {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .support-mobile-cta {
+    transition: none;
+  }
+}
