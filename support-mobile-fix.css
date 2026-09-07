@@ -77,13 +77,14 @@
 
   .support-phone-visual {
     left: auto;
-    right: 14px;
-    top: 52%;
-    width: 150px;
+    right: 12px;
+    top: 50%;
+    width: 138px;
     min-height: 0;
-    padding: 9px;
+    padding: 8px;
     border-radius: 16px;
-    animation-name: supportFloatPhoneMobile;
+    transform: translate3d(0, calc(-50% + var(--parallax-y, 0px)), 0);
+    animation: supportFloatPhoneMobile 6.8s ease-in-out infinite;
   }
 
   .support-motion-badge,
@@ -93,8 +94,8 @@
   }
 
   .support-phone-screen {
-    margin-top: 8px;
-    padding: 10px;
+    margin-top: 7px;
+    padding: 9px;
   }
 
   .support-phone-top {
@@ -113,8 +114,8 @@
   }
 
   .support-phone-screen > strong {
-    margin-top: 6px;
-    font-size: 0.96rem;
+    margin-top: 5px;
+    font-size: 0.9rem;
   }
 
   .support-phone-screen li {
@@ -128,8 +129,8 @@
   }
 
   .support-phone-progress {
-    height: 7px;
-    margin: 9px 0;
+    height: 6px;
+    margin: 8px 0;
   }
 
   .support-float-coin-two {
@@ -175,8 +176,8 @@
   }
 
   .support-phone-visual {
-    right: 10px;
-    width: 142px;
+    right: 8px;
+    width: 132px;
   }
 
   .support-float-card {
@@ -187,5 +188,9 @@
 @media (prefers-reduced-motion: reduce) {
   .support-mobile-cta {
     transition: none;
+  }
+
+  .support-phone-visual {
+    transform: translate3d(0, calc(-50% + var(--parallax-y, 0px)), 0);
   }
 }
