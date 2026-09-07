@@ -25,56 +25,56 @@ type SupportProgram = {
 
 interface Props {
   programs: SupportProgram[];
-  ageFilters: string[];
-  fieldFilters: string[];
-  regionFilters: string[];
 }
 
-const { programs, ageFilters, fieldFilters, regionFilters } = Astro.props as Props;
+const { programs } = Astro.props as Props;
+const categoryTabs = [
+  { label: "전체", audience: "전체", field: "전체" },
+  { label: "청년", audience: "청년", field: "전체" },
+  { label: "육아·가정", audience: "전체", field: "출산 / 육아" },
+  { label: "소상공인", audience: "소상공인", field: "소상공인" },
+  { label: "고용·취업", audience: "전체", field: "취업 / 구직" },
+  { label: "생활·에너지", audience: "전체", field: "생활비" },
+  { label: "세금·환급", audience: "전체", field: "기타" }
+];
 ---
 
-<section class="support-section support-finder" id="support-finder" aria-labelledby="support-finder-title" data-support-finder data-reveal>
+<section class="support-section support-finder" id="support-finder" aria-labelledby="support-finder-title" data-support-list data-reveal>
   <div class="support-section-head">
-    <p>맞춤 검색</p>
-    <h2 id="support-finder-title">내 조건으로 지원금 찾기</h2>
-    <span>정책명을 몰라도 나이, 분야, 지역으로 좁혀볼 수 있습니다.</span>
+    <p>지원금 목록</p>
+    <h2 id="support-finder-title">선택한 조건에 맞는 지원금</h2>
+    <span>위에서 고른 조건을 기준으로 기존 지원금 글을 바로 좁혀 보여줍니다.</span>
   </div>
 
-  <div class="support-finder-panel">
-    <form class="support-main-search" action="/support#support-results" method="get" role="search" data-support-main-search>
-      <label for="support-query">통합 지원금 검색</label>
-      <div>
-        <input id="support-query" type="search" name="q" maxlength="40" placeholder="청년월세, 근로장려금, 부모급여, 소상공인" data-support-query />
-        <button type="submit">검색</button>
-      </div>
-    </form>
-
-    <div class="support-filter-steps">
-      <fieldset class="support-filter-group">
-        <legend><span>1</span> 연령대</legend>
-        <div class="support-filter-options">
-          {ageFilters.map((filter) => <button type="button" data-support-filter="age" data-value={filter} aria-pressed={filter === "전체" ? "true" : "false"}>{filter}</button>)}
-        </div>
-      </fieldset>
-
-      <fieldset class="support-filter-group">
-        <legend><span>2</span> 지원 분야</legend>
-        <div class="support-filter-options support-filter-options-wide">
-          {fieldFilters.map((filter) => <button type="button" data-support-filter="field" data-value={filter} aria-pressed={filter === "전체" ? "true" : "false"}>{filter}</button>)}
-        </div>
-      </fieldset>
-
-      <fieldset class="support-filter-group">
-        <legend><span>3</span> 지역</legend>
-        <div class="support-filter-options support-filter-options-region">
-          {regionFilters.map((filter) => <button type="button" data-support-filter="region" data-value={filter} aria-pressed={filter === "전국" ? "true" : "false"}>{filter}</button>)}
-        </div>
-      </fieldset>
+  <div class="support-list-panel">
+    <div class="support-category-tabs" role="tablist" aria-label="지원금 분야">
+      {categoryTabs.map((tab) => (
+        <button
+          type="button"
+          role="tab"
+          aria-selected={tab.label === "전체" ? "true" : "false"}
+          data-support-tab
+          data-audience={tab.audience}
+          data-field={tab.field}
+        >
+          {tab.label}
+        </button>
+      ))}
     </div>
 
-    <div class="support-filter-summary">
-      <p data-support-result-status aria-live="polite">전체 {programs.length}개 지원금을 표시 중입니다.</p>
-      <button type="button" data-support-reset>조건 초기화</button>
+    <div class="support-list-tools">
+      <form class="support-main-search" action="/support#support-results" method="get" role="search" data-support-main-search>
+        <label for="support-query">키워드 검색</label>
+        <div>
+          <input id="support-query" type="search" name="q" maxlength="40" placeholder="청년월세, 근로장려금, 부모급여, 소상공인" data-support-query />
+          <button type="submit">검색</button>
+        </div>
+      </form>
+
+      <div class="support-filter-summary">
+        <p data-support-list-status aria-live="polite">전체 {programs.length}개 지원금을 표시 중입니다.</p>
+        <button type="button" data-support-reset>조건 초기화</button>
+      </div>
     </div>
   </div>
 

@@ -1,80 +1,179 @@
 ---
-const { totalCount, categoryCount, regionCount, sourceCount } = Astro.props;
-const searchExamples = ["청년월세", "근로장려금", "부모급여", "소상공인", "주거지원", "생활지원"];
+type SupportProgram = {
+  slug: string;
+  href: string;
+  title: string;
+  description: string;
+  benefit?: string;
+  category: string;
+};
+
+interface Props {
+  programs: SupportProgram[];
+  featuredPrograms: SupportProgram[];
+  totalCount: number;
+  categoryCount: number;
+  regionCount: number;
+  sourceCount: number;
+}
+
+const { programs, featuredPrograms, totalCount, categoryCount, regionCount, sourceCount } = Astro.props as Props;
+const featured = featuredPrograms.slice(0, 3);
+const audienceChoices = [
+  { label: "전체", value: "전체", hint: "전체 지원금" },
+  { label: "청년", value: "청년", hint: "주거·취업·자산형성" },
+  { label: "직장인·구직자", value: "직장인·구직자", hint: "취업·훈련·세금" },
+  { label: "육아·가정", value: "육아·가정", hint: "출산·보육·교육비" },
+  { label: "소상공인", value: "소상공인", hint: "정책자금·바우처" }
+];
+const fieldChoices = [
+  { label: "전체", value: "전체", icon: "전체" },
+  { label: "생활비", value: "생활비", icon: "생" },
+  { label: "주거", value: "주거", icon: "주" },
+  { label: "취업", value: "취업 / 구직", icon: "취" },
+  { label: "출산·육아", value: "출산 / 육아", icon: "육" },
+  { label: "창업·소상공인", value: "소상공인", icon: "상" },
+  { label: "세금·환급", value: "기타", icon: "환" }
+];
+const primaryRegions = ["전국", "서울", "경기", "인천", "부산"];
+const otherRegions = ["대구", "광주", "대전", "울산", "세종", "강원", "충북", "충남", "전북", "전남", "경북", "경남", "제주"];
 ---
 
-<section class="support-hero" aria-labelledby="support-hero-title" data-reveal>
-  <div class="support-hero-copy">
-    <p class="support-eyebrow">정부지원금 찾기</p>
-    <h1 id="support-hero-title">놓치고 있는 지원금, 한 번에 확인하세요</h1>
-    <p class="support-hero-lead">나이와 지역, 현재 상황에 맞는 정부지원금과 복지혜택을 빠르게 찾아보세요.</p>
-    <form class="support-hero-search" action="/support#support-finder" method="get" role="search" data-support-hero-search>
-      <label class="screen-reader-text" for="support-hero-query">지원금 이름이나 키워드 검색</label>
-      <input id="support-hero-query" name="q" type="search" maxlength="40" placeholder="지원금 이름이나 키워드를 검색하세요" data-support-hero-query />
-      <button type="submit">검색</button>
-    </form>
-    <div class="support-example-links" aria-label="검색 예시">
-      {searchExamples.map((example) => <button type="button" data-support-set="query" data-value={example}>{example}</button>)}
+<section class="support-hero" id="support-decision" aria-labelledby="support-hero-title" data-support-decision data-reveal>
+  <div class="support-decision-card">
+    <div class="support-hero-intro">
+      <p class="support-eyebrow">맞춤 지원금 찾기</p>
+      <h1 id="support-hero-title">원하는 지원금이 있으신가요?</h1>
+      <p class="support-hero-lead">빠르게 내게 맞는 지원금을 확인해 보세요.</p>
     </div>
-    <div class="support-hero-actions">
-      <a class="support-primary-cta" href="#support-finder">내 지원금 찾기<span aria-hidden="true">→</span></a>
-      <a class="support-secondary-cta" href="#support-results">지원금 전체보기</a>
+
+    <div class="support-choice-panel">
+      <form class="support-hero-search" action="/support#support-results" method="get" role="search" data-support-hero-search>
+        <label for="support-hero-query">지원금 이름 검색</label>
+        <div>
+          <input id="support-hero-query" name="q" type="search" maxlength="40" placeholder="청년월세, 근로장려금, 소상공인" data-support-query data-support-hero-query />
+          <button type="submit">검색</button>
+        </div>
+      </form>
+
+      <div class="support-choice-stack" aria-label="지원금 조건 선택">
+        <fieldset class="support-choice-group">
+          <legend><span>1</span> 지원 대상 선택</legend>
+          <div class="support-choice-options support-choice-options-audience">
+            {audienceChoices.map((choice) => (
+              <button type="button" class="support-option-card" data-support-filter="audience" data-value={choice.value} aria-pressed={choice.value === "전체" ? "true" : "false"}>
+                <strong>{choice.label}</strong>
+                <span>{choice.hint}</span>
+              </button>
+            ))}
+          </div>
+        </fieldset>
+
+        <fieldset class="support-choice-group">
+          <legend><span>2</span> 지원 분야 선택</legend>
+          <div class="support-choice-options support-choice-options-field">
+            {fieldChoices.map((choice) => (
+              <button type="button" class="support-option-card support-option-card-field" data-support-filter="field" data-value={choice.value} aria-pressed={choice.value === "전체" ? "true" : "false"}>
+                <em aria-hidden="true">{choice.icon}</em>
+                <strong>{choice.label}</strong>
+              </button>
+            ))}
+          </div>
+        </fieldset>
+
+        <fieldset class="support-choice-group" id="support-region-choice">
+          <legend><span>3</span> 지역 선택</legend>
+          <div class="support-choice-options support-choice-options-region">
+            {primaryRegions.map((region) => (
+              <button type="button" class="support-option-card support-option-card-region" data-support-filter="region" data-value={region} aria-pressed={region === "전국" ? "true" : "false"}>{region}</button>
+            ))}
+            <button type="button" class="support-option-card support-option-card-region support-region-more-button" aria-expanded="false" aria-controls="support-more-regions" data-support-region-toggle>
+              기타 지역
+            </button>
+          </div>
+          <div class="support-choice-options support-choice-options-region support-more-regions" id="support-more-regions" data-support-more-regions hidden>
+            {otherRegions.map((region) => (
+              <button type="button" class="support-option-card support-option-card-region" data-support-filter="region" data-value={region} aria-pressed="false">{region}</button>
+            ))}
+          </div>
+        </fieldset>
+      </div>
+
+      <div class="support-selected-result" aria-live="polite">
+        <p>현재 확인 가능한 지원금</p>
+        <strong><span data-support-result-count data-count-up={totalCount}>{totalCount}</span>개</strong>
+        <span data-support-result-status>전체 {programs.length}개 지원금을 표시 중입니다.</span>
+        <ul data-support-feature-list>
+          {featured.map((program) => (
+            <li>
+              <a href={program.href}>
+                <b>{program.title}</b>
+                <span>{program.benefit || program.description}</span>
+              </a>
+            </li>
+          ))}
+        </ul>
+        <a class="support-primary-cta" href="#support-results" data-support-scroll-results>내 지원금 확인하기<span aria-hidden="true">→</span></a>
+      </div>
     </div>
-    <dl class="support-hero-stats" aria-label="지원금 데이터 요약">
-      <div><dt>등록 지원금</dt><dd><span data-count-up={totalCount}>{totalCount}</span>개</dd></div>
-      <div><dt>지원 분야</dt><dd><span data-count-up={categoryCount}>{categoryCount}</span>개</dd></div>
-      <div><dt>지역 필터</dt><dd><span data-count-up={regionCount}>{regionCount}</span>개</dd></div>
-      <div><dt>공식 출처</dt><dd><span data-count-up={sourceCount}>{sourceCount}</span>개</dd></div>
-    </dl>
+
+    <div class="support-hero-visual" aria-label="조건에 맞는 지원금이 갱신되는 화면 예시">
+      <div class="support-visual-photo" data-parallax="0.04">
+        <img src="/assets/benefit-employment-inline.webp" width="1200" height="800" alt="지원금 정보를 확인하는 화면 일러스트" decoding="async" />
+      </div>
+      <div class="support-visual-orbit" data-parallax="-0.04" aria-hidden="true"></div>
+      <div class="support-phone-visual" data-parallax="0.12">
+        <div class="support-phone-top">
+          <span></span>
+          <strong>지원금 확인</strong>
+        </div>
+        <div class="support-motion-badge" aria-hidden="true">
+          <span></span>
+          <strong>조건 변경 즉시 반영</strong>
+        </div>
+        <div class="support-phone-screen">
+          <p>선택 결과</p>
+          <strong><span data-support-visual-count>{totalCount}</span>개 확인</strong>
+          <span>공식 자료 기준</span>
+          <div class="support-live-strip" aria-hidden="true">
+            <span>추천 지원금</span>
+            <strong data-support-visual-title>{featured[0]?.title || "지원금 확인"}</strong>
+          </div>
+          <div class="support-phone-progress"><i></i></div>
+          <ul>
+            <li><span></span>대상 선택</li>
+            <li><span></span>분야 선택</li>
+            <li><span></span>지역 선택</li>
+          </ul>
+        </div>
+      </div>
+      <div class="support-float support-float-coin support-float-coin-one" data-parallax="0.24">₩</div>
+      <div class="support-float support-float-coin support-float-coin-two" data-parallax="0.16">₩</div>
+      <div class="support-float support-float-card" data-parallax="0.18">
+        <span>지원금</span>
+        <strong>대상 확인</strong>
+      </div>
+      <div class="support-float support-float-doc" data-parallax="-0.06">
+        <span></span>
+        <span></span>
+        <strong>공식 출처</strong>
+      </div>
+      <div class="support-float support-float-check" data-parallax="0.1">✓</div>
+      <div class="support-flow-card support-flow-card-youth" data-parallax="0.22" aria-hidden="true">
+        <span>청년</span>
+        <strong>월세 지원</strong>
+      </div>
+      <div class="support-flow-card support-flow-card-family" data-parallax="-0.08" aria-hidden="true">
+        <span>가정</span>
+        <strong>부모급여</strong>
+      </div>
+    </div>
   </div>
 
-  <div class="support-hero-visual" aria-label="지원금 확인 화면 예시">
-    <div class="support-visual-photo" data-parallax="0.05">
-      <img src="/assets/benefit-employment-inline.webp" width="1200" height="800" alt="지원금 정보를 확인하는 화면 일러스트" decoding="async" />
-    </div>
-    <div class="support-phone-visual" data-parallax="0.12">
-      <div class="support-phone-top">
-        <span></span>
-        <strong>지원금 확인</strong>
-      </div>
-      <div class="support-motion-badge" aria-hidden="true">
-        <span></span>
-        <strong>신청 가능 12건</strong>
-      </div>
-      <div class="support-phone-screen">
-        <p>오늘 확인할 혜택</p>
-        <strong>월 최대 20만 원</strong>
-        <span>청년·주거 지원</span>
-        <div class="support-live-strip" aria-hidden="true">
-          <span>맞춤 추천</span>
-          <strong>3건 분석 중</strong>
-        </div>
-        <div class="support-phone-progress"><i></i></div>
-        <ul>
-          <li><span></span>대상 조건 확인</li>
-          <li><span></span>신청기간 확인</li>
-          <li><span></span>공식 출처 이동</li>
-        </ul>
-      </div>
-    </div>
-    <div class="support-float support-float-coin" data-parallax="0.2">₩</div>
-    <div class="support-float support-float-card" data-parallax="0.15">
-      <span>소상공인</span>
-      <strong>정책자금</strong>
-    </div>
-    <div class="support-float support-float-doc" data-parallax="-0.06">
-      <span></span>
-      <span></span>
-      <strong>공식 공고</strong>
-    </div>
-    <div class="support-float support-float-check" data-parallax="0.1">✓</div>
-    <div class="support-flow-card support-flow-card-youth" data-parallax="0.22" aria-hidden="true">
-      <span>청년</span>
-      <strong>월세 지원</strong>
-    </div>
-    <div class="support-flow-card support-flow-card-family" data-parallax="-0.08" aria-hidden="true">
-      <span>가정</span>
-      <strong>부모급여</strong>
-    </div>
-  </div>
+  <dl class="support-hero-stats" aria-label="지원금 데이터 요약">
+    <div><dt>등록 지원금</dt><dd><span data-count-up={totalCount}>{totalCount}</span>개</dd></div>
+    <div><dt>지원 분야</dt><dd><span data-count-up={categoryCount}>{categoryCount}</span>개</dd></div>
+    <div><dt>지역 필터</dt><dd><span data-count-up={regionCount}>{regionCount}</span>개</dd></div>
+    <div><dt>공식 출처</dt><dd><span data-count-up={sourceCount}>{sourceCount}</span>개</dd></div>
+  </dl>
 </section>

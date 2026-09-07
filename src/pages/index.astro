@@ -1,17 +1,25 @@
 ---
 import { getCollection } from "astro:content";
 import BaseLayout from "../layouts/BaseLayout.astro";
-import PostCard from "../components/PostCard.astro";
-import SupportSearch from "../components/SupportSearch.astro";
+import SupportHero from "../components/support/SupportHero.astro";
+import SupportFinder from "../components/support/SupportFinder.astro";
+import SupportGuide from "../components/support/SupportGuide.astro";
+import SupportSourceNotice from "../components/support/SupportSourceNotice.astro";
+import SupportMobileCTA from "../components/support/SupportMobileCTA.astro";
 import { SITE } from "../data/site.js";
-import { popularPosts, recentPosts } from "../lib/content.js";
+import { popularPosts } from "../lib/content.js";
 import { homeJsonLd } from "../lib/seo.js";
+import {
+  supportProgramsFromPosts,
+  toSupportProgram
+} from "../lib/support-landing.js";
 
 const posts = await getCollection("posts");
-const popular = popularPosts(posts, 8);
-const popularSlugs = new Set(popular.map((post) => post.data.slug));
-const recent = recentPosts(posts, 12).filter((post) => !popularSlugs.has(post.data.slug)).slice(0, 8);
-const searchExamples = ["청년월세", "근로장려금", "부모급여", "소상공인", "전기요금", "주거지원"];
+const programs = supportProgramsFromPosts(posts);
+const featuredPrograms = popularPosts(posts, 6).map(toSupportProgram);
+const activeRegions = new Set(programs.flatMap((program) => program.regions)).size;
+const sourceCount = programs.filter((program) => program.sourceLabel).length;
+const categoryCount = new Set(programs.map((program) => program.categoryId)).size;
 ---
 
 <BaseLayout
@@ -23,55 +31,36 @@ const searchExamples = ["청년월세", "근로장려금", "부모급여", "소�
   ogDescription="공식 신청처와 함께 보는 정부지원금 정보 블로그"
   ogImage={SITE.defaultImage}
   twitterCard="summary_large_image"
-  bodyClass="blog-page home home-portal generatepress-style"
+  bodyClass="blog-page home support-landing-page generatepress-style"
   activeNav="home"
-  cssHref="/blog.css?v=20260904-home-search2"
-  scripts={["/support-search.js?v=20260904-home-dedupe1"]}
+  cssHref="/blog.css?v=20260905-ai-trust1"
+  extraCss={["/support-landing.css?v=20260907-support4"]}
+  scripts={["/support-landing.js?v=20260907-support4"]}
   includeRss
   includeNaverVerification
   themeColor={SITE.themeColor}
   jsonLd={homeJsonLd}
 >
-  <main class="site-main" id="main" data-post-count={posts.length}>
-    <div class="site-grid home-service-grid">
-      <section class="content-area home-service-content" aria-labelledby="home-title">
-        <header class="home-service-hero">
-          <h1 class="screen-reader-text" id="home-title">복지모음집 지원금 검색</h1>
-          <SupportSearch
-            id="home-support-search"
-            label="지원금 검색"
-            description="정책명을 몰라도 대상이나 상황으로 검색할 수 있습니다."
-            placeholder="예: 청년월세, 근로장려금, 부모급여"
-            countText={`전체 ${posts.length}개 글에서 찾기`}
-            mode="navigate"
-            examples={searchExamples}
-          />
-        </header>
-
-        <section class="home-service-section" aria-labelledby="popular-title">
-          <div class="home-service-section-head">
-            <p>많이 찾는 지원금</p>
-            <h2 id="popular-title">먼저 확인할 지원금</h2>
-          </div>
-          <div class="support-card-grid home-service-card-grid">
-            {popular.map((post) => <PostCard post={post} />)}
-          </div>
-        </section>
-
-        <section class="home-service-section" aria-labelledby="recent-title">
-          <div class="home-service-section-head">
-            <p>최근 업데이트</p>
-            <h2 id="recent-title">최근 확인한 지원금</h2>
-          </div>
-          <div class="support-card-grid home-service-card-grid home-service-recent-grid">
-            {recent.map((post) => <PostCard post={post} />)}
-          </div>
-        </section>
-
-        <p class="home-service-more">
-          <a class="home-all-posts-link" href="/지원금">전체 {posts.length}개 지원금 보기</a>
-        </p>
-      </section>
-    </div>
+  <main class="site-main support-landing" id="main" data-support-page data-post-count={programs.length}>
+    <SupportHero
+      totalCount={programs.length}
+      categoryCount={categoryCount}
+      regionCount={activeRegions}
+      sourceCount={sourceCount}
+      programs={programs}
+      featuredPrograms={featuredPrograms}
+    />
+    <SupportFinder programs={programs} />
+    <SupportGuide />
+    <SupportSourceNotice />
+    <section class="support-final-cta" aria-labelledby="home-final-cta-title" data-reveal>
+      <p>지원금 전체 목록</p>
+      <h2 id="home-final-cta-title">모든 지원금 글은 기존 URL 그대로 확인할 수 있습니다</h2>
+      <div>
+        <a class="support-primary-cta" href="#support-finder">내 조건으로 찾기<span aria-hidden="true">→</span></a>
+        <a class="support-secondary-cta" href="/지원금">전체 지원금 목록</a>
+      </div>
+    </section>
+    <SupportMobileCTA />
   </main>
 </BaseLayout>
