@@ -19,6 +19,8 @@ const copyFiles = [
   "robots.txt",
   "support-landing.css",
   "support-landing.js",
+  "support-mobile-fix.css",
+  "support-mobile-fix.js",
   "support-search.js",
   "_headers"
 ];
