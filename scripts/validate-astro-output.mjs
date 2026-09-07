@@ -49,10 +49,11 @@ for (const file of [
 
 const home = await read('index.html');
 assert.ok(home.includes('https://mustview.co.kr/'), 'home canonical is present');
-assert.ok(home.includes('support-mobile-fix.css?v=20260908-mobile6'), 'home uses mobile6 CSS');
-assert.ok(home.includes('support-mobile-fix.js?v=20260908-mobile6'), 'home uses mobile6 JS');
+assert.ok(home.includes('support-mobile-fix.css?v=20260908-mobile7'), 'home uses mobile7 CSS');
+assert.ok(home.includes('support-mobile-fix.js?v=20260908-mobile7'), 'home uses mobile7 JS');
 assert.ok(home.includes('data-support-decision'), 'home has support decision UI');
 assert.ok(home.includes('support-result-main'), 'home has calculator result block');
+assert.ok(!home.includes('data-support-hero-search'), 'home hero keeps selection-first flow');
 assert.equal((home.match(/data-support-program/g) || []).length, posts.length, 'home uses every support post');
 
 const archive = await read('지원금.html');
@@ -63,10 +64,11 @@ assert.equal((archive.match(/class="post-card"/g) || []).length, posts.length, '
 const support = await read('support.html');
 assert.ok(support.includes('https://mustview.co.kr/support'), 'support canonical is present');
 assert.ok(support.includes('정부지원금 찾기 | 청년·주거·육아·소상공인 지원금 - mustview'), 'support title is present');
-assert.ok(support.includes('support-mobile-fix.css?v=20260908-mobile6'), 'support uses mobile6 CSS');
-assert.ok(support.includes('support-mobile-fix.js?v=20260908-mobile6'), 'support uses mobile6 JS');
+assert.ok(support.includes('support-mobile-fix.css?v=20260908-mobile7'), 'support uses mobile7 CSS');
+assert.ok(support.includes('support-mobile-fix.js?v=20260908-mobile7'), 'support uses mobile7 JS');
 assert.ok(support.includes('support-choice-panel'), 'support has choice panel');
 assert.ok(support.includes('support-result-main'), 'support has calculator result block');
+assert.ok(!support.includes('data-support-hero-search'), 'support hero keeps selection-first flow');
 assert.ok(support.includes('support-category-tabs'), 'support has category tabs');
 assert.ok(support.includes('data-support-results'), 'support has result list');
 assert.equal((support.match(/data-support-program/g) || []).length, posts.length, 'support uses every support post');
@@ -86,7 +88,7 @@ const pickerOrder = mobileCss.indexOf(`${quote}picker${quote}`);
 assert.ok(introOrder !== -1 && visualOrder > introOrder && pickerOrder > visualOrder, 'mobile hero order is intro, visual, picker');
 assert.ok(mobileCss.includes('support-more-regions[hidden]'), 'collapsed region list stays hidden');
 assert.ok(mobileCss.includes('@keyframes supportFloatPhoneMobile'), 'mobile keeps compact phone motion');
-assert.ok(mobileJs.includes('syncMobileCta'), 'mobile CTA visibility script remains');
+assert.ok(mobileJs.includes('decisionBottom < 0'), 'mobile CTA waits until the hero is past the viewport');
 
 const redirects = await read('_redirects');
 assert.ok(redirects.includes('/support/ /support 301'), 'support slash redirects');
