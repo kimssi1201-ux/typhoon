@@ -47,8 +47,8 @@
   .support-decision-card {
     grid-template-areas:
       "intro"
-      "picker"
-      "visual";
+      "visual"
+      "picker";
     gap: 12px;
     padding: 16px 14px 18px;
   }
