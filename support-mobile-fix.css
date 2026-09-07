@@ -45,57 +45,86 @@
   }
 
   .support-decision-card {
-    gap: 14px;
-    padding: 18px 14px 20px;
+    grid-template-areas:
+      "intro"
+      "picker"
+      "visual";
+    gap: 12px;
+    padding: 16px 14px 18px;
   }
 
   .support-hero h1 {
-    font-size: clamp(1.9rem, 9.4vw, 2.1rem);
+    max-width: 11em;
+    font-size: clamp(1.7rem, 7.7vw, 1.94rem);
     line-height: 1.12;
   }
 
+  .support-hero-lead {
+    margin-top: 10px;
+    font-size: 0.98rem;
+  }
+
+  .support-choice-panel {
+    gap: 12px;
+  }
+
+  .support-hero-search {
+    gap: 7px;
+  }
+
+  .support-hero-search label,
+  .support-choice-group legend {
+    font-size: 0.95rem;
+  }
+
+  .support-hero-search input,
+  .support-hero-search button {
+    min-height: 48px;
+  }
+
   .support-hero-visual {
-    min-height: 224px;
-    margin: 2px 0 4px;
+    min-height: 156px;
+    margin: 0;
   }
 
   .support-visual-photo {
-    inset: 4px 0 16px;
+    inset: 0;
   }
 
   .support-visual-photo img {
-    opacity: 0.46;
-    object-position: 38% 50%;
+    opacity: 0.3;
+    object-position: 36% 50%;
   }
 
   .support-visual-orbit {
-    right: 22px;
-    top: 34px;
-    width: 144px;
-    height: 144px;
+    right: 26px;
+    top: 20px;
+    width: 104px;
+    height: 104px;
   }
 
   .support-phone-visual {
     left: auto;
-    right: 12px;
+    right: 16px;
     top: 50%;
-    width: 138px;
+    width: 116px;
     min-height: 0;
-    padding: 8px;
-    border-radius: 16px;
+    padding: 7px;
+    border-radius: 14px;
     transform: translate3d(0, calc(-50% + var(--parallax-y, 0px)), 0);
     animation: supportFloatPhoneMobile 6.8s ease-in-out infinite;
   }
 
   .support-motion-badge,
   .support-live-strip,
+  .support-flow-card,
   .support-flow-card-family {
     display: none;
   }
 
   .support-phone-screen {
-    margin-top: 7px;
-    padding: 9px;
+    margin-top: 6px;
+    padding: 8px;
   }
 
   .support-phone-top {
@@ -114,70 +143,87 @@
   }
 
   .support-phone-screen > strong {
-    margin-top: 5px;
-    font-size: 0.9rem;
+    margin-top: 4px;
+    font-size: 0.84rem;
   }
 
-  .support-phone-screen li {
-    gap: 5px;
-    font-size: 0.62rem;
-  }
-
-  .support-phone-screen li span {
-    width: 12px;
-    height: 12px;
-  }
-
+  .support-phone-screen ul,
   .support-phone-progress {
-    height: 6px;
-    margin: 8px 0;
+    display: none;
   }
 
   .support-float-coin-two {
-    left: 28px;
-    top: 72px;
-    width: 34px;
-    height: 34px;
-    font-size: 0.92rem;
+    left: 20px;
+    top: 56px;
+    width: 32px;
+    height: 32px;
+    font-size: 0.86rem;
   }
 
   .support-float-card {
-    left: 14px;
-    bottom: 18px;
+    left: 12px;
+    bottom: 14px;
     min-width: 0;
-    max-width: 118px;
-    padding: 9px 10px;
+    max-width: 106px;
+    padding: 8px 9px;
   }
 
   .support-float-check {
     left: auto;
-    right: 10px;
-    top: 12px;
-    width: 32px;
-    height: 32px;
-    font-size: 1rem;
+    right: 12px;
+    top: 10px;
+    width: 28px;
+    height: 28px;
+    font-size: 0.92rem;
   }
 
-  .support-flow-card-youth {
-    right: 8px;
-    top: 4px;
-    min-width: 92px;
-    padding: 7px 8px;
+  .support-choice-stack {
+    gap: 12px;
+  }
+
+  .support-choice-group {
+    gap: 9px;
+  }
+
+  .support-option-card {
+    min-height: 56px;
+    padding: 10px;
+  }
+
+  .support-option-card strong {
+    font-size: 0.9rem;
+  }
+
+  .support-option-card span {
+    font-size: 0.72rem;
+  }
+
+  .support-selected-result {
+    padding: 14px;
+  }
+
+  .support-selected-result > strong {
+    font-size: 2rem;
+  }
+
+  .support-selected-result ul {
+    gap: 7px;
+    margin-top: 10px;
   }
 }
 
 @media (max-width: 380px) {
   .support-hero h1 {
-    font-size: 1.82rem;
+    font-size: 1.64rem;
   }
 
   .support-hero-visual {
-    min-height: 210px;
+    min-height: 146px;
   }
 
   .support-phone-visual {
-    right: 8px;
-    width: 132px;
+    right: 12px;
+    width: 108px;
   }
 
   .support-float-card {
