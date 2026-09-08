@@ -31,14 +31,16 @@
     linear-gradient(135deg, #143a63 0%, #2454d9 48%, #1f7a57 100%);
 }
 
-.support-decision-card,
-.support-hero-visual {
+.support-decision-card {
   overflow: hidden;
 }
 
 .support-decision-card {
-  grid-template-columns: minmax(0, 1fr) minmax(320px, 420px);
-  gap: 16px 38px;
+  grid-template-areas:
+    "intro"
+    "picker";
+  grid-template-columns: minmax(0, 1fr);
+  gap: 18px;
   min-height: 0;
   padding: clamp(28px, 3.4vw, 42px);
   border-color: rgba(121, 143, 170, 0.2);
@@ -54,12 +56,13 @@
 }
 
 .support-hero h1 {
-  max-width: 640px;
+  max-width: 760px;
   font-size: clamp(1.8rem, 2.9vw, 2.45rem);
   line-height: 1.2;
 }
 
 .support-hero-lead {
+  max-width: 760px;
   margin-top: 8px;
   font-size: 1.02rem;
 }
@@ -201,31 +204,6 @@
   margin-top: 0;
 }
 
-.support-hero-visual {
-  min-height: 520px;
-  max-height: 590px;
-  border-radius: 8px;
-}
-
-.support-visual-photo {
-  inset: auto 0 0 0;
-  height: 76%;
-}
-
-.support-phone-visual {
-  top: 56%;
-  width: min(70%, 294px);
-  min-height: 372px;
-}
-
-.support-flow-card-youth {
-  right: 48px;
-}
-
-.support-flow-card-family {
-  left: 42px;
-}
-
 .support-mobile-cta {
   opacity: 0;
   pointer-events: none;
@@ -239,21 +217,10 @@
   transform: translateY(0);
 }
 
-@keyframes supportFloatPhoneMobile {
-  0%,
-  100% {
-    transform: translate3d(0, calc(-50% + var(--parallax-y, 0px)), 0);
-  }
-
-  50% {
-    transform: translate3d(0, calc(-52% + var(--parallax-y, 0px)), 0);
-  }
-}
-
 @media (max-width: 1080px) {
   .support-decision-card {
-    grid-template-columns: minmax(0, 1fr) minmax(292px, 360px);
-    gap: 18px 26px;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 18px;
   }
 
   .support-choice-options-audience {
@@ -273,29 +240,9 @@
   .support-decision-card {
     grid-template-areas:
       "intro"
-      "visual"
       "picker";
     grid-template-columns: 1fr;
     gap: 16px;
-  }
-
-  .support-hero-visual {
-    min-height: 210px;
-  }
-
-  .support-visual-photo {
-    inset: 0;
-    height: auto;
-  }
-
-  .support-phone-visual {
-    left: auto;
-    right: 28px;
-    top: 50%;
-    width: 172px;
-    min-height: 0;
-    transform: translate3d(0, calc(-50% + var(--parallax-y, 0px)), 0);
-    animation: supportFloatPhoneMobile 6.8s ease-in-out infinite;
   }
 }
 
@@ -327,100 +274,6 @@
     margin-top: 8px;
     font-size: 0.9rem;
     line-height: 1.45;
-  }
-
-  .support-hero-visual {
-    min-height: 134px;
-    margin: 0;
-  }
-
-  .support-visual-photo img {
-    opacity: 0.32;
-    object-position: 36% 50%;
-  }
-
-  .support-visual-orbit {
-    right: 26px;
-    top: 18px;
-    width: 108px;
-    height: 108px;
-  }
-
-  .support-phone-visual {
-    right: 16px;
-    width: 106px;
-    padding: 7px;
-    border-radius: 14px;
-  }
-
-  .support-motion-badge,
-  .support-live-strip,
-  .support-flow-card,
-  .support-float-doc {
-    display: none;
-  }
-
-  .support-phone-screen {
-    margin-top: 6px;
-    padding: 8px;
-  }
-
-  .support-phone-top {
-    gap: 6px;
-    font-size: 0.7rem;
-  }
-
-  .support-phone-top span {
-    width: 28px;
-    height: 4px;
-  }
-
-  .support-phone-screen p,
-  .support-phone-screen span {
-    font-size: 0.66rem;
-  }
-
-  .support-phone-screen > strong {
-    margin-top: 4px;
-    font-size: 0.84rem;
-  }
-
-  .support-phone-screen ul,
-  .support-phone-progress {
-    display: none;
-  }
-
-  .support-float-coin-one {
-    right: 10px;
-    top: 14px;
-    width: 32px;
-    height: 32px;
-    font-size: 0.86rem;
-  }
-
-  .support-float-coin-two {
-    left: 20px;
-    top: 58px;
-    width: 32px;
-    height: 32px;
-    font-size: 0.86rem;
-  }
-
-  .support-float-card {
-    left: 12px;
-    bottom: 14px;
-    min-width: 0;
-    max-width: 92px;
-    padding: 8px 9px;
-  }
-
-  .support-float-check {
-    left: auto;
-    right: 52px;
-    top: 12px;
-    width: 28px;
-    height: 28px;
-    font-size: 0.92rem;
   }
 
   .support-choice-panel {
@@ -527,27 +380,10 @@
   .support-hero h1 {
     font-size: 1.62rem;
   }
-
-  .support-hero-visual {
-    min-height: 124px;
-  }
-
-  .support-phone-visual {
-    right: 12px;
-    width: 108px;
-  }
-
-  .support-float-card {
-    display: none;
-  }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .support-mobile-cta {
     transition: none;
-  }
-
-  .support-phone-visual {
-    transform: translate3d(0, calc(-50% + var(--parallax-y, 0px)), 0);
   }
 }
