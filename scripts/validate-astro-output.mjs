@@ -49,11 +49,13 @@ for (const file of [
 
 const home = await read('index.html');
 assert.ok(home.includes('https://mustview.co.kr/'), 'home canonical is present');
-assert.ok(home.includes('support-mobile-fix.css?v=20260908-mobile7'), 'home uses mobile7 CSS');
-assert.ok(home.includes('support-mobile-fix.js?v=20260908-mobile7'), 'home uses mobile7 JS');
+assert.ok(home.includes('support-mobile-fix.css?v=20260908-mobile8'), 'home uses mobile8 CSS');
+assert.ok(home.includes('support-mobile-fix.js?v=20260908-mobile8'), 'home uses mobile8 JS');
 assert.ok(home.includes('data-support-decision'), 'home has support decision UI');
 assert.ok(home.includes('support-result-main'), 'home has calculator result block');
 assert.ok(!home.includes('data-support-hero-search'), 'home hero keeps selection-first flow');
+assert.ok(!home.includes('support-hero-visual'), 'home hero has no image visual');
+assert.ok(!/<img[^>]+benefit-employment-inline\.webp/.test(home), 'home hero does not render the support image');
 assert.equal((home.match(/data-support-program/g) || []).length, posts.length, 'home uses every support post');
 
 const archive = await read('지원금.html');
@@ -64,11 +66,13 @@ assert.equal((archive.match(/class="post-card"/g) || []).length, posts.length, '
 const support = await read('support.html');
 assert.ok(support.includes('https://mustview.co.kr/support'), 'support canonical is present');
 assert.ok(support.includes('정부지원금 찾기 | 청년·주거·육아·소상공인 지원금 - mustview'), 'support title is present');
-assert.ok(support.includes('support-mobile-fix.css?v=20260908-mobile7'), 'support uses mobile7 CSS');
-assert.ok(support.includes('support-mobile-fix.js?v=20260908-mobile7'), 'support uses mobile7 JS');
+assert.ok(support.includes('support-mobile-fix.css?v=20260908-mobile8'), 'support uses mobile8 CSS');
+assert.ok(support.includes('support-mobile-fix.js?v=20260908-mobile8'), 'support uses mobile8 JS');
 assert.ok(support.includes('support-choice-panel'), 'support has choice panel');
 assert.ok(support.includes('support-result-main'), 'support has calculator result block');
 assert.ok(!support.includes('data-support-hero-search'), 'support hero keeps selection-first flow');
+assert.ok(!support.includes('support-hero-visual'), 'support hero has no image visual');
+assert.ok(!/<img[^>]+benefit-employment-inline\.webp/.test(support), 'support hero does not render the support image');
 assert.ok(support.includes('support-category-tabs'), 'support has category tabs');
 assert.ok(support.includes('data-support-results'), 'support has result list');
 assert.equal((support.match(/data-support-program/g) || []).length, posts.length, 'support uses every support post');
@@ -77,17 +81,16 @@ const landingCss = await read('support-landing.css');
 const landingJs = await read('support-landing.js');
 const mobileCss = await read('support-mobile-fix.css');
 const mobileJs = await read('support-mobile-fix.js');
-assert.ok(landingCss.includes('@keyframes supportKenBurns'), 'landing keeps Ken Burns animation');
-assert.ok(landingCss.includes('@keyframes supportFloatPhone'), 'landing keeps floating animation');
+assert.ok(landingCss.includes('@keyframes supportKenBurns'), 'landing keeps base animation definitions');
 assert.ok(landingCss.includes('@media (prefers-reduced-motion: reduce)'), 'landing respects reduced motion');
 assert.ok(landingJs.includes('IntersectionObserver'), 'landing keeps scroll reveal');
 assert.ok(landingJs.includes('history.replaceState'), 'landing keeps URL filter state');
 const introOrder = mobileCss.indexOf(`${quote}intro${quote}`);
-const visualOrder = mobileCss.indexOf(`${quote}visual${quote}`);
 const pickerOrder = mobileCss.indexOf(`${quote}picker${quote}`);
-assert.ok(introOrder !== -1 && visualOrder > introOrder && pickerOrder > visualOrder, 'mobile hero order is intro, visual, picker');
+assert.ok(introOrder !== -1 && pickerOrder > introOrder, 'mobile hero order is intro, picker');
+assert.ok(!mobileCss.includes(`${quote}visual${quote}`), 'mobile hero removes the visual grid area');
 assert.ok(mobileCss.includes('support-more-regions[hidden]'), 'collapsed region list stays hidden');
-assert.ok(mobileCss.includes('@keyframes supportFloatPhoneMobile'), 'mobile keeps compact phone motion');
+assert.ok(!mobileCss.includes('@keyframes supportFloatPhoneMobile'), 'mobile hero has no visual motion');
 assert.ok(mobileJs.includes('decisionBottom < 0'), 'mobile CTA waits until the hero is past the viewport');
 
 const redirects = await read('_redirects');
